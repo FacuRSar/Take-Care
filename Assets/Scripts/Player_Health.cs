@@ -1,16 +1,13 @@
 using System;
 using UnityEngine;
 
-public class Player_Health : MonoBehaviour
+public class Player_Health : MonoBehaviour, IDamageable
 {
     [Header("Player Health Settings")]
 
     [SerializeField] private int MaxHealth;
     [SerializeField] private int MinHealth;
     [SerializeField] private int CurrentHealth;
-
-    
-    private int damage;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -20,13 +17,9 @@ public class Player_Health : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
-    {
-        TakeHit();
-    }
 
 
-    private void TakeHit()
+    public void TakeDamage(int damage)
     {
         int TemporalyHealth = CurrentHealth - damage;
 

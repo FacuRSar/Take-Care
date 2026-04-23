@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     private Vector2 moveInput;
     private PlayerInput playerInput;
+    public bool CantMove;
     void Start()
     {
         //asignar el rigibody y player input al iniciar el juego
@@ -15,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (CantMove) return;
         MovePlayer(); //llamada a funcion movimiento en fixed update asi no choca con la fisica del juego
     }
     //callback del input system, se llama cada vez que el jugador clickea teclas de movimiento
@@ -28,5 +30,10 @@ public class PlayerMovement : MonoBehaviour
         Vector3 direction = transform.forward * moveInput.y + transform.right * moveInput.x;
         direction.Normalize();
         rb.linearVelocity = new Vector3(direction.x * moveSpeed, rb.linearVelocity.y, direction.z * moveSpeed);
+    }
+
+    public Rigidbody Rb
+    { get { return rb; }
+        private set { rb = value; }     
     }
 }

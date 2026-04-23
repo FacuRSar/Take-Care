@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerCamera : MonoBehaviour
@@ -6,6 +7,8 @@ public class PlayerCamera : MonoBehaviour
     public Transform cam;//referencia a la camara del jugador
     private float xRotation = 0f;//rotacion en el eje x para limitar la rotacion de la camara
     private Vector2 mouseInput;//almacena el input del mouse para rotar la camara
+
+    public bool CantMoveCamera;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked; //bloquear el cursor al iniciar el juego en el centro de la pantalla
@@ -14,6 +17,7 @@ public class PlayerCamera : MonoBehaviour
 
     void Update()
     {
+        if (CantMoveCamera) return;
         HandleMouseCam(); //llamada a la funcion que maneja la rotacion de la camara con el mouse
     }
 
