@@ -76,7 +76,7 @@ public class FixedCameraWithZoom : MonoBehaviour
             playerCamera.CantMoveCamera = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.Z)) active = true;
+        //if (Input.GetKeyDown(KeyCode.Z)) active = true;
 
         CameraZoom();
 
@@ -107,13 +107,17 @@ public class FixedCameraWithZoom : MonoBehaviour
             Player.rotation = Quaternion.Lerp(Player.rotation, PlayerRotation, Speed * Time.deltaTime);
 
             cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, CamRotation, Speed * Time.deltaTime);
-            
 
-            canzoomed = true;
-
-            playerMovement.CantMove = true;
-            playerCamera.CantMoveCamera = true;
+            AngelMetodo();
         }
+    }
+
+    private void AngelMetodo()
+    {
+        canzoomed = true;
+
+        playerMovement.CantMove = true;
+        playerCamera.CantMoveCamera = true;
     }
 
     public bool Active 

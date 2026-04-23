@@ -1162,7 +1162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FixedCameraWithZoom
   Speed: 5
   Player: {fileID: 0}
-  TimeRotation: 5
+  minAngle: 1.2
   cam: {fileID: 330585545}
   zoomFov: 30
   nomalFov: 60
@@ -1465,7 +1465,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646675e99462c324cb2dd12ac6e49e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 5
+  walkSpeed: 4
+  sprintSpeed: 6.5
+  crouchSpeed: 2
+  capsule: {fileID: 0}
+  playerCamera: {fileID: 0}
+  standingHeight: 5
+  crouchHeight: 3
+  standingCameraY: 5
+  crouchCameraY: 3
+  crouchLerpSpeed: 10
+  CantMove: 0
 --- !u!114 &1807941422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1508,8 +1518,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f572faedc1c3e44aef4fc6e249200b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCamera
-  mouseSensitivity: 50
+  mouseSensitivity: 1
   cam: {fileID: 330585546}
+  maxLookDelta: 30
+  CantMoveCamera: 0
 --- !u!114 &1807941424
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,6 +15,8 @@ public class PlayerCamera : MonoBehaviour
     private float xRotation = 0f;//rotacion en el eje x para limitar la rotacion de la camara
     private float yRotation = 0f;//rotacion acumulada del jugador en eje Y
 
+    public bool CantMoveCamera;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked; //bloquear el cursor al iniciar el juego en el centro de la pantalla
@@ -26,7 +28,7 @@ public class PlayerCamera : MonoBehaviour
 
     void Update()
     {
-        HandleMouseCam(); //llamada a la funcion que maneja la rotacion de la camara con el mouse
+        if(!CantMoveCamera)HandleMouseCam(); //llamada a la funcion que maneja la rotacion de la camara con el mouse
     }
 
     void HandleMouseCam()
