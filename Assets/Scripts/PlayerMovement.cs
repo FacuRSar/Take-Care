@@ -31,9 +31,4 @@ public class PlayerMovement : MonoBehaviour
         direction.Normalize();
         rb.linearVelocity = new Vector3(direction.x * moveSpeed, rb.linearVelocity.y, direction.z * moveSpeed);
     }
-
-    public Rigidbody Rb
-    { get { return rb; }
-        private set { rb = value; }     
-    }
 }
