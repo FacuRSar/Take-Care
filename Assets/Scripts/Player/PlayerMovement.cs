@@ -19,6 +19,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float crouchCameraY = 1.0f;
     [SerializeField] private float crouchLerpSpeed = 10f;
 
+    [Header("testeo")]
+    [SerializeField] private GameObject testObject; // Solo para probar que el script funciona, se puede eliminar despues
+    [SerializeField] private bool testBool = false; // Solo para probar que el script funciona, se puede eliminar despues
+
     private Rigidbody rb;
     private Vector2 moveInput;
     // private PlayerInput playerInput; // Saco esto porque no es necesario, unity ya hace eso automatico. pa emprolijar nomas
@@ -113,5 +117,12 @@ public class PlayerMovement : MonoBehaviour
         Vector3 camPos = playerCamera.localPosition;
         camPos.y = Mathf.Lerp(camPos.y, targetCameraY, crouchLerpSpeed * Time.deltaTime);
         playerCamera.localPosition = camPos;
+    }
+    private void markObject(bool testbool, GameObject testObject)
+    {
+        if(testObject != null && !testbool)
+        {
+            
+        }
     }
 }
