@@ -28,6 +28,8 @@ public class PlayerMovement : MonoBehaviour
     private float targetHeight;
     private float targetCameraY;
 
+    public bool CantMove;
+
     void Start()
     {
         //asignar el rigibody y player input al iniciar el juego
@@ -44,14 +46,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        HandleSprintInput(); // mira si Shift esta apretado
-        HandleCrouchInput(); // mira si Ctrl esta apretado
-        HandleCrouchVisuals(); // llamo a la funcion para ver si se esta agachado (para actualizar la vista y todo)
+        if (!CantMove)
+        {
+            HandleSprintInput(); // mira si Shift esta apretado
+            HandleCrouchInput(); // mira si Ctrl esta apretado
+            HandleCrouchVisuals(); // llamo a la funcion para ver si se esta agachado (para actualizar la vista y todo)      
+        }
     }
 
     private void FixedUpdate()
     {
-        MovePlayer(); //llamada a funcion movimiento en fixed update asi no choca con la fisica del juego
+        if (!CantMove) MovePlayer(); //llamada a funcion movimiento en fixed update asi no choca con la fisica del juego
     }
     //callback del input system, se llama cada vez que el jugador clickea teclas de movimiento
     public void OnMovement(InputValue value)
