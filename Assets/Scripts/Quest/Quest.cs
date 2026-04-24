@@ -5,7 +5,7 @@ public class Quest : GrabbableObject
     [SerializeField] private string description;
     private bool isCompleted;
     private float timer;
-    [SerializeField] private bool isActive;
+    private bool isActive;
     [SerializeField] private int timerDuration = 4; // Duración del temporizador en segundos
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
