@@ -19,7 +19,8 @@ public class QuestController : MonoBehaviour
         }
         else if (checkQuestStatus(questIndex) == 1)
         {
-            //perder vida o algo asi
+            quests[questIndex].failQuest();
+            giveQuest();
         }
     }
     public int checkQuestStatus(int questIndex)

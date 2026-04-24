@@ -6,8 +6,9 @@ public class Quest : GrabbableObject
     private bool isCompleted;
     private float timer;
     private bool isActive;
-    [SerializeField] private int timerDuration = 4; // Duración del temporizador en segundos
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private int timerDuration = 4;
+    [SerializeField] private Player_Health player;
+
     private void Awake()
     {
         setIsCompleted(false);
@@ -68,5 +69,9 @@ public class Quest : GrabbableObject
     public void markObjective()
     {
         GetComponent<MeshRenderer>().material.color = Color.red;
+    }
+    public void failQuest()
+    {
+        player.TakeDamage(1);
     }
 }
