@@ -1,19 +1,24 @@
 using UnityEngine;
 
-public class Quest : MonoBehaviour
+public class Quest : GrabbableObject
 {
     [SerializeField] private string description;
     private bool isCompleted;
     private float timer;
-    private bool isActive;
+    [SerializeField] private bool isActive;
     [SerializeField] private int timerDuration = 4; // Duración del temporizador en segundos
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Awake()
+    {
+        setIsCompleted(false);
+        setActive(false);
+    }
     private void FixedUpdate()
     {
         if (isActive)
         {
-            timer -= Time.deltaTime; // Decrementa el temporizador con el tiempo transcurrido
-            if (timer==timerDuration/4 && !isCompleted)
+            timer -= 1;
+            if (timer==(timerDuration/4) && !isCompleted)
             {
                 markObjective();
             }
@@ -40,19 +45,21 @@ public class Quest : MonoBehaviour
     }
     public void setActive(bool newIsActive)
     {
+        setIsCompleted(false);
         isActive = newIsActive;
-        if(isActive)
+        if (isActive)
         {
             setTimer();
         }
     }
     public bool getIsActive()
     {
-         return isActive;
+        return isActive;
+        
     }
     public void setTimer()
     {
-         timer = 4;
+         timer = timerDuration;
     }
     public float getTimer()
     {
@@ -60,6 +67,6 @@ public class Quest : MonoBehaviour
     }
     public void markObjective()
     {
-        
+        GetComponent<MeshRenderer>().material.color = Color.red;
     }
 }

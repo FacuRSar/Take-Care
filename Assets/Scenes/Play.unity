@@ -980,6 +980,7 @@ GameObject:
   - component: {fileID: 1264187380}
   - component: {fileID: 1264187379}
   - component: {fileID: 1264187378}
+  - component: {fileID: 1264187384}
   m_Layer: 3
   m_Name: Cube
   m_TagString: ObjectInteract
@@ -1119,6 +1120,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1264187384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1264187377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a98e0ac739bf524ab9248992e18dabb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Quest
+  heldLocalPosition: {x: 0, y: 0, z: 0}
+  heldLocalRotation: {x: 0, y: 0, z: 0}
+  followPositionSpeed: 20
+  followRotationSpeed: 20
+  maxFollowVelocity: 15
+  description: Leer un libro
+  isActive: 0
+  timerDuration: 4
 --- !u!1 &1686261761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1415,7 +1436,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646675e99462c324cb2dd12ac6e49e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 5
+  walkSpeed: 4
+  sprintSpeed: 6.5
+  crouchSpeed: 2
+  capsule: {fileID: 0}
+  playerCamera: {fileID: 330585546}
+  standingHeight: 2
+  crouchHeight: 1.2
+  standingCameraY: 1.6
+  crouchCameraY: 1
+  crouchLerpSpeed: 10
 --- !u!114 &1807941422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1458,8 +1488,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f572faedc1c3e44aef4fc6e249200b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCamera
-  mouseSensitivity: 50
+  mouseSensitivity: 5
   cam: {fileID: 330585546}
+  maxLookDelta: 30
+--- !u!1 &1896168528
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1896168530}
+  - component: {fileID: 1896168529}
+  m_Layer: 0
+  m_Name: QuestController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1896168529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896168528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0706db7696b2d478421abcc4a753c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestController
+  quests:
+  - {fileID: 1264187384}
+--- !u!4 &1896168530
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896168528}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.94199, y: 0.49499, z: 13.54842}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1471,3 +1548,4 @@ SceneRoots:
   - {fileID: 1264187383}
   - {fileID: 378568372}
   - {fileID: 124850478}
+  - {fileID: 1896168530}
