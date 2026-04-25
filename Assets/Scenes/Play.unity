@@ -1469,7 +1469,7 @@ MonoBehaviour:
   sprintSpeed: 6.5
   crouchSpeed: 2
   capsule: {fileID: 0}
-  playerCamera: {fileID: 0}
+  playerCamera: {fileID: 330585546}
   standingHeight: 5
   crouchHeight: 3
   standingCameraY: 5
