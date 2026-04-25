@@ -2,12 +2,8 @@ using UnityEngine;
 
 public class LightSwitch : Interactable
 {
-    private Light[] luces;
+    [SerializeField] private Light[] luces;
 
-    private void Awake()
-    {
-        luces = GetComponentsInChildren<Light>();
-    }
     public override void Interact(PlayerInteraction player)
     {
         if (luces == null || luces.Length == 0) return;
