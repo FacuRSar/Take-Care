@@ -19,9 +19,9 @@ public class DoorInteractable : Interactable
     //pivot real de la puerta (es el que abre o cierra)
 
     [Header("Door Rotation")]
-    [SerializeField] private float closedYRotation = 0f;
+    [SerializeField] private float closedZRotation = 0f;
     //rotacion de la puerta cerrada
-    [SerializeField] private float openedYRotation = 90f;
+    [SerializeField] private float openedZRotation = 90f;
     //rotacion de la puerta abierta
 
     [SerializeField] private float openSpeed = 6f;
@@ -60,9 +60,9 @@ public class DoorInteractable : Interactable
 
         if (doorPivot != null)
         {
-            Debug.LogWarning(gameObject.name + " no tiene doorPivot");
-            float initialY = isOpen ? openedYRotation : closedYRotation;
-            doorPivot.localRotation = Quaternion.Euler(0f, initialY, 0f);
+            //Debug.LogWarning(gameObject.name + " no tiene doorPivot");
+            float initialZ = isOpen ? openedZRotation : closedZRotation;
+            doorPivot.localRotation = Quaternion.Euler(0f, 0f, initialZ);
             targetRotation = doorPivot.localRotation;
         }
     }
@@ -131,8 +131,8 @@ public class DoorInteractable : Interactable
     {
         isOpen = !isOpen;
 
-        float targetY = isOpen ? openedYRotation : closedYRotation;
-        targetRotation = Quaternion.Euler(0f, targetY, 0f);
+        float targetZ = isOpen ? openedZRotation : closedZRotation;
+        targetRotation = Quaternion.Euler(0f, 0f, targetZ);
         isMoving = true;
     }
 }
