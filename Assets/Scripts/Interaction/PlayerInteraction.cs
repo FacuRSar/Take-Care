@@ -38,6 +38,8 @@ public class PlayerInteraction : MonoBehaviour
     private GrabbableObject pickedObject;
     // Bandera temporal para cuando el input de interactuar se apreto y la otra igual para los agarrados
 
+    GameObject Select;
+
     private void Update()
     {
         // checkeo que esta mirando
@@ -80,6 +82,8 @@ public class PlayerInteraction : MonoBehaviour
             // guardo la referencia del agarrable actual
             currentGrabbable = grabbable;
 
+            SelectedObject(hit.transform);
+
             if (interactable != null)
             {
                 // actualizo el foco por si cambia el interactuable
@@ -114,6 +118,10 @@ public class PlayerInteraction : MonoBehaviour
                 }
                 return;
             }
+        }
+        else
+        {
+            Deselect();
         }
 
         // Si no estamos mirando nada interactuable
@@ -167,5 +175,25 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         return pickedObject.gameObject;
+    }
+    void SelectedObject(Transform transform)
+    {
+        transform.GetComponent<MeshRenderer>().material.color = Color.green;
+        Select = transform.gameObject;
+    }
+
+    void Deselect()
+    {
+        if (Select != null)
+        {
+            Select.GetComponent<Renderer>().material.color = Color.white;
+            Select = null;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red; 
+        Gizmos.DrawLine(transform.position, transform.position + transform.right * interactionDistance);
     }
 }

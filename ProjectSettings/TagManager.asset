@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - ObjectInteract
+  - LighSwitch
   layers:
   - Default
   - TransparentFX
