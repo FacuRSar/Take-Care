@@ -10,6 +10,8 @@ public class ReadNoteInteractable : Interactable
     // las lineas para llamar a los subtitulos
 
     [SerializeField] private string alreadyReadMessage = "Ya leí esta nota...";
+
+
     private bool alreadyRead;
     // evita que la nota dispare la secuencia completa infinitas veces y te sirve para otras cosas tambien
 
@@ -19,8 +21,17 @@ public class ReadNoteInteractable : Interactable
 
     [SerializeField] private AudioClip readNoteClip;
 
+
+    private FixedCameraWithZoom cameraScript;
+
+    private void Awake()
+    {
+        cameraScript = GetComponent<FixedCameraWithZoom>();
+    }
+
     public override void Interact(PlayerInteraction player)
     {
+        cameraScript.active = true;
         if (alreadyRead)
         {
             // si ya fue leída, mostramos una respuesta más simple

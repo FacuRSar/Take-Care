@@ -38,7 +38,7 @@ public class FixedCameraWithZoom : MonoBehaviour
 
     [SerializeField] private float duration;
 
-    [SerializeField] private bool active;
+    [SerializeField] public bool active;
 
 
 

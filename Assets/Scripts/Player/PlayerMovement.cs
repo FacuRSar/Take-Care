@@ -22,8 +22,13 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private Vector2 moveInput;
     // private PlayerInput playerInput; // Saco esto porque no es necesario, unity ya hace eso automatico. pa emprolijar nomas
-    private bool isSprinting;
     private bool isCrouching;
+    private bool isSprinting;
+
+    public float CurrentSpeed { get; private set; }
+    public bool IsMoving { get; private set; }
+    public bool IsCrouching => isCrouching;
+    public bool IsSprinting => isSprinting;
 
     private float targetHeight;
     private float targetCameraY;
@@ -81,6 +86,10 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed = sprintSpeed;
         }
 
+        // Es una negrada, ya se. Pero lo meto otra vez para declarar la local como global
+        CurrentSpeed = currentSpeed;
+        IsMoving = direction.magnitude > 0.1f;
+
         rb.linearVelocity = new Vector3(
             direction.x * currentSpeed,
             rb.linearVelocity.y,
@@ -113,6 +122,9 @@ public class PlayerMovement : MonoBehaviour
     {
         float newHeight = Mathf.Lerp(capsule.height, targetHeight, crouchLerpSpeed * Time.deltaTime);
         capsule.height = newHeight;
+
+        // Mantiene la base de la capsula en el mismo lugar.
+        // Si la altura baja, el centro tambien baja la mitad.
         capsule.center = new Vector3(0f, newHeight / 2f, 0f);
 
         Vector3 camPos = playerCamera.localPosition;
