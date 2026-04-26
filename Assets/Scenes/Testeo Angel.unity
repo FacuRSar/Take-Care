@@ -5436,7 +5436,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 2
+  MinDistance: 3.6362123
   MaxDistance: 20
   Pan2D: 0
   rolloffMode: 0
@@ -6737,7 +6737,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 5
+  MinDistance: 2.9112906
   MaxDistance: 20
   Pan2D: 0
   rolloffMode: 1
@@ -17720,7 +17720,7 @@ MonoBehaviour:
   startLightHintsOnStart: 1
   introLines: []
   energyFocusDuration: 2
-  phoneFocusDuration: 2
+  phoneFocusDuration: 6
   bathroomFocusDuration: 3
   dollLaughDelay: 0
   bathroomReactionDelay: 1
@@ -24178,7 +24178,7 @@ MonoBehaviour:
   cam: {fileID: 568289502}
   zoomFov: 45
   nomalFov: 60
-  duration: 0
+  duration: 6
   active: 0
 --- !u!114 &9035828257569825212
 MonoBehaviour:
