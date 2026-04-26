@@ -7,7 +7,7 @@ public class ExitTrigger : MonoBehaviour
     [SerializeField] private Transform doorPivot;
     // referencia al objeto que rota la puerta
 
-    [SerializeField] private float closedYRotation = 0f;
+    [SerializeField] private float closedZRotation = 0f;
     // rotación objetivo de la puerta al cerrarse
 
     [SerializeField] private float closeSpeed = 6f;
@@ -24,8 +24,8 @@ public class ExitTrigger : MonoBehaviour
     {
         if (closingDoor && doorPivot != null)
         {
-            Quaternion targetRotation = Quaternion.Euler(0f, closedYRotation, 0f);
-            doorPivot.rotation = Quaternion.Slerp(doorPivot.rotation, targetRotation, closeSpeed * Time.deltaTime);
+            Quaternion targetRotation = Quaternion.Euler(0f, 0f, closedZRotation);
+            doorPivot.localRotation = Quaternion.Slerp(doorPivot.localRotation, targetRotation, closeSpeed * Time.deltaTime);
         }
     }
 
