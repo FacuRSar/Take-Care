@@ -6,14 +6,14 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class GrabbableObject : MonoBehaviour
 {
-    [Header("Held Visual Settings")]
+    [Header("Configuraciones de objeto agarrado")]
     [SerializeField] private Vector3 heldLocalPosition = Vector3.zero;
     //posicion local que va a tener el objeto mientras esta agarrado
 
     [SerializeField] private Vector3 heldLocalRotation = Vector3.zero;
     //rotacion local en grados mientras esta agarrado
 
-    [Header("Held Follow Settings")]
+    [Header("Configuraciones de seguimiento")]
     [SerializeField] private float followPositionSpeed = 20f;
     //velocidad con la que el objeto persigue la posicion del HandPoint
 

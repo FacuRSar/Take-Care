@@ -1,31 +1,49 @@
 using UnityEngine;
 
-// el trigger cambia si la intro ya fue activada o no.
+// trigger de la puerta principal
+// antes de la fase final bloquea/sugiere no salir
+// durante escape_phase_started avisa al introsequencecontroller y ejecuta el cierre de demo
 public class ExitTrigger : MonoBehaviour
 {
+    [Header("Controlador de intro")]
+    [SerializeField] private IntroSequenceController introSequenceController;
+
     [Header("Configuracion de puerta")]
     [SerializeField] private Transform doorPivot;
-    // referencia al objeto que rota la puerta
-
     [SerializeField] private float closedZRotation = 0f;
-    // rotación objetivo de la puerta al cerrarse
-
     [SerializeField] private float closeSpeed = 6f;
-    // velocidad de cierre. Meto estas aca porque no se como va a quedar
 
     [Header("Empuje")]
     [SerializeField] private float pushBackForce = 4f;
-    // fuerza con la que se empuja al jugador hacia atras
+
+    [Header("Mensajes")]
+    [SerializeField] private string beforeIntroMessage = "Hay una tormenta muy grande, aca estoy mas seguro.";
+    [SerializeField] private string blockedMessage = "No... mejor no salir ahora.";
+    [SerializeField] private float messageDuration = 2.5f;
 
     private bool closingDoor;
     private bool alreadyClosed;
+    private bool escapeAttemptSent;
 
     private void Update()
     {
-        if (closingDoor && doorPivot != null)
+        if (!closingDoor || doorPivot == null)
         {
-            Quaternion targetRotation = Quaternion.Euler(0f, 0f, closedZRotation);
-            doorPivot.localRotation = Quaternion.Slerp(doorPivot.localRotation, targetRotation, closeSpeed * Time.deltaTime);
+            return;
+        }
+
+        Quaternion targetRotation = Quaternion.Euler(0f, 0f, closedZRotation);
+
+        doorPivot.localRotation = Quaternion.Slerp(
+            doorPivot.localRotation,
+            targetRotation,
+            closeSpeed * Time.deltaTime
+        );
+
+        if (Quaternion.Angle(doorPivot.localRotation, targetRotation) < 0.5f)
+        {
+            doorPivot.localRotation = targetRotation;
+            closingDoor = false;
         }
     }
 
@@ -40,29 +58,83 @@ public class ExitTrigger : MonoBehaviour
 
         if (rb == null)
         {
+            rb = other.GetComponentInParent<Rigidbody>();
+        }
+
+        if (rb == null)
+        {
+            Debug.LogWarning("ExitTrigger: el jugador no tiene Rigidbody.");
             return;
         }
 
-        if (!GameStateController.Instance.IntroActivated)
+        if (IsEscapePhaseStarted())
         {
-            SubtitleUI.Instance.ShowSubtitle("Hay una tormenta muy grande, acá estoy más seguro.", 2.5f);
+            StartClosingDoor();
             PushBack(rb);
+            NotifyEscapeAttempt();
+            return;
+        }
+
+        if (!IsIntroActivated())
+        {
+            ShowSubtitle(beforeIntroMessage);
+            PushBack(rb);
+            return;
+        }
+
+        if (!alreadyClosed)
+        {
+            alreadyClosed = true;
+            StartClosingDoor();
+            ShowSubtitle(blockedMessage);
+            PushBack(rb);
+            return;
+        }
+
+        PushBack(rb);
+    }
+
+    private bool IsEscapePhaseStarted()
+    {
+        return introSequenceController != null && introSequenceController.IsEscapePhaseStarted();
+    }
+
+    private bool IsIntroActivated()
+    {
+        return GameStateController.Instance != null && GameStateController.Instance.IntroActivated;
+    }
+
+    private void NotifyEscapeAttempt()
+    {
+        if (escapeAttemptSent)
+        {
+            return;
+        }
+
+        escapeAttemptSent = true;
+
+        // en fase final avisamos una sola vez. si no el cierre de demo arranca en loop,
+        // y ahi si que la puerta se pone intensa
+        if (introSequenceController != null)
+        {
+            introSequenceController.OnEscapeAttempted();
         }
         else
         {
-            if (!alreadyClosed)
-            {
-                alreadyClosed = true;
-                closingDoor = true;
-                SubtitleUI.Instance.ShowSubtitle("No... mejor no salir ahora.", 2.5f);
-            }
-            // Tengoq ue revisarlo, pero la idea es que la primera vez que intente salir lo empuje para atras cuando se cierre la puerta
-            else
-            {
-                PushBack(rb);
-            }
-
+            Debug.LogWarning("ExitTrigger: no tiene IntroSequenceController asignado.");
         }
+    }
+
+    private void StartClosingDoor()
+    {
+        if (doorPivot == null)
+        {
+            Debug.LogWarning("ExitTrigger: doorPivot no esta asignado.");
+            return;
+        }
+
+        closingDoor = true;
+        alreadyClosed = true;
     }
 
     private void PushBack(Rigidbody rb)
@@ -71,10 +143,15 @@ public class ExitTrigger : MonoBehaviour
         pushDirection.y = 0f;
         pushDirection.Normalize();
 
-        // freno los demas movimientos para que no pueda salir algun bug raro
         rb.linearVelocity = Vector3.zero;
-
-        // meto la fuerza de empuje nomas
         rb.AddForce(pushDirection * pushBackForce, ForceMode.Impulse);
+    }
+
+    private void ShowSubtitle(string message)
+    {
+        if (SubtitleUI.Instance != null)
+        {
+            SubtitleUI.Instance.ShowSubtitle(message, messageDuration);
+        }
     }
 }

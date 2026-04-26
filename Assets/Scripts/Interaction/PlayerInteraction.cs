@@ -3,20 +3,20 @@ using UnityEngine.InputSystem;
 using TMPro;
 
 /* este script va en el jugador para detectar objetos interactuables con raycast
-*  y disparar la interaccion cuando el jugador aprieta el boton correspondiente.
+*  y disparar la interaccion cuando el jugador aprieta el boton correspondiente
 */
 public class PlayerInteraction : MonoBehaviour
 {
 
     [SerializeField] private string heldObjectLayerName = "Agarrado";
-    // Layer que va a usar el objeto mientras está agarrado
+    // layer que va a usar el objeto mientras esta agarrado
 
     [Header("Raycast")]
     [SerializeField] private Transform cameraTransform;
     // referencia a la camara del jugador para usar como origen del raycast
 
     [SerializeField] private float interactionDistance = 3f;
-    // distancia máxima a la que el jugador puede interactuar con un objeto, me parecio que sumaba
+    // distancia maxima a la que el jugador puede interactuar con un objeto, me parecio que sumaba
 
     [SerializeField] private LayerMask interactionMask;
     // mascara de capas para limitar el raycast solo a objetos interactuables asi no hace nada raro con cosas que no corresponde
@@ -24,7 +24,7 @@ public class PlayerInteraction : MonoBehaviour
     [Header("Prompt de UI")]
     [SerializeField] private GameObject promptRoot;
     [SerializeField] private TextMeshProUGUI promptText;
-    // texto que muestra el mensaje de interacción
+    // texto que muestra el mensaje de interaccion
 
     [Header("Configuracion de agarrar")]
     [SerializeField] private Transform handPoint;
@@ -32,11 +32,11 @@ public class PlayerInteraction : MonoBehaviour
 
     private Interactable currentInteractable;
     private GrabbableObject currentGrabbable;
-    // Guarda referencia al objeto interactuable que el jugador está mirando actualmente y el agarrado
+    // guarda referencia al objeto interactuable que el jugador esta mirando actualmente y el agarrado
 
     private bool interactPressed;
     private GrabbableObject pickedObject;
-    // Bandera temporal para cuando el input de interactuar se apreto y la otra igual para los agarrados
+    // bandera temporal para cuando el input de interactuar se apreto y la otra igual para los agarrados
 
     GameObject Select;
 
@@ -48,7 +48,7 @@ public class PlayerInteraction : MonoBehaviour
 
     public void OnInteract(InputValue value)
     {
-        // Este metodo llama al componente Player Input cuando la acción "Interact" se ejecuta (si el componente está configurado en "Send Messages")
+        // este metodo llama al componente player input cuando la accion "interact" se ejecuta (si el componente esta configurado en "send messages")
 
         if (value.isPressed)
         {
@@ -58,13 +58,13 @@ public class PlayerInteraction : MonoBehaviour
 
     private void LateUpdate()
     {
-        // reseteo la bandera al final del frame para que el interact se procese solo una vez por pulsación.
+        // reseteo la bandera al final del frame para que el interact se procese solo una vez por pulsacion
         interactPressed = false;
     }
 
     private void CheckInteraction()
     {
-        // Si el jugador aprieta interactuar y ya tiene algo en la mano, primero suelta ese objeto, porque me da que puede romper todo
+        // si el jugador aprieta interactuar y ya tiene algo en la mano, primero suelta ese objeto, porque me da que puede romper todo
         if (interactPressed && pickedObject != null)
         {
             pickedObject.Drop();
@@ -103,7 +103,7 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            // si no hay interactuable pero sí agarrable, le meto el prompt para agarrar
+            // si no hay interactuable pero si agarrable, le meto el prompt para agarrar
             if (grabbable != null)
             {
                 ClearCurrentInteractable();
@@ -124,7 +124,7 @@ public class PlayerInteraction : MonoBehaviour
             Deselect();
         }
 
-        // Si no estamos mirando nada interactuable
+        // si no estamos mirando nada interactuable
         currentGrabbable = null;
         ClearCurrentInteractable();
         HidePrompt();
@@ -162,13 +162,13 @@ public class PlayerInteraction : MonoBehaviour
 
     public bool HasObjectInHand()
     {
-        //dejo esto por si en el futuro un interactuable necesita saber si el jugador ya tiene un objeto agarrado.
+        // dejo esto por si en el futuro un interactuable necesita saber si el jugador ya tiene un objeto agarrado
         return pickedObject != null;
     }
 
     public GameObject GetPickedObject()
     {
-        // tiro el GameObject agarrado si existe
+        // tiro el gameobject agarrado si existe
         if (pickedObject == null)
         {
             return null;
@@ -176,24 +176,46 @@ public class PlayerInteraction : MonoBehaviour
 
         return pickedObject.gameObject;
     }
+
     void SelectedObject(Transform transform)
     {
-        transform.GetComponent<MeshRenderer>().material.color = Color.green;
-        Select = transform.gameObject;
+        // busco renderer en el objeto o en el padre. algunos colliders son hijos pelados,
+        // y sin este check se rompe antes de interactuar, me apso
+        Renderer renderer = transform.GetComponent<Renderer>();
+
+        if (renderer == null)
+        {
+            renderer = transform.GetComponentInParent<Renderer>();
+        }
+
+        if (renderer == null)
+        {
+            Select = null;
+            return;
+        }
+
+        renderer.material.color = Color.green;
+        Select = renderer.gameObject;
     }
 
     void Deselect()
     {
         if (Select != null)
         {
-            Select.GetComponent<Renderer>().material.color = Color.white;
+            Renderer renderer = Select.GetComponent<Renderer>();
+
+            if (renderer != null)
+            {
+                renderer.material.color = Color.white;
+            }
+
             Select = null;
         }
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red; 
+        Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + transform.right * interactionDistance);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 //muestra un subtítulo automático al poco tiempo de arrancar la partida
 public class IntroSubtitleTrigger : MonoBehaviour
 {
-    [Header("Intro Subtitle")]
+    [Header("Subtitulo de intro")]
     [SerializeField] private string introMessage = "Dios, no esperaba que se largara esa tormenta";
     //mensaje que aparece al inicio
 

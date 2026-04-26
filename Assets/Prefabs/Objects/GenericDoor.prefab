@@ -100,6 +100,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Marco
       objectReference: {fileID: 0}
+    - target: {fileID: 1746918763467406749, guid: 4216ca0fec2f01e4da69dcc95af30fd5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: bca41d36403a3f445831eb69a9bbcce3, type: 2}
     - target: {fileID: 2644934595354046120, guid: 4216ca0fec2f01e4da69dcc95af30fd5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -188,6 +192,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8228032753438239443}
     m_Modifications:
+    - target: {fileID: 5110553432367955576, guid: 5a65f5376b8ba874f8e0439701c40351, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 201391b8383a8c345aeb904ac3d36675, type: 2}
     - target: {fileID: 5614040638684562701, guid: 5a65f5376b8ba874f8e0439701c40351, type: 3}
       propertyPath: m_LocalScale.z
       value: 95

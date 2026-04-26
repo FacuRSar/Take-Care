@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-// controlador simple de subtítulos para mostrar frases del protagonista o mensajes narrativos en pantalla
+// controlador simple de subtitulos para mostrar frases del protagonista o mensajes narrativos en pantalla
 public class SubtitleUI : MonoBehaviour
 {
     public static SubtitleUI Instance;
@@ -13,10 +13,11 @@ public class SubtitleUI : MonoBehaviour
     // contenedor principal del subtitulo (panel, fondo, etc.)
 
     [SerializeField] private TextMeshProUGUI subtitleText;
-    // Texto donde aparece el mensaje
+    // texto donde aparece el mensaje
 
+    private CanvasGroup subtitleCanvasGroup;
     private Coroutine currentRoutine;
-    // guardo la coroutine actual para poder detenerla si entra un subtítulo nuevo antes de que termine el anterior
+    // guardo la coroutine actual para poder detenerla si entra un subtitulo nuevo antes de que termine el anterior
 
     private void Awake()
     {
@@ -24,13 +25,31 @@ public class SubtitleUI : MonoBehaviour
 
         if (subtitleRoot != null)
         {
-            subtitleRoot.SetActive(false);
+            subtitleCanvasGroup = subtitleRoot.GetComponent<CanvasGroup>();
+
+            if (subtitleRoot == gameObject && subtitleCanvasGroup == null)
+            {
+                subtitleCanvasGroup = subtitleRoot.AddComponent<CanvasGroup>();
+            }
+
+            SetSubtitleVisible(false);
         }
     }
 
     public void ShowSubtitle(string message, float duration = 2.5f)
     {
-        // si ya había una rutina, la freno para reemplazar el subtítulo.
+        if (!gameObject.activeInHierarchy)
+        {
+            gameObject.SetActive(true);
+        }
+
+        if (!isActiveAndEnabled)
+        {
+            Debug.LogWarning("SubtitleUI: no puede mostrar subtitulo porque el componente esta deshabilitado.");
+            return;
+        }
+
+        // si ya habia una rutina, la freno para reemplazar el subtitulo
         if (currentRoutine != null)
         {
             StopCoroutine(currentRoutine);
@@ -41,12 +60,33 @@ public class SubtitleUI : MonoBehaviour
 
     private IEnumerator ShowRoutine(string message, float duration)
     {
-        subtitleText.text = message;
-        subtitleRoot.SetActive(true);
+        if (subtitleText != null)
+        {
+            subtitleText.text = message;
+        }
+
+        SetSubtitleVisible(true);
 
         yield return new WaitForSeconds(duration);
 
-        subtitleRoot.SetActive(false);
+        SetSubtitleVisible(false);
         currentRoutine = null;
     }
+
+    private void SetSubtitleVisible(bool visible)
+    {
+        if (subtitleRoot == null)
+        {
+            return;
+        }
+
+        if (subtitleRoot != gameObject)
+        {
+            // si el root es un hijo, lo prendo/apago normal
+            // esto evita apagar el monobehaviour que tiene que arrancar la coroutine, sino, tremendo tiro en el pie
+            subtitleRoot.SetActive(visible);
+            return;
+        }
+    }
+
 }
