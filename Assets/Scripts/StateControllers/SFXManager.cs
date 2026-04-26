@@ -1,40 +1,43 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-/* Manager simple para sonidos especificos
-*  esta para reproducir sonidos 2D o 3D desde una pool de clips
-*  la idea es que otros scripts pidan un sonido por ID, sin tener que conocer los AudioClips directamente
+/* manager simple para sonidos especificos
+*  esta para reproducir sonidos 2d o 3d desde una pool de clips
+*  la idea es que otros scripts pidan un sonido por id, sin tener que conocer los audioclips directamente
 */
 public class SFXManager : MonoBehaviour
 {
     public static SFXManager Instance;
-    // Lo instancio para llamarlo facil. Solo se pone SFXManager.Instance.Play2D("IdSound") o SFXManager.Instance.Play3D("IdSound", transform.position);
-    // siendo IdSound el id del sonido que se quiere llamar
+    // lo instancio para llamarlo facil. solo se pone sfxmanager.instance.play2d("idsound") o sfxmanager.instance.play3d("idsound", transform.position);
+    // siendo idsound el id del sonido que se quiere llamar
 
     [System.Serializable]
     public class SFXPool
     {
         public string id;
-        // Nombre con el que vamos a pedir este grupo de sonidos. Ej: "WoodCreak", "PhoneRing", "Thunder"
+        // nombre con el que vamos a pedir este grupo de sonidos. ej: "woodcreak", "phonering", "thunder"
 
         public AudioClip[] clips;
-        // Variantes posibles del sonido.
+        // variantes posibles del sonido
     }
 
     [Header("Audio Source")]
     [SerializeField] private AudioSource oneShotSource;
-    // AudioSource principal para sonidos 2D que se ecucha al unisono
+    // audiosource principal para sonidos 2d que se ecucha al unisono
 
     [Header("Pools")]
     [SerializeField] private SFXPool[] pools;
-    // Lista de sonidos disponibles
+    // lista de sonidos disponibles
 
     [Header("Configuraciones 3D")]
     [SerializeField] private float default3DVolume = 1f;
-    // Volumen usado por defecto para sonidos 3D
+    // volumen usado por defecto para sonidos 3d
+
+    private Dictionary<string, AudioSource> activeLoops = new Dictionary<string, AudioSource>();
 
     private void Awake()
     {
-        // Solo por si acaso pongo un validador de instancia
+        // solo por si acaso pongo un validador de instancia
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -73,6 +76,89 @@ public class SFXManager : MonoBehaviour
         AudioSource.PlayClipAtPoint(clip, position, default3DVolume);
     }
 
+    public AudioSource PlayLoop2D(string id)
+    {
+        if (activeLoops.ContainsKey(id) && activeLoops[id] != null)
+        {
+            return activeLoops[id];
+        }
+
+        // loop 2d para sonidos globales, tipo telefono/estatica. queda registrado por id para frenarlo despues
+        // sin esto despues hay que perseguir audiosources
+        AudioClip clip = GetRandomClip(id);
+
+        if (clip == null)
+        {
+            return null;
+        }
+
+        AudioSource loopSource = gameObject.AddComponent<AudioSource>();
+        loopSource.clip = clip;
+        loopSource.loop = true;
+        loopSource.spatialBlend = 0f;
+        loopSource.Play();
+        activeLoops[id] = loopSource;
+
+        return loopSource;
+    }
+
+    public AudioSource PlayLoop3D(string id, Vector3 position)
+    {
+        if (activeLoops.ContainsKey(id) && activeLoops[id] != null)
+        {
+            return activeLoops[id];
+        }
+
+        // loop 3d para cosas que viven en el mundo, como la canilla
+        // lo creo en un gameobject aparte asi queda en el punto correcto
+        AudioClip clip = GetRandomClip(id);
+
+        if (clip == null)
+        {
+            return null;
+        }
+
+        GameObject loopObject = new GameObject("LoopingSFX_" + id);
+        loopObject.transform.position = position;
+
+        AudioSource loopSource = loopObject.AddComponent<AudioSource>();
+        loopSource.clip = clip;
+        loopSource.loop = true;
+        loopSource.spatialBlend = 1f;
+        loopSource.volume = default3DVolume;
+        loopSource.Play();
+        activeLoops[id] = loopSource;
+
+        return loopSource;
+    }
+
+    public void StopLoop(string id)
+    {
+        if (!activeLoops.ContainsKey(id))
+        {
+            return;
+        }
+
+        AudioSource loopSource = activeLoops[id];
+
+        if (loopSource != null)
+        {
+            GameObject loopObject = loopSource.gameObject;
+            loopSource.Stop();
+
+            if (loopObject == gameObject)
+            {
+                Destroy(loopSource);
+            }
+            else
+            {
+                Destroy(loopObject);
+            }
+        }
+
+        activeLoops.Remove(id);
+    }
+
     private AudioClip GetRandomClip(string id)
     {
         SFXPool pool = GetPool(id);
@@ -89,9 +175,14 @@ public class SFXManager : MonoBehaviour
 
     private SFXPool GetPool(string id)
     {
+        if (pools == null)
+        {
+            return null;
+        }
+
         foreach (SFXPool pool in pools)
         {
-            if (pool.id == id)
+            if (pool != null && pool.id == id)
             {
                 return pool;
             }

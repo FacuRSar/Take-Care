@@ -18,19 +18,19 @@ public class TransformDebug : MonoBehaviour
     {
         if (transform.position != lastPosition)
         {
-            Debug.Log(gameObject.name + " cambio posicion: " + transform.position);
+            // Debug.Log(gameObject.name + " cambio posicion: " + transform.position);
             lastPosition = transform.position;
         }
 
         if (transform.rotation != lastRotation)
         {
-            Debug.Log(gameObject.name + " cambio rotacion: " + transform.rotation.eulerAngles);
+            // Debug.Log(gameObject.name + " cambio rotacion: " + transform.rotation.eulerAngles);
             lastRotation = transform.rotation;
         }
 
         if (transform.lossyScale != lastScale)
         {
-            Debug.Log(gameObject.name + " cambio escala real: " + transform.lossyScale);
+            // Debug.Log(gameObject.name + " cambio escala real: " + transform.lossyScale);
             lastScale = transform.lossyScale;
         }
     }
