@@ -562,7 +562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
   heldObjectLayerName: Agarrado
   cameraTransform: {fileID: 8269313867149107321}
-  interactionDistance: 5
+  interactionDistance: 6
   interactionMask:
     serializedVersion: 2
     m_Bits: 64

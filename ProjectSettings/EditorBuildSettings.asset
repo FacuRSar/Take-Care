@@ -5,15 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menu.unity
     guid: 5a499f6241b997f43be22489594273ac
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Play.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameOver.unity
     guid: a56c1dbea4fb7b14bbef807465756a8f
+  - enabled: 1
+    path: Assets/Scenes/Testeo Angel.unity
+    guid: fc5e55d5faf0d444599cf04ed923d142
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
