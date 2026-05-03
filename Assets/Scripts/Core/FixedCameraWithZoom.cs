@@ -3,55 +3,49 @@ using UnityEngine;
 public class FixedCameraWithZoom : MonoBehaviour
 {
     private static FixedCameraWithZoom currentOwner;
-    // hay varios focos en escena. este currentowner evita que uno inactivo desbloquee la camara del otro,
-    // lo agregue porque estaba rompiendome y la camara se movia como wachin mandibuleando
+    // hay varios focos en escena. este currentowner evita que uno inactivo toque la camara del otro
 
     [Header("Componentes")]
-
     PlayerCamera playerCamera;
-
     PlayerMovement playerMovement;
-
     [SerializeField] private float Speed;
 
-
     [Header("FixedCamera")]
-
     [SerializeField] private Transform Player;
-
     [SerializeField] private float minAngle;
-
     bool canzoomed = false;
 
-
     [Header("CameraZoom")]
-
     [SerializeField] private Camera cam;
-
     [SerializeField] private float zoomFov;
-
     [SerializeField] private float nomalFov;
-
     private float targetFov;
 
-
     [Header("Timer")]
-
     private float timer = 0f;
-
     [SerializeField] private float duration;
-
     [SerializeField] public bool active;
-
-
 
     private void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player").transform;
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        GameObject cameraObject = GameObject.FindGameObjectWithTag("MainCamera");
 
-        playerCamera = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCamera>();
-        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        if (Player == null && playerObject != null)
+        {
+            Player = playerObject.transform;
+        }
+
+        if (cam == null && cameraObject != null)
+        {
+            cam = cameraObject.GetComponent<Camera>();
+        }
+
+        if (playerObject != null)
+        {
+            playerCamera = playerObject.GetComponent<PlayerCamera>();
+            playerMovement = playerObject.GetComponent<PlayerMovement>();
+        }
     }
 
     private void LateUpdate()
@@ -59,7 +53,6 @@ public class FixedCameraWithZoom : MonoBehaviour
         if (active)
         {
             timer += Time.deltaTime;
-            // Debug.Log("Camara fija: timer " + timer);
 
             LockPlayerControl();
             canzoomed = true;
@@ -69,44 +62,41 @@ public class FixedCameraWithZoom : MonoBehaviour
             {
                 FixedCamera();
             }
-            else active = false;
+            else
+            {
+                active = false;
+            }
         }
         else
         {
             timer = 0f;
-
             canzoomed = false;
 
-            if (currentOwner == this && playerMovement != null)
+            if (currentOwner != this)
             {
-                playerMovement.CantMove = false;
+                return;
             }
 
-            if (currentOwner == this && playerCamera != null)
-            {
-                playerCamera.CantMoveCamera = false;
-            }
-
-            if (currentOwner == this)
-            {
-                currentOwner = null;
-            }
+            UnlockPlayerControl();
         }
 
-        //if (input.getkeydown(keycode.z)) active = true;
-
         CameraZoom();
+
+        if (!active && currentOwner == this && cam != null && Mathf.Abs(cam.fieldOfView - nomalFov) < 0.1f)
+        {
+            currentOwner = null;
+        }
     }
 
     private void CameraZoom()
     {
-        if (canzoomed) targetFov = zoomFov;
-        else targetFov = nomalFov;
-
-        if (cam == null)
+        if (currentOwner != this || cam == null)
         {
             return;
         }
+
+        if (canzoomed) targetFov = zoomFov;
+        else targetFov = nomalFov;
 
         cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetFov, Time.deltaTime * Speed);
     }
@@ -119,7 +109,6 @@ public class FixedCameraWithZoom : MonoBehaviour
         }
 
         // el player gira solo en horizontal, la camara si mira al punto completo
-        // asi no termina el cuerpo mirando al techo como pose rarasa
         Vector3 directionPlayer = transform.position - Player.position;
         directionPlayer.y = 0;
 
@@ -140,7 +129,7 @@ public class FixedCameraWithZoom : MonoBehaviour
 
     private void LockPlayerControl()
     {
-        // bloqueo movimiento y mouse mientras dura el foco. se hace cada frame para ganarle al input
+        // bloqueo movimiento y mouse mientras dura el foco
         if (playerMovement != null)
         {
             playerMovement.CantMove = true;
@@ -149,6 +138,19 @@ public class FixedCameraWithZoom : MonoBehaviour
         if (playerCamera != null)
         {
             playerCamera.CantMoveCamera = true;
+        }
+    }
+
+    private void UnlockPlayerControl()
+    {
+        if (playerMovement != null)
+        {
+            playerMovement.CantMove = false;
+        }
+
+        if (playerCamera != null)
+        {
+            playerCamera.CantMoveCamera = false;
         }
     }
 

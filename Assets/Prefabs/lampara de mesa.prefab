@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6664606993968486354}
   - component: {fileID: 4394047617678996812}
   - component: {fileID: 2784628376143954432}
+  - component: {fileID: 378165183409831310}
   m_Layer: 0
   m_Name: Luz
   m_TagString: Untagged
@@ -40,7 +41,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 596130357750335170}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 12
   m_Type: 2
   m_Color: {r: 1, g: 0.9011407, b: 0, a: 1}
@@ -127,6 +128,31 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &378165183409831310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596130357750335170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fa179d8851e19b4dba530d9854c639a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightPulseController
+  useStartupPulse: 1
+  startupPulseIntensity: 2.5
+  startupPulseDuration: 0.08
+  useOrganicVariation: 0
+  organicIntensityRange: {x: 0.8, y: 1.5}
+  organicChangeTimeRange: {x: 0.05, y: 0.18}
+  organicSmoothSpeed: 12
+  useRandomPulses: 1
+  timeBetweenPulses: {x: 2, y: 7}
+  pulseIntensityRange: {x: 0, y: 1.4}
+  pulseDurationRange: {x: 0.05, y: 0.25}
+  smoothReturnToBase: 0
+  returnSpeed: 8
 --- !u!1 &647269686458375381
 GameObject:
   m_ObjectHideFlags: 0

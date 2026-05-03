@@ -42,7 +42,7 @@ public class GameStateController : MonoBehaviour
 
     public bool GetFlag(string flagName)
     {
-        // devuelve true si existe y está activada.
+        // devuelve true si existe y esta activada.
         if (string.IsNullOrEmpty(flagName))
         {
             return false;
@@ -51,7 +51,24 @@ public class GameStateController : MonoBehaviour
         return flags.ContainsKey(flagName) && flags[flagName];
     }
 
-    // Añado un metodo para resetear estados por si se reinicia una escena para no destruir el objeto o para reusar algo (por si acaso)
+    public void ClearFlag(string flagName)
+    {
+        // limpia una flag puntual sin tocar el resto del estado global
+        if (string.IsNullOrEmpty(flagName))
+        {
+            return;
+        }
+
+        if (flags.ContainsKey(flagName))
+        {
+            flags.Remove(flagName);
+        }
+    }
+    public void RemoveFlag(string flagName)
+    {
+        ClearFlag(flagName);
+    }
+    // anado un metodo para resetear estados por si se reinicia una escena para no destruir el objeto o para reusar algo (por si acaso)
     public void ResetState()
     {
         IntroActivated = false;

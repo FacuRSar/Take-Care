@@ -227,6 +227,7 @@ GameObject:
   - component: {fileID: 1593608600726993492}
   - component: {fileID: 5870873649511683678}
   - component: {fileID: 6569144109702089896}
+  - component: {fileID: 1467484018179842520}
   m_Layer: 0
   m_Name: Luz
   m_TagString: Untagged
@@ -343,3 +344,29 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &1467484018179842520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9075358198821842079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fa179d8851e19b4dba530d9854c639a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightPulseController
+  useStartupPulse: 1
+  startupPulseIntensity: 2.5
+  startupPulseDuration: 0.08
+  useOrganicVariation: 0
+  organicIntensityRange: {x: 0.8, y: 1.5}
+  organicChangeTimeRange: {x: 0.05, y: 0.18}
+  organicSmoothSpeed: 12
+  useRandomPulses: 1
+  timeBetweenPulses: {x: 2, y: 7}
+  pulseIntensityRange: {x: 0, y: 1.4}
+  pulseDurationRange: {x: 0.05, y: 0.25}
+  smoothReturnToBase: 0
+  returnSpeed: 8
+  showDebugLogs: 1
