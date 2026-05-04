@@ -38,6 +38,8 @@ public class GrabbableObject : MonoBehaviour
     private Quaternion targetLocalRotation;
     //offset relativo al HandPoint para sostener el objeto como queremos
 
+    public bool IsAssigned = false;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
