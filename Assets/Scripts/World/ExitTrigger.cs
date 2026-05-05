@@ -151,7 +151,7 @@ public class ExitTrigger : MonoBehaviour
     {
         if (SubtitleUI.Instance != null)
         {
-            SubtitleUI.Instance.ShowSubtitle(message, messageDuration);
+            SubtitleUI.Instance.ShowSubtitle(message, messageDuration, SubtitlePriority.Environment);
         }
     }
 }

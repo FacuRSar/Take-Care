@@ -2,6 +2,15 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
+// Para que no se pisen dialogos importantes meto este Enum
+public enum SubtitlePriority
+{
+    Hint = 0,
+    Environment = 1,
+    Dialogue = 2,
+    Critical = 3
+}
+
 // controlador simple de subtitulos para mostrar frases del protagonista o mensajes narrativos en pantalla
 public class SubtitleUI : MonoBehaviour
 {
@@ -17,6 +26,7 @@ public class SubtitleUI : MonoBehaviour
 
     private CanvasGroup subtitleCanvasGroup;
     private Coroutine currentRoutine;
+    private SubtitlePriority currentPriority;
     // guardo la coroutine actual para poder detenerla si entra un subtitulo nuevo antes de que termine el anterior
 
     private void Awake()
@@ -36,7 +46,7 @@ public class SubtitleUI : MonoBehaviour
         }
     }
 
-    public void ShowSubtitle(string message, float duration = 2.5f)
+    public bool ShowSubtitle(string message, float duration = 2.5f, SubtitlePriority priority = SubtitlePriority.Environment)
     {
         if (!gameObject.activeInHierarchy)
         {
@@ -46,7 +56,12 @@ public class SubtitleUI : MonoBehaviour
         if (!isActiveAndEnabled)
         {
             Debug.LogWarning("SubtitleUI: no puede mostrar subtitulo porque el componente esta deshabilitado.");
-            return;
+            return false;
+        }
+
+        if (currentRoutine != null && priority < currentPriority)
+        {
+            return false;
         }
 
         // si ya habia una rutina, la freno para reemplazar el subtitulo
@@ -55,7 +70,9 @@ public class SubtitleUI : MonoBehaviour
             StopCoroutine(currentRoutine);
         }
 
+        currentPriority = priority;
         currentRoutine = StartCoroutine(ShowRoutine(message, duration));
+        return true;
     }
 
     private IEnumerator ShowRoutine(string message, float duration)
@@ -71,6 +88,7 @@ public class SubtitleUI : MonoBehaviour
 
         SetSubtitleVisible(false);
         currentRoutine = null;
+        currentPriority = SubtitlePriority.Hint;
     }
 
     private void SetSubtitleVisible(bool visible)

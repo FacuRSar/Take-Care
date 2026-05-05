@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 // controla estados simples globales del juego
 public class GameStateController : MonoBehaviour
 {
     public static GameStateController Instance;
+    public static event Action<string, bool> OnFlagChanged;
 
     public bool IntroActivated { get; private set; }
     // estado de solo lectura desde afuera para que no se pueda romper
@@ -37,7 +39,13 @@ public class GameStateController : MonoBehaviour
             return;
         }
 
+        bool previousValue = GetFlag(flagName);
         flags[flagName] = value;
+
+        if (previousValue != value)
+        {
+            OnFlagChanged?.Invoke(flagName, value);
+        }
     }
 
     public bool GetFlag(string flagName)
@@ -62,6 +70,7 @@ public class GameStateController : MonoBehaviour
         if (flags.ContainsKey(flagName))
         {
             flags.Remove(flagName);
+            OnFlagChanged?.Invoke(flagName, false);
         }
     }
     public void RemoveFlag(string flagName)
@@ -71,7 +80,14 @@ public class GameStateController : MonoBehaviour
     // anado un metodo para resetear estados por si se reinicia una escena para no destruir el objeto o para reusar algo (por si acaso)
     public void ResetState()
     {
+        List<string> activeFlags = new List<string>(flags.Keys);
+
         IntroActivated = false;
         flags.Clear();
+
+        foreach (string flagName in activeFlags)
+        {
+            OnFlagChanged?.Invoke(flagName, false);
+        }
     }
 }

@@ -2,27 +2,87 @@ using UnityEngine;
 
 public class LightSwitch : Interactable
 {
+    [SerializeField] private LightGroupController lightGroup;
     [SerializeField] private Light[] luces;
-    [SerializeField] private IntroSequenceController introSequenceController;
 
-    private bool energyNotified;
+    [Header("Estado del switch")]
+    [SerializeField] private bool switchStartsOn;
+    // define si este interruptor arranca como prendido o apagado
+
+    [SerializeField] private bool applyInitialStateOnStart = true;
+    // si esta activo, este switch aplica su estado apenas empieza la escena
+    // ojo si hay dos switches apuntando al mismo grupo porque uno puede pisar al otro
+
+    [Header("Energia")]
+    [SerializeField] private bool requirePowerFlag = true;
+    [SerializeField] private string powerFlagName = "power_on";
+    [SerializeField] private string noPowerMessage = "no hay energia";
+    [SerializeField] private float noPowerMessageDuration = 2f;
+
+    private bool switchIsOn;
+
+    private void Start()
+    {
+        switchIsOn = switchStartsOn;
+        // estado interno del switch, separado de si hay energia o no
+
+        if (applyInitialStateOnStart)
+        {
+            ApplySwitchState();
+        }
+    }
 
     public override void Interact(PlayerInteraction player)
     {
-        if (luces == null || luces.Length == 0) return;
+        if (!CanUseSwitch())
+        {
+            if (SubtitleUI.Instance != null)
+            {
+                SubtitleUI.Instance.ShowSubtitle(noPowerMessage, noPowerMessageDuration, SubtitlePriority.Environment);
+            }
+
+            return;
+        }
+
+        switchIsOn = !switchIsOn;
+        // pulso el switch interno y despues aplico el estado al grupo de luces
+        ApplySwitchState();
+    }
+
+    private void ApplySwitchState()
+    {
+        if (lightGroup != null)
+        {
+            lightGroup.SetLights(switchIsOn);
+            // si hay grupo, mando el estado ahi y evito repetir arrays de luces en cada switch
+            return;
+        }
+        
+        if (luces == null || luces.Length == 0)
+        {
+            return;
+        }
 
         foreach (Light Luz in luces)
         {
-            Luz.enabled = !Luz.enabled;
+            if (Luz == null)
+            {
+                continue;
+            }
+
+            Luz.enabled = switchIsOn;
             // Debug.Log("Interruptor activado");
         }
+    }
 
-        if (!energyNotified && introSequenceController != null)
+    private bool CanUseSwitch()
+    {
+        if (!requirePowerFlag)
         {
-            // aviso una sola vez a la intro. el switch puede seguir prendiendo/apagando,
-            // pero sino se traba todo
-            energyNotified = true;
-            introSequenceController.OnEnergyRestored();
+            return true;
         }
+
+        GameStateController targetState = GameStateController.Instance;
+        return targetState != null && targetState.GetFlag(powerFlagName);
     }
 }

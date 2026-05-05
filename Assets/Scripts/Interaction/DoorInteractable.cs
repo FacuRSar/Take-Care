@@ -28,6 +28,7 @@ public class DoorInteractable : Interactable
     //velocidad de apertura/cierre
 
     [Header("Configuracion de puerta")]
+    [SerializeField] private bool ClosedSound = true;
     [SerializeField] private bool canOpen = false;
     //define si esta puerta puede abrirse en general
     //false = siempre bloqueada (Por si acaso)
@@ -81,6 +82,7 @@ public class DoorInteractable : Interactable
                 openSpeed * Time.deltaTime
             );
 
+            // Cuando esta muy cerquita del objetivo, isMoving pasa a false para dejar interactuar
             if (Quaternion.Angle(doorPivot.localRotation, targetRotation) < 0.5f)
             {
                 doorPivot.localRotation = targetRotation;
@@ -107,7 +109,7 @@ public class DoorInteractable : Interactable
         if (!canOpen)
         {
             SubtitleUI.Instance.ShowSubtitle(lockedMessage, 2.5f);
-            SFXManager.Instance.Play3D("LockedDoor", transform.position);
+            if (ClosedSound) SFXManager.Instance.Play3D("LockedDoor", transform.position);
             return;
         }
 
@@ -115,7 +117,7 @@ public class DoorInteractable : Interactable
         if (!CanOpenByState())
         {
             SubtitleUI.Instance.ShowSubtitle(lockedMessage, 2.5f);
-            SFXManager.Instance.Play3D("LockedDoor", transform.position);
+            if (ClosedSound) SFXManager.Instance.Play3D("LockedDoor", transform.position);
             return;
         }
 

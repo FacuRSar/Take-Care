@@ -15,8 +15,9 @@ public class HintDialogueEntry
 
 public class HintDialogueController : MonoBehaviour
 {
+    public static HintDialogueController Instance;
+
     [Header("Referencias")]
-    [SerializeField] private DialogueSequencePlayer dialoguePlayer;
     [SerializeField] private SubtitleUI subtitleUI;
     [SerializeField] private GameStateController gameStateController;
 
@@ -34,6 +35,14 @@ public class HintDialogueController : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+
         if (subtitleUI == null)
         {
             subtitleUI = SubtitleUI.Instance;
@@ -63,11 +72,6 @@ public class HintDialogueController : MonoBehaviour
     public void StopHints()
     {
         StopHintRoutine();
-
-        if (dialoguePlayer != null)
-        {
-            dialoguePlayer.StopSequence();
-        }
     }
 
     public void ClearFlag(string flagName)
@@ -188,30 +192,15 @@ public class HintDialogueController : MonoBehaviour
 
     private void ShowHint(string text, float duration)
     {
-        if (dialoguePlayer != null)
-        {
-            DialogueLine[] lines =
-            {
-                new DialogueLine
-                {
-                    text = text,
-                    duration = duration
-                }
-            };
-
-            dialoguePlayer.PlaySequence(lines);
-            return;
-        }
-
         SubtitleUI targetSubtitle = subtitleUI != null ? subtitleUI : SubtitleUI.Instance;
 
         if (targetSubtitle != null)
         {
-            targetSubtitle.ShowSubtitle(text, duration);
+            targetSubtitle.ShowSubtitle(text, duration, SubtitlePriority.Hint);
         }
         else
         {
-            Debug.LogWarning("hintdialoguecontroller: no hay dialoguesequenceplayer ni subtitleui disponible");
+            Debug.LogWarning("hintdialoguecontroller: no hay subtitleui disponible");
         }
     }
 }

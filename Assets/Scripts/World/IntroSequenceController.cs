@@ -3,12 +3,20 @@ using UnityEngine;
 
 public class IntroSequenceController : MonoBehaviour
 {
+    // IDs para poner los dialogos en la pool
+    private const string IntroDialogueId = "intro";
+    private const string energyReactionDialogueId = "energy_restored";
+    private const string PhoneHelloDialogueId = "phone_hello";
+    private const string PhoneSurpriseDialogueId = "phone_surprise";
+    private const string DollReactionDialogueId = "doll_reaction";
+    private const string BathroomReactionDialogueId = "bathroom_reaction";
+    private const string MirrorReactionDialogueId = "mirror_reaction";
+
     [Header("Referencias")]
-    [SerializeField] private DialogueSequencePlayer introDialoguePlayer;
-    [SerializeField] private HintDialogueController lightHintController;
     [SerializeField] private PhoneInteractable phoneInteractable;
     [SerializeField] private FixedCameraWithZoom energyFocusCamera;
     [SerializeField] private FixedCameraWithZoom phoneFocusCamera;
+    [SerializeField] private FixedCameraWithZoom dollFocusCamera;
     [SerializeField] private FixedCameraWithZoom bathroomFocusCamera;
     [SerializeField] private GameStateController gameStateController;
     [SerializeField] private SFXManager sfxManager;
@@ -23,25 +31,32 @@ public class IntroSequenceController : MonoBehaviour
     [Header("Dialogos de intro")]
     [SerializeField] private bool playIntroOnStart = true;
     [SerializeField] private bool startLightHintsOnStart = true;
-    [SerializeField] private DialogueLine[] introLines;
+    [SerializeField] private float introDialogueStartDelay = 0f;
 
     [Header("Timing")]
     [SerializeField] private float energyFocusDuration = 2f;
     [SerializeField] private float phoneFocusDuration = 2f;
+    [SerializeField] private float dollFocusDuration = 0.5f;
     [SerializeField] private float bathroomFocusDuration = 2f;
-    [SerializeField] private float dollLaughDelay = 0f; // antes era 1.25f; lo dejo configurable para tunear el golpe fino
-    // este delay antes estaba en phonescareroutine. ahora lo uso despues del focus del telefono,
-    // para que la risa y la aparicion de la muneca sigan siendo configurables desde inspector
-    [SerializeField] private float bathroomReactionDelay = 1f;
 
-    [Header("Subtitulutos")]
-    [SerializeField] private string bathroomReactionSubtitle = "Ese ruido... Vino del baño?";
-    [SerializeField] private float bathroomReactionSubtitleDuration = 2f;
-    [SerializeField] private string dollReactionSubtitle = "esto estaba antes aca?";
-    [SerializeField] private float dollReactionSubtitleDuration = 2.5f;
+    [Header("SFX opcionales")]
+    [SerializeField] private string dollAppearExtraSfxId = "";
+
+    
+
+    [Space(10)] // Para separar los focus
+    [SerializeField] private float dollLaughDelay = 0f; 
+    [SerializeField] private float energyReactionDialogueDelay = 0f;
+    [SerializeField] private float phoneHelloDialogueDelay = 0f;
+    [SerializeField] private float dollReactionDialogueDelay = 0f;
+    [SerializeField] private float bathroomReactionDialogueDelay = 0f;
+    [SerializeField] private float mirrorReactionDialogueDelay = 0f;
+
+    [Space(10)] // Para separar los DialogueDelays
+    [SerializeField] private float PhoneRingDelay = 2f;
+    [SerializeField] private float dollBreakDelay = 2f;
+    [SerializeField] private float bathroomReactionDelay = 1f;
     [SerializeField] private float mirrorReactionDelay = 2f;
-    [SerializeField] private float mirrorReactionSubtitleDuration = 2.5f;
-    [SerializeField] private string mirrorReactionSubtitle = "pero que carajo?";
 
     private bool energyRestored;
     private bool phoneAnswered;
@@ -77,27 +92,14 @@ public class IntroSequenceController : MonoBehaviour
             dollObject.SetActive(false);
         }
 
-        if (playIntroOnStart && introDialoguePlayer != null)
+        if (playIntroOnStart)
         {
-            if (introLines != null && introLines.Length > 0)
-            {
-                // Debug.Log("IntroSequenceController: dialogos de intro desde el controlador.");
-                introDialoguePlayer.PlaySequence(introLines);
-            }
-            else if (introDialoguePlayer.HasConfiguredLines)
-            {
-                // Debug.Log("IntroSequenceController: dialogos configurados en DialogueSequencePlayer.");
-                introDialoguePlayer.PlayConfiguredSequence();
-            }
-            else
-            {
-                Debug.LogWarning("IntroSequenceController: no hay dialogos de intro configurados.");
-            }
+            StartCoroutine(PlayDialogueAfterDelay(IntroDialogueId, introDialogueStartDelay));
         }
 
-        if (startLightHintsOnStart && lightHintController != null)
+        if (startLightHintsOnStart && HintDialogueController.Instance != null)
         {
-            lightHintController.StartHints();
+            HintDialogueController.Instance.StartHints();
         }
     }
 
@@ -114,12 +116,11 @@ public class IntroSequenceController : MonoBehaviour
         SetFlag("power_on", true);
         SetFlag("energy_restored", true);
 
-        if (lightHintController != null)
+        if (HintDialogueController.Instance != null)
         {
-            lightHintController.StopHints();
+            HintDialogueController.Instance.StopHints();
         }
 
-        Play2D("EnergyRestored");
         PlayFocus(energyFocusCamera, energyFocusDuration);
         StartCoroutine(EnablePhoneAfterFocus());
     }
@@ -150,12 +151,13 @@ public class IntroSequenceController : MonoBehaviour
     {
         // orden del telefono: miro el telefono, suena la estatica, digo hola, y recien despues cae la risa
         // si lo hacemos todo de una queda medio chueco, lo se porque tuve que meter esto porque hacia eso jajajj
-        PlayFocus(phoneFocusCamera, phoneFocusDuration);
+        float phoneDialogueWait = phoneHelloDialogueDelay + GetDialogueDuration(PhoneHelloDialogueId);
+        float phoneTotalWait = Mathf.Max(0f, phoneDialogueWait) + phoneFocusDuration;
+        PlayFocus(phoneFocusCamera, phoneTotalWait);
         PlayLoop2D("PhoneStatic");
+        StartCoroutine(PlayDialogueAfterDelay(PhoneHelloDialogueId, phoneHelloDialogueDelay));
 
-        if (SubtitleUI.Instance != null) SubtitleUI.Instance.ShowSubtitle("hola?", 2f);
-
-        yield return new WaitForSeconds(phoneFocusDuration);
+        yield return new WaitForSeconds(phoneTotalWait);
 
         StopLoop("PhoneStatic");
 
@@ -168,6 +170,11 @@ public class IntroSequenceController : MonoBehaviour
 
         Play2D("DollLaugh");
 
+        if (!string.IsNullOrEmpty(dollAppearExtraSfxId))
+        {
+            Play2D(dollAppearExtraSfxId);
+        }
+
         if (dollObject != null)
         {
             dollObject.SetActive(true);
@@ -176,6 +183,9 @@ public class IntroSequenceController : MonoBehaviour
         {
             Debug.LogWarning("IntroSequenceController: la muneca no esta asignada, no aparece pero no rompe.");
         }
+
+        PlayFocus(dollFocusCamera, dollFocusDuration);
+        StartCoroutine(PlayDialogueAndWait(PhoneSurpriseDialogueId, 0f, 0f));
     }
 
     public void OnDollProximityTriggered()
@@ -196,16 +206,9 @@ public class IntroSequenceController : MonoBehaviour
     {
         // primero dejamos que el jugador procese la muneca
         // despues rompemos algo en el bano, para romper las bolas nomas
-        if (SubtitleUI.Instance != null)
-        {
-            // version vieja: subtitleui.instance.showsubtitle("esto estaba antes aca?", 2.5f);
-            // ahora uso las variables serializadas para ajustar texto y duracion sin tocar codigo
-            SubtitleUI.Instance.ShowSubtitle(dollReactionSubtitle, dollReactionSubtitleDuration);
-        }
-
-        // version vieja: yield return new waitforseconds(2f);
-        // uso la duracion del subtitulo como espera base para que el ruido llegue despues de la reaccion
-        yield return new WaitForSeconds(dollReactionSubtitleDuration);
+        // el delay del ruido ahora parte desde el final del dialogo de la muneca
+        // si hace falta adelantarlo, se pone un valor negativo en dollbreakdelay
+        yield return StartCoroutine(PlayDialogueAndWait(DollReactionDialogueId, dollReactionDialogueDelay, dollBreakDelay));
 
         Vector3 bathroomPosition = bathroomSoundPoint != null ? bathroomSoundPoint.position : transform.position;
 
@@ -216,7 +219,7 @@ public class IntroSequenceController : MonoBehaviour
         PlayLoop3D("FaucetLoop", bathroomPosition);
 
         yield return new WaitForSeconds(bathroomReactionDelay);
-        if (SubtitleUI.Instance != null) SubtitleUI.Instance.ShowSubtitle(bathroomReactionSubtitle, bathroomReactionSubtitleDuration);
+        StartCoroutine(PlayDialogueAfterDelay(BathroomReactionDialogueId, bathroomReactionDialogueDelay));
 
     }
 
@@ -283,16 +286,17 @@ public class IntroSequenceController : MonoBehaviour
 
         Play2D("MirrorReveal");
 
-        if (SubtitleUI.Instance != null)
-        {
-            // version vieja: subtitleui.instance.showsubtitle("pero que carajo?", 2.5f);
-            // ahora uso las variables serializadas para poder ajustar texto y duracion desde inspector
-            SubtitleUI.Instance.ShowSubtitle(mirrorReactionSubtitle, mirrorReactionSubtitleDuration);
-        }
+        float mirrorDialogueDuration = GetDialogueDuration(MirrorReactionDialogueId);
+        StartCoroutine(PlayDialogueAfterDelay(MirrorReactionDialogueId, mirrorReactionDialogueDelay));
 
-        // version vieja: yield return new waitforseconds(bathroomfocusduration);
-        // ahora espero al menos lo que dure el focus y tambien respeto mirrorreactiondelay como pausa narrativa configurable
-        yield return new WaitForSeconds(Mathf.Max(bathroomFocusDuration, mirrorReactionDelay));
+        // espero el focus y tambien el dialogo completo del espejo mas el offset narrativo
+        // si queres que la musica entre antes de la ultima linea, mirrorreactiondelay puede ser negativo
+        float revealWait = Mathf.Max(
+            bathroomFocusDuration,
+            Mathf.Max(0f, mirrorReactionDialogueDelay + mirrorDialogueDuration + mirrorReactionDelay)
+        );
+
+        yield return new WaitForSeconds(revealWait);
 
         // parada de boxes antes de la musica
         yield return new WaitForSeconds(1f);
@@ -333,12 +337,63 @@ public class IntroSequenceController : MonoBehaviour
         return GetFlag("escape_phase_started");
     }
 
+    private IEnumerator PlayDialogueAfterDelay(string dialogueId, float delay)
+    {
+        if (delay > 0f)
+        {
+            yield return new WaitForSeconds(delay);
+        }
+
+        DialogueSequencePlayer targetDialogue = DialogueSequencePlayer.Instance;
+
+        if (targetDialogue != null)
+        {
+            targetDialogue.PlayDialogue(dialogueId);
+        }
+        else
+        {
+            Debug.LogWarning("IntroSequenceController: no hay DialogueSequencePlayer para reproducir el dialogo: " + dialogueId);
+        }
+    }
+
+    private IEnumerator PlayDialogueAndWait(string dialogueId, float startDelay, float afterDialogueDelay)
+    {
+        if (startDelay > 0f)
+        {
+            yield return new WaitForSeconds(startDelay);
+        }
+
+        DialogueSequencePlayer targetDialogue = DialogueSequencePlayer.Instance;
+        float dialogueDuration = 0f;
+
+        if (targetDialogue != null)
+        {
+            dialogueDuration = targetDialogue.GetDialogueDuration(dialogueId);
+            targetDialogue.PlayDialogue(dialogueId);
+        }
+        else
+        {
+            Debug.LogWarning("IntroSequenceController: no hay DialogueSequencePlayer para reproducir el dialogo: " + dialogueId);
+        }
+
+        float waitTime = Mathf.Max(0f, dialogueDuration + afterDialogueDelay);
+
+        if (waitTime > 0f)
+        {
+            yield return new WaitForSeconds(waitTime);
+        }
+    }
+
     private IEnumerator EnablePhoneAfterFocus()
     {
         if (energyFocusDuration > 0f)
         {
             yield return new WaitForSeconds(energyFocusDuration);
         }
+
+        // phoneringdelay ahora es offset desde el final del dialogo de energia
+        // ejemplo: si queres que suene antes de la ultima linea, usa un valor negativo
+        yield return StartCoroutine(PlayDialogueAndWait(energyReactionDialogueId, energyReactionDialogueDelay, PhoneRingDelay));
 
         PlayLoop2D("PhoneRing");
 
@@ -373,6 +428,12 @@ public class IntroSequenceController : MonoBehaviour
         }
 
         focusCamera.ActivateForDuration(duration);
+    }
+
+    private float GetDialogueDuration(string dialogueId)
+    {
+        DialogueSequencePlayer targetDialogue = DialogueSequencePlayer.Instance;
+        return targetDialogue != null ? targetDialogue.GetDialogueDuration(dialogueId) : 0f;
     }
 
     private void Play2D(string id)

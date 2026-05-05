@@ -12,46 +12,76 @@ public class DialogueLine
     public float duration = 2.5f;
 }
 
+[Serializable]
+public class DialoguePool
+{
+    public string id;
+    public DialogueLine[] lines;
+}
+
 public class DialogueSequencePlayer : MonoBehaviour
 {
+    public static DialogueSequencePlayer Instance;
+
     [Header("Referencias")]
     [SerializeField] private SubtitleUI subtitleUI;
 
-    [Header("Secuencia configurada")]
-    [SerializeField] private DialogueLine[] configuredLines;
+    [Header("Dialogos")]
+    [SerializeField] private DialoguePool[] pools;
 
     private Coroutine currentRoutine;
 
     public bool IsPlaying => currentRoutine != null;
-    public bool HasConfiguredLines => configuredLines != null && configuredLines.Length > 0;
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+
         if (subtitleUI == null)
         {
             subtitleUI = SubtitleUI.Instance;
         }
     }
 
-    public void PlayConfiguredSequence()
+    public void PlayDialogue(string id)
     {
-        PlaySequence(configuredLines);
-    }
-
-    public void PlaySequence(DialogueLine[] lines)
-    {
-        StopSequence();
-        // corto la secuencia anterior antes de arrancar otra. si no, los subtitulos se pisan tipo charla familiar
+        DialogueLine[] lines = GetLines(id);
 
         if (lines == null || lines.Length == 0)
         {
+            Debug.LogWarning("dialoguesequenceplayer: no se encontro dialogo o esta vacio: " + id);
             return;
         }
+
+        PlayLines(lines);
+    }
+
+    public float GetDialogueDuration(string id)
+    {
+        DialogueLine[] lines = GetLines(id);
+        return GetLinesDuration(lines);
+    }
+
+    public void StopDialogue()
+    {
+        StopCurrentRoutine();
+    }
+
+    private void PlayLines(DialogueLine[] lines)
+    {
+        StopCurrentRoutine();
+        // corto la secuencia anterior antes de arrancar otra. si no, los subtitulos se pisan tipo charla familiar
 
         currentRoutine = StartCoroutine(PlayRoutine(lines));
     }
 
-    public void StopSequence()
+    private void StopCurrentRoutine()
     {
         if (currentRoutine == null)
         {
@@ -60,6 +90,24 @@ public class DialogueSequencePlayer : MonoBehaviour
 
         StopCoroutine(currentRoutine);
         currentRoutine = null;
+    }
+
+    private DialogueLine[] GetLines(string id)
+    {
+        if (string.IsNullOrEmpty(id) || pools == null)
+        {
+            return null;
+        }
+
+        foreach (DialoguePool pool in pools)
+        {
+            if (pool != null && pool.id == id)
+            {
+                return pool.lines;
+            }
+        }
+
+        return null;
     }
 
     private IEnumerator PlayRoutine(DialogueLine[] lines)
@@ -80,7 +128,7 @@ public class DialogueSequencePlayer : MonoBehaviour
 
             if (targetSubtitle != null)
             {
-                targetSubtitle.ShowSubtitle(line.text, line.duration);
+                targetSubtitle.ShowSubtitle(line.text, line.duration, SubtitlePriority.Dialogue);
             }
             else
             {
@@ -94,5 +142,28 @@ public class DialogueSequencePlayer : MonoBehaviour
         }
 
         currentRoutine = null;
+    }
+
+    private float GetLinesDuration(DialogueLine[] lines)
+    {
+        if (lines == null)
+        {
+            return 0f;
+        }
+
+        float totalDuration = 0f;
+
+        foreach (DialogueLine line in lines)
+        {
+            if (line == null || string.IsNullOrEmpty(line.text))
+            {
+                continue;
+            }
+
+            totalDuration += Mathf.Max(0f, line.delayBefore);
+            totalDuration += Mathf.Max(0f, line.duration);
+        }
+
+        return totalDuration;
     }
 }

@@ -125,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Mantiene la base de la capsula en el mismo lugar.
         // Si la altura baja, el centro tambien baja la mitad.
-        capsule.center = new Vector3(0f, newHeight / 2f, 0f);
+        capsule.center = new Vector3(0f, 0f, 0f);
 
         Vector3 camPos = playerCamera.localPosition;
         camPos.y = Mathf.Lerp(camPos.y, targetCameraY, crouchLerpSpeed * Time.deltaTime);
