@@ -29,7 +29,7 @@ public class RandomObjectPositioner : MonoBehaviour
 
     void Start()
     {
-        MathList();
+        MatchList();
         objValidator();        
         ObjRemove();
     }
@@ -76,24 +76,25 @@ public class RandomObjectPositioner : MonoBehaviour
                                 return i; // Asigna el índice de la posición seleccionada
                             }
                         }
-                            
+
+                        Debug.Log("Nota: Asegúrate de que las probabilidades en la lista Weights estén configuradas correctamente para evitar problemas en la selección de posiciones.");
                         return 0; // Devuelve un índice predeterminado en caso de que no se seleccione ninguna posición (esto no debería ocurrir si las probabilidades son correctas)
-                        // Nota: Asegúrate de que las probabilidades en la lista Weights estén configuradas correctamente para evitar problemas en la selección de posiciones.
+                        
                     }
 
                     Index = GetRandomIndex(); // Obtiene un nuevo índice de posición para el siguiente objeto
 
                     Instantiate(Object, Position[Index].position, Position[Index].rotation);
 
-                    Transform ChosenPosition = Position[Index]; // Variable para almacenar la posición seleccionada
-
                     Weights[Index] = Mathf.Max(WeightMin, Weights[Index] * NewWeight); // Reduce la probabilidad de la posición seleccionada
                 }
             }
+            else
+                Debug.LogWarning("El objeto " + Object.name + " no tiene el componente GrabbableObject y no se asignará a ninguna posición.");
         }
     }
 
-    private void MathList()
+    private void MatchList()
     {
         while (Weights.Count < Position.Count && !CantRepeatPositions)
         {
