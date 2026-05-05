@@ -11,13 +11,10 @@ public class FixedCameraWithZoom : MonoBehaviour
     PlayerMovement playerMovement;
 
 
-    [SerializeField] private float SpeedZoom;
-
-    public event Action SyncRotation;
-
 
     [Header("FixedCamera")]
 
+    [SerializeField] private float SpeedZoom;
     [SerializeField] private Transform Player;
     [SerializeField] private List<Transform> TargetsMrBeast;
     [SerializeField] private List<float>  TransitionDuration;
@@ -77,7 +74,7 @@ public class FixedCameraWithZoom : MonoBehaviour
         }
         else 
         {
-            ResetCameraSequence();
+          
 
             canzoomed = false;
 
@@ -85,7 +82,7 @@ public class FixedCameraWithZoom : MonoBehaviour
 
             playerCamera.CantMoveCamera = false;
 
-            SyncRotation?.Invoke(); // sincronizo la rotacion del playerCamera con la del player para evitar que se quede mirando a un lado cuando termina el efecto
+            ResetCameraSequence();
             playerCamera.SyncRotation();
         }
 
