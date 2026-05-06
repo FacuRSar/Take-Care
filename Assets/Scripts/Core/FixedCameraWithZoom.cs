@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FixedCameraWithZoom : MonoBehaviour
@@ -12,22 +10,17 @@ public class FixedCameraWithZoom : MonoBehaviour
     [Header("Componentes")]
 
     PlayerCamera playerCamera;
+
     PlayerMovement playerMovement;
 
+    [SerializeField] private float Speed;
 
 
     [Header("FixedCamera")]
 
-    [SerializeField] private float SpeedZoom;
     [SerializeField] private Transform Player;
-    [SerializeField] private List<Transform> TargetsMrBeast;
-    [SerializeField] private List<float>  TransitionDuration;
-    [SerializeField] private List<float> SpeedCamera;
-
-    private int currentTargetIndex = 0;
 
     [SerializeField] private float minAngle;
-    private float targetTimer = 0f;
 
     [SerializeField] private bool restoreViewOnEnd = false;
     // si esta activo, cuando termina el focus vuelve a mirar como estaba antes
@@ -44,6 +37,7 @@ public class FixedCameraWithZoom : MonoBehaviour
     [SerializeField] private Camera cam;
 
     [SerializeField] private float zoomFov;
+
     [SerializeField] private float nomalFov;
 
     private float targetFov;
@@ -55,7 +49,7 @@ public class FixedCameraWithZoom : MonoBehaviour
     private int myFocusVersion;
     private bool wasCancelled;
 
-    [SerializeField] private float DurationTotal;
+    [SerializeField] private float duration;
 
     [SerializeField] public bool active;
 
@@ -68,11 +62,7 @@ public class FixedCameraWithZoom : MonoBehaviour
 
         playerCamera = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCamera>();
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-
-        MatchList();
-        DurationTotalScene();
     }
-<<<<<<< HEAD
 
     private void LateUpdate()
     {
@@ -81,10 +71,6 @@ public class FixedCameraWithZoom : MonoBehaviour
             CancelFocusWithoutUnlock();
         }
 
-=======
-    private void Update()
-    {
->>>>>>> TeoWork
         if (active)
         {
             timer += Time.deltaTime;
@@ -92,7 +78,7 @@ public class FixedCameraWithZoom : MonoBehaviour
 
             LockPlayerControl();
 
-            if (timer < DurationTotal)
+            if (timer < duration)
             {
                 FixedCamera();
             }
@@ -103,7 +89,7 @@ public class FixedCameraWithZoom : MonoBehaviour
         }
         else
         {
-          
+            timer = 0f;
 
             canzoomed = false;
 
@@ -112,7 +98,6 @@ public class FixedCameraWithZoom : MonoBehaviour
                 playerMovement.CantMove = false;
             }
 
-<<<<<<< HEAD
             if (currentOwner == this && playerCamera != null)
             {
                 playerCamera.CantMoveCamera = false;
@@ -127,22 +112,11 @@ public class FixedCameraWithZoom : MonoBehaviour
 
                 currentOwner = null;
             }
-=======
-            playerCamera.CantMoveCamera = false;
-
-            ResetCameraSequence();
-            playerCamera.SyncRotation();
->>>>>>> TeoWork
         }
 
         //if (input.getkeydown(keycode.z)) active = true;
 
         CameraZoom();
-<<<<<<< HEAD
-=======
-
-
->>>>>>> TeoWork
     }
 
     private void CameraZoom()
@@ -150,43 +124,16 @@ public class FixedCameraWithZoom : MonoBehaviour
         if (canzoomed) targetFov = zoomFov;
         else targetFov = nomalFov;
 
-<<<<<<< HEAD
         if (cam == null)
         {
             return;
         }
 
         cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetFov, Time.deltaTime * Speed);
-=======
-        cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetFov, Time.deltaTime * SpeedZoom);
->>>>>>> TeoWork
     }
-
-    /*private void FixedCamera()
-     {
-         Vector3 directionPlayer = transform.position - Player.position;
-         directionPlayer.y = 0;
-
-         Vector3 directionCam = transform.position - cam.transform.position;
-
-         Quaternion PlayerRotation = Quaternion.LookRotation(directionPlayer);
-         Quaternion CamRotation = Quaternion.LookRotation(directionCam);
-
-         float angle = Quaternion.Angle(Player.rotation, PlayerRotation);
-
-         if (angle > minAngle)
-         {
-             Player.transform.rotation = Quaternion.Lerp(Player.rotation, PlayerRotation, Speed * Time.deltaTime);
-
-             cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, CamRotation, Speed * Time.deltaTime);
-
-             AngelMetodo();
-         }
-     } */
 
     private void FixedCamera()
     {
-<<<<<<< HEAD
         if (Player == null || cam == null)
         {
             return;
@@ -195,34 +142,17 @@ public class FixedCameraWithZoom : MonoBehaviour
         // el player gira solo en horizontal, la camara si mira al punto completo
         // asi no termina el cuerpo mirando al techo como pose rarasa
         Vector3 directionPlayer = transform.position - Player.position;
-=======
-        
-
-       if (currentTargetIndex >= TargetsMrBeast.Count) return; // si se paso del ultimo target, no hago nada
-
-        Transform target = TargetsMrBeast[currentTargetIndex].transform;
-
-        Vector3 directionPlayer = target.position - Player.position;
->>>>>>> TeoWork
         directionPlayer.y = 0;
 
-        Quaternion PlayerRotation = Quaternion.LookRotation(directionPlayer); 
-        Player.transform.rotation = Quaternion.Lerp(Player.rotation, PlayerRotation, SpeedCamera[currentTargetIndex] * Time.deltaTime);
+        Vector3 directionCam = transform.position - cam.transform.position;
 
-        Vector3 directionCam = target.position - cam.transform.position;
-
+        Quaternion PlayerRotation = Quaternion.LookRotation(directionPlayer);
         Quaternion CamRotation = Quaternion.LookRotation(directionCam);
-        cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, CamRotation, SpeedCamera[currentTargetIndex] * Time.deltaTime);
 
-        float transitionTime = TransitionDuration[currentTargetIndex];
+        float angle = Quaternion.Angle(Player.rotation, PlayerRotation);
 
-        targetTimer += Time.deltaTime;
-
-        AngelMetodo();
-
-        if (targetTimer >= transitionTime)
+        if (angle > minAngle)
         {
-<<<<<<< HEAD
             Player.rotation = Quaternion.Lerp(Player.rotation, PlayerRotation, Speed * Time.deltaTime);
         }
 
@@ -240,62 +170,10 @@ public class FixedCameraWithZoom : MonoBehaviour
         if (playerCamera != null)
         {
             playerCamera.CantMoveCamera = true;
-=======
-            targetTimer = 0f;
-
-            if (currentTargetIndex < TargetsMrBeast.Count - 1)
-            {
-                currentTargetIndex++;
-                Debug.Log("Cambiando al Target: " + currentTargetIndex);
-            }
->>>>>>> TeoWork
         }
-    } 
+    }
 
-
-
-<<<<<<< HEAD
     public bool Active
-=======
-    private void AngelMetodo()
-    {
-        canzoomed = true;
-
-        playerMovement.CantMove = true;
-        playerCamera.CantMoveCamera = true;
-    }
-
-    private void MatchList()
-    {
-        while (TransitionDuration.Count < TargetsMrBeast.Count)
-        {
-            TransitionDuration.Add(1f);
-        }
-        while (SpeedCamera.Count < TargetsMrBeast.Count)
-        {
-            SpeedCamera.Add(1f);
-        }
-
-    }
-    private void ResetCameraSequence()
-    {
-        currentTargetIndex = 0;
-        targetTimer = 0f;
-        timer = 0f;
-    }
-
-    private void DurationTotalScene()
-    {
-        DurationTotal = 0f;
-    
-            foreach (float duration in TransitionDuration)
-            {
-                DurationTotal += duration;
-            }
-    }
-
-    public bool Active 
->>>>>>> TeoWork
     {
         get { return active; }
         private set { active = value; }
