@@ -131,6 +131,7 @@ public class PlayerMovement : MonoBehaviour
         camPos.y = Mathf.Lerp(camPos.y, targetCameraY, crouchLerpSpeed * Time.deltaTime);
         playerCamera.localPosition = camPos;
     }
+
     private void markObject(bool testbool, GameObject testObject)
     {
         if(testObject != null && !testbool)
@@ -138,4 +139,6 @@ public class PlayerMovement : MonoBehaviour
             
         }
     }
+
+
 }

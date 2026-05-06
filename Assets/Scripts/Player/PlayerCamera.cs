@@ -60,4 +60,12 @@ public class PlayerCamera : MonoBehaviour
         cam.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
     }
+
+    public void SyncRotation()
+    {
+        yRotation = transform.eulerAngles.y;
+
+        xRotation = cam.localEulerAngles.x;
+        if (xRotation > 180f) xRotation -= 360f; // para convertir la rotacion local de la camara a un rango de -180 a 180
+    }
 }

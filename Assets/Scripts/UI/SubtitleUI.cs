@@ -106,5 +106,4 @@ public class SubtitleUI : MonoBehaviour
             return;
         }
     }
-
 }
