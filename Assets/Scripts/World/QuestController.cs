@@ -22,6 +22,13 @@ public class QuestController : MonoBehaviour
             quests[questIndex].failQuest();
             giveQuest();
         }
+        else if (checkQuestStatus(questIndex) == 2)
+        {
+            if (quests[questIndex].getTimer() >= quests[questIndex].getTimerDuration()*0.75)
+            {
+                quests[questIndex].markObjective();
+            }
+        }
     }
     public int checkQuestStatus(int questIndex)
     {
@@ -31,7 +38,7 @@ public class QuestController : MonoBehaviour
             {
                 return 0;
             }
-            else if(!quests[questIndex].getIsCompleted() && quests[questIndex].getTimer()<=0)
+            else if(!quests[questIndex].getIsCompleted() && !quests[questIndex].checkTimer())
             {
                 return 1;
             }
