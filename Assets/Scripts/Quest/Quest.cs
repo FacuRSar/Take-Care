@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Quest : GrabbableObject
 {
@@ -7,23 +8,17 @@ public class Quest : GrabbableObject
     private float timer;
     private bool isActive;
     [SerializeField] private int timerDuration = 4;
-    [SerializeField] private Player_Health player;
+    [SerializeField] private Player_Health playerHealth;
+    private Renderer rend;
+    private Material originalMaterial;
+    [SerializeField] private Material transparentMaterial;
 
     private void Awake()
     {
         setIsCompleted(false);
         setActive(false);
-    }
-    private void FixedUpdate()
-    {
-        if (isActive)
-        {
-            timer -= 1;
-            if (timer==(timerDuration/4) && !isCompleted)
-            {
-                markObjective();
-            }
-        }
+        rend = GetComponent<MeshRenderer>();
+        originalMaterial = GetComponent<MeshRenderer>().material;
     }
     public string getDescription()
     {
@@ -60,18 +55,39 @@ public class Quest : GrabbableObject
     }
     public void setTimer()
     {
-         timer = timerDuration;
+         timer = Time.deltaTime;
     }
     public float getTimer()
     {
-         return timer;
+         return Time.deltaTime-timer;
     }
-    public void markObjective()
+    public bool checkTimer()
     {
-        GetComponent<MeshRenderer>().material.color = Color.red;
+        if(getTimer() >= timerDuration)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    public float getTimerDuration()
+    {
+        return timerDuration;
+    }
+    IEnumerator TempVisibility()
+    {
+        rend.material = transparentMaterial;
+        yield return new WaitForSeconds(2);
+        rend.material = originalMaterial;
     }
     public void failQuest()
     {
-        player.TakeDamage(1);
+        playerHealth.TakeDamage(1);
+    }
+    public void markObjective()
+    {
+        StartCoroutine(TempVisibility());
     }
 }

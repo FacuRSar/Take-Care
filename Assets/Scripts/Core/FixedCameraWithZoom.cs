@@ -7,30 +7,29 @@ public class FixedCameraWithZoom : MonoBehaviour
 
     [Header("Components")]
 
-    PlayerCamera playerCamera;
-    PlayerMovement playerMovement;
-
+    [SerializeField] private PlayerCamera playerCamera;
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private Transform Player;
+    [SerializeField] private Camera cam;
 
 
     [Header("FixedCamera")]
 
-    [SerializeField] private float SpeedZoom;
-    [SerializeField] private Transform Player;
     [SerializeField] private List<Transform> TargetsMrBeast;
     [SerializeField] private List<float>  TransitionDuration;
     [SerializeField] private List<float> SpeedCamera;
 
-    private int currentTargetIndex = 0;
-
     [SerializeField] private float minAngle;
-    private float targetTimer = 0f;
+    [SerializeField] private float SpeedZoom;
+    [SerializeField] public bool active;
 
-    bool canzoomed = false;
+    private float targetTimer;
+    private int currentTargetIndex;
+
+    bool canzoomed;
 
 
     [Header("CameraZoom")]
-
-    [SerializeField] private Camera cam;
 
     [SerializeField] private float zoomFov;
     [SerializeField] private float nomalFov;
@@ -40,22 +39,12 @@ public class FixedCameraWithZoom : MonoBehaviour
 
     [Header("Timer")]
 
-    private float timer = 0f;
-
     [SerializeField] private float DurationTotal;
-
-    [SerializeField] public bool active;
-
+    private float timer = 0f;
 
 
     private void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player").transform;
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-
-        playerCamera = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCamera>();
-        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-
         MatchList();
         DurationTotalScene();
     }
@@ -70,12 +59,15 @@ public class FixedCameraWithZoom : MonoBehaviour
             {
                 FixedCamera();
             }
-            else active = false;
+            else if (timer >= DurationTotal)
+            {
+                active = false; enabled = false;
+            }
+            else Debug.LogWarning("Error en el Timer");
+
         }
         else 
         {
-          
-
             canzoomed = false;
 
             playerMovement.CantMove = false; 
@@ -125,9 +117,7 @@ public class FixedCameraWithZoom : MonoBehaviour
 
     private void FixedCamera()
     {
-        
-
-       if (currentTargetIndex >= TargetsMrBeast.Count) return; // si se paso del ultimo target, no hago nada
+        if (currentTargetIndex >= TargetsMrBeast.Count) return; // si se paso del ultimo target, no hago nada
 
         Transform target = TargetsMrBeast[currentTargetIndex].transform;
 
