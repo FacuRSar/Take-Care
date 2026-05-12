@@ -38,7 +38,7 @@ public class QuestController : MonoBehaviour
             {
                 return 0;
             }
-            else if(!quests[questIndex].getIsCompleted() && !quests[questIndex].checkTimer())
+            else if(!quests[questIndex].getIsCompleted() && quests[questIndex].checkTimer())
             {
                 return 1;
             }

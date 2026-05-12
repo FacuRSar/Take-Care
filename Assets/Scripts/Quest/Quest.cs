@@ -20,6 +20,13 @@ public class Quest : GrabbableObject
         rend = GetComponent<MeshRenderer>();
         originalMaterial = GetComponent<MeshRenderer>().material;
     }
+    private void Update()
+    {
+        if(isActive)
+        {
+            timer += Time.deltaTime;
+        }
+    }
     public string getDescription()
     {
         if(description != null)
@@ -55,21 +62,21 @@ public class Quest : GrabbableObject
     }
     public void setTimer()
     {
-         timer = Time.deltaTime;
+         timer = 0;
     }
     public float getTimer()
     {
-         return Time.deltaTime-timer;
+        return timer;
     }
     public bool checkTimer()
     {
         if(getTimer() >= timerDuration)
         {
-            return false;
+            return true;
         }
         else
         {
-            return true;
+            return false;
         }
     }
     public float getTimerDuration()

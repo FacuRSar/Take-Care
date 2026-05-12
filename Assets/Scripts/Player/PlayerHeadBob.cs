@@ -112,7 +112,7 @@ public class PlayerHeadBob : MonoBehaviour
 
         if (debugHeadBob && Mathf.Abs(yOffset) > 0.001f)
         {
-            Debug.Log("[HeadBob] Aplicando bob. OffsetY: " + yOffset + " | TargetY: " + targetPosition.y);
+            //Debug.Log("[HeadBob] Aplicando bob. OffsetY: " + yOffset + " | TargetY: " + targetPosition.y);
         }
 
         playerCamera.localPosition = Vector3.Lerp(
