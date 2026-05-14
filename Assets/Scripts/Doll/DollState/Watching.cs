@@ -69,7 +69,7 @@ public class Watching : MonoBehaviour
                 
                 dollEmotionSystem.ChangeState(DollState.Cry);
             }
-            else if(DirectionToPlayer.magnitude > DistanceToDollMin)
+            else if(DirectionToPlayer.magnitude < DistanceToDollMin)
             {
                 Debug.Log("No estas mirando a la muñeca y se esta poniendo triste");
                 AddCryBar?.Invoke();

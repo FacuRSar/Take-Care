@@ -1,6 +1,24 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+
+
+[Serializable]
+public class ObjectWithFocus
+{
+    [Tooltip("Objetivo de la cámara")]
+    public Transform TargetsMrBeast;
+    public float TransitionDuration;
+    public float SpeedCamera;
+}
+
+[Serializable]
+public class CameraSequence
+{
+    public List<ObjectWithFocus> objectives;
+}
 
 public class FixedCameraWithZoom : MonoBehaviour
 {
@@ -13,15 +31,12 @@ public class FixedCameraWithZoom : MonoBehaviour
     [SerializeField] private Camera cam;
 
 
-    [Header("FixedCamera")]
-
-    [SerializeField] private List<Transform> TargetsMrBeast;
-    [SerializeField] private List<float>  TransitionDuration;
-    [SerializeField] private List<float> SpeedCamera;
+    [Header("Objetivos")]
+    [SerializeField] private CameraSequence[] sequences;
 
     [SerializeField] private float minAngle;
     [SerializeField] private float SpeedZoom;
-    [SerializeField] public bool active;
+    [SerializeField] public bool isPlayingSequence;
 
     private float targetTimer;
     private int currentTargetIndex;
@@ -43,17 +58,20 @@ public class FixedCameraWithZoom : MonoBehaviour
     private float timer = 0f;
 
 
+    private int currentSequenceIndex;
+
+
     private void Start()
     {
-        MatchList();
         DurationTotalScene();
     }
     private void Update()
     {
-        if (active)
+        if (isPlayingSequence)
         {
             timer += Time.deltaTime;
             Debug.Log(timer);
+            Debug.Log(DurationTotal);
 
             if (timer < DurationTotal)
             {
@@ -61,28 +79,34 @@ public class FixedCameraWithZoom : MonoBehaviour
             }
             else if (timer >= DurationTotal)
             {
-                active = false; enabled = false;
+                isPlayingSequence = false;
             }
             else Debug.LogWarning("Error en el Timer");
 
         }
-        else 
+        else
         {
             canzoomed = false;
 
-            playerMovement.CantMove = false; 
+            playerMovement.CantMove = false;
 
             playerCamera.CantMoveCamera = false;
 
-            ResetCameraSequence();
             playerCamera.SyncRotation();
-        }
 
-        //if (Input.GetKeyDown(KeyCode.Z)) active = true;
+            ResetCameraSequence();
+        }
 
         CameraZoom();
 
-
+        if (Input.GetKey(KeyCode.Z))
+        {
+            PlaySequence(0);
+        }
+        if (Input.GetKey(KeyCode.F))
+        {
+            PlaySequence(1);
+        }
     }
 
     private void CameraZoom()
@@ -92,47 +116,31 @@ public class FixedCameraWithZoom : MonoBehaviour
 
         cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetFov, Time.deltaTime * SpeedZoom);
     }
-
-    /*private void FixedCamera()
-     {
-         Vector3 directionPlayer = transform.position - Player.position;
-         directionPlayer.y = 0;
-
-         Vector3 directionCam = transform.position - cam.transform.position;
-
-         Quaternion PlayerRotation = Quaternion.LookRotation(directionPlayer);
-         Quaternion CamRotation = Quaternion.LookRotation(directionCam);
-
-         float angle = Quaternion.Angle(Player.rotation, PlayerRotation);
-
-         if (angle > minAngle)
-         {
-             Player.transform.rotation = Quaternion.Lerp(Player.rotation, PlayerRotation, Speed * Time.deltaTime);
-
-             cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, CamRotation, Speed * Time.deltaTime);
-
-             AngelMetodo();
-         }
-     } */
-
     private void FixedCamera()
     {
-        if (currentTargetIndex >= TargetsMrBeast.Count) return; // si se paso del ultimo target, no hago nada
+        if (sequences == null || sequences.Length == 0 || currentSequenceIndex >= sequences.Length)
+            return;
 
-        Transform target = TargetsMrBeast[currentTargetIndex].transform;
+        ObjectWithFocus step = sequences[currentSequenceIndex].objectives[currentTargetIndex];
+        if (step == null || step.TargetsMrBeast == null)
+            return;
+
+        Transform target = step.TargetsMrBeast;
+        float transitionTime = step.TransitionDuration;
+        float speedCamera = step.SpeedCamera;
 
         Vector3 directionPlayer = target.position - Player.position;
         directionPlayer.y = 0;
 
-        Quaternion PlayerRotation = Quaternion.LookRotation(directionPlayer); 
-        Player.transform.rotation = Quaternion.Lerp(Player.rotation, PlayerRotation, SpeedCamera[currentTargetIndex] * Time.deltaTime);
+        Quaternion PlayerRotation = Quaternion.LookRotation(directionPlayer);
+        Player.transform.rotation = Quaternion.Lerp(Player.rotation, PlayerRotation, speedCamera * Time.deltaTime);
 
         Vector3 directionCam = target.position - cam.transform.position;
 
         Quaternion CamRotation = Quaternion.LookRotation(directionCam);
-        cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, CamRotation, SpeedCamera[currentTargetIndex] * Time.deltaTime);
+        cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, CamRotation, speedCamera * Time.deltaTime);
 
-        float transitionTime = TransitionDuration[currentTargetIndex];
+
 
         targetTimer += Time.deltaTime;
 
@@ -142,13 +150,14 @@ public class FixedCameraWithZoom : MonoBehaviour
         {
             targetTimer = 0f;
 
-            if (currentTargetIndex < TargetsMrBeast.Count - 1)
+            if (currentTargetIndex < sequences.Length - 1)
             {
                 currentTargetIndex++;
                 Debug.Log("Cambiando al Target: " + currentTargetIndex);
             }
         }
-    } 
+    }
+
 
 
 
@@ -160,18 +169,6 @@ public class FixedCameraWithZoom : MonoBehaviour
         playerCamera.CantMoveCamera = true;
     }
 
-    private void MatchList()
-    {
-        while (TransitionDuration.Count < TargetsMrBeast.Count)
-        {
-            TransitionDuration.Add(1f);
-        }
-        while (SpeedCamera.Count < TargetsMrBeast.Count)
-        {
-            SpeedCamera.Add(1f);
-        }
-
-    }
     private void ResetCameraSequence()
     {
         currentTargetIndex = 0;
@@ -182,16 +179,42 @@ public class FixedCameraWithZoom : MonoBehaviour
     private void DurationTotalScene()
     {
         DurationTotal = 0f;
-    
-            foreach (float duration in TransitionDuration)
+        if (sequences == null || sequences.Length == 0)
+            return;
+
+            foreach (ObjectWithFocus obj in sequences[currentSequenceIndex].objectives)
             {
-                DurationTotal += duration;
+                DurationTotal += obj.TransitionDuration;
             }
     }
 
-    public bool Active 
+    // Activa la secuencia ya armada en pools (sin pasar foco ni tiempos desde afuera).
+    public void PlayFocusSequence()
     {
-        get { return active; }
-        private set { active = value; }
+        enabled = true;
+        ResetCameraSequence();
+        DurationTotalScene();
+        isPlayingSequence = true;
     }
+
+    // Duración total de la secuencia (para coroutines que esperan al foco).
+    public float GetTotalSequenceDuration()
+    {
+        DurationTotalScene();
+        return DurationTotal;
+    }
+
+    public void PlaySequence(int sequenceIndex)
+    {
+        currentSequenceIndex = sequenceIndex;
+
+        currentTargetIndex = 0;
+        targetTimer = 0f;
+        timer = 0f;
+
+        DurationTotalScene();
+
+        isPlayingSequence = true;
+    }
+
 }

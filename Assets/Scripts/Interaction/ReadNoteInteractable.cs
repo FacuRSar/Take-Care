@@ -31,7 +31,7 @@ public class ReadNoteInteractable : Interactable
 
     public override void Interact(PlayerInteraction player)
     {
-        cameraScript.active = true;
+        cameraScript.isPlayingSequence = true;
         if (alreadyRead)
         {
             // si ya fue leída, mostramos una respuesta más simple

@@ -7,6 +7,9 @@ public class Cry : MonoBehaviour
     Bars bars;
 
     public event Action AddCryBar;
+
+
+    bool IsQuestCryCompleted;
     void Awake()
     {
         dollEmotionSystem = GetComponent<DollEmotionSystem>();
@@ -39,20 +42,23 @@ public class Cry : MonoBehaviour
             // Sonido de llanto fuerte, Lágrimas visibles, Agitación intensa
             //Posible trigger de ataque si no se calma
             // Si el jugador no hace nada, la muñeca podría entrar en un estado de Angry o agresión después de cierto tiempo en este estado
+
         }
         else if (bars._CurrentCryBar >= bars._MaxBar * 0.5f)
         {
             //Lágrimas ocasionales, Sonido de llanto suave,Cabeza baja a ratos
+
         }
         else if (bars._CurrentCryBar >= bars._MaxBar * 0.25f)
         {
 
-            //Micro sonidos (sniffling leve)
         }
         else
         {
             //Respiración normal o casi inexistente
             // si pasa x tiempo vuelve a idle 
+
+                dollEmotionSystem.ChangeState(DollState.Idle);
         }
     }
 }

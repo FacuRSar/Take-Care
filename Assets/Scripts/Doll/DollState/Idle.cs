@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Idle : MonoBehaviour
@@ -5,6 +6,10 @@ public class Idle : MonoBehaviour
     DollEmotionSystem dollEmotionSystem;
 
     [SerializeField] float distanceToPlayerMin;
+
+    public event Action AddHappyBar;
+    public event Action AddCryBar;
+    public event Action AddAngryBar;
 
     bool PlayerIsFacingAway;
 
@@ -40,6 +45,10 @@ public class Idle : MonoBehaviour
     void Update()
     {
         if (dollEmotionSystem.Player == null) return;
+
+        AddAngryBar?.Invoke();
+        AddCryBar?.Invoke();
+        AddHappyBar?.Invoke();
 
         Vector3 DistanceToPlayer = dollEmotionSystem.Player.transform.position - dollEmotionSystem.Doll.transform.position;
 
