@@ -11,6 +11,7 @@ public class StructureQuest : ScriptableObject
     [System.Serializable]
     public struct Quest
     {
+        [SerializeField] private questEmotionType State;
         [SerializeField] private questType QuestType;
 
         public string Name;
@@ -31,25 +32,25 @@ public class StructureQuest : ScriptableObject
         }
 
         [Header("Points")]
-        public string EmotionID_0;
+        public string EmotionID;
         public int addpoint;
         public addOtherEmotion[] AddPointsEmotions;
 
         [System.Serializable]
         public struct addOtherEmotion
         {
-            public string EmotionID_1;
+            public string EmotionID;
             public int addPoint;
         }
 
-        public string EmotionID_2;
+        public string EmotionID_;
         public int removePoint;
         public reduceOtherEmotion[] removePointsEmotions;
 
         [System.Serializable]
         public struct reduceOtherEmotion
         {
-            public string EmotionID_3;
+            public string EmotionID_;
             public int removePoint;
         }
 

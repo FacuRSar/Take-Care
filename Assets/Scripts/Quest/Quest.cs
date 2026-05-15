@@ -1,11 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
 
 public class Quest : MonoBehaviour
 {
     [Header("Data Source")]
-    [SerializeField] private StructureQuest.Quest data; // Datos serializados de la misión (ID, nombre, descripción, etc.)
+    //[SerializeField] private StructureQuest.Quest data; // Datos serializados de la misión (ID, nombre, descripción, etc.)
+    [SerializeField] private List<StructureQuest.Quest> data = new();
+
+    [SerializeField] private questEmotionType StateType;
+    [SerializeField] private questType QuestType;
 
     [Header("Runtime Status")] // estado en tiempo de ejecución
     private bool isActive;   // true si la misión está activa
@@ -26,6 +33,10 @@ public class Quest : MonoBehaviour
     [SerializeField] GameObject Destiny; // objeto destino/marker en la escena relacionado con la misión
     [SerializeField] GameObject Room;    // referencia a la sala de la misión
 
+    private int indexQuest;
+
+
+
     private void Awake()
     {
         // Obtener el renderer y guardar el material original para poder restaurarlo después
@@ -38,20 +49,39 @@ public class Quest : MonoBehaviour
     }
 
     // Inicializa los datos de la misión desde una estructura externa
-    public void Initialize(StructureQuest.Quest questData)
+    public void Initialize(StructureQuest.Quest[] questData)
     {
-        this.data = questData;
-    }
+        data.Clear();
+        data.AddRange(questData);
 
+
+    }
     // Devuelve el nombre de la quest guardado en data
-    public string getName() => data.Name;
+    public questEmotionType GetStateType() => StateType;
+    public questType GetQuestType() => QuestType;
+    
+    public string getName() => data[indexQuest].Name;
 
     // Devuelve el ID de la quest guardado en data
-    public int getID() => data.id;
+    public int getID() => data[indexQuest].id;
 
     // Devuelve la descripción de la quest.
     // Si está vacía o es null, devuelve "No description"
-    public string getDescription() => !string.IsNullOrEmpty(data.description) ? data.description : "No description";
+    public string getDescription() => !string.IsNullOrEmpty(data[indexQuest].description) ? data[indexQuest].description : "No description";
+
+    public bool differentItems() => data[indexQuest].differentItems;
+
+    public List<StructureQuest.Quest.itemsToPick> GetItemsToPick() => data[indexQuest].date;
+
+    public string EmotionID() => data[indexQuest].EmotionID;
+    public int AddPoint() => data[indexQuest].addpoint;
+
+    public StructureQuest.Quest.addOtherEmotion[] GetExtraPositiveEmotions() => data[indexQuest].AddPointsEmotions;
+
+    public string EmotionID_() => data[indexQuest].EmotionID_;
+    public int removePoint() => data[indexQuest].removePoint;
+
+    public StructureQuest.Quest.reduceOtherEmotion[] GetExtraNegativeEmotions() => data[indexQuest].removePointsEmotions;
 
     // Devuelve si la quest está completada o no
     public bool getIsCompleted() => isComplete;
@@ -61,7 +91,6 @@ public class Quest : MonoBehaviour
 
     private void Update()
     {
-        // Si la misión está activa, avanzar el temporizador
         if (isActive)
         {
             timer += Time.deltaTime;
@@ -82,8 +111,6 @@ public class Quest : MonoBehaviour
     public bool getIsActive() => isActive;
     public void setTimer() => timer = 0; // reinicia el temporizador
     public float getTimer() => timer;
-
-    // Comprueba si el temporizador ha alcanzado o superado la duración configurada
     public bool checkTimer()
     {
         if (getTimer() >= timerDuration)
@@ -118,6 +145,6 @@ public class Quest : MonoBehaviour
     // Punto de extensión para manejar la lógica cuando la misión falla (ej. notificar, resetear, penalizar al jugador)
     public void failQuest()
     {
-        // Implementar comportamiento de fallo de misión aquí
+        // Implementar comportamiento de fallo de misión
     }
 }

@@ -6,12 +6,17 @@ public class QuestController : MonoBehaviour
 {
    private Quest currentQuest;
 
-    //[SerializeField] private List<Quest> quests = new List<Quest>();
-   // [SerializeField]
+    [SerializeField] private List<Quest> allQuest = new List<Quest>();
+    [SerializeField] private Bars bars;
+    // [SerializeField]
     //private int questIndex;
+    private void Awake()
+    {
+       allQuest = new List<Quest>(FindObjectsByType<Quest>(FindObjectsSortMode.None));
+    }
     private void Start()
     {
-        
+        bars.InitializeQuestPools(allQuest);
         //giveQuest();
     }
     public void ActivateQuest(Quest selectedQuest)

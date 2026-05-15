@@ -4,3 +4,9 @@ public enum questType
     ToGo,
     ToDelivery
 }
+public enum questEmotionType
+{
+    Cry,
+    Angry,
+    Happy
+}

@@ -79,9 +79,9 @@ public class Bars : MonoBehaviour
         cry.AddCryBar += _AddCryBar;
         happy.AddHappyBar += _AddHappyBar;
 
+        
         MatchList();
     }
-
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -104,8 +104,31 @@ public class Bars : MonoBehaviour
 
       //  if (ActiveAddPointsForQuest) AddPointsForQuest();
     }
+    public void InitializeQuestPools(List<Quest> allQuest)
+    {
+        foreach (Quest quest in allQuest)
+        {
+            switch (quest.GetStateType())
+            {
+                case questEmotionType.Happy:
+                    PoolHappyQuest.Add(quest);
+                    HappyQuestWeights.Add(1f);
+                    break;
 
-    int GetRandomIndex(List<float> weights)
+                case questEmotionType.Cry:
+                    PoolCryQuest.Add(quest);
+                    CryQuestWeights.Add(1f);
+                    break;
+
+                case questEmotionType.Angry:
+                    PoolAngryQuest.Add(quest);
+                    AngryQuestWeights.Add(1f);
+                    break;
+            }
+        }
+    }
+
+        int GetRandomIndex(List<float> weights)
     {
         float WeightTotal = 0f;
 
@@ -175,19 +198,6 @@ public class Bars : MonoBehaviour
         Weights.Add(1f);
         Weights.Add(1f);
         Weights.Add(1f);
-
-        while (PoolAngryQuest.Count > AngryQuestWeights.Count)
-        {
-            AngryQuestWeights.Add(1f);
-        }
-        while (PoolCryQuest.Count > CryQuestWeights.Count)
-        {
-            CryQuestWeights.Add(1f);
-        }
-        while (PoolHappyQuest.Count > HappyQuestWeights.Count)
-        {
-            HappyQuestWeights.Add(1f);
-        }
     }
 
     void _AddHappyBar()

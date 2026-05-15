@@ -257,6 +257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eaee5583fa97c7438dac8974308fff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestController
+  allQuest: []
+  bars: {fileID: 812712376}
 --- !u!114 &292492148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,22 +271,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56cfd4811cda4974b99e461d89172929, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Quest
-  data:
-    QuestType: 0
-    Name: 
-    description: 
-    id: 0
-    differentItems: 0
-    date: []
-    EmotionID_0: 
-    addpoint: 0
-    AddPointsEmotions: []
-    EmotionID_2: 
-    removePoint: 0
-    removePointsEmotions: []
+  data: []
+  StateType: 0
+  QuestType: 0
   timerDuration: 60
   transparentMaterial: {fileID: 0}
-  playerHealth: {fileID: 0}
+  playerHealth: {fileID: 402875970}
   Destiny: {fileID: 0}
   Room: {fileID: 0}
 --- !u!1001 &402875935
@@ -435,6 +427,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5069415332984948963, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
       insertIndex: -1
       addedObject: {fileID: 402875963}
+    - targetCorrespondingSourceObject: {fileID: 5069415332984948963, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 402875970}
   m_SourcePrefab: {fileID: 100100000, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
 --- !u!1 &402875936 stripped
 GameObject:
@@ -490,6 +485,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4ca6f8af4e28d45ad0e679ea94ab39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSanity
+--- !u!114 &402875970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402875936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925d4b152c73c2843ad15f214a862328, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player_Health
+  MaxHealth: 0
+  MinHealth: 0
+  CurrentHealth: 0
 --- !u!1 &644892849
 GameObject:
   m_ObjectHideFlags: 0
@@ -941,15 +951,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bars
   SpeedBar: 1
-  PoolHappyQuest:
-  - {fileID: 0}
-  - {fileID: 0}
-  PoolCryQuest:
-  - {fileID: 0}
-  - {fileID: 0}
-  PoolAngryQuest:
-  - {fileID: 0}
-  - {fileID: 0}
+  PoolHappyQuest: []
+  PoolCryQuest: []
+  PoolAngryQuest: []
   selectedQuest: {fileID: 292492148}
   questController: {fileID: 292492147}
 --- !u!1 &899249403
@@ -1013,37 +1017,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1098027177}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1055110587
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1055110588}
-  m_Layer: 0
-  m_Name: QuesctCry
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1055110588
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055110587}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.48118, y: 0.21571, z: 23.8283}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1098027175
 GameObject:
@@ -1415,4 +1388,3 @@ SceneRoots:
   - {fileID: 1743663195}
   - {fileID: 1534028983}
   - {fileID: 292492145}
-  - {fileID: 1055110588}
