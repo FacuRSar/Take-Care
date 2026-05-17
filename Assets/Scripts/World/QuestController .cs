@@ -1,54 +1,66 @@
-using NUnit.Framework;
-using UnityEngine;
+
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class QuestController : MonoBehaviour
 {
-   private Quest currentQuest;
+   private Quest AllQuest;
 
     [SerializeField] private List<Quest> allQuest = new List<Quest>();
+
     [SerializeField] private Bars bars;
     // [SerializeField]
     //private int questIndex;
-    private void Awake()
-    {
-       allQuest = new List<Quest>(FindObjectsByType<Quest>(FindObjectsSortMode.None));
-    }
     private void Start()
     {
         bars.InitializeQuestPools(allQuest);
         //giveQuest();
     }
+    public void Initialize(List<StructureQuest.QuestGeneric> questGenerics)
+    {
+        allQuest.Clear();
+
+        foreach (var questGeneric in questGenerics)
+        {
+            Quest newQuest = new Quest();
+
+            // Inicializamos el nuevo Quest (Tipo B) con los datos de questGeneric
+            newQuest.Initialize(new StructureQuest.QuestGeneric[] { questGeneric }); // sirve para que las dos partes del codigo se entiendan
+
+            allQuest.Add(newQuest);
+        }
+    }
     public void ActivateQuest(Quest selectedQuest)
     {
-        if (currentQuest != null && currentQuest.getIsActive())
+        if (AllQuest != null && AllQuest.getIsActive())
         { 
-            Debug.LogWarning("Ya hay una misión en curso: " + currentQuest.name);
+            Debug.LogWarning("Ya hay una misión en curso: " + AllQuest.name);
             return;
         }
-        currentQuest = selectedQuest;
-        currentQuest.setActive(true);
+        AllQuest = selectedQuest;
+        AllQuest.setActive(true);
 
-        Debug.Log("QuestController: Ejecutando misión: " + currentQuest.name);
+        Debug.Log("QuestController: Ejecutando misión: " + AllQuest.name);
     }
     private void Update()
     {
-        if (currentQuest == null) return;
+        if (AllQuest == null) return;
 
-        if (currentQuest.getIsCompleted())
+        if (AllQuest.getIsCompleted())
         {
             Debug.Log("Misión completada con éxito");
             FinalizeCurrentQuest();
         }
-        else if (currentQuest.checkTimer())
+        else if (AllQuest.checkTimer())
         {
             Debug.Log("Misión fallida por tiempo");
-            currentQuest.failQuest();
+            AllQuest.failQuest();
             FinalizeCurrentQuest();
         }
-        else if (currentQuest.getTimer() >= currentQuest.getTimerDuration() * 0.75f)
+        else if (AllQuest.getTimer() >= AllQuest.getTimerDuration() * 0.75f)
         {
-            currentQuest.markObjective();
+            AllQuest.markObjective();
         }
 
         /*
@@ -75,8 +87,8 @@ public class QuestController : MonoBehaviour
 
     private void FinalizeCurrentQuest()
     {
-        currentQuest.setActive(false);
-        currentQuest = null; // Queda libre para la siguiente misión que mande Bars
+        AllQuest.setActive(false);
+        AllQuest = null; // Queda libre para la siguiente misión que mande Bars
     }
 
 

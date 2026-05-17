@@ -1,3 +1,5 @@
+using NUnit.Framework.Interfaces;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,13 +8,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Quest", menuName = "Game/Quest", order = 1)]
 public class StructureQuest : ScriptableObject
 {
-
-
     [System.Serializable]
-    public struct Quest
+    public struct QuestGeneric
     {
-        [SerializeField] private questEmotionType State;
-        [SerializeField] private questType QuestType;
+        [SerializeField] public questEmotionType State;
+        [SerializeField] public questType QuestType;
 
         public string Name;
         public string description;
@@ -66,7 +66,11 @@ public class StructureQuest : ScriptableObject
             description = newDescription;
         }
     }
-    public Quest[] quests;
+    public QuestGeneric[] quests;
 
-
+    void OnEnable()
+    {
+        Quest quest = FindFirstObjectByType<Quest>();
+        quest.Initialize(quests);
+    }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Quest
   m_EditorClassIdentifier: Assembly-CSharp::StructureQuest
   quests:
-  - State: 0
+  - State: 1
     QuestType: 0
     Name: Busqueda
     description: "Busca a la mu\xF1eca"
@@ -31,7 +31,7 @@ MonoBehaviour:
     removePointsEmotions:
     - EmotionID_: 
       removePoint: -5
-  - State: 1
+  - State: 2
     QuestType: 0
     Name: Busqueda
     description: "Busca a la mu\xF1eca"

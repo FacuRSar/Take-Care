@@ -271,14 +271,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56cfd4811cda4974b99e461d89172929, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Quest
-  data: []
+  data:
+  - State: 1
+    QuestType: 0
+    Name: Busqueda
+    description: "Busca a la mu\xF1eca"
+    id: 0
+    differentItems: 0
+    date:
+    - name: 
+      quantity: 0
+      itemID: 0
+    EmotionID: 
+    addpoint: 25
+    AddPointsEmotions: []
+    EmotionID_: 
+    removePoint: -5
+    removePointsEmotions:
+    - EmotionID_: 
+      removePoint: -5
+  - State: 2
+    QuestType: 0
+    Name: Busqueda
+    description: "Busca a la mu\xF1eca"
+    id: 1
+    differentItems: 1
+    date:
+    - name: Dool
+      quantity: 1
+      itemID: 0
+    EmotionID: 
+    addpoint: 25
+    AddPointsEmotions: []
+    EmotionID_: 
+    removePoint: -5
+    removePointsEmotions:
+    - EmotionID_: 
+      removePoint: -5
+  - State: 0
+    QuestType: 0
+    Name: Busqueda
+    description: "Busca a la mu\xF1eca"
+    id: 2
+    differentItems: 1
+    date:
+    - name: Dool
+      quantity: 1
+      itemID: 0
+    EmotionID: 
+    addpoint: 25
+    AddPointsEmotions: []
+    EmotionID_: 
+    removePoint: -5
+    removePointsEmotions:
+    - EmotionID_: 
+      removePoint: -5
   StateType: 0
   QuestType: 0
   timerDuration: 60
   transparentMaterial: {fileID: 0}
-  playerHealth: {fileID: 402875970}
   Destiny: {fileID: 0}
   Room: {fileID: 0}
+  Player: {fileID: 0}
 --- !u!1001 &402875935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -954,7 +1008,7 @@ MonoBehaviour:
   PoolHappyQuest: []
   PoolCryQuest: []
   PoolAngryQuest: []
-  selectedQuest: {fileID: 292492148}
+  selectedQuest: {fileID: 0}
   questController: {fileID: 292492147}
 --- !u!1 &899249403
 GameObject:
@@ -1382,9 +1436,9 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 644892851}
-  - {fileID: 402875935}
   - {fileID: 720179292}
   - {fileID: 1098027177}
   - {fileID: 1743663195}
   - {fileID: 1534028983}
   - {fileID: 292492145}
+  - {fileID: 402875935}

@@ -1,3 +1,4 @@
+using NUnit.Framework.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,8 @@ public class Quest : MonoBehaviour
 {
     [Header("Data Source")]
     //[SerializeField] private StructureQuest.Quest data; // Datos serializados de la misión (ID, nombre, descripción, etc.)
-    [SerializeField] private List<StructureQuest.Quest> data = new();
+    [SerializeField] private List<StructureQuest.QuestGeneric> data = new List<StructureQuest.QuestGeneric>();
+    QuestController controller;
 
     [SerializeField] private questEmotionType StateType;
     [SerializeField] private questType QuestType;
@@ -27,7 +29,8 @@ public class Quest : MonoBehaviour
     [SerializeField] private Material transparentMaterial; // material temporal para destacar la misión
 
     [Header("References")]
-    [SerializeField] private Player_Health playerHealth;
+     private Player_Health playerHealth;
+     private DollEmotionSystem dollEmotionSystem;
 
     [Header("Scene Objects")]
     [SerializeField] GameObject Destiny; // objeto destino/marker en la escena relacionado con la misión
@@ -35,10 +38,18 @@ public class Quest : MonoBehaviour
 
     private int indexQuest;
 
+    [SerializeField] private Transform Player;
 
+    private void OnEnable()
+    {
+        controller.Initialize(data);
+    }
 
     private void Awake()
     {
+        controller = FindFirstObjectByType<QuestController>();
+        playerHealth = FindFirstObjectByType<Player_Health>();
+
         // Obtener el renderer y guardar el material original para poder restaurarlo después
         rend = GetComponent<MeshRenderer>();
         if (rend != null) originalMaterial = rend.material;
@@ -49,42 +60,73 @@ public class Quest : MonoBehaviour
     }
 
     // Inicializa los datos de la misión desde una estructura externa
-    public void Initialize(StructureQuest.Quest[] questData)
+    public void Initialize(StructureQuest.QuestGeneric[] questData)
     {
         data.Clear();
         data.AddRange(questData);
-
-
     }
+    public questEmotionType GetStateType() => data[indexQuest].State;
     // Devuelve el nombre de la quest guardado en data
-    public questEmotionType GetStateType() => StateType;
-    public questType GetQuestType() => QuestType;
-    
-    public string getName() => data[indexQuest].Name;
+    public questType GetQuestType() => data[indexQuest].QuestType;
+
+    private void configureQuest()
+    {
+        switch(QuestType)
+        {
+            case questType.ToCollect:
+                LogicToCollect();
+                break;
+            case questType.ToGo:
+                LogicToGo();
+                break;
+            case questType.ToDelivery:
+                LogicToDelivery();
+                break;
+        }
+    }
+
+    private void LogicToCollect()
+    {
+        
+    }
+    private void LogicToGo()
+    {
+  
+    }
+    private void LogicToDelivery()
+    {
+        
+    }
+
+
+
+    private string getName() => data[indexQuest].Name;// grobal
 
     // Devuelve el ID de la quest guardado en data
-    public int getID() => data[indexQuest].id;
+    private int getID() => data[indexQuest].id;// grobal
 
     // Devuelve la descripción de la quest.
     // Si está vacía o es null, devuelve "No description"
-    public string getDescription() => !string.IsNullOrEmpty(data[indexQuest].description) ? data[indexQuest].description : "No description";
+    private string getDescription() => !string.IsNullOrEmpty(data[indexQuest].description) ? data[indexQuest].description : "No description";// grobal
 
-    public bool differentItems() => data[indexQuest].differentItems;
+    private bool differentItems() => data[indexQuest].differentItems; // ToCollect
 
-    public List<StructureQuest.Quest.itemsToPick> GetItemsToPick() => data[indexQuest].date;
+    private List<StructureQuest.QuestGeneric.itemsToPick> GetItemsToPick() => data[indexQuest].date; // ToCollect
 
-    public string EmotionID() => data[indexQuest].EmotionID;
-    public int AddPoint() => data[indexQuest].addpoint;
+    private string EmotionID() => data[indexQuest].EmotionID; // grobal
+    private int AddPoint() => data[indexQuest].addpoint;// grobal
 
-    public StructureQuest.Quest.addOtherEmotion[] GetExtraPositiveEmotions() => data[indexQuest].AddPointsEmotions;
+    private StructureQuest.QuestGeneric.addOtherEmotion[] GetExtraPositiveEmotions() => data[indexQuest].AddPointsEmotions;// grobal
 
-    public string EmotionID_() => data[indexQuest].EmotionID_;
-    public int removePoint() => data[indexQuest].removePoint;
+    private string EmotionID_() => data[indexQuest].EmotionID_;// grobal
+    private int removePoint() => data[indexQuest].removePoint;// grobal
 
-    public StructureQuest.Quest.reduceOtherEmotion[] GetExtraNegativeEmotions() => data[indexQuest].removePointsEmotions;
+    private StructureQuest.QuestGeneric.reduceOtherEmotion[] GetExtraNegativeEmotions() => data[indexQuest].removePointsEmotions;// grobal
 
     // Devuelve si la quest está completada o no
     public bool getIsCompleted() => isComplete;
+
+
 
     // Cambia el estado de completado de la quest
     public void setIsCompleted(bool value) => isComplete = value;
@@ -94,6 +136,10 @@ public class Quest : MonoBehaviour
         if (isActive)
         {
             timer += Time.deltaTime;
+        }
+        if (controller == null)
+        {
+            Debug.LogError("Controller no ta");
         }
     }
 
