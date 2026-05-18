@@ -120,7 +120,14 @@ public class Watching : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(dollEmotionSystem.Doll.transform.position, DistanceToDollMin);
+        if (dollEmotionSystem == null)
+        {
+            return;
+        }
+        else
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(dollEmotionSystem.Doll.transform.position, DistanceToDollMin);
+        }
     }
 }
