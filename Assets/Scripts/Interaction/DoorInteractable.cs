@@ -97,6 +97,7 @@ public class DoorInteractable : Interactable
             }
         }
     }
+
     public override void Interact(PlayerInteraction player)
     {
         // Si la puerta esta moviendose, no dejo interactuar para evitar bugs o spam.
@@ -123,6 +124,38 @@ public class DoorInteractable : Interactable
 
         // si pasa todas las validaciones, alterna apertura o cierre
         ToggleDoor();
+    }
+
+    public bool IsOpen()
+    {
+        return isOpen;
+    }
+
+    public bool IsMoving()
+    {
+        return isMoving;
+    }
+
+    public void OpenFromAI()
+    {
+        // Metodo para que una IA pueda abrir puertas sin hacer toggle.
+        // Esto evita que el stalker abra y cierre la misma puerta en loop.
+        if (isOpen || isMoving)
+        {
+            return;
+        }
+
+        if (!canOpen)
+        {
+            return;
+        }
+
+        if (!CanOpenByState())
+        {
+            return;
+        }
+
+        OpenDoor();
     }
 
     private bool CanOpenByState()
@@ -169,6 +202,18 @@ public class DoorInteractable : Interactable
         }
 
         targetRotation = Quaternion.Euler(0f, 0f, targetZ);
+        isMoving = true;
+    }
+
+    private void OpenDoor()
+    {
+        isOpen = true;
+
+        // Apertura directa para IA. No hace toggle, solo abre.
+        SFXManager.Instance.Play3D("OpenDoor", transform.position);
+        pendingEndSound = null;
+
+        targetRotation = Quaternion.Euler(0f, 0f, openedZRotation);
         isMoving = true;
     }
 }

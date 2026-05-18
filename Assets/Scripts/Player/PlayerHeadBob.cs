@@ -26,6 +26,7 @@ public class PlayerHeadBob : MonoBehaviour
     private Vector3 originalLocalPosition;
     private float bobTimer;
     private float debugTimer;
+    private float panicBobMultiplier = 1f;
 
     private void Start()
     {
@@ -87,8 +88,8 @@ public class PlayerHeadBob : MonoBehaviour
 
         float speed = playerMovement.CurrentSpeed;
 
-        float bobFrequency = speed * bobFrequencyMultiplier;
-        float bobAmount = speed * bobAmountMultiplier;
+        float bobFrequency = speed * bobFrequencyMultiplier * panicBobMultiplier;
+        float bobAmount = speed * bobAmountMultiplier * panicBobMultiplier;
 
         if (playerMovement.IsCrouching)
         {
@@ -107,5 +108,10 @@ public class PlayerHeadBob : MonoBehaviour
             targetPosition,
             Time.deltaTime * returnSpeed
         );
+    }
+
+    public void SetPanicBobMultiplier(float multiplier)
+    {
+        panicBobMultiplier = Mathf.Max(1f, multiplier);
     }
 }

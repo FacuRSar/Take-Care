@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class IntroSequenceController : MonoBehaviour
 {
@@ -14,15 +15,52 @@ public class IntroSequenceController : MonoBehaviour
 
     [Header("Referencias")]
     [SerializeField] private PhoneInteractable phoneInteractable;
-    [SerializeField] private FixedCameraWithZoom energyFocusCamera;
-    [SerializeField] private FixedCameraWithZoom phoneFocusCamera;
-    [SerializeField] private FixedCameraWithZoom dollFocusCamera;
-    [SerializeField] private FixedCameraWithZoom bathroomFocusCamera;
+    [SerializeField] private FixedCameraWithZoom focusCamera;
+
+    [Tooltip("Indices en focusCamera.sequences: 0 = energia, 1 = telefono, etc. Ajustalos al orden que armen en el controlador.")]
+    [SerializeField] private int energyFocusSequenceIndex;
+    [SerializeField] private int phoneFocusSequenceIndex = 1;
+    [SerializeField] private int dollFocusSequenceIndex = 2;
+    [SerializeField] private int bathroomFocusSequenceIndex = 3;
+
+    [Header("Zoom personalizado de focus")]
+    [SerializeField] private bool useCustomEnergyZoom = false;
+    [SerializeField] private float energyCustomZoomFov = 35f;
+
+    [SerializeField] private bool useCustomPhoneZoom = false;
+    [SerializeField] private float phoneCustomZoomFov = 30f;
+
+    [SerializeField] private bool useCustomDollZoom = false;
+    [SerializeField] private float dollCustomZoomFov = 25f;
+
+    [SerializeField] private bool useCustomBathroomZoom = false;
+    [SerializeField] private float bathroomCustomZoomFov = 28f;
+
     [SerializeField] private GameStateController gameStateController;
     [SerializeField] private SFXManager sfxManager;
     [SerializeField] private MusicManager musicManager;
     [SerializeField] private DemoEndController demoEndController;
-    [SerializeField] private MirrorMessageController mirrorMessageController;
+
+    [Header("Persecucion")]
+    [SerializeField] private PursuerSpawnController pursuerSpawnController;
+    // Reemplaza al MirrorChaseEpilogue viejo. Se dispara al terminar el focus del baño.
+
+    [Header("Escape / Shock")]
+    [SerializeField] private string agitatedBreathingLoopId = "AgitatedBreathing";
+    [SerializeField] private GameObject playerHeadBobTarget;
+    [SerializeField] private string headBobEscapeMessage = "ApplyEscapeConfig";
+    [SerializeField] private Image mentalFatigueImage;
+    [SerializeField] private float mentalFatigueFadeDuration = 45f;
+    [SerializeField] private float mentalFatigueTargetAlpha = 0.55f;
+    /* Esto deja preparado el estado mental del jugador para la persecucion:
+     * respiracion agitada en loop
+     * cambio opcional del headbob usando SendMessage
+     * cierre lento de pantalla con una Image negra/vignette
+     */
+
+    [Header("Mensaje del espejo (objetos en escena)")]
+    [SerializeField] private GameObject[] mirrorMessageObjects;
+    [SerializeField] private bool mirrorMessageHideOnStart = true;
 
     [Header("Objetos de la escena")]
     [SerializeField] private GameObject dollObject;
@@ -33,19 +71,11 @@ public class IntroSequenceController : MonoBehaviour
     [SerializeField] private bool startLightHintsOnStart = true;
     [SerializeField] private float introDialogueStartDelay = 0f;
 
-    [Header("Timing")]
-    [SerializeField] private float energyFocusDuration = 2f;
-    [SerializeField] private float phoneFocusDuration = 2f;
-    [SerializeField] private float dollFocusDuration = 0.5f;
-    [SerializeField] private float bathroomFocusDuration = 2f;
-
     [Header("SFX opcionales")]
     [SerializeField] private string dollAppearExtraSfxId = "";
 
-    
-
     [Space(10)] // Para separar los focus
-    [SerializeField] private float dollLaughDelay = 0f; 
+    [SerializeField] private float dollLaughDelay = 0f;
     [SerializeField] private float energyReactionDialogueDelay = 0f;
     [SerializeField] private float phoneHelloDialogueDelay = 0f;
     [SerializeField] private float dollReactionDialogueDelay = 0f;
@@ -64,6 +94,7 @@ public class IntroSequenceController : MonoBehaviour
     private bool mirrorTriggered;
     private bool faucetClosed;
     private bool escapeAttempted;
+    private Coroutine mentalFatigueRoutine;
 
     private void Awake()
     {
@@ -90,6 +121,19 @@ public class IntroSequenceController : MonoBehaviour
         if (dollObject != null)
         {
             dollObject.SetActive(false);
+        }
+
+        if (mirrorMessageHideOnStart)
+        {
+            SetMirrorMessageObjectsActive(false);
+        }
+
+        if (mentalFatigueImage != null)
+        {
+            Color color = mentalFatigueImage.color;
+            color.a = 0f;
+            mentalFatigueImage.color = color;
+            mentalFatigueImage.gameObject.SetActive(true);
         }
 
         if (playIntroOnStart)
@@ -121,7 +165,7 @@ public class IntroSequenceController : MonoBehaviour
             HintDialogueController.Instance.StopHints();
         }
 
-        PlayFocus(energyFocusCamera, energyFocusDuration);
+        PlayFocusSequence(energyFocusSequenceIndex, useCustomEnergyZoom, energyCustomZoomFov);
         StartCoroutine(EnablePhoneAfterFocus());
     }
 
@@ -139,12 +183,6 @@ public class IntroSequenceController : MonoBehaviour
         StopLoop("PhoneRing");
 
         StartCoroutine(PhoneAnswerRoutine());
-        // version vieja: esto pasaba todo junto aca abajo, pum pum pum, y quedaba medio atragantado
-        // lo dejo comentado para recordar que ahora el ritmo vive en phoneanswerroutine
-        // play2d("phonestatic");
-        // playfocus(phonefocuscamera, phonefocusduration);
-        // if (dollobject != null) dollobject.setactive(true);
-        // startcoroutine(phonescareroutine());
     }
 
     private IEnumerator PhoneAnswerRoutine()
@@ -152,8 +190,9 @@ public class IntroSequenceController : MonoBehaviour
         // orden del telefono: miro el telefono, suena la estatica, digo hola, y recien despues cae la risa
         // si lo hacemos todo de una queda medio chueco, lo se porque tuve que meter esto porque hacia eso jajajj
         float phoneDialogueWait = phoneHelloDialogueDelay + GetDialogueDuration(PhoneHelloDialogueId);
-        float phoneTotalWait = Mathf.Max(0f, phoneDialogueWait) + phoneFocusDuration;
-        PlayFocus(phoneFocusCamera, phoneTotalWait);
+        float phoneTotalWait = Mathf.Max(0f, phoneDialogueWait);
+
+        PlayFocusSequence(phoneFocusSequenceIndex, useCustomPhoneZoom, phoneCustomZoomFov);
         PlayLoop2D("PhoneStatic");
         StartCoroutine(PlayDialogueAfterDelay(PhoneHelloDialogueId, phoneHelloDialogueDelay));
 
@@ -161,8 +200,6 @@ public class IntroSequenceController : MonoBehaviour
 
         StopLoop("PhoneStatic");
 
-        // version vieja: play2d("dolllaugh") se ejecutaba inmediatamente al terminar el focus
-        // ahora uso dolllaughdelay para ajustar desde inspector cuanto tarda en aparecer la muneca
         if (dollLaughDelay > 0f)
         {
             yield return new WaitForSeconds(dollLaughDelay);
@@ -184,7 +221,7 @@ public class IntroSequenceController : MonoBehaviour
             Debug.LogWarning("IntroSequenceController: la muneca no esta asignada, no aparece pero no rompe.");
         }
 
-        PlayFocus(dollFocusCamera, dollFocusDuration);
+        PlayFocusSequence(dollFocusSequenceIndex, useCustomDollZoom, dollCustomZoomFov);
         StartCoroutine(PlayDialogueAndWait(PhoneSurpriseDialogueId, 0f, 0f));
     }
 
@@ -206,34 +243,17 @@ public class IntroSequenceController : MonoBehaviour
     {
         // primero dejamos que el jugador procese la muneca
         // despues rompemos algo en el bano, para romper las bolas nomas
-        // el delay del ruido ahora parte desde el final del dialogo de la muneca
-        // si hace falta adelantarlo, se pone un valor negativo en dollbreakdelay
         yield return StartCoroutine(PlayDialogueAndWait(DollReactionDialogueId, dollReactionDialogueDelay, dollBreakDelay));
 
         Vector3 bathroomPosition = bathroomSoundPoint != null ? bathroomSoundPoint.position : transform.position;
 
-        // version vieja: play2d("bathroombreak");
-        // ahora uso el punto del bano para que el sonido salga desde el lugar configurable
         Play3D("BathroomBreak", bathroomPosition);
         Play2D("JumpScare");
         PlayLoop3D("FaucetLoop", bathroomPosition);
 
         yield return new WaitForSeconds(bathroomReactionDelay);
         StartCoroutine(PlayDialogueAfterDelay(BathroomReactionDialogueId, bathroomReactionDialogueDelay));
-
     }
-
-    // version vieja: este evento disparaba el espejo desde otro lado
-    // lo dejo comentado porque ahora el espejo nace cuando se cierra la canilla, mas ordenadito el drama
-    // public void onmirrormessagetriggered()
-    // {
-    //     if (mirrortriggered) return;
-    //     mirrortriggered = true;
-    //     debug.log("mensaje del espejo activado.");
-    //     setflag("mirror_message_triggered", true);
-    //     play2d("mirrorreveal");
-    //     startcoroutine(bathroomrevealroutine());
-    // }
 
     public void OnFaucetClosed()
     {
@@ -245,19 +265,13 @@ public class IntroSequenceController : MonoBehaviour
         faucetClosed = true;
         // Debug.Log("Canilla cerrada.");
 
-        Vector3 bathroomPosition = bathroomSoundPoint != null ? bathroomSoundPoint.position : transform.position;
-
         SetFlag("faucet_closed", true);
         StopLoop("FaucetLoop");
+
+        Vector3 bathroomPosition = bathroomSoundPoint != null ? bathroomSoundPoint.position : transform.position;
         Play3D("CloseFaucet", bathroomPosition);
 
         StartCoroutine(BathroomRevealRoutine());
-
-        // version vieja: aca se mostraba el espejo y se llamaba a onmirrormessagetriggered()
-        // ahora lo maneja bathroomrevealroutine para que focus, subtitulo y musica salgan en orden
-        // play3d("closefaucet", bathroomposition);
-        // mirrormessagecontroller.showmessage();
-        // onmirrormessagetriggered();
     }
 
     private IEnumerator BathroomRevealRoutine()
@@ -267,22 +281,13 @@ public class IntroSequenceController : MonoBehaviour
             yield break;
         }
 
-        // version vieja: mirrortriggered se usaba en onmirrormessagetriggered()
-        // ahora lo uso aca porque la revelacion del espejo nace desde la canilla
         mirrorTriggered = true;
 
         // la revelacion arranca apenas tocamos la canilla: foco, espejo, sonido y frase
         // la musica espera al final para que el jugador entienda "ah, ahora si corro"
-        PlayFocus(bathroomFocusCamera, bathroomFocusDuration);
+        PlayFocusSequence(bathroomFocusSequenceIndex, useCustomBathroomZoom, bathroomCustomZoomFov);
 
-        if (mirrorMessageController != null)
-        {
-            mirrorMessageController.ShowMessage();
-        }
-        else
-        {
-            Debug.LogWarning("IntroSequenceController: el controlador del espejo no esta asignado.");
-        }
+        SetMirrorMessageObjectsActive(true);
 
         Play2D("MirrorReveal");
 
@@ -291,22 +296,51 @@ public class IntroSequenceController : MonoBehaviour
 
         // espero el focus y tambien el dialogo completo del espejo mas el offset narrativo
         // si queres que la musica entre antes de la ultima linea, mirrorreactiondelay puede ser negativo
+        float bathroomFocusLength = GetActiveFocusSequenceDuration();
         float revealWait = Mathf.Max(
-            bathroomFocusDuration,
+            bathroomFocusLength,
             Mathf.Max(0f, mirrorReactionDialogueDelay + mirrorDialogueDuration + mirrorReactionDelay)
         );
 
         yield return new WaitForSeconds(revealWait);
 
-        // parada de boxes antes de la musica
-        yield return new WaitForSeconds(1f);
+        StartEscapeSequence();
+    }
+
+    private void StartEscapeSequence()
+    {
+        if (GetFlag("escape_phase_started"))
+        {
+            return;
+        }
 
         SetFlag("escape_phase_started", true);
-        // Debug.Log("ESCAPA WACHIN!");
+        // Debug.Log("IntroSequenceController: fase de escape iniciada.");
 
         if (musicManager != null)
         {
             musicManager.PlayTensionMusic();
+        }
+
+        if (!string.IsNullOrEmpty(agitatedBreathingLoopId))
+        {
+            PlayLoop2D(agitatedBreathingLoopId);
+        }
+
+        if (playerHeadBobTarget != null && !string.IsNullOrEmpty(headBobEscapeMessage))
+        {
+            playerHeadBobTarget.SendMessage(headBobEscapeMessage, SendMessageOptions.DontRequireReceiver);
+        }
+
+        StartMentalFatigueFade();
+
+        if (pursuerSpawnController != null)
+        {
+            pursuerSpawnController.StartSpawnSequence();
+        }
+        else
+        {
+            Debug.LogWarning("IntroSequenceController: pursuerSpawnController no esta asignado.");
         }
     }
 
@@ -321,6 +355,8 @@ public class IntroSequenceController : MonoBehaviour
         // Debug.Log("Cierre de demo iniciado");
 
         SetFlag("escape_attempted", true);
+
+        StopLoop(agitatedBreathingLoopId);
 
         if (demoEndController != null)
         {
@@ -337,6 +373,43 @@ public class IntroSequenceController : MonoBehaviour
         return GetFlag("escape_phase_started");
     }
 
+    private void StartMentalFatigueFade()
+    {
+        if (mentalFatigueImage == null)
+        {
+            return;
+        }
+
+        if (mentalFatigueRoutine != null)
+        {
+            StopCoroutine(mentalFatigueRoutine);
+        }
+
+        mentalFatigueRoutine = StartCoroutine(MentalFatigueFadeRoutine());
+    }
+
+    private IEnumerator MentalFatigueFadeRoutine()
+    {
+        float elapsed = 0f;
+
+        Color color = mentalFatigueImage.color;
+        float startAlpha = color.a;
+
+        while (elapsed < mentalFatigueFadeDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float t = mentalFatigueFadeDuration <= 0f ? 1f : Mathf.Clamp01(elapsed / mentalFatigueFadeDuration);
+            color.a = Mathf.Lerp(startAlpha, mentalFatigueTargetAlpha, t);
+            mentalFatigueImage.color = color;
+
+            yield return null;
+        }
+
+        color.a = mentalFatigueTargetAlpha;
+        mentalFatigueImage.color = color;
+    }
+
     private IEnumerator PlayDialogueAfterDelay(string dialogueId, float delay)
     {
         if (delay > 0f)
@@ -344,7 +417,7 @@ public class IntroSequenceController : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
 
-        DialogueSequencePlayer targetDialogue = DialogueSequencePlayer.Instance;
+        DialogueController targetDialogue = DialogueController.Instance;
 
         if (targetDialogue != null)
         {
@@ -352,7 +425,7 @@ public class IntroSequenceController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("IntroSequenceController: no hay DialogueSequencePlayer para reproducir el dialogo: " + dialogueId);
+            Debug.LogWarning("IntroSequenceController: no hay DialogueController para reproducir el dialogo: " + dialogueId);
         }
     }
 
@@ -363,7 +436,7 @@ public class IntroSequenceController : MonoBehaviour
             yield return new WaitForSeconds(startDelay);
         }
 
-        DialogueSequencePlayer targetDialogue = DialogueSequencePlayer.Instance;
+        DialogueController targetDialogue = DialogueController.Instance;
         float dialogueDuration = 0f;
 
         if (targetDialogue != null)
@@ -373,7 +446,7 @@ public class IntroSequenceController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("IntroSequenceController: no hay DialogueSequencePlayer para reproducir el dialogo: " + dialogueId);
+            Debug.LogWarning("IntroSequenceController: no hay DialogueController para reproducir el dialogo: " + dialogueId);
         }
 
         float waitTime = Mathf.Max(0f, dialogueDuration + afterDialogueDelay);
@@ -386,9 +459,10 @@ public class IntroSequenceController : MonoBehaviour
 
     private IEnumerator EnablePhoneAfterFocus()
     {
-        if (energyFocusDuration > 0f)
+        float energyFocusLength = GetActiveFocusSequenceDuration();
+        if (energyFocusLength > 0f)
         {
-            yield return new WaitForSeconds(energyFocusDuration);
+            yield return new WaitForSeconds(energyFocusLength);
         }
 
         // phoneringdelay ahora es offset desde el final del dialogo de energia
@@ -407,32 +481,32 @@ public class IntroSequenceController : MonoBehaviour
         }
     }
 
-    // version vieja: la rutina de susto del telefono estaba separada
-    // quedo comentada porque ahora todo el timing del telefono vive en phoneanswerroutine
-    // private ienumerator phonescareroutine()
-    // {
-    //     if (dolllaughdelay > 0f)
-    //     {
-    //         yield return new waitforseconds(dolllaughdelay);
-    //     }
-    //
-    //     play2d("dolllaugh");
-    //     play2d("jumpscare");
-    // }
-
-    private void PlayFocus(FixedCameraWithZoom focusCamera, float duration)
+    private void PlayFocusSequence(int sequenceIndex, bool useCustomZoom = false, float customZoomFov = 0f)
     {
-        if (focusCamera == null)
+        if (focusCamera == null || sequenceIndex < 0)
         {
             return;
         }
 
-        focusCamera.ActivateForDuration(duration);
+        if (useCustomZoom)
+        {
+            focusCamera.PlaySequence(sequenceIndex, customZoomFov);
+        }
+        else
+        {
+            focusCamera.PlaySequence(sequenceIndex);
+        }
+    }
+
+    // Debe llamarse despues de PlayFocusSequence para esa misma secuencia (GetTotalSequenceDuration usa currentSequenceIndex internamente).
+    private float GetActiveFocusSequenceDuration()
+    {
+        return focusCamera != null ? focusCamera.GetTotalSequenceDuration() : 0f;
     }
 
     private float GetDialogueDuration(string dialogueId)
     {
-        DialogueSequencePlayer targetDialogue = DialogueSequencePlayer.Instance;
+        DialogueController targetDialogue = DialogueController.Instance;
         return targetDialogue != null ? targetDialogue.GetDialogueDuration(dialogueId) : 0f;
     }
 
@@ -480,7 +554,7 @@ public class IntroSequenceController : MonoBehaviour
     {
         SFXManager targetSfx = sfxManager != null ? sfxManager : SFXManager.Instance;
 
-        if (targetSfx != null)
+        if (targetSfx != null && !string.IsNullOrEmpty(id))
         {
             targetSfx.StopLoop(id);
         }
@@ -502,5 +576,21 @@ public class IntroSequenceController : MonoBehaviour
     {
         GameStateController targetState = gameStateController != null ? gameStateController : GameStateController.Instance;
         return targetState != null && targetState.GetFlag(flagName);
+    }
+
+    private void SetMirrorMessageObjectsActive(bool value)
+    {
+        if (mirrorMessageObjects == null)
+        {
+            return;
+        }
+
+        foreach (GameObject messageObject in mirrorMessageObjects)
+        {
+            if (messageObject != null)
+            {
+                messageObject.SetActive(value);
+            }
+        }
     }
 }

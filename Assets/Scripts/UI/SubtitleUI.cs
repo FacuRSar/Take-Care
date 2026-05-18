@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Para que no se pisen dialogos importantes meto este Enum
 public enum SubtitlePriority
@@ -24,6 +25,10 @@ public class SubtitleUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI subtitleText;
     // texto donde aparece el mensaje
 
+    [Header("Fondo (opcional)")]
+    [SerializeField] private Image subtitleBackgroundImage;
+    [SerializeField] private Color defaultSubtitleBackdrop = new Color(0f, 0f, 0f, 0.72f);
+
     private CanvasGroup subtitleCanvasGroup;
     private Coroutine currentRoutine;
     private SubtitlePriority currentPriority;
@@ -46,7 +51,7 @@ public class SubtitleUI : MonoBehaviour
         }
     }
 
-    public bool ShowSubtitle(string message, float duration = 2.5f, SubtitlePriority priority = SubtitlePriority.Environment)
+    public bool ShowSubtitle(string message, float duration = 2.5f, SubtitlePriority priority = SubtitlePriority.Environment, Color? subtitleBackdrop = null)
     {
         if (!gameObject.activeInHierarchy)
         {
@@ -71,6 +76,12 @@ public class SubtitleUI : MonoBehaviour
         }
 
         currentPriority = priority;
+        Color backdrop = subtitleBackdrop ?? defaultSubtitleBackdrop;
+        if (subtitleBackgroundImage != null)
+        {
+            subtitleBackgroundImage.color = backdrop;
+        }
+
         currentRoutine = StartCoroutine(ShowRoutine(message, duration));
         return true;
     }
@@ -87,6 +98,11 @@ public class SubtitleUI : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         SetSubtitleVisible(false);
+        if (subtitleBackgroundImage != null)
+        {
+            subtitleBackgroundImage.color = defaultSubtitleBackdrop;
+        }
+
         currentRoutine = null;
         currentPriority = SubtitlePriority.Hint;
     }

@@ -7,7 +7,6 @@ public class DialogueLine
 {
     [TextArea]
     public string text;
-    // delay antes de mostrar esta linea, para separar frases sin armar mil coroutines a mano
     public float delayBefore = 0f;
     public float duration = 2.5f;
 }
@@ -16,12 +15,14 @@ public class DialogueLine
 public class DialoguePool
 {
     public string id;
+    [Tooltip("Color del fondo del panel de subtítulos mientras corre este grupo (ej. muñeca vs protagonista).")]
+    public Color subtitleBackgroundColor = new Color(0f, 0f, 0f, 0.72f);
     public DialogueLine[] lines;
 }
 
-public class DialogueSequencePlayer : MonoBehaviour
+public class DialogueController : MonoBehaviour
 {
-    public static DialogueSequencePlayer Instance;
+    public static DialogueController Instance;
 
     [Header("Referencias")]
     [SerializeField] private SubtitleUI subtitleUI;
@@ -51,15 +52,15 @@ public class DialogueSequencePlayer : MonoBehaviour
 
     public void PlayDialogue(string id)
     {
-        DialogueLine[] lines = GetLines(id);
+        DialoguePool pool = GetPool(id);
 
-        if (lines == null || lines.Length == 0)
+        if (pool == null || pool.lines == null || pool.lines.Length == 0)
         {
-            Debug.LogWarning("dialoguesequenceplayer: no se encontro dialogo o esta vacio: " + id);
+            Debug.LogWarning("DialogueController: no se encontro dialogo o esta vacio: " + id);
             return;
         }
 
-        PlayLines(lines);
+        PlayLines(pool.lines, pool.subtitleBackgroundColor);
     }
 
     public float GetDialogueDuration(string id)
@@ -73,12 +74,10 @@ public class DialogueSequencePlayer : MonoBehaviour
         StopCurrentRoutine();
     }
 
-    private void PlayLines(DialogueLine[] lines)
+    private void PlayLines(DialogueLine[] lines, Color subtitleBackdrop)
     {
         StopCurrentRoutine();
-        // corto la secuencia anterior antes de arrancar otra. si no, los subtitulos se pisan tipo charla familiar
-
-        currentRoutine = StartCoroutine(PlayRoutine(lines));
+        currentRoutine = StartCoroutine(PlayRoutine(lines, subtitleBackdrop));
     }
 
     private void StopCurrentRoutine()
@@ -92,7 +91,7 @@ public class DialogueSequencePlayer : MonoBehaviour
         currentRoutine = null;
     }
 
-    private DialogueLine[] GetLines(string id)
+    private DialoguePool GetPool(string id)
     {
         if (string.IsNullOrEmpty(id) || pools == null)
         {
@@ -103,14 +102,20 @@ public class DialogueSequencePlayer : MonoBehaviour
         {
             if (pool != null && pool.id == id)
             {
-                return pool.lines;
+                return pool;
             }
         }
 
         return null;
     }
 
-    private IEnumerator PlayRoutine(DialogueLine[] lines)
+    private DialogueLine[] GetLines(string id)
+    {
+        DialoguePool pool = GetPool(id);
+        return pool != null ? pool.lines : null;
+    }
+
+    private IEnumerator PlayRoutine(DialogueLine[] lines, Color subtitleBackdrop)
     {
         foreach (DialogueLine line in lines)
         {
@@ -128,11 +133,11 @@ public class DialogueSequencePlayer : MonoBehaviour
 
             if (targetSubtitle != null)
             {
-                targetSubtitle.ShowSubtitle(line.text, line.duration, SubtitlePriority.Dialogue);
+                targetSubtitle.ShowSubtitle(line.text, line.duration, SubtitlePriority.Dialogue, subtitleBackdrop);
             }
             else
             {
-                Debug.LogWarning("DialogueSequencePlayer: no hay SubtitleUI asignado o disponible.");
+                Debug.LogWarning("DialogueController: no hay SubtitleUI asignado o disponible.");
             }
 
             if (line.duration > 0f)
