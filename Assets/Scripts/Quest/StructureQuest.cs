@@ -1,9 +1,6 @@
-using NUnit.Framework.Interfaces;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-
 
 [CreateAssetMenu(fileName = "Quest", menuName = "Game/Quest", order = 1)]
 public class StructureQuest : ScriptableObject
@@ -11,17 +8,16 @@ public class StructureQuest : ScriptableObject
     [System.Serializable]
     public struct QuestGeneric
     {
-        [SerializeField] public questEmotionType State;
-        [SerializeField] public questType QuestType;
+        public questEmotionType State;
+        public questType QuestType;
 
         public string Name;
-        public string description;
+        [TextArea(2, 5)] public string description; // Añadido para mejor visualización en el inspector
         public int id;
 
-
-        [Header("ToCollect")]
+        [Header("To Collect")]
         public bool differentItems;
-        public List<itemsToPick> date;
+        public List<itemsToPick> itemsToPickData; // Corregido typo de "Date" a "Data"
 
         [System.Serializable]
         public struct itemsToPick
@@ -31,46 +27,36 @@ public class StructureQuest : ScriptableObject
             public int itemID;
         }
 
-        [Header("Points")]
-        public string EmotionID;
-        public int addpoint;
-        public addOtherEmotion[] AddPointsEmotions;
+        [Header("ToGo or Delivery")]
+        public bool deliveryEnabled;
+        public Transform roomOrDestiny;
+
+        [Header("Points (Rewards)")]
+        public questEmotionType EmotionID;
+        public int addPoints;
+        public bool otherEmotionAdd;
+        public addOtherEmotion[] addPointsEmotions;
 
         [System.Serializable]
         public struct addOtherEmotion
         {
-            public string EmotionID;
+            public questEmotionType emotionID;
             public int addPoint;
         }
 
-        public string EmotionID_;
-        public int removePoint;
-        public reduceOtherEmotion[] removePointsEmotions;
+        [Header("Points (Penalties)")]
+        public questEmotionType EmotionID_;
+        public int removePoints;
+        public bool otherEmotionRemove;
+        public removeOtherEmotion[] removePointsEmotions;
 
         [System.Serializable]
-        public struct reduceOtherEmotion
+        public struct removeOtherEmotion
         {
-            public string EmotionID_;
+            public questEmotionType emotionID_;
             public int removePoint;
         }
-
-        public string getDescription()
-        {
-            if (description != null)
-                return description;
-            else
-                return "No description";
-        }
-        public void setDescription(string newDescription)
-        {
-            description = newDescription;
-        }
     }
+
     public QuestGeneric[] quests;
-
-    void OnEnable()
-    {
-        Quest quest = FindFirstObjectByType<Quest>();
-        quest.Initialize(quests);
-    }
 }

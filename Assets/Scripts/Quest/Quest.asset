@@ -19,17 +19,18 @@ MonoBehaviour:
     description: "Busca a la mu\xF1eca"
     id: 0
     differentItems: 0
-    date:
-    - name: 
-      quantity: 0
-      itemID: 0
-    EmotionID: 
-    addpoint: 25
-    AddPointsEmotions: []
-    EmotionID_: 
-    removePoint: -5
+    itemsToPickDate: []
+    deliveryEnabled: 0
+    roomOrDestiny: {fileID: 0}
+    EmotionID: 0
+    addPoints: 0
+    otherEmotionAdd: 0
+    addPointsEmotions: []
+    EmotionID_: 0
+    removePoints: 0
+    otherEmotionRemove: 0
     removePointsEmotions:
-    - EmotionID_: 
+    - emotionID_: 0
       removePoint: -5
   - State: 2
     QuestType: 0
@@ -37,17 +38,18 @@ MonoBehaviour:
     description: "Busca a la mu\xF1eca"
     id: 1
     differentItems: 1
-    date:
-    - name: Dool
-      quantity: 1
-      itemID: 0
-    EmotionID: 
-    addpoint: 25
-    AddPointsEmotions: []
-    EmotionID_: 
-    removePoint: -5
+    itemsToPickDate: []
+    deliveryEnabled: 0
+    roomOrDestiny: {fileID: 0}
+    EmotionID: 0
+    addPoints: 0
+    otherEmotionAdd: 0
+    addPointsEmotions: []
+    EmotionID_: 0
+    removePoints: 0
+    otherEmotionRemove: 0
     removePointsEmotions:
-    - EmotionID_: 
+    - emotionID_: 0
       removePoint: -5
   - State: 0
     QuestType: 0
@@ -55,15 +57,35 @@ MonoBehaviour:
     description: "Busca a la mu\xF1eca"
     id: 2
     differentItems: 1
-    date:
-    - name: Dool
-      quantity: 1
-      itemID: 0
-    EmotionID: 
-    addpoint: 25
-    AddPointsEmotions: []
-    EmotionID_: 
-    removePoint: -5
+    itemsToPickDate: []
+    deliveryEnabled: 0
+    roomOrDestiny: {fileID: 0}
+    EmotionID: 0
+    addPoints: 0
+    otherEmotionAdd: 0
+    addPointsEmotions: []
+    EmotionID_: 0
+    removePoints: 0
+    otherEmotionRemove: 0
     removePointsEmotions:
-    - EmotionID_: 
+    - emotionID_: 0
       removePoint: -5
+  - State: 0
+    QuestType: 0
+    Name: Busqueda
+    description: "Busca a la mu\xF1eca"
+    id: 3
+    differentItems: 1
+    itemsToPickDate: []
+    deliveryEnabled: 0
+    roomOrDestiny: {fileID: 0}
+    EmotionID: 0
+    addPoints: 23
+    otherEmotionAdd: 0
+    addPointsEmotions: []
+    EmotionID_: 0
+    removePoints: 12
+    otherEmotionRemove: 1
+    removePointsEmotions:
+    - emotionID_: 0
+      removePoint: -50

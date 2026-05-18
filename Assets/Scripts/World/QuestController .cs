@@ -1,123 +1,77 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using static StructureQuest;
 
 public class QuestController : MonoBehaviour
 {
-   private Quest AllQuest;
+   private Quest quest;
 
-    [SerializeField] private List<Quest> allQuest = new List<Quest>();
+    [SerializeField] private List<QuestData> allQuest = new List<QuestData>();
 
     [SerializeField] private Bars bars;
-    // [SerializeField]
-    //private int questIndex;
-    private void Start()
-    {
-        bars.InitializeQuestPools(allQuest);
-        //giveQuest();
-    }
-    public void Initialize(List<StructureQuest.QuestGeneric> questGenerics)
+
+    public void Initialize(List<QuestData> quests)
     {
         allQuest.Clear();
 
-        foreach (var questGeneric in questGenerics)
-        {
-            Quest newQuest = new Quest();
+        allQuest.AddRange(quests);
 
-            // Inicializamos el nuevo Quest (Tipo B) con los datos de questGeneric
-            newQuest.Initialize(new StructureQuest.QuestGeneric[] { questGeneric }); // sirve para que las dos partes del codigo se entiendan
-
-            allQuest.Add(newQuest);
-        }
+        // Se lo mandas a las barras
+        bars.InitializeQuestPools(allQuest);
     }
     public void ActivateQuest(Quest selectedQuest)
     {
-        if (AllQuest != null && AllQuest.getIsActive())
+        if (quest != null && quest.getIsActive())
         { 
-            Debug.LogWarning("Ya hay una misión en curso: " + AllQuest.name);
+            Debug.LogWarning("Ya hay una misión en curso: " + quest.name);
             return;
         }
-        AllQuest = selectedQuest;
-        AllQuest.setActive(true);
+        quest = selectedQuest;
+        quest.setActive(true);
 
-        Debug.Log("QuestController: Ejecutando misión: " + AllQuest.name);
+        Debug.Log("QuestController: Ejecutando misión: " + quest.name);
     }
     private void Update()
     {
-        if (AllQuest == null) return;
+        if (quest == null) return;
 
-        if (AllQuest.getIsCompleted())
+        if (quest.getIsCompleted())
         {
             Debug.Log("Misión completada con éxito");
             FinalizeCurrentQuest();
         }
-        else if (AllQuest.checkTimer())
+        else if (quest.checkTimer())
         {
             Debug.Log("Misión fallida por tiempo");
-            AllQuest.failQuest();
+            quest.FailQuest();
             FinalizeCurrentQuest();
         }
-        else if (AllQuest.getTimer() >= AllQuest.getTimerDuration() * 0.75f)
+        else if (quest.getTimer() >= quest.getTimerDuration() * 0.75f)
         {
-            AllQuest.markObjective();
+            quest.MarkObjective();
         }
 
-        /*
-
-        if (checkQuestStatus(questIndex) == 0)
-        {
-            quests[questIndex].setActive(false);
-            giveQuest();
-        }
-        else if (checkQuestStatus(questIndex) == 1)
-        {
-            quests[questIndex].failQuest();
-            giveQuest();
-        }
-        else if (checkQuestStatus(questIndex) == 2)
-        {
-            if (quests[questIndex].getTimer() >= quests[questIndex].getTimerDuration()*0.75)
-            {
-                quests[questIndex].markObjective();
-            }
-        }
-        */
     }
 
     private void FinalizeCurrentQuest()
     {
-        AllQuest.setActive(false);
-        AllQuest = null; // Queda libre para la siguiente misión que mande Bars
+        quest.setActive(false);
+        quest = null; // Queda libre para la siguiente misión que mande Bars
     }
 
-
-  /*  public int checkQuestStatus(int questIndex)
+    internal void ActivateQuest(QuestData selectedQuest)
     {
-        if (questIndex >= 0 && questIndex < quests.Count)
+        if (!quest.getIsCompleted())
         {
-            if(quests[questIndex].getIsCompleted())
-            {
-                return 0;
-            }
-            else if(!quests[questIndex].getIsCompleted() && quests[questIndex].checkTimer())
-            {
-                return 1;
-            }
+            Debug.Log("No nos vamos nada QUest");
         }
-        return 2;
-    }
-    public void failQuest()
-    {
-        
-    }
-    public void giveQuest()
-    {
-        int random = Random.Range(0, quests.Count);
-        if (random >= 0 && random < quests.Count)
+        else
         {
-            quests[random].setActive(true);
-            questIndex = random;
+            selectedQuest = null;
         }
-    }*/
+    }
 }

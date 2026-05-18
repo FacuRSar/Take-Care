@@ -44,16 +44,16 @@ public class Bars : MonoBehaviour
 
     bool ToCallQuest;
 
-    [SerializeField] private List<Quest> PoolHappyQuest = new List<Quest>();
-    [SerializeField] private List<Quest> PoolCryQuest = new List<Quest>();
-    [SerializeField] private List<Quest> PoolAngryQuest = new List<Quest>();
+    [SerializeField] private List<QuestData> PoolHappyQuest = new List<QuestData>();
+    [SerializeField] private List<QuestData> PoolCryQuest = new List<QuestData>();
+    [SerializeField] private List<QuestData> PoolAngryQuest = new List<QuestData>();
 
     private List<float> Weights = new List<float>();
     private List<float> HappyQuestWeights = new List<float>();
     private List<float> CryQuestWeights = new List<float>();
     private List<float> AngryQuestWeights = new List<float>();
 
-    [SerializeField] Quest selectedQuest;
+    [SerializeField] QuestData selectedQuest;
     [SerializeField] QuestController questController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -104,9 +104,9 @@ public class Bars : MonoBehaviour
 
       //  if (ActiveAddPointsForQuest) AddPointsForQuest();
     }
-    public void InitializeQuestPools(List<Quest> allQuest)
+    public void InitializeQuestPools(List<QuestData> allQuest)
     {
-        foreach (Quest quest in allQuest)
+        foreach (QuestData quest in allQuest)
         {
             switch (quest.GetStateType())
             {
@@ -212,36 +212,5 @@ public class Bars : MonoBehaviour
     {
         AngryBar += SpeedBar * Time.deltaTime;
     }
-   /* public void AddPointsForQuest()
-    {
-        switch (AddPoints)
-        {
-            case 5:
-                AddPoints = 5;
-                break;
-            case 10:
-                AddPoints = 10;
-                break;
-            case 15:
-                AddPoints = 15;
-                break;
-            case 25:
-                AddPoints = 25;
-                break;
-        }
 
-         switch(dollEmotionSystem._CurrentState)
-        {
-            case DollState.Happy:
-                HappyBar += AddPoints;
-                break;
-            case DollState.Cry:
-                CryBar += AddPoints;
-                break;
-            case DollState.Angry:
-                AngryBar += AddPoints;
-                break;
-        }
-        ActiveAddPointsForQuest = false;
-    }*/
 }
