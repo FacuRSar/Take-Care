@@ -271,68 +271,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56cfd4811cda4974b99e461d89172929, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Quest
-  data:
-  - State: 1
-    QuestType: 0
-    Name: Busqueda
-    description: "Busca a la mu\xF1eca"
-    id: 0
-    differentItems: 0
-    date:
-    - name: 
-      quantity: 0
-      itemID: 0
-    EmotionID: 
-    addpoint: 25
-    AddPointsEmotions: []
-    EmotionID_: 
-    removePoint: -5
-    removePointsEmotions:
-    - EmotionID_: 
-      removePoint: -5
-  - State: 2
-    QuestType: 0
-    Name: Busqueda
-    description: "Busca a la mu\xF1eca"
-    id: 1
-    differentItems: 1
-    date:
-    - name: Dool
-      quantity: 1
-      itemID: 0
-    EmotionID: 
-    addpoint: 25
-    AddPointsEmotions: []
-    EmotionID_: 
-    removePoint: -5
-    removePointsEmotions:
-    - EmotionID_: 
-      removePoint: -5
-  - State: 0
-    QuestType: 0
-    Name: Busqueda
-    description: "Busca a la mu\xF1eca"
-    id: 2
-    differentItems: 1
-    date:
-    - name: Dool
-      quantity: 1
-      itemID: 0
-    EmotionID: 
-    addpoint: 25
-    AddPointsEmotions: []
-    EmotionID_: 
-    removePoint: -5
-    removePointsEmotions:
-    - EmotionID_: 
-      removePoint: -5
-  StateType: 0
-  QuestType: 0
+  questDatabase: {fileID: 11400000, guid: 639ba4fee0b3e31489ad3141c7e52074, type: 2}
+  allQuests: []
   timerDuration: 60
   transparentMaterial: {fileID: 0}
-  Destiny: {fileID: 0}
-  Room: {fileID: 0}
-  Player: {fileID: 0}
 --- !u!1001 &402875935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1008,7 +950,29 @@ MonoBehaviour:
   PoolHappyQuest: []
   PoolCryQuest: []
   PoolAngryQuest: []
-  selectedQuest: {fileID: 0}
+  selectedQuest:
+    config:
+      State: 0
+      QuestType: 0
+      Name: 
+      description: 
+      id: 0
+      differentItems: 0
+      itemsToPickData: []
+      deliveryEnabled: 0
+      roomOrDestiny: {fileID: 0}
+      EmotionID: 0
+      addPoints: 0
+      otherEmotionAdd: 0
+      addPointsEmotions: []
+      EmotionID_: 0
+      removePoints: 0
+      otherEmotionRemove: 0
+      removePointsEmotions: []
+    isActive: 0
+    isComplete: 0
+    timer: 0
+    failPenaltyPoints: 0
   questController: {fileID: 292492147}
 --- !u!1 &899249403
 GameObject:
