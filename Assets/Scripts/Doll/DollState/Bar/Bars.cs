@@ -44,6 +44,7 @@ public class Bars : MonoBehaviour
 
     bool ToCallQuest;
 
+
     [SerializeField] private List<QuestData> PoolHappyQuest = new List<QuestData>();
     [SerializeField] private List<QuestData> PoolCryQuest = new List<QuestData>();
     [SerializeField] private List<QuestData> PoolAngryQuest = new List<QuestData>();
@@ -212,5 +213,19 @@ public class Bars : MonoBehaviour
     {
         AngryBar += SpeedBar * Time.deltaTime;
     }
-
+    public string getTopBar()
+    {
+        if (HappyBar >= CryBar && HappyBar >= AngryBar)
+        {
+            return "DollHappy";
+        }
+        else if (CryBar >= HappyBar && CryBar >= AngryBar)
+        {
+            return "DollCry";
+        }
+        else
+        {
+            return "DollAngry";
+        }
+    }
 }

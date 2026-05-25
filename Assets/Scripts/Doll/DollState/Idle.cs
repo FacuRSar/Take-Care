@@ -1,10 +1,9 @@
 using System;
 using UnityEngine;
 
-public class Idle : MonoBehaviour
+public class Idle : DollEmotion
 {
     DollEmotionSystem dollEmotionSystem;
-
     [SerializeField] float distanceToPlayerMin;
 
     public event Action AddHappyBar;
@@ -42,7 +41,7 @@ public class Idle : MonoBehaviour
         Debug.Log("La muñeca se agita");
 
     }
-    void Update()
+    /*void Update()
     {
         if (dollEmotionSystem.Player == null) return;
 
@@ -82,8 +81,36 @@ public class Idle : MonoBehaviour
 
 
 
+    }*/
+    public void checkWatching(Vector3 playerPosition, Vector3 dollPosition)
+    {
+        AddAngryBar?.Invoke();
+        AddCryBar?.Invoke();
+        AddHappyBar?.Invoke();
+        Vector3 playerDistance= playerPosition - dollPosition;
+        float distance = playerDistance.magnitude;
+        bool PlayerIsFacingAway = IsPlayerIsFacingAway();
+        bool isFar = Vector3.Distance(playerPosition, dollPosition) > distanceToPlayerMin;
+        if(isFar || PlayerIsFacingAway) // Si el jugador está lejos O dado vuelta
+        {
+            Debug.Log("Sentis respiraciones en la nuca");
+            Timer -= Time.deltaTime;
+            Debug.Log("Timer: " + Timer);
+            if (Timer <= 0)
+            {   
+                Debug.Log("Cambiaste al estado: Watching");
+                dollEmotionSystem.ChangeState(DollState.Watching);
+            }
+            else
+            {
+                Debug.Log("El jugador se siente observado");
+            }
+        }
+        else
+        {
+                Timer = RestTimer;
+        }
     }
-
     bool IsPlayerIsFacingAway()
     {
         Vector3 directionToDoll = (dollEmotionSystem.Doll.transform.position - dollEmotionSystem.Player.transform.position).normalized;

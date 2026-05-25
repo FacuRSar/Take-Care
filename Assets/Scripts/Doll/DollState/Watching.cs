@@ -2,13 +2,9 @@ using System;
 using System.Threading;
 using UnityEngine;
 
-public class Watching : MonoBehaviour
+public class Watching : DollEmotion
 {
     DollEmotionSystem dollEmotionSystem;
-
-    [SerializeField]float DistanceToDollMin;
-    [SerializeField]float timer = 10f;
-    float timerCurrent;
 
     public event Action DollLookAtYou;
     public event Action AddHappyBar;
@@ -17,6 +13,7 @@ public class Watching : MonoBehaviour
     void Awake()
     {
         dollEmotionSystem = GetComponent<DollEmotionSystem>();
+        bars = GetComponent<Bars>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

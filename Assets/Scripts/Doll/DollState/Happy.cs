@@ -1,11 +1,9 @@
 using System;
 using UnityEngine;
 
-public class Happy : MonoBehaviour
+public class Happy : DollEmotion
 {
     DollEmotionSystem dollEmotionSystem;
-
-    Bars bars;
 
     public event Action AddHappyBar;
 
@@ -33,7 +31,7 @@ public class Happy : MonoBehaviour
     {
         // La muñeca deja de estar feliz
     }
-    void Update()
+    /*void Update()
     {
 
 
@@ -70,6 +68,6 @@ public class Happy : MonoBehaviour
             //Respiración normal o casi inexistente
             // si pasa x tiempo vuelve a idle
         }
-    }
+    }*/
 
 }
