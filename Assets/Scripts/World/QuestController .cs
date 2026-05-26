@@ -10,28 +10,19 @@ public class QuestController : MonoBehaviour
 {
    private Quest quest;
 
-    [SerializeField] private List<QuestData> allQuest = new List<QuestData>();
-
+    [SerializeField] private Quest allQuest;
     [SerializeField] private Bars bars;
 
-    public void Initialize(List<QuestData> quests)
+    public void Initialize(List<Quest> quests)
     {
-        allQuest.Clear();
-
-        allQuest.AddRange(quests);
-
-        // Se lo mandas a las barras
-        bars.InitializeQuestPools(allQuest);
+        foreach (Quest quest in quests)
+        {
+            bars.InitializeQuestPools(quest);
+        }
     }
     public void ActivateQuest(Quest selectedQuest)
     {
-        if (quest != null && quest.getIsActive())
-        { 
-            Debug.LogWarning("Ya hay una misión en curso: " + quest.name);
-            return;
-        }
-        quest = selectedQuest;
-        quest.setActive(true);
+        selectedQuest.setActive(true);
 
         Debug.Log("QuestController: Ejecutando misión: " + quest.name);
     }
@@ -61,17 +52,5 @@ public class QuestController : MonoBehaviour
     {
         quest.setActive(false);
         quest = null; // Queda libre para la siguiente misión que mande Bars
-    }
-
-    internal void ActivateQuest(QuestData selectedQuest)
-    {
-        if (!quest.getIsCompleted())
-        {
-            Debug.Log("No nos vamos nada QUest");
-        }
-        else
-        {
-            selectedQuest = null;
-        }
     }
 }

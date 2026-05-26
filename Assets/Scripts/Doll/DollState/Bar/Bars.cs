@@ -1,3 +1,4 @@
+using NUnit.Framework.Interfaces;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -44,16 +45,16 @@ public class Bars : MonoBehaviour
 
     bool ToCallQuest;
 
-    [SerializeField] private List<QuestData> PoolHappyQuest = new List<QuestData>();
-    [SerializeField] private List<QuestData> PoolCryQuest = new List<QuestData>();
-    [SerializeField] private List<QuestData> PoolAngryQuest = new List<QuestData>();
+    [SerializeField] private List<Quest> PoolHappyQuest = new List<Quest>();
+    [SerializeField] private List<Quest> PoolCryQuest = new List<Quest>();
+    [SerializeField] private List<Quest> PoolAngryQuest = new List<Quest>();
 
     private List<float> Weights = new List<float>();
     private List<float> HappyQuestWeights = new List<float>();
     private List<float> CryQuestWeights = new List<float>();
     private List<float> AngryQuestWeights = new List<float>();
 
-    [SerializeField] QuestData selectedQuest;
+    [SerializeField] Quest selectedQuest;
     [SerializeField] QuestController questController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -79,7 +80,8 @@ public class Bars : MonoBehaviour
         cry.AddCryBar += _AddCryBar;
         happy.AddHappyBar += _AddHappyBar;
 
-        
+
+
         MatchList();
     }
     // Update is called once per frame
@@ -104,28 +106,57 @@ public class Bars : MonoBehaviour
 
       //  if (ActiveAddPointsForQuest) AddPointsForQuest();
     }
-    public void InitializeQuestPools(List<QuestData> allQuest)
+    /* public void InitializeQuestPools(List<QuestData> allQuest)
+     {
+         foreach (QuestData quest in allQuest)
+         {
+             switch (quest.GetStateType())
+             {
+                 case questEmotionType.Happy:
+                     PoolHappyQuest.Add(quest);
+                     HappyQuestWeights.Add(1f);
+                     break;
+
+                 case questEmotionType.Cry:
+                     PoolCryQuest.Add(quest);
+                     CryQuestWeights.Add(1f);
+                     break;
+
+                 case questEmotionType.Angry:
+                     PoolAngryQuest.Add(quest);
+                     AngryQuestWeights.Add(1f);
+                     break;
+             }
+         }
+     }*/
+
+    private void Update()
     {
-        foreach (QuestData quest in allQuest)
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            switch (quest.GetStateType())
+            ToCallQuest = true;
+        }
+    }
+    public void InitializeQuestPools(Quest allQuest)
+    {
+        for(int i = 0; i < allQuest.allQuests_.Count; i++)
+            switch (allQuest.allQuests_[i].GetStateType())
             {
                 case questEmotionType.Happy:
-                    PoolHappyQuest.Add(quest);
+                    PoolHappyQuest.Add(allQuest);
                     HappyQuestWeights.Add(1f);
                     break;
 
                 case questEmotionType.Cry:
-                    PoolCryQuest.Add(quest);
+                    PoolCryQuest.Add(allQuest);
                     CryQuestWeights.Add(1f);
                     break;
 
                 case questEmotionType.Angry:
-                    PoolAngryQuest.Add(quest);
+                    PoolAngryQuest.Add(allQuest);
                     AngryQuestWeights.Add(1f);
                     break;
             }
-        }
     }
 
         int GetRandomIndex(List<float> weights)
@@ -190,6 +221,7 @@ public class Bars : MonoBehaviour
                 break;
         }
 
+
         Debug.Log("Toco Quest" + selectedQuest);
     }
 
@@ -211,6 +243,22 @@ public class Bars : MonoBehaviour
     void _AddAngryBar()
     {
         AngryBar += SpeedBar * Time.deltaTime;
+    }
+
+    public void QuestFinished(questEmotionType value, int _value)
+    {
+        switch (value)
+        {
+            case questEmotionType.Cry:
+                CryBar += _value;
+                break;
+            case questEmotionType.Happy:
+                HappyBar += _value;
+                break;
+            case questEmotionType.Angry:
+                AngryBar += _value;
+                break;
+        }
     }
 
 }

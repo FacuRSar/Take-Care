@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Watching : MonoBehaviour
 {
@@ -120,6 +121,9 @@ public class Watching : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (dollEmotionSystem == null) return;
+        if (dollEmotionSystem.Doll == null) return;
+
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(dollEmotionSystem.Doll.transform.position, DistanceToDollMin);
     }

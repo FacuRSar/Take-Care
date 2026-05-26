@@ -34,28 +34,12 @@ public class StructureQuest : ScriptableObject
         [Header("Points (Rewards)")]
         public questEmotionType EmotionID;
         public int addPoints;
-        public bool otherEmotionAdd;
-        public addOtherEmotion[] addPointsEmotions;
 
-        [System.Serializable]
-        public struct addOtherEmotion
-        {
-            public questEmotionType emotionID;
-            public int addPoint;
-        }
 
         [Header("Points (Penalties)")]
         public questEmotionType EmotionID_;
         public int removePoints;
-        public bool otherEmotionRemove;
-        public removeOtherEmotion[] removePointsEmotions;
 
-        [System.Serializable]
-        public struct removeOtherEmotion
-        {
-            public questEmotionType emotionID_;
-            public int removePoint;
-        }
     }
 
     public QuestGeneric[] quests;
