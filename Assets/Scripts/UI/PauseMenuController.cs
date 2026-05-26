@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
@@ -9,19 +10,15 @@ using UnityEngine.UI;
 /* Menu de pausa + opciones.
  * Un solo script: abre/cierra con Tab, pausa el juego y aplica settings con PlayerPrefs.
  *
- * SETUP EN UNITY (no lo hace este script solo):
- * 1) AudioMixer "MainMixer" con grupos Music/SFX/Ambient y parametros expuestos:
- *    MasterVolume, MusicVolume, SFXVolume, AmbientVolume
- * 2) Asignar Output de cada AudioSource al grupo correcto del mixer.
- * 3) Volume (URP) en la camara con Color Adjustments > Post Exposure override.
- * 4) Invertir eje Y: requiere mini-cambio en PlayerCamera (ver comentario InvertYKey abajo).
+ * Debe vivir en un GameObject que arranque ACTIVO (ej: el Canvas o un
+ * GameObject vacio "PauseSystem"), NUNCA dentro de PausePanel/OptionsPanel
+ * porque esos arrancan desactivados.
+ *
+ * Si en algun futuro hace falta bloquear la pausa (cinematica, intro, etc),
+ * llamar desde otro script: pauseMenu.SetPauseAllowed(false) y luego true.
  */
 public class PauseMenuController : MonoBehaviour
 {
-    public const string InvertYKey = "settings_invert_y";
-    // PlayerCamera debe leer este PlayerPrefs y aplicar en HandleMouseCam:
-    // xRotation += (invertY ? mouseY : -mouseY);
-
     private const string PrefSensitivity = "settings_mouse_sensitivity";
     private const string PrefBrightness = "settings_brightness";
     private const string PrefMasterVol = "settings_master_volume";
@@ -30,6 +27,10 @@ public class PauseMenuController : MonoBehaviour
     private const string PrefAmbientVol = "settings_ambient_volume";
 
     [Header("Paneles UI")]
+    // Root completo de la UI de pausa (ej: PauseUI). Lo que contiene title + paneles.
+    // Se activa/desactiva entero al pausar/despausar.
+    [SerializeField] private GameObject pauseRoot;
+    // Contenedor de los botones principales (Continuar/Ajustes/Volver). Se oculta al entrar a Opciones.
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject optionsPanel;
 
@@ -40,7 +41,15 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] private Slider musicVolumeSlider;
     [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private Slider ambientVolumeSlider;
-    [SerializeField] private Toggle invertYToggle;
+
+    [Header("Etiquetas numericas (opcional)")]
+    // Si las dejas vacias no se muestra nada, no rompe.
+    [SerializeField] private TMP_Text sensitivityValueLabel;
+    [SerializeField] private TMP_Text brightnessValueLabel;
+    [SerializeField] private TMP_Text masterVolumeValueLabel;
+    [SerializeField] private TMP_Text musicVolumeValueLabel;
+    [SerializeField] private TMP_Text sfxVolumeValueLabel;
+    [SerializeField] private TMP_Text ambientVolumeValueLabel;
 
     [Header("Rangos")]
     [SerializeField] private float sensitivityMin = 0.1f;
@@ -67,15 +76,21 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] private string menuSceneName = "Menu";
 
     [Header("Comportamiento")]
-    [SerializeField] private bool pauseAudioOnPause = true;
-    [SerializeField] private bool blockPauseDuringDialogue = true;
+    // Si esta en true pausa TODO el audio (musica, ambiente, etc). Default false: ambiente sigue.
+    [SerializeField] private bool pauseAudioOnPause = false;
+    // Si algun sistema necesita bloquear la pausa temporalmente, usar SetPauseAllowed
+    [SerializeField] private bool pauseAllowed = true;
 
     private bool isPaused;
     private ColorAdjustments colorAdjustments;
     private bool hasColorAdjustments;
 
+    public bool IsPaused => isPaused;
+
     private void Awake()
     {
+        // Debug.Log("[PauseMenu] Awake en GameObject: " + gameObject.name + " | activeInHierarchy: " + gameObject.activeInHierarchy);
+
         if (playerCamera == null)
         {
             playerCamera = FindFirstObjectByType<PlayerCamera>();
@@ -90,6 +105,11 @@ public class PauseMenuController : MonoBehaviour
         WireSliderListeners();
         LoadAndApplyAllSettings();
         CloseAllPanels();
+
+        if (pauseRoot != null)
+        {
+            pauseRoot.SetActive(false);
+        }
     }
 
     private void Update()
@@ -104,8 +124,9 @@ public class PauseMenuController : MonoBehaviour
             return;
         }
 
-        if (blockPauseDuringDialogue && IsDialoguePlaying())
+        if (!pauseAllowed && !isPaused)
         {
+            // bloqueado: no se puede entrar a pausa pero si salir (por si quedo trabada)
             return;
         }
 
@@ -123,6 +144,29 @@ public class PauseMenuController : MonoBehaviour
         else
         {
             PauseGame();
+        }
+    }
+
+    // API publica para que otros scripts bloqueen/desbloqueen la pausa
+    public void SetPauseAllowed(bool allowed)
+    {
+        pauseAllowed = allowed;
+    }
+
+    // API publica para pausar/despausar desde otro script
+    public void RequestPause()
+    {
+        if (!isPaused)
+        {
+            PauseGame();
+        }
+    }
+
+    public void RequestResume()
+    {
+        if (isPaused)
+        {
+            ResumeGame();
         }
     }
 
@@ -174,18 +218,27 @@ public class PauseMenuController : MonoBehaviour
             AudioListener.pause = true;
         }
 
+        // Desactivo los components enteros: mas robusto que solo setear las flags
+        // CantMove/CantMoveCamera pueden quedar mal si la referencia no es la correcta
         if (playerMovement != null)
         {
             playerMovement.CantMove = true;
+            playerMovement.enabled = false;
         }
 
         if (playerCamera != null)
         {
             playerCamera.CantMoveCamera = true;
+            playerCamera.enabled = false;
         }
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        if (pauseRoot != null)
+        {
+            pauseRoot.SetActive(true);
+        }
 
         ShowPausePanel();
     }
@@ -202,11 +255,13 @@ public class PauseMenuController : MonoBehaviour
 
         if (playerMovement != null)
         {
+            playerMovement.enabled = true;
             playerMovement.CantMove = false;
         }
 
         if (playerCamera != null)
         {
+            playerCamera.enabled = true;
             playerCamera.CantMoveCamera = false;
         }
 
@@ -214,6 +269,11 @@ public class PauseMenuController : MonoBehaviour
         Cursor.visible = false;
 
         CloseAllPanels();
+
+        if (pauseRoot != null)
+        {
+            pauseRoot.SetActive(false);
+        }
     }
 
     private void ShowPausePanel()
@@ -273,11 +333,6 @@ public class PauseMenuController : MonoBehaviour
         {
             ambientVolumeSlider.onValueChanged.AddListener(OnAmbientVolumeChanged);
         }
-
-        if (invertYToggle != null)
-        {
-            invertYToggle.onValueChanged.AddListener(OnInvertYChanged);
-        }
     }
 
     private void LoadAndApplyAllSettings()
@@ -288,7 +343,6 @@ public class PauseMenuController : MonoBehaviour
         float music = PlayerPrefs.GetFloat(PrefMusicVol, 0.75f);
         float sfx = PlayerPrefs.GetFloat(PrefSfxVol, 1f);
         float ambient = PlayerPrefs.GetFloat(PrefAmbientVol, 1f);
-        bool invertY = PlayerPrefs.GetInt(InvertYKey, 0) == 1;
 
         SetSliderValueWithoutNotify(sensitivitySlider, Normalize(sensitivity, sensitivityMin, sensitivityMax));
         SetSliderValueWithoutNotify(brightnessSlider, brightness);
@@ -297,18 +351,19 @@ public class PauseMenuController : MonoBehaviour
         SetSliderValueWithoutNotify(sfxVolumeSlider, sfx);
         SetSliderValueWithoutNotify(ambientVolumeSlider, ambient);
 
-        if (invertYToggle != null)
-        {
-            invertYToggle.SetIsOnWithoutNotify(invertY);
-        }
-
         ApplySensitivity(sensitivity);
         ApplyBrightness(brightness);
         SetMixerVolume(masterVolumeParam, master);
         SetMixerVolume(musicVolumeParam, music);
         SetMixerVolume(sfxVolumeParam, sfx);
         SetMixerVolume(ambientVolumeParam, ambient);
-        PlayerPrefs.SetInt(InvertYKey, invertY ? 1 : 0);
+
+        UpdateLabel(sensitivityValueLabel, FormatTwoDecimals(sensitivity));
+        UpdateLabel(brightnessValueLabel, FormatPercent(brightness));
+        UpdateLabel(masterVolumeValueLabel, FormatPercent(master));
+        UpdateLabel(musicVolumeValueLabel, FormatPercent(music));
+        UpdateLabel(sfxVolumeValueLabel, FormatPercent(sfx));
+        UpdateLabel(ambientVolumeValueLabel, FormatPercent(ambient));
     }
 
     private void OnSensitivityChanged(float normalized)
@@ -316,42 +371,61 @@ public class PauseMenuController : MonoBehaviour
         float value = Mathf.Lerp(sensitivityMin, sensitivityMax, normalized);
         PlayerPrefs.SetFloat(PrefSensitivity, value);
         ApplySensitivity(value);
+        UpdateLabel(sensitivityValueLabel, FormatTwoDecimals(value));
     }
 
     private void OnBrightnessChanged(float normalized)
     {
         PlayerPrefs.SetFloat(PrefBrightness, normalized);
         ApplyBrightness(normalized);
+        UpdateLabel(brightnessValueLabel, FormatPercent(normalized));
     }
 
     private void OnMasterVolumeChanged(float linear)
     {
         PlayerPrefs.SetFloat(PrefMasterVol, linear);
         SetMixerVolume(masterVolumeParam, linear);
+        UpdateLabel(masterVolumeValueLabel, FormatPercent(linear));
     }
 
     private void OnMusicVolumeChanged(float linear)
     {
         PlayerPrefs.SetFloat(PrefMusicVol, linear);
         SetMixerVolume(musicVolumeParam, linear);
+        UpdateLabel(musicVolumeValueLabel, FormatPercent(linear));
     }
 
     private void OnSfxVolumeChanged(float linear)
     {
         PlayerPrefs.SetFloat(PrefSfxVol, linear);
         SetMixerVolume(sfxVolumeParam, linear);
+        UpdateLabel(sfxVolumeValueLabel, FormatPercent(linear));
     }
 
     private void OnAmbientVolumeChanged(float linear)
     {
         PlayerPrefs.SetFloat(PrefAmbientVol, linear);
         SetMixerVolume(ambientVolumeParam, linear);
+        UpdateLabel(ambientVolumeValueLabel, FormatPercent(linear));
     }
 
-    private void OnInvertYChanged(bool value)
+    private static void UpdateLabel(TMP_Text label, string text)
     {
-        PlayerPrefs.SetInt(InvertYKey, value ? 1 : 0);
-        // Hasta autorizar el cambio en PlayerCamera, esto solo guarda la preferencia.
+        if (label != null)
+        {
+            label.text = text;
+        }
+    }
+
+    private static string FormatPercent(float normalized01)
+    {
+        int percent = Mathf.RoundToInt(Mathf.Clamp01(normalized01) * 100f);
+        return percent + "%";
+    }
+
+    private static string FormatTwoDecimals(float value)
+    {
+        return value.ToString("0.00");
     }
 
     private void ApplySensitivity(float value)
@@ -366,7 +440,13 @@ public class PauseMenuController : MonoBehaviour
     {
         if (!hasColorAdjustments)
         {
-            return;
+            // segundo intento por si el Volume se inicializo despues que el script
+            CacheColorAdjustments();
+
+            if (!hasColorAdjustments)
+            {
+                return;
+            }
         }
 
         float exposure = Mathf.Lerp(brightnessMinExposure, brightnessMaxExposure, normalized01);
@@ -384,19 +464,45 @@ public class PauseMenuController : MonoBehaviour
         audioMixer.SetFloat(parameterName, db);
     }
 
+    private bool brightnessWarningLogged;
+
     private void CacheColorAdjustments()
     {
         hasColorAdjustments = false;
 
-        if (globalVolume == null || globalVolume.profile == null)
+        if (globalVolume == null)
+        {
+            LogBrightnessWarning("globalVolume no asignado en el inspector del PauseMenuController.");
+            return;
+        }
+
+        VolumeProfile profile = globalVolume.profile;
+
+        if (profile == null)
+        {
+            LogBrightnessWarning("El Volume no tiene Profile asignado.");
+            return;
+        }
+
+        if (profile.TryGet(out colorAdjustments))
+        {
+            hasColorAdjustments = true;
+        }
+        else
+        {
+            LogBrightnessWarning("El Volume Profile no tiene override de Color Adjustments. Agregalo en el inspector del profile.");
+        }
+    }
+
+    private void LogBrightnessWarning(string detail)
+    {
+        if (brightnessWarningLogged)
         {
             return;
         }
 
-        if (globalVolume.profile.TryGet(out colorAdjustments))
-        {
-            hasColorAdjustments = true;
-        }
+        brightnessWarningLogged = true;
+        Debug.LogWarning("[PauseMenu] Brillo no aplica: " + detail);
     }
 
     private static void SetSliderValueWithoutNotify(Slider slider, float value)
@@ -415,10 +521,5 @@ public class PauseMenuController : MonoBehaviour
         }
 
         return Mathf.InverseLerp(min, max, value);
-    }
-
-    private static bool IsDialoguePlaying()
-    {
-        return DialogueController.Instance != null && DialogueController.Instance.IsPlaying;
     }
 }
