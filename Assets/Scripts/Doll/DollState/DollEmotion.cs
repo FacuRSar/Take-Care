@@ -17,15 +17,18 @@ public class DollEmotion : MonoBehaviour
 
     public void LowInteraction(AudioSource dollVoice)
     {
-        dollVoice.PlayOneShot(lowInteraction);
+        if(lowInteraction != null)
+            dollVoice.PlayOneShot(lowInteraction);
     }
     public void MediumInteraction(AudioSource dollVoice)
     {
-        dollVoice.PlayOneShot(mediumInteraction);
+        if(mediumInteraction != null)
+           dollVoice.PlayOneShot(mediumInteraction);
     }
     public void HighInteraction(AudioSource dollVoice)
     {
-        dollVoice.PlayOneShot(highInteraction);
+        if(highInteraction != null)
+            dollVoice.PlayOneShot(highInteraction);
     }
     public void CheckInteraction(AudioSource dollVoice)
     {
