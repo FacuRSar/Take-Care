@@ -1,77 +1,166 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Quest : GrabbableObject
+[System.Serializable]
+public class QuestData
 {
-    [SerializeField] private string description;
-    private bool isCompleted;
-    private float timer;
-    private bool isActive;
-    [SerializeField] private int timerDuration = 4;
-    [SerializeField] private Player_Health player;
+    // Al guardar la referencia directa, ya tienes acceso a TODO (Items, Emociones, Destinos)
+    public StructureQuest.QuestGeneric config;
+
+    // Variables de estado dinámicas (cambian en tiempo de juego)
+    public bool isActive;
+    public bool isComplete;
+    public float timer;
+    public float failPenaltyPoints;
+
+    // Constructor para inicializar de forma limpia
+    public QuestData(StructureQuest.QuestGeneric questConfig)
+    {
+        config = questConfig;
+        isActive = false;
+        isComplete = false;
+        timer = 0f;
+        failPenaltyPoints = questConfig.addPoints * -1.5f;
+    }
+    public questEmotionType GetStateType() => config.State;
+}
+
+public class Quest : MonoBehaviour
+{
+    [Header("Quest Asset")]
+    [SerializeField] private StructureQuest questDatabase;
+
+    [Header("Runtime Data")]
+    [SerializeField] private List<QuestData> allQuests = new();
+    private QuestData activeQuest; // Mantiene registro de la misión activa actual
+
+    [Header("Settings")]
+    [SerializeField] private int timerDuration = 60;
+    [SerializeField] private Material transparentMaterial;
+
+    private QuestController controller;
+    private Renderer rend;
+    private Material originalMaterial;
 
     private void Awake()
     {
-        setIsCompleted(false);
-        setActive(false);
-    }
-    private void FixedUpdate()
-    {
-        if (isActive)
+        controller = FindFirstObjectByType<QuestController>();
+        rend = GetComponent<Renderer>();
+
+        if (rend != null)
         {
-            timer -= 1;
-            if (timer==(timerDuration/4) && !isCompleted)
+            originalMaterial = rend.material;
+        }
+    }
+
+    private void Start()
+    {
+        // El flujo correcto: La escena se inicializa a sí misma usando el asset
+        if (questDatabase != null)
+        {
+            Initialize(questDatabase.quests);
+        }
+        else
+        {
+            Debug.LogWarning($"Falta asignar el ScriptableObject 'Quest Database' en {gameObject.name}");
+        }
+    }
+
+    private void Update()
+    {
+        if (activeQuest != null && activeQuest.isActive)
+        {
+            activeQuest.timer += Time.deltaTime;
+
+            if (activeQuest.timer >= timerDuration)
             {
-                markObjective();
+                FailQuest();
             }
         }
     }
-    public string getDescription()
+
+    public void Initialize(StructureQuest.QuestGeneric[] quests)
     {
-        if(description != null)
-            return description;
-        else
-            return "No description";
+        allQuests.Clear();
+
+        for (int i = 0; i < quests.Length; i++)
+        {
+            allQuests.Add(new QuestData(quests[i]));
+        }
+
+        // Le paso la lista de misiones procesadas al controlador
+        if (controller != null)
+        {
+            controller.Initialize(allQuests);
+        }
     }
-    public bool getIsCompleted()
+
+    public void ActivateQuest(int index)
     {
-        return isCompleted;
+        if (index >= 0 && index < allQuests.Count)
+        {
+            activeQuest = allQuests[index];
+            activeQuest.isActive = true;
+            activeQuest.timer = 0f;
+        }
     }
-    public void setDescription(string newDescription)
+
+    public void FailQuest()
     {
-        description = newDescription;
+        if (activeQuest != null)
+        {
+            activeQuest.isActive = false;
+            Debug.Log($"Quest fallida: {activeQuest.config.Name}");
+        }
     }
-    public void setIsCompleted(bool newIsCompleted)
+
+    public void MarkObjective()
     {
-        isCompleted = newIsCompleted;
+        StartCoroutine(TempVisibility());
     }
-    public void setActive(bool newIsActive)
+
+    private IEnumerator TempVisibility()
     {
-        setIsCompleted(false);
-        isActive = newIsActive;
-        if (isActive)
+        if (rend == null || transparentMaterial == null || originalMaterial == null)
+            yield break;
+
+        rend.material = transparentMaterial;
+        yield return new WaitForSeconds(2);
+        rend.material = originalMaterial;
+    }
+
+    // GETTERS, SETTERS Y CONTROL DE ESTADO
+    public bool getIsCompleted() => activeQuest != null && activeQuest.isComplete;
+
+    public void setIsCompleted(bool value)
+    {
+        if (activeQuest != null) activeQuest.isComplete = value;
+    }
+
+    public bool getIsActive() => activeQuest != null && activeQuest.isActive;
+
+    public void setActive(bool value)
+    {
+        if (activeQuest == null) return;
+
+        activeQuest.isActive = value;
+        if (activeQuest.isActive)
         {
             setTimer();
         }
     }
-    public bool getIsActive()
-    {
-        return isActive;
-        
-    }
+
     public void setTimer()
     {
-         timer = timerDuration;
+        if (activeQuest != null) activeQuest.timer = 0f;
     }
-    public float getTimer()
-    {
-         return timer;
-    }
-    public void markObjective()
-    {
-        GetComponent<MeshRenderer>().material.color = Color.red;
-    }
-    public void failQuest()
-    {
-        player.TakeDamage(1);
-    }
+
+    public float getTimer() => activeQuest != null ? activeQuest.timer : 0f;
+
+    public bool checkTimer() => activeQuest != null && activeQuest.timer >= timerDuration;
+
+    public float getTimerDuration() => timerDuration;
+
 }
