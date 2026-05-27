@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eaee5583fa97c7438dac8974308fff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestController
-  allQuest: {fileID: 0}
+  quest: {fileID: 292492148}
   bars: {fileID: 812712376}
 --- !u!114 &292492148
 MonoBehaviour:
@@ -211,8 +211,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Quest
   questDatabase: {fileID: 11400000, guid: 639ba4fee0b3e31489ad3141c7e52074, type: 2}
   allQuests: []
+  distanceMin: 10
   timerDuration: 60
   transparentMaterial: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1001 &402875935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -823,7 +825,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bars
   SpeedBar: 1
-  selectedQuest: {fileID: 0}
+  PoolHappyQuest: []
+  PoolCryQuest: []
+  PoolAngryQuest: []
+  selectedQuest:
+    quest: {fileID: 0}
+    config:
+      State: 0
+      QuestType: 0
+      Name: 
+      description: 
+      id: 0
+      differentItems: 0
+      itemsToPickData: []
+      deliveryEnabled: 0
+      roomID: 
+      EmotionID: 0
+      addPoints: 0
+      EmotionID_: 0
+      removePoints: 0
+    QuestID: 0
+    isActive: 0
+    isComplete: 0
+    timer: 0
+    failPenaltyPoints: 0
+    AddPoints: 0
+    RemovePoints: 0
+    roomID: 
   questController: {fileID: 292492147}
 --- !u!1001 &1534028983
 PrefabInstance:
@@ -912,6 +940,51 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 812712375}
   m_SourcePrefab: {fileID: 100100000, guid: 11436022196bd154b92540ff368a136e, type: 3}
+--- !u!1 &1583164600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1583164601}
+  - component: {fileID: 1583164602}
+  m_Layer: 0
+  m_Name: GameObject (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1583164601
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583164600}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -20.3, y: 0, z: 23.99841}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1583164602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583164600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f70f5ad0aa09b04e9f794dcc203f303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Piece
+  id: Room_0
 --- !u!1 &1743663193
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,3 +1097,4 @@ SceneRoots:
   - {fileID: 1534028983}
   - {fileID: 292492145}
   - {fileID: 402875935}
+  - {fileID: 1583164601}

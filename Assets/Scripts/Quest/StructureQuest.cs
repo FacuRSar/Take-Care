@@ -25,11 +25,14 @@ public class StructureQuest : ScriptableObject
             public string name;
             public int quantity;
             public int itemID;
+
+            public GameObject gameObject;
         }
 
         [Header("ToGo or Delivery")]
         public bool deliveryEnabled;
-        public Transform roomOrDestiny;
+
+        public String roomID;
 
         [Header("Points (Rewards)")]
         public questEmotionType EmotionID;

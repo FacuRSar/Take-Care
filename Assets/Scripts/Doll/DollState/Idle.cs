@@ -62,7 +62,6 @@ public class Idle : MonoBehaviour
             Debug.Log("Sentis respiraciones en la nuca");
 
             Timer -= Time.deltaTime;
-            Debug.Log("Timer: " + Timer);
 
             if (Timer <= 0)
             {   

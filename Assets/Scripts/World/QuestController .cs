@@ -8,23 +8,21 @@ using static StructureQuest;
 
 public class QuestController : MonoBehaviour
 {
-   private Quest quest;
-
-    [SerializeField] private Quest allQuest;
+    [SerializeField] private Quest quest;
     [SerializeField] private Bars bars;
 
-    public void Initialize(List<Quest> quests)
+    public void Initialize(List<QuestData> quests)
     {
-        foreach (Quest quest in quests)
-        {
-            bars.InitializeQuestPools(quest);
-        }
+            bars.InitializeQuestPools(quests);
     }
-    public void ActivateQuest(Quest selectedQuest)
+    public void ActivateQuest(QuestData selectedQuest)
     {
-        selectedQuest.setActive(true);
+        //selectedQuest.setActive(true);
+        int index = quest.allQuests_.IndexOf(selectedQuest);
+        quest.ActivateQuest(index);
+        
 
-        Debug.Log("QuestController: Ejecutando misión: " + quest.name);
+        Debug.Log("QuestController: Ejecutando misión: " + quest.allQuests_.IndexOf(selectedQuest));
     }
     private void Update()
     {
