@@ -43,7 +43,7 @@ public class IntroSequenceController : MonoBehaviour
 
     [Header("Persecucion")]
     [SerializeField] private PursuerSpawnController pursuerSpawnController;
-    // Reemplaza al MirrorChaseEpilogue viejo. Se dispara al terminar el focus del baño.
+    // Reemplaza al MirrorChaseEpilogue viejo. Se dispara al terminar el focus del baï¿½o.
 
     [Header("Escape / Shock")]
     [SerializeField] private string agitatedBreathingLoopId = "AgitatedBreathing";

@@ -139,6 +139,7 @@ public class PlayerMovement : MonoBehaviour
         playerCamera.localPosition = camPos;
     }
 
+    /////////////////////////////////////////////////////// Codigo muerto?
     private void markObject(bool testbool, GameObject testObject)
     {
         if(testObject != null && !testbool)
@@ -146,6 +147,6 @@ public class PlayerMovement : MonoBehaviour
             
         }
     }
-
+    /////////////////////////////////////////////////////// 
 
 }

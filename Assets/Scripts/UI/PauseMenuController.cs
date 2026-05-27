@@ -58,6 +58,14 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] private float brightnessMinExposure = -1.5f;
     [SerializeField] private float brightnessMaxExposure = 1.5f;
 
+    [Header("Valores iniciales (normalizados 0..1)")]
+    // El juego siempre arranca con estos valores. No se persisten entre sesiones.
+    [Range(0f, 1f)][SerializeField] private float startBrightness = 0.5f;
+    [Range(0f, 1f)][SerializeField] private float startMasterVolume = 0.5f;
+    [Range(0f, 1f)][SerializeField] private float startMusicVolume = 0.5f;
+    [Range(0f, 1f)][SerializeField] private float startSfxVolume = 0.5f;
+    [Range(0f, 1f)][SerializeField] private float startAmbientVolume = 0.5f;
+
     [Header("Referencias de juego")]
     [SerializeField] private PlayerCamera playerCamera;
     [SerializeField] private PlayerMovement playerMovement;
@@ -70,7 +78,10 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] private string ambientVolumeParam = "AmbientVolume";
 
     [Header("Brillo (URP Post Exposure)")]
+    // YA NO se usa para escribir, queda solo para no romper la referencia en el inspector.
+    // El script crea su PROPIO Volume con prioridad alta en runtime.
     [SerializeField] private Volume globalVolume;
+    [SerializeField] private int runtimeBrightnessVolumePriority = 100;
 
     [Header("Escena menu")]
     [SerializeField] private string menuSceneName = "Menu";
@@ -186,6 +197,10 @@ public class PauseMenuController : MonoBehaviour
         {
             optionsPanel.SetActive(true);
         }
+
+        // Refrescamos al abrir: el panel arranca desactivado y los sliders
+        // no siempre toman el valor seteado en Awake hasta que se renderizan.
+        RefreshOptionsUI();
     }
 
     public void OnOptionsBackClicked()
@@ -337,33 +352,40 @@ public class PauseMenuController : MonoBehaviour
 
     private void LoadAndApplyAllSettings()
     {
-        float sensitivity = PlayerPrefs.GetFloat(PrefSensitivity, defaultSensitivity);
-        float brightness = PlayerPrefs.GetFloat(PrefBrightness, 0.5f);
-        float master = PlayerPrefs.GetFloat(PrefMasterVol, 0.75f);
-        float music = PlayerPrefs.GetFloat(PrefMusicVol, 0.75f);
-        float sfx = PlayerPrefs.GetFloat(PrefSfxVol, 1f);
-        float ambient = PlayerPrefs.GetFloat(PrefAmbientVol, 1f);
+        // Siempre arrancamos con los defaults definidos en el inspector.
+        ApplySensitivity(defaultSensitivity);
+        ApplyBrightness(startBrightness);
+        SetMixerVolume(masterVolumeParam, startMasterVolume);
+        SetMixerVolume(musicVolumeParam, startMusicVolume);
+        SetMixerVolume(sfxVolumeParam, startSfxVolume);
+        SetMixerVolume(ambientVolumeParam, startAmbientVolume);
 
-        SetSliderValueWithoutNotify(sensitivitySlider, Normalize(sensitivity, sensitivityMin, sensitivityMax));
-        SetSliderValueWithoutNotify(brightnessSlider, brightness);
-        SetSliderValueWithoutNotify(masterVolumeSlider, master);
-        SetSliderValueWithoutNotify(musicVolumeSlider, music);
-        SetSliderValueWithoutNotify(sfxVolumeSlider, sfx);
-        SetSliderValueWithoutNotify(ambientVolumeSlider, ambient);
+        if (audioMixer == null)
+        {
+            Debug.LogWarning("[PauseMenu] AudioMixer no asignado. Los sliders de volumen no van a afectar nada hasta que lo asignes y rutes los AudioSources al mixer.");
+        }
 
-        ApplySensitivity(sensitivity);
-        ApplyBrightness(brightness);
-        SetMixerVolume(masterVolumeParam, master);
-        SetMixerVolume(musicVolumeParam, music);
-        SetMixerVolume(sfxVolumeParam, sfx);
-        SetMixerVolume(ambientVolumeParam, ambient);
+        RefreshOptionsUI();
+    }
 
-        UpdateLabel(sensitivityValueLabel, FormatTwoDecimals(sensitivity));
-        UpdateLabel(brightnessValueLabel, FormatPercent(brightness));
-        UpdateLabel(masterVolumeValueLabel, FormatPercent(master));
-        UpdateLabel(musicVolumeValueLabel, FormatPercent(music));
-        UpdateLabel(sfxVolumeValueLabel, FormatPercent(sfx));
-        UpdateLabel(ambientVolumeValueLabel, FormatPercent(ambient));
+    // Sincroniza sliders + labels con los valores actuales. Se llama tambien al abrir Options
+    // para que los visuales coincidan con el estado real (los sliders en panel desactivado
+    // a veces no toman el SetValueWithoutNotify hasta que se renderizan).
+    private void RefreshOptionsUI()
+    {
+        SetSliderValueWithoutNotify(sensitivitySlider, Normalize(defaultSensitivity, sensitivityMin, sensitivityMax));
+        SetSliderValueWithoutNotify(brightnessSlider, startBrightness);
+        SetSliderValueWithoutNotify(masterVolumeSlider, startMasterVolume);
+        SetSliderValueWithoutNotify(musicVolumeSlider, startMusicVolume);
+        SetSliderValueWithoutNotify(sfxVolumeSlider, startSfxVolume);
+        SetSliderValueWithoutNotify(ambientVolumeSlider, startAmbientVolume);
+
+        UpdateLabel(sensitivityValueLabel, FormatTwoDecimals(defaultSensitivity));
+        UpdateLabel(brightnessValueLabel, FormatPercent(startBrightness));
+        UpdateLabel(masterVolumeValueLabel, FormatPercent(startMasterVolume));
+        UpdateLabel(musicVolumeValueLabel, FormatPercent(startMusicVolume));
+        UpdateLabel(sfxVolumeValueLabel, FormatPercent(startSfxVolume));
+        UpdateLabel(ambientVolumeValueLabel, FormatPercent(startAmbientVolume));
     }
 
     private void OnSensitivityChanged(float normalized)
@@ -376,6 +398,10 @@ public class PauseMenuController : MonoBehaviour
 
     private void OnBrightnessChanged(float normalized)
     {
+        if (verboseBrightnessLog)
+        {
+            Debug.Log("[PauseMenu] OnBrightnessChanged disparado: slider=" + normalized.ToString("0.00"));
+        }
         PlayerPrefs.SetFloat(PrefBrightness, normalized);
         ApplyBrightness(normalized);
         UpdateLabel(brightnessValueLabel, FormatPercent(normalized));
@@ -436,21 +462,40 @@ public class PauseMenuController : MonoBehaviour
         }
     }
 
+    // Verbose: loguea cada vez que se aplica brillo, para diagnosticar.
+    // Cuando todo este funcionando, podes poner esto en false desde el inspector.
+    [Header("Diagnostico")]
+    [SerializeField] private bool verboseBrightnessLog = true;
+
     private void ApplyBrightness(float normalized01)
     {
         if (!hasColorAdjustments)
         {
-            // segundo intento por si el Volume se inicializo despues que el script
             CacheColorAdjustments();
 
             if (!hasColorAdjustments)
             {
+                if (verboseBrightnessLog)
+                {
+                    Debug.LogWarning("[PauseMenu] ApplyBrightness sin colorAdjustments (no encontrado).");
+                }
                 return;
             }
         }
 
         float exposure = Mathf.Lerp(brightnessMinExposure, brightnessMaxExposure, normalized01);
-        colorAdjustments.postExposure.Override(exposure);
+        colorAdjustments.active = true;
+        colorAdjustments.postExposure.value = exposure;
+        colorAdjustments.postExposure.overrideState = true;
+
+        if (verboseBrightnessLog)
+        {
+            string volumeName = ownedBrightnessVolume != null ? ownedBrightnessVolume.name : "?";
+            Debug.Log("[PauseMenu] ApplyBrightness slider=" + normalized01.ToString("0.00") +
+                      " range=[" + brightnessMinExposure.ToString("0.00") + "," + brightnessMaxExposure.ToString("0.00") + "]" +
+                      " => postExposure=" + exposure.ToString("0.00") +
+                      " sobre Volume='" + volumeName + "'");
+        }
     }
 
     private void SetMixerVolume(string parameterName, float linear01)
@@ -465,32 +510,51 @@ public class PauseMenuController : MonoBehaviour
     }
 
     private bool brightnessWarningLogged;
+    private Volume ownedBrightnessVolume;
+    private VolumeProfile ownedBrightnessProfile;
 
     private void CacheColorAdjustments()
     {
-        hasColorAdjustments = false;
-
-        if (globalVolume == null)
+        if (hasColorAdjustments && colorAdjustments != null)
         {
-            LogBrightnessWarning("globalVolume no asignado en el inspector del PauseMenuController.");
             return;
         }
 
-        VolumeProfile profile = globalVolume.profile;
+        // Creamos un Volume propio en runtime, con prioridad alta para que pise cualquier
+        // otro Volume de la escena. Solo lleva un override de Color Adjustments con Post Exposure.
+        GameObject volumeGO = new GameObject("PauseMenuBrightnessVolume");
+        volumeGO.transform.SetParent(transform);
 
-        if (profile == null)
+        ownedBrightnessVolume = volumeGO.AddComponent<Volume>();
+        ownedBrightnessVolume.isGlobal = true;
+        ownedBrightnessVolume.priority = runtimeBrightnessVolumePriority;
+        ownedBrightnessVolume.weight = 1f;
+
+        ownedBrightnessProfile = ScriptableObject.CreateInstance<VolumeProfile>();
+        ownedBrightnessProfile.name = "PauseMenuBrightnessProfile";
+        ownedBrightnessVolume.sharedProfile = ownedBrightnessProfile;
+
+        colorAdjustments = ownedBrightnessProfile.Add<ColorAdjustments>(true);
+        colorAdjustments.active = true;
+        colorAdjustments.postExposure.overrideState = true;
+        colorAdjustments.postExposure.value = 0f;
+
+        hasColorAdjustments = true;
+
+        Debug.Log("[PauseMenu] Brightness Volume creado en runtime. priority=" + runtimeBrightnessVolumePriority);
+    }
+
+    private void OnDestroy()
+    {
+        // Limpieza del Volume y profile que creamos para no dejar restos
+        if (ownedBrightnessProfile != null)
         {
-            LogBrightnessWarning("El Volume no tiene Profile asignado.");
-            return;
+            Destroy(ownedBrightnessProfile);
         }
 
-        if (profile.TryGet(out colorAdjustments))
+        if (ownedBrightnessVolume != null)
         {
-            hasColorAdjustments = true;
-        }
-        else
-        {
-            LogBrightnessWarning("El Volume Profile no tiene override de Color Adjustments. Agregalo en el inspector del profile.");
+            Destroy(ownedBrightnessVolume.gameObject);
         }
     }
 

@@ -24,7 +24,7 @@ public class DemoEndController : MonoBehaviour
     [SerializeField] private string endSceneName;
 
     [Header("Efectos opcionales")]
-    [SerializeField] private CameraFallEffect cameraFallEffect;
+    // [SerializeField] private CameraFallEffect cameraFallEffect;
     // QUIZAS y solo quizas, meto algo asi.
 
     private bool endingStarted;
@@ -61,10 +61,10 @@ public class DemoEndController : MonoBehaviour
     {
         // Debug.Log("DemoEndController: cierre de demo iniciado.");
 
-        if (cameraFallEffect != null)
-        {
-            cameraFallEffect.Play();
-        }
+        //if (cameraFallEffect != null)
+        //{
+        //    cameraFallEffect.Play();
+       // }
 
         if (SFXManager.Instance != null)
         {
