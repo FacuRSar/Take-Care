@@ -42,7 +42,7 @@ public class IntroSequenceController : MonoBehaviour
     [SerializeField] private DemoEndController demoEndController;
 
     [Header("Persecucion")]
-    [SerializeField] private PursuerSpawnController pursuerSpawnController;
+    //[SerializeField] private PursuerSpawnController pursuerSpawnController;
     // Reemplaza al MirrorChaseEpilogue viejo. Se dispara al terminar el focus del ba�o.
 
     [Header("Escape / Shock")]
@@ -334,7 +334,7 @@ public class IntroSequenceController : MonoBehaviour
 
         StartMentalFatigueFade();
 
-        if (pursuerSpawnController != null)
+        /*if (pursuerSpawnController != null)
         {
             pursuerSpawnController.StartSpawnSequence();
         }
@@ -342,6 +342,7 @@ public class IntroSequenceController : MonoBehaviour
         {
             Debug.LogWarning("IntroSequenceController: pursuerSpawnController no esta asignado.");
         }
+    }*/
     }
 
     public void OnEscapeAttempted()

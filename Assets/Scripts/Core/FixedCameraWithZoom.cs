@@ -65,11 +65,11 @@ public class FixedCameraWithZoom : MonoBehaviour
 
     private void Start()
     {
-<<<<<<< HEAD
+//<<<<<<< HEAD
         currentZoomFov = zoomFov;
-        //Angel: Lo inicializo igual al fov del inspector.
+        /*Angel: Lo inicializo igual al fov del inspector.
 =======
->>>>>>> DollEmotionSystem
+>>>>>>> DollEmotionSystem*/
         DurationTotalScene();
     }
     private void Update()
@@ -190,17 +190,17 @@ public class FixedCameraWithZoom : MonoBehaviour
         if (sequences == null || sequences.Length == 0)
             return;
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
         foreach (ObjectWithFocus obj in sequences[currentSequenceIndex].objectives)
         {
             DurationTotal += obj.TransitionDuration;
         }
-=======
+//=======
             foreach (ObjectWithFocus obj in sequences[currentSequenceIndex].objectives)
             {
                 DurationTotal += obj.TransitionDuration;
             }
->>>>>>> DollEmotionSystem
+//>>>>>>> DollEmotionSystem
     }
 
     // Activa la secuencia ya armada en pools (sin pasar foco ni tiempos desde afuera).
@@ -221,12 +221,12 @@ public class FixedCameraWithZoom : MonoBehaviour
 
     public void PlaySequence(int sequenceIndex)
     {
-<<<<<<< HEAD
+//<<<<<<< HEAD
         currentZoomFov = zoomFov;
         //Angel: Reseteo el zoom normal
 
-=======
->>>>>>> DollEmotionSystem
+//=======
+//>>>>>>> DollEmotionSystem
         currentSequenceIndex = sequenceIndex;
 
         currentTargetIndex = 0;
@@ -238,7 +238,7 @@ public class FixedCameraWithZoom : MonoBehaviour
         isPlayingSequence = true;
     }
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
     //Aguego el nuevo PlaySequence pero con un zoom personalizado
     public void PlaySequence(int sequenceIndex, float customZoomFov)
     {
@@ -257,6 +257,5 @@ public class FixedCameraWithZoom : MonoBehaviour
 
 
 }
-=======
-}
->>>>>>> DollEmotionSystem
+//=======
+//>>>>>>> DollEmotionSystem
