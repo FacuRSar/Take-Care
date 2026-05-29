@@ -1,12 +1,20 @@
+using TMPro;
 using UnityEngine;
 
 /* Visual simple para boton 3D de menu.
  * Recibe hover desde el controller principal.
+ * Puede colorear un Renderer (mesh comun) o un TMP_Text (TextMeshPro).
+ * El TMP_Text puede vivir en cualquier parte de la jerarquia, no hace falta que sea hijo del boton.
  */
 public class Menu3DButtonVisual : MonoBehaviour
 {
-    [Header("Visual")]
+    [Header("Visual - opcion A: Mesh comun")]
     [SerializeField] private Renderer targetRenderer;
+
+    [Header("Visual - opcion B: TextMeshPro")]
+    [SerializeField] private TMP_Text targetText;
+
+    [Header("Colores")]
     [SerializeField] private Color normalColor = Color.white;
     [SerializeField] private Color hoverColor = Color.yellow;
 
@@ -19,12 +27,21 @@ public class Menu3DButtonVisual : MonoBehaviour
 
     private void Awake()
     {
-        if (targetRenderer == null)
+        // Si no se asigno nada, intentamos auto-detectar en este GameObject.
+        if (targetText == null && targetRenderer == null)
         {
-            targetRenderer = GetComponent<Renderer>();
+            targetText = GetComponent<TMP_Text>();
+            if (targetText == null)
+            {
+                targetRenderer = GetComponent<Renderer>();
+            }
         }
 
-        if (targetRenderer != null)
+        if (targetText != null)
+        {
+            normalColor = targetText.color;
+        }
+        else if (targetRenderer != null)
         {
             runtimeMaterial = targetRenderer.material;
             normalColor = runtimeMaterial.color;
@@ -35,9 +52,15 @@ public class Menu3DButtonVisual : MonoBehaviour
 
     public void SetHover(bool value)
     {
-        if (runtimeMaterial != null)
+        Color colorToApply = value ? hoverColor : normalColor;
+
+        if (targetText != null)
         {
-            runtimeMaterial.color = value ? hoverColor : normalColor;
+            targetText.color = colorToApply;
+        }
+        else if (runtimeMaterial != null)
+        {
+            runtimeMaterial.color = colorToApply;
         }
 
         if (moveOnHover)

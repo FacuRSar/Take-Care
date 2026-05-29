@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -88,6 +89,10 @@ public class PauseMenuController : MonoBehaviour
 
     public bool IsPaused => isPaused;
 
+    // Eventos para que otros sistemas (ej: menu 3D) sepan cuando se abre/cierra el panel de ajustes.
+    public event Action OnSettingsOpened;
+    public event Action OnSettingsClosed;
+
     private void Awake()
     {
         // Debug.Log("[PauseMenu] Awake en GameObject: " + gameObject.name + " | activeInHierarchy: " + gameObject.activeInHierarchy);
@@ -157,11 +162,24 @@ public class PauseMenuController : MonoBehaviour
     // Para usar desde el menu principal: el boton "Ajustes" llama aca.
     public void OpenSettings()
     {
+        if (pauseRoot != null)
+        {
+            pauseRoot.SetActive(true);
+        }
+
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(false);
+        }
+
         if (optionsPanel != null)
         {
             optionsPanel.SetActive(true);
         }
+
         RefreshOptionsUI();
+
+        OnSettingsOpened?.Invoke();
     }
 
     // Boton "Volver" del panel de opciones cuando estamos en menu principal.
@@ -171,6 +189,13 @@ public class PauseMenuController : MonoBehaviour
         {
             optionsPanel.SetActive(false);
         }
+
+        if (menuMode && pauseRoot != null)
+        {
+            pauseRoot.SetActive(false);
+        }
+
+        OnSettingsClosed?.Invoke();
     }
 
     // API publica para que otros scripts bloqueen/desbloqueen la pausa
@@ -514,10 +539,7 @@ public class PauseMenuController : MonoBehaviour
         if (verboseBrightnessLog)
         {
             string volumeName = ownedBrightnessVolume != null ? ownedBrightnessVolume.name : "?";
-            Debug.Log("[PauseMenu] ApplyBrightness slider=" + normalized01.ToString("0.00") +
-                      " range=[" + brightnessMinExposure.ToString("0.00") + "," + brightnessMaxExposure.ToString("0.00") + "]" +
-                      " => postExposure=" + exposure.ToString("0.00") +
-                      " sobre Volume='" + volumeName + "'");
+            //Debug.Log("[PauseMenu] ApplyBrightness slider=" + normalized01.ToString("0.00") + " range=[" + brightnessMinExposure.ToString("0.00") + "," + brightnessMaxExposure.ToString("0.00") + "]" + " => postExposure=" + exposure.ToString("0.00") + " sobre Volume='" + volumeName + "'");
         }
     }
 
@@ -564,7 +586,7 @@ public class PauseMenuController : MonoBehaviour
 
         hasColorAdjustments = true;
 
-        Debug.Log("[PauseMenu] Brightness Volume creado en runtime. priority=" + runtimeBrightnessVolumePriority);
+        //Debug.Log("[PauseMenu] Brightness Volume creado en runtime. priority=" + runtimeBrightnessVolumePriority);
     }
 
     private void OnDestroy()
