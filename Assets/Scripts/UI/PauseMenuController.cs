@@ -19,13 +19,6 @@ using UnityEngine.UI;
  */
 public class PauseMenuController : MonoBehaviour
 {
-    private const string PrefSensitivity = "settings_mouse_sensitivity";
-    private const string PrefBrightness = "settings_brightness";
-    private const string PrefMasterVol = "settings_master_volume";
-    private const string PrefMusicVol = "settings_music_volume";
-    private const string PrefSfxVol = "settings_sfx_volume";
-    private const string PrefAmbientVol = "settings_ambient_volume";
-
     [Header("Paneles UI")]
     // Root completo de la UI de pausa (ej: PauseUI). Lo que contiene title + paneles.
     // Se activa/desactiva entero al pausar/despausar.
@@ -58,13 +51,10 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] private float brightnessMinExposure = -1.5f;
     [SerializeField] private float brightnessMaxExposure = 1.5f;
 
-    [Header("Valores iniciales (normalizados 0..1)")]
-    // El juego siempre arranca con estos valores. No se persisten entre sesiones.
-    [Range(0f, 1f)][SerializeField] private float startBrightness = 0.5f;
-    [Range(0f, 1f)][SerializeField] private float startMasterVolume = 0.5f;
-    [Range(0f, 1f)][SerializeField] private float startMusicVolume = 0.5f;
-    [Range(0f, 1f)][SerializeField] private float startSfxVolume = 0.5f;
-    [Range(0f, 1f)][SerializeField] private float startAmbientVolume = 0.5f;
+    [Header("Modo")]
+    // Si esta en true: skipea la logica de pausa (Tab, lock de player, etc).
+    // Usar para el menu principal donde solo queremos los ajustes.
+    [SerializeField] private bool menuMode = false;
 
     [Header("Referencias de juego")]
     [SerializeField] private PlayerCamera playerCamera;
@@ -125,6 +115,12 @@ public class PauseMenuController : MonoBehaviour
 
     private void Update()
     {
+        // En menuMode no escuchamos Tab ni hacemos nada relacionado a pausa.
+        if (menuMode)
+        {
+            return;
+        }
+
         if (Keyboard.current == null)
         {
             return;
@@ -155,6 +151,25 @@ public class PauseMenuController : MonoBehaviour
         else
         {
             PauseGame();
+        }
+    }
+
+    // Para usar desde el menu principal: el boton "Ajustes" llama aca.
+    public void OpenSettings()
+    {
+        if (optionsPanel != null)
+        {
+            optionsPanel.SetActive(true);
+        }
+        RefreshOptionsUI();
+    }
+
+    // Boton "Volver" del panel de opciones cuando estamos en menu principal.
+    public void CloseSettings()
+    {
+        if (optionsPanel != null)
+        {
+            optionsPanel.SetActive(false);
         }
     }
 
@@ -352,13 +367,13 @@ public class PauseMenuController : MonoBehaviour
 
     private void LoadAndApplyAllSettings()
     {
-        // Siempre arrancamos con los defaults definidos en el inspector.
-        ApplySensitivity(defaultSensitivity);
-        ApplyBrightness(startBrightness);
-        SetMixerVolume(masterVolumeParam, startMasterVolume);
-        SetMixerVolume(musicVolumeParam, startMusicVolume);
-        SetMixerVolume(sfxVolumeParam, startSfxVolume);
-        SetMixerVolume(ambientVolumeParam, startAmbientVolume);
+        // Leemos los valores actuales desde GameController (persistente via PlayerPrefs).
+        ApplySensitivity(GetSensitivity());
+        ApplyBrightness(GetBrightness());
+        SetMixerVolume(masterVolumeParam, GetMasterVolume());
+        SetMixerVolume(musicVolumeParam, GetMusicVolume());
+        SetMixerVolume(sfxVolumeParam, GetSfxVolume());
+        SetMixerVolume(ambientVolumeParam, GetAmbientVolume());
 
         if (audioMixer == null)
         {
@@ -368,30 +383,38 @@ public class PauseMenuController : MonoBehaviour
         RefreshOptionsUI();
     }
 
-    // Sincroniza sliders + labels con los valores actuales. Se llama tambien al abrir Options
-    // para que los visuales coincidan con el estado real (los sliders en panel desactivado
-    // a veces no toman el SetValueWithoutNotify hasta que se renderizan).
+    // Sincroniza sliders + labels con los valores actuales del GameController.
+    // Se llama al iniciar y CADA VEZ que se abre Options, para que los sliders
+    // muestren los valores reales y no los que tenian cuando empezo la escena.
     private void RefreshOptionsUI()
     {
-        SetSliderValueWithoutNotify(sensitivitySlider, Normalize(defaultSensitivity, sensitivityMin, sensitivityMax));
-        SetSliderValueWithoutNotify(brightnessSlider, startBrightness);
-        SetSliderValueWithoutNotify(masterVolumeSlider, startMasterVolume);
-        SetSliderValueWithoutNotify(musicVolumeSlider, startMusicVolume);
-        SetSliderValueWithoutNotify(sfxVolumeSlider, startSfxVolume);
-        SetSliderValueWithoutNotify(ambientVolumeSlider, startAmbientVolume);
+        SetSliderValueWithoutNotify(sensitivitySlider, Normalize(GetSensitivity(), sensitivityMin, sensitivityMax));
+        SetSliderValueWithoutNotify(brightnessSlider, GetBrightness());
+        SetSliderValueWithoutNotify(masterVolumeSlider, GetMasterVolume());
+        SetSliderValueWithoutNotify(musicVolumeSlider, GetMusicVolume());
+        SetSliderValueWithoutNotify(sfxVolumeSlider, GetSfxVolume());
+        SetSliderValueWithoutNotify(ambientVolumeSlider, GetAmbientVolume());
 
-        UpdateLabel(sensitivityValueLabel, FormatTwoDecimals(defaultSensitivity));
-        UpdateLabel(brightnessValueLabel, FormatPercent(startBrightness));
-        UpdateLabel(masterVolumeValueLabel, FormatPercent(startMasterVolume));
-        UpdateLabel(musicVolumeValueLabel, FormatPercent(startMusicVolume));
-        UpdateLabel(sfxVolumeValueLabel, FormatPercent(startSfxVolume));
-        UpdateLabel(ambientVolumeValueLabel, FormatPercent(startAmbientVolume));
+        UpdateLabel(sensitivityValueLabel, FormatTwoDecimals(GetSensitivity()));
+        UpdateLabel(brightnessValueLabel, FormatPercent(GetBrightness()));
+        UpdateLabel(masterVolumeValueLabel, FormatPercent(GetMasterVolume()));
+        UpdateLabel(musicVolumeValueLabel, FormatPercent(GetMusicVolume()));
+        UpdateLabel(sfxVolumeValueLabel, FormatPercent(GetSfxVolume()));
+        UpdateLabel(ambientVolumeValueLabel, FormatPercent(GetAmbientVolume()));
     }
+
+    // Helpers: si GameController.Instance no existe (caso raro), usamos defaults.
+    private static float GetSensitivity() => GameController.Instance != null ? GameController.Instance.Sensitivity : GameController.DefaultSensitivity;
+    private static float GetBrightness() => GameController.Instance != null ? GameController.Instance.Brightness : GameController.DefaultBrightness;
+    private static float GetMasterVolume() => GameController.Instance != null ? GameController.Instance.MasterVolume : GameController.DefaultMasterVolume;
+    private static float GetMusicVolume() => GameController.Instance != null ? GameController.Instance.MusicVolume : GameController.DefaultMusicVolume;
+    private static float GetSfxVolume() => GameController.Instance != null ? GameController.Instance.SfxVolume : GameController.DefaultSfxVolume;
+    private static float GetAmbientVolume() => GameController.Instance != null ? GameController.Instance.AmbientVolume : GameController.DefaultAmbientVolume;
 
     private void OnSensitivityChanged(float normalized)
     {
         float value = Mathf.Lerp(sensitivityMin, sensitivityMax, normalized);
-        PlayerPrefs.SetFloat(PrefSensitivity, value);
+        if (GameController.Instance != null) GameController.Instance.Sensitivity = value;
         ApplySensitivity(value);
         UpdateLabel(sensitivityValueLabel, FormatTwoDecimals(value));
     }
@@ -402,35 +425,35 @@ public class PauseMenuController : MonoBehaviour
         {
             Debug.Log("[PauseMenu] OnBrightnessChanged disparado: slider=" + normalized.ToString("0.00"));
         }
-        PlayerPrefs.SetFloat(PrefBrightness, normalized);
+        if (GameController.Instance != null) GameController.Instance.Brightness = normalized;
         ApplyBrightness(normalized);
         UpdateLabel(brightnessValueLabel, FormatPercent(normalized));
     }
 
     private void OnMasterVolumeChanged(float linear)
     {
-        PlayerPrefs.SetFloat(PrefMasterVol, linear);
+        if (GameController.Instance != null) GameController.Instance.MasterVolume = linear;
         SetMixerVolume(masterVolumeParam, linear);
         UpdateLabel(masterVolumeValueLabel, FormatPercent(linear));
     }
 
     private void OnMusicVolumeChanged(float linear)
     {
-        PlayerPrefs.SetFloat(PrefMusicVol, linear);
+        if (GameController.Instance != null) GameController.Instance.MusicVolume = linear;
         SetMixerVolume(musicVolumeParam, linear);
         UpdateLabel(musicVolumeValueLabel, FormatPercent(linear));
     }
 
     private void OnSfxVolumeChanged(float linear)
     {
-        PlayerPrefs.SetFloat(PrefSfxVol, linear);
+        if (GameController.Instance != null) GameController.Instance.SfxVolume = linear;
         SetMixerVolume(sfxVolumeParam, linear);
         UpdateLabel(sfxVolumeValueLabel, FormatPercent(linear));
     }
 
     private void OnAmbientVolumeChanged(float linear)
     {
-        PlayerPrefs.SetFloat(PrefAmbientVol, linear);
+        if (GameController.Instance != null) GameController.Instance.AmbientVolume = linear;
         SetMixerVolume(ambientVolumeParam, linear);
         UpdateLabel(ambientVolumeValueLabel, FormatPercent(linear));
     }

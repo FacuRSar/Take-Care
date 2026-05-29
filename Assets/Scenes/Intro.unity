@@ -9648,7 +9648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 704697043683657168, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3393946080514611047, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
       propertyPath: m_Type
@@ -9816,7 +9816,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8533916043454553714, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7477495629025014069, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
@@ -24103,7 +24103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1549993273
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25224,7 +25224,6 @@ MonoBehaviour:
   sfxManager: {fileID: 752710253}
   musicManager: {fileID: 450696702}
   demoEndController: {fileID: 46521185}
-  pursuerSpawnController: {fileID: 1292634255}
   agitatedBreathingLoopId: AgitatedBreathing
   playerHeadBobTarget: {fileID: 375775384}
   headBobEscapeMessage: ApplyEscapeConfig
@@ -31381,11 +31380,7 @@ MonoBehaviour:
   defaultSensitivity: 0.4
   brightnessMinExposure: -1.5
   brightnessMaxExposure: 1.5
-  startBrightness: 0.5
-  startMasterVolume: 0.5
-  startMusicVolume: 0.5
-  startSfxVolume: 0.5
-  startAmbientVolume: 0.5
+  menuMode: 0
   playerCamera: {fileID: 375775404}
   playerMovement: {fileID: 375775388}
   audioMixer: {fileID: 24100000, guid: 4d0b0d8e2520dd74c9e91046863fc510, type: 2}

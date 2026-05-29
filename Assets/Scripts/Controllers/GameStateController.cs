@@ -90,4 +90,28 @@ public class GameStateController : MonoBehaviour
             OnFlagChanged?.Invoke(flagName, false);
         }
     }
+
+    // Borra todas las flags excepto las cuyo id este en la lista recibida.
+    // Si un id de la lista no existe entre las flags, se ignora.
+    // Pensado para limpiar el estado al cambiar de escena conservando solo lo persistente.
+    public void ClearFlagsExcept(IList<string> idsToKeep)
+    {
+        HashSet<string> keepSet = idsToKeep != null ? new HashSet<string>(idsToKeep) : new HashSet<string>();
+
+        List<string> toRemove = new List<string>();
+
+        foreach (KeyValuePair<string, bool> kv in flags)
+        {
+            if (!keepSet.Contains(kv.Key))
+            {
+                toRemove.Add(kv.Key);
+            }
+        }
+
+        foreach (string key in toRemove)
+        {
+            flags.Remove(key);
+            OnFlagChanged?.Invoke(key, false);
+        }
+    }
 }
