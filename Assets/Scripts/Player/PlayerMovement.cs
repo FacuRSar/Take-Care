@@ -35,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
 
     public bool CantMove;
 
+    private float movementFeelMultiplier = 1f;
+
     void Start()
     {
         //asignar el rigibody y player input al iniciar el juego
@@ -86,15 +88,20 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed = sprintSpeed;
         }
 
-        // Es una negrada, ya se. Pero lo meto otra vez para declarar la local como global
-        CurrentSpeed = currentSpeed;
+        float feel = Mathf.Clamp(movementFeelMultiplier, 0.25f, 3f);
+        CurrentSpeed = currentSpeed * feel;
         IsMoving = direction.magnitude > 0.1f;
 
         rb.linearVelocity = new Vector3(
-            direction.x * currentSpeed,
+            direction.x * currentSpeed * feel,
             rb.linearVelocity.y,
-            direction.z * currentSpeed
+            direction.z * currentSpeed * feel
         );
+    }
+
+    public void SetMovementFeelMultiplier(float multiplier)
+    {
+        movementFeelMultiplier = Mathf.Clamp(multiplier, 0.25f, 3f);
     }
 
     // En vez de usar callback para sprint, lo leo directamente por teclado con Input System
@@ -125,12 +132,14 @@ public class PlayerMovement : MonoBehaviour
 
         // Mantiene la base de la capsula en el mismo lugar.
         // Si la altura baja, el centro tambien baja la mitad.
-        capsule.center = new Vector3(0f, newHeight / 2f, 0f);
+        capsule.center = new Vector3(0f, 0f, 0f);
 
         Vector3 camPos = playerCamera.localPosition;
         camPos.y = Mathf.Lerp(camPos.y, targetCameraY, crouchLerpSpeed * Time.deltaTime);
         playerCamera.localPosition = camPos;
     }
+
+    /////////////////////////////////////////////////////// Codigo muerto?
     private void markObject(bool testbool, GameObject testObject)
     {
         if(testObject != null && !testbool)
@@ -138,4 +147,6 @@ public class PlayerMovement : MonoBehaviour
             
         }
     }
+    /////////////////////////////////////////////////////// 
+
 }

@@ -14,11 +14,11 @@ public class DoorInteractable : Interactable
         CustomFlag
     }
 
-    [Header("Door References")]
+    [Header("Referencias de la puerta")]
     [SerializeField] private Transform doorPivot;
     //pivot real de la puerta (es el que abre o cierra)
 
-    [Header("Door Rotation")]
+    [Header("Rotacion de puerta")]
     [SerializeField] private float closedZRotation = 0f;
     //rotacion de la puerta cerrada
     [SerializeField] private float openedZRotation = 90f;
@@ -27,7 +27,8 @@ public class DoorInteractable : Interactable
     [SerializeField] private float openSpeed = 6f;
     //velocidad de apertura/cierre
 
-    [Header("Door Behaviour")]
+    [Header("Configuracion de puerta")]
+    [SerializeField] private bool ClosedSound = true;
     [SerializeField] private bool canOpen = false;
     //define si esta puerta puede abrirse en general
     //false = siempre bloqueada (Por si acaso)
@@ -38,7 +39,7 @@ public class DoorInteractable : Interactable
     [SerializeField] private string lockedMessage = "Parece que alguien la cerró desde el otro lado.";
     // mensaje cuando la puerta no puede abrirse full generico
 
-    [Header("Door Requirements")]
+    [Header("Requerimientos de puerta")]
     [SerializeField] private DoorRequirementType requirementType = DoorRequirementType.None;
     //tipo de requisito que necesita esta puerta para poder abrirse, asi lo podemos escalar
 
@@ -52,6 +53,9 @@ public class DoorInteractable : Interactable
 
     private Quaternion targetRotation;
     // rotacion
+
+    private string pendingEndSound;
+    // Sonido que queda pendiente para reproducirse cuando termina el movimiento
 
     private void Start()
     {
@@ -78,21 +82,35 @@ public class DoorInteractable : Interactable
                 openSpeed * Time.deltaTime
             );
 
-            // cerca del objetivo, deja de interpolar.
+            // Cuando esta muy cerquita del objetivo, isMoving pasa a false para dejar interactuar
             if (Quaternion.Angle(doorPivot.localRotation, targetRotation) < 0.5f)
             {
                 doorPivot.localRotation = targetRotation;
                 isMoving = false;
+
+                // Si habia un sonido pendiente para el final del movimiento, lo reproduzco ahora.
+                if (!string.IsNullOrEmpty(pendingEndSound))
+                {
+                    SFXManager.Instance.Play3D(pendingEndSound, transform.position);
+                    pendingEndSound = null;
+                }
             }
         }
     }
 
     public override void Interact(PlayerInteraction player)
     {
+        // Si la puerta esta moviendose, no dejo interactuar para evitar bugs o spam.
+        if (isMoving)
+        {
+            return;
+        }
+
         // si la puerta no puede abrirse por configuracion general mete feedback y sale
         if (!canOpen)
         {
             SubtitleUI.Instance.ShowSubtitle(lockedMessage, 2.5f);
+            if (ClosedSound) SFXManager.Instance.Play3D("LockedDoor", transform.position);
             return;
         }
 
@@ -100,11 +118,44 @@ public class DoorInteractable : Interactable
         if (!CanOpenByState())
         {
             SubtitleUI.Instance.ShowSubtitle(lockedMessage, 2.5f);
+            if (ClosedSound) SFXManager.Instance.Play3D("LockedDoor", transform.position);
             return;
         }
 
         // si pasa todas las validaciones, alterna apertura o cierre
         ToggleDoor();
+    }
+
+    public bool IsOpen()
+    {
+        return isOpen;
+    }
+
+    public bool IsMoving()
+    {
+        return isMoving;
+    }
+
+    public void OpenFromAI()
+    {
+        // Metodo para que una IA pueda abrir puertas sin hacer toggle.
+        // Esto evita que el stalker abra y cierre la misma puerta en loop.
+        if (isOpen || isMoving)
+        {
+            return;
+        }
+
+        if (!canOpen)
+        {
+            return;
+        }
+
+        if (!CanOpenByState())
+        {
+            return;
+        }
+
+        OpenDoor();
     }
 
     private bool CanOpenByState()
@@ -130,9 +181,39 @@ public class DoorInteractable : Interactable
     private void ToggleDoor()
     {
         isOpen = !isOpen;
+        float targetZ;
 
-        float targetZ = isOpen ? openedZRotation : closedZRotation;
+        if (isOpen)
+        {
+            targetZ = openedZRotation;
+
+            // Al abrir, el sonido suena apenas empieza el movimiento.
+            SFXManager.Instance.Play3D("OpenDoor", transform.position);
+
+            // No dejo sonido pendiente para el final de apertura asi eso lo tira cuando se cierra
+            pendingEndSound = null;
+        }
+        else
+        {
+            targetZ = closedZRotation;
+
+            // Al cerrar, el sonido queda pendiente y suena cuando llega al final.
+            pendingEndSound = "CloseDoor";
+        }
+
         targetRotation = Quaternion.Euler(0f, 0f, targetZ);
+        isMoving = true;
+    }
+
+    private void OpenDoor()
+    {
+        isOpen = true;
+
+        // Apertura directa para IA. No hace toggle, solo abre.
+        SFXManager.Instance.Play3D("OpenDoor", transform.position);
+        pendingEndSound = null;
+
+        targetRotation = Quaternion.Euler(0f, 0f, openedZRotation);
         isMoving = true;
     }
 }

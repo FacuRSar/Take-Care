@@ -6,9 +6,12 @@ public class DollEmotionSystem : MonoBehaviour
     #region Current State
 
     private DollState Currentstate;
+    private DollEmotion currentEmotion;
 
     public DollState _CurrentState { get { return Currentstate; } set { Currentstate = value; } }
     #endregion
+    private string currentStateName = "DollIdle";
+    private bool isQuestActive = false;
 
     #region States
 
@@ -28,9 +31,14 @@ public class DollEmotionSystem : MonoBehaviour
     [Header("Doll Reference")]
     [SerializeField] private Transform doll;
     public Transform Doll { get => doll; set => doll = value; }
+    [SerializeField] private AudioSource audioSource;
 
     public Camera Player { get => player; set => player = value; }
 
+    [Header("GameState Reference")]
+    private GameStateController gameStateController;
+    private Bars bars;
+    private DollState currentMaxBar;
 
     void Awake()
     {
@@ -39,20 +47,26 @@ public class DollEmotionSystem : MonoBehaviour
         happyState = GetComponent<Happy>();
         angryState = GetComponent<Angry>();
         cryState = GetComponent<Cry>();
-
-
+        currentEmotion = idleState;
+        gameStateController = FindAnyObjectByType<GameStateController>();
+        bars = GetComponent<Bars>();
         ChangeState(DollState.Idle);
     }
-
+    private void Start()
+    {
+        InitiallizeFlags();
+    }
     public void ChangeState(DollState newState)
     {
         if (Currentstate == newState) // Si el nuevo estado es el mismo que el actual, no hacemos nada
             return;
 
         DisableAllState();
-
+        gameStateController.SetFlag(currentStateName, false);
         Currentstate = newState;
-
+        currentEmotion = GetEmotionByState(newState);
+        currentStateName = "Doll" + Currentstate.ToString();
+        gameStateController.SetFlag(currentStateName, true);
 
         Debug.Log("Cambiaste al estado: " + Currentstate);
 
@@ -76,28 +90,47 @@ public class DollEmotionSystem : MonoBehaviour
 
         }
     }
-
     private void Update()
     {
-        if (playerSanity.barSanityCurrent >= playerSanity.barSanityMax * 0.75f)
+        currentMaxBar = GetStateByName(bars.getTopBar());
+        if (currentEmotion == idleState)
         {
-            // Terror extremo o intenso
-        }
-        else if (playerSanity.barSanityCurrent >= playerSanity.barSanityMax * 0.5f)
-        {
-            //Se intensifican los susurros, movimientos más visibles, sensación de ser observado aumenta
-        }
-        else if (playerSanity.barSanityCurrent >= playerSanity.barSanityMax * 0.25f)
-        {
+            idleState.checkWatching(player.transform.position, doll.transform.position);
+            if(currentMaxBar != Currentstate && !isQuestActive)
+                ChangeState(currentMaxBar);
 
-            //Empieza a escuchar susurros, movimientos leves
         }
-        else
+        else if (currentEmotion != watchingState)
         {
-            // nada
+            currentEmotion.CheckInteraction(audioSource);
+            if (currentMaxBar != Currentstate && !isQuestActive)
+                ChangeState(currentMaxBar);
         }
     }
-
+    private DollEmotion GetEmotionByState(DollState state)
+    {
+        return state switch
+        {
+            DollState.Idle => idleState,
+            DollState.Watching => watchingState,
+            DollState.Happy => happyState,
+            DollState.Angry => angryState,
+            DollState.Cry => cryState,
+            _ => null,
+        };
+    }
+    private DollState GetStateByName(string stateName)
+    {
+        return stateName switch
+        {
+            "DollIdle" => DollState.Idle,
+            "DollWatching" => DollState.Watching,
+            "DollHappy" => DollState.Happy,
+            "DollAngry" => DollState.Angry,
+            "DollCry" => DollState.Cry,
+            _ => DollState.Idle,
+        };
+    }
     private void DisableAllState()
     {
         idleState.enabled = false;
@@ -111,5 +144,17 @@ public class DollEmotionSystem : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(Doll.transform.position, Doll.transform.position + Doll.transform.forward * 2f);
+    }
+    public void InitiallizeFlags()
+    {
+        gameStateController.SetFlag("DollIdle", true);
+        gameStateController.SetFlag("DollAngry", false);
+        gameStateController.SetFlag("DollHappy", false);
+        gameStateController.SetFlag("DollCry", false);
+        gameStateController.SetFlag("DollWatching", false);
+    }
+    public void SetQuestActive(bool isActive)
+    { 
+        isQuestActive = isActive;
     }
 }

@@ -1,11 +1,9 @@
 using System;
 using UnityEngine;
 
-public class Cry : MonoBehaviour
+public class Cry : DollEmotion
 {
     DollEmotionSystem dollEmotionSystem;
-    Bars bars;
-
     public event Action AddCryBar;
 
 
@@ -33,7 +31,7 @@ public class Cry : MonoBehaviour
     {
         Debug.Log("La muñeca deja de llorar");
     }
-    void Update()
+    /*void Update()
     {
 
         if (bars._CurrentCryBar >= bars._MaxBar * 0.75f)
@@ -60,5 +58,5 @@ public class Cry : MonoBehaviour
 
                 dollEmotionSystem.ChangeState(DollState.Idle);
         }
-    }
+    }*/
 }

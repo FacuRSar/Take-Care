@@ -50,6 +50,8 @@ public class FixedCameraWithZoom : MonoBehaviour
     [SerializeField] private float nomalFov;
 
     private float targetFov;
+    private float currentZoomFov;
+    //Angel: Agrego esta variable para que pueda hacer el llamado con un zoom personalizado.
 
 
     [Header("Timer")]
@@ -63,6 +65,11 @@ public class FixedCameraWithZoom : MonoBehaviour
 
     private void Start()
     {
+//<<<<<<< HEAD
+        currentZoomFov = zoomFov;
+        /*Angel: Lo inicializo igual al fov del inspector.
+=======
+>>>>>>> DollEmotionSystem*/
         DurationTotalScene();
     }
     private void Update()
@@ -111,8 +118,9 @@ public class FixedCameraWithZoom : MonoBehaviour
 
     private void CameraZoom()
     {
-        if (canzoomed) targetFov = zoomFov;
+        if (canzoomed) targetFov = currentZoomFov;
         else targetFov = nomalFov;
+        //Angel: Cambio para usar currentZoomFov
 
         cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetFov, Time.deltaTime * SpeedZoom);
     }
@@ -182,10 +190,17 @@ public class FixedCameraWithZoom : MonoBehaviour
         if (sequences == null || sequences.Length == 0)
             return;
 
+//<<<<<<< HEAD
+        foreach (ObjectWithFocus obj in sequences[currentSequenceIndex].objectives)
+        {
+            DurationTotal += obj.TransitionDuration;
+        }
+//=======
             foreach (ObjectWithFocus obj in sequences[currentSequenceIndex].objectives)
             {
                 DurationTotal += obj.TransitionDuration;
             }
+//>>>>>>> DollEmotionSystem
     }
 
     // Activa la secuencia ya armada en pools (sin pasar foco ni tiempos desde afuera).
@@ -206,6 +221,12 @@ public class FixedCameraWithZoom : MonoBehaviour
 
     public void PlaySequence(int sequenceIndex)
     {
+//<<<<<<< HEAD
+        currentZoomFov = zoomFov;
+        //Angel: Reseteo el zoom normal
+
+//=======
+//>>>>>>> DollEmotionSystem
         currentSequenceIndex = sequenceIndex;
 
         currentTargetIndex = 0;
@@ -217,4 +238,24 @@ public class FixedCameraWithZoom : MonoBehaviour
         isPlayingSequence = true;
     }
 
+//<<<<<<< HEAD
+    //Aguego el nuevo PlaySequence pero con un zoom personalizado
+    public void PlaySequence(int sequenceIndex, float customZoomFov)
+    {
+        currentZoomFov = customZoomFov;
+
+        currentSequenceIndex = sequenceIndex;
+
+        currentTargetIndex = 0;
+        targetTimer = 0f;
+        timer = 0f;
+
+        DurationTotalScene();
+
+        isPlayingSequence = true;
+    }
+
+
 }
+//=======
+//>>>>>>> DollEmotionSystem

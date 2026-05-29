@@ -26,6 +26,7 @@ public class PlayerHeadBob : MonoBehaviour
     private Vector3 originalLocalPosition;
     private float bobTimer;
     private float debugTimer;
+    private float panicBobMultiplier = 1f;
 
     private void Start()
     {
@@ -41,7 +42,7 @@ public class PlayerHeadBob : MonoBehaviour
 
         if (debugHeadBob)
         {
-            Debug.Log("[HeadBob] Start. PlayerMovement: " + playerMovement + " | Camera: " + playerCamera);
+            // Debug.Log("[HeadBob] Start. PlayerMovement: " + playerMovement + " | Camera: " + playerCamera);
 
             if (playerMovement == null)
                 Debug.LogWarning("[HeadBob] No tiene PlayerMovement asignado/encontrado.");
@@ -61,7 +62,6 @@ public class PlayerHeadBob : MonoBehaviour
         if (playerMovement == null || playerCamera == null)
         {
             if (debugHeadBob)
-                Debug.LogWarning("[HeadBob] No puede ejecutar. Falta playerMovement o playerCamera.");
 
             return;
         }
@@ -71,13 +71,6 @@ public class PlayerHeadBob : MonoBehaviour
         if (debugHeadBob && debugTimer >= debugInterval)
         {
             debugTimer = 0f;
-
-            Debug.Log(
-                "[HeadBob] IsMoving: " + playerMovement.IsMoving +
-                " | CurrentSpeed: " + playerMovement.CurrentSpeed +
-                " | IsCrouching: " + playerMovement.IsCrouching +
-                " | CamLocalY: " + playerCamera.localPosition.y
-            );
         }
 
         if (!playerMovement.IsMoving)
@@ -95,8 +88,8 @@ public class PlayerHeadBob : MonoBehaviour
 
         float speed = playerMovement.CurrentSpeed;
 
-        float bobFrequency = speed * bobFrequencyMultiplier;
-        float bobAmount = speed * bobAmountMultiplier;
+        float bobFrequency = speed * bobFrequencyMultiplier * panicBobMultiplier;
+        float bobAmount = speed * bobAmountMultiplier * panicBobMultiplier;
 
         if (playerMovement.IsCrouching)
         {
@@ -110,15 +103,15 @@ public class PlayerHeadBob : MonoBehaviour
 
         Vector3 targetPosition = originalLocalPosition + new Vector3(0f, yOffset, 0f);
 
-        if (debugHeadBob && Mathf.Abs(yOffset) > 0.001f)
-        {
-            Debug.Log("[HeadBob] Aplicando bob. OffsetY: " + yOffset + " | TargetY: " + targetPosition.y);
-        }
-
         playerCamera.localPosition = Vector3.Lerp(
             playerCamera.localPosition,
             targetPosition,
             Time.deltaTime * returnSpeed
         );
+    }
+
+    public void SetPanicBobMultiplier(float multiplier)
+    {
+        panicBobMultiplier = Mathf.Max(1f, multiplier);
     }
 }

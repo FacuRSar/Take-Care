@@ -13,11 +13,11 @@ TagManager:
   - Raycast Detect
   - Water
   - UI
-  - Interactuable
-  - Agarrado
+  - Interactable
+  - HandleItem
   - Player
-  - 
-  - 
+  - Doors
+  - MenuButton
   - 
   - 
   - 
