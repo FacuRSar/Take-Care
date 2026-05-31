@@ -19,7 +19,9 @@ public class GameStateController : MonoBehaviour
         // aseguramos una sola instancia para evitar conflictos
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
+            // No destruir el GameObject completo: en algunas escenas este mismo
+            // objeto tambien contiene sistemas locales como PauseMenuController.
+            Destroy(this);
             return;
         }
 

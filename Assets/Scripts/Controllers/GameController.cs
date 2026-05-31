@@ -49,11 +49,21 @@ public class GameController : MonoBehaviour
         // singleton: si ya hay una instancia, esta se autodestruye
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
+            // No destruir el GameObject completo por si tiene componentes locales
+            // de la escena. Solo quitamos este GameController duplicado.
+            Destroy(this);
             return;
         }
 
         Instance = this;
+
+        // DontDestroyOnLoad solo funciona sobre objetos raiz. Si estamos como hijo
+        // de algun "Manager" en la escena, nos despegamos antes de marcar persistente.
+        if (transform.parent != null)
+        {
+            transform.SetParent(null);
+        }
+
         DontDestroyOnLoad(gameObject);
 
         if (gameStateController == null)
@@ -109,38 +119,38 @@ public class GameController : MonoBehaviour
 
     public float Sensitivity
     {
-        get => PlayerPrefs.GetFloat(PrefSensitivity, DefaultSensitivity);
-        set => SaveFloat(PrefSensitivity, value);
+        get => GetSavedSensitivity();
+        set => SetSavedSensitivity(value);
     }
 
     public float Brightness
     {
-        get => PlayerPrefs.GetFloat(PrefBrightness, DefaultBrightness);
-        set => SaveFloat(PrefBrightness, value);
+        get => GetSavedBrightness();
+        set => SetSavedBrightness(value);
     }
 
     public float MasterVolume
     {
-        get => PlayerPrefs.GetFloat(PrefMaster, DefaultMasterVolume);
-        set => SaveFloat(PrefMaster, value);
+        get => GetSavedMasterVolume();
+        set => SetSavedMasterVolume(value);
     }
 
     public float MusicVolume
     {
-        get => PlayerPrefs.GetFloat(PrefMusic, DefaultMusicVolume);
-        set => SaveFloat(PrefMusic, value);
+        get => GetSavedMusicVolume();
+        set => SetSavedMusicVolume(value);
     }
 
     public float SfxVolume
     {
-        get => PlayerPrefs.GetFloat(PrefSfx, DefaultSfxVolume);
-        set => SaveFloat(PrefSfx, value);
+        get => GetSavedSfxVolume();
+        set => SetSavedSfxVolume(value);
     }
 
     public float AmbientVolume
     {
-        get => PlayerPrefs.GetFloat(PrefAmbient, DefaultAmbientVolume);
-        set => SaveFloat(PrefAmbient, value);
+        get => GetSavedAmbientVolume();
+        set => SetSavedAmbientVolume(value);
     }
 
     public void ResetSettingsToDefaults()
@@ -158,4 +168,18 @@ public class GameController : MonoBehaviour
         PlayerPrefs.SetFloat(key, value);
         PlayerPrefs.Save();
     }
+
+    public static float GetSavedSensitivity() => PlayerPrefs.GetFloat(PrefSensitivity, DefaultSensitivity);
+    public static float GetSavedBrightness() => PlayerPrefs.GetFloat(PrefBrightness, DefaultBrightness);
+    public static float GetSavedMasterVolume() => PlayerPrefs.GetFloat(PrefMaster, DefaultMasterVolume);
+    public static float GetSavedMusicVolume() => PlayerPrefs.GetFloat(PrefMusic, DefaultMusicVolume);
+    public static float GetSavedSfxVolume() => PlayerPrefs.GetFloat(PrefSfx, DefaultSfxVolume);
+    public static float GetSavedAmbientVolume() => PlayerPrefs.GetFloat(PrefAmbient, DefaultAmbientVolume);
+
+    public static void SetSavedSensitivity(float value) => SaveFloat(PrefSensitivity, value);
+    public static void SetSavedBrightness(float value) => SaveFloat(PrefBrightness, value);
+    public static void SetSavedMasterVolume(float value) => SaveFloat(PrefMaster, value);
+    public static void SetSavedMusicVolume(float value) => SaveFloat(PrefMusic, value);
+    public static void SetSavedSfxVolume(float value) => SaveFloat(PrefSfx, value);
+    public static void SetSavedAmbientVolume(float value) => SaveFloat(PrefAmbient, value);
 }

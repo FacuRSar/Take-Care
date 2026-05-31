@@ -108,6 +108,7 @@ public class PauseMenuController : MonoBehaviour
         }
 
         CacheColorAdjustments();
+        EnablePostProcessingOnSceneCameras();
         WireSliderListeners();
         LoadAndApplyAllSettings();
         CloseAllPanels();
@@ -273,6 +274,11 @@ public class PauseMenuController : MonoBehaviour
             AudioListener.pause = true;
         }
 
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.OnGamePauseStart();
+        }
+
         // Desactivo los components enteros: mas robusto que solo setear las flags
         // CantMove/CantMoveCamera pueden quedar mal si la referencia no es la correcta
         if (playerMovement != null)
@@ -306,6 +312,11 @@ public class PauseMenuController : MonoBehaviour
         if (pauseAudioOnPause)
         {
             AudioListener.pause = false;
+        }
+
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.OnGamePauseEnd();
         }
 
         if (playerMovement != null)
@@ -428,18 +439,20 @@ public class PauseMenuController : MonoBehaviour
         UpdateLabel(ambientVolumeValueLabel, FormatPercent(GetAmbientVolume()));
     }
 
-    // Helpers: si GameController.Instance no existe (caso raro), usamos defaults.
-    private static float GetSensitivity() => GameController.Instance != null ? GameController.Instance.Sensitivity : GameController.DefaultSensitivity;
-    private static float GetBrightness() => GameController.Instance != null ? GameController.Instance.Brightness : GameController.DefaultBrightness;
-    private static float GetMasterVolume() => GameController.Instance != null ? GameController.Instance.MasterVolume : GameController.DefaultMasterVolume;
-    private static float GetMusicVolume() => GameController.Instance != null ? GameController.Instance.MusicVolume : GameController.DefaultMusicVolume;
-    private static float GetSfxVolume() => GameController.Instance != null ? GameController.Instance.SfxVolume : GameController.DefaultSfxVolume;
-    private static float GetAmbientVolume() => GameController.Instance != null ? GameController.Instance.AmbientVolume : GameController.DefaultAmbientVolume;
+    // En menuMode leemos/escribimos PlayerPrefs directo para que el menu principal
+    // guarde ajustes aunque el singleton aun no este listo. En gameplay directo sin
+    // GameController usamos defaults, asi testear una escena suelta arranca limpio.
+    private float GetSensitivity() => GameController.Instance != null || menuMode ? GameController.GetSavedSensitivity() : GameController.DefaultSensitivity;
+    private float GetBrightness() => GameController.Instance != null || menuMode ? GameController.GetSavedBrightness() : GameController.DefaultBrightness;
+    private float GetMasterVolume() => GameController.Instance != null || menuMode ? GameController.GetSavedMasterVolume() : GameController.DefaultMasterVolume;
+    private float GetMusicVolume() => GameController.Instance != null || menuMode ? GameController.GetSavedMusicVolume() : GameController.DefaultMusicVolume;
+    private float GetSfxVolume() => GameController.Instance != null || menuMode ? GameController.GetSavedSfxVolume() : GameController.DefaultSfxVolume;
+    private float GetAmbientVolume() => GameController.Instance != null || menuMode ? GameController.GetSavedAmbientVolume() : GameController.DefaultAmbientVolume;
 
     private void OnSensitivityChanged(float normalized)
     {
         float value = Mathf.Lerp(sensitivityMin, sensitivityMax, normalized);
-        if (GameController.Instance != null) GameController.Instance.Sensitivity = value;
+        if (GameController.Instance != null || menuMode) GameController.SetSavedSensitivity(value);
         ApplySensitivity(value);
         UpdateLabel(sensitivityValueLabel, FormatTwoDecimals(value));
     }
@@ -450,35 +463,35 @@ public class PauseMenuController : MonoBehaviour
         {
             Debug.Log("[PauseMenu] OnBrightnessChanged disparado: slider=" + normalized.ToString("0.00"));
         }
-        if (GameController.Instance != null) GameController.Instance.Brightness = normalized;
+        if (GameController.Instance != null || menuMode) GameController.SetSavedBrightness(normalized);
         ApplyBrightness(normalized);
         UpdateLabel(brightnessValueLabel, FormatPercent(normalized));
     }
 
     private void OnMasterVolumeChanged(float linear)
     {
-        if (GameController.Instance != null) GameController.Instance.MasterVolume = linear;
+        if (GameController.Instance != null || menuMode) GameController.SetSavedMasterVolume(linear);
         SetMixerVolume(masterVolumeParam, linear);
         UpdateLabel(masterVolumeValueLabel, FormatPercent(linear));
     }
 
     private void OnMusicVolumeChanged(float linear)
     {
-        if (GameController.Instance != null) GameController.Instance.MusicVolume = linear;
+        if (GameController.Instance != null || menuMode) GameController.SetSavedMusicVolume(linear);
         SetMixerVolume(musicVolumeParam, linear);
         UpdateLabel(musicVolumeValueLabel, FormatPercent(linear));
     }
 
     private void OnSfxVolumeChanged(float linear)
     {
-        if (GameController.Instance != null) GameController.Instance.SfxVolume = linear;
+        if (GameController.Instance != null || menuMode) GameController.SetSavedSfxVolume(linear);
         SetMixerVolume(sfxVolumeParam, linear);
         UpdateLabel(sfxVolumeValueLabel, FormatPercent(linear));
     }
 
     private void OnAmbientVolumeChanged(float linear)
     {
-        if (GameController.Instance != null) GameController.Instance.AmbientVolume = linear;
+        if (GameController.Instance != null || menuMode) GameController.SetSavedAmbientVolume(linear);
         SetMixerVolume(ambientVolumeParam, linear);
         UpdateLabel(ambientVolumeValueLabel, FormatPercent(linear));
     }
@@ -587,6 +600,20 @@ public class PauseMenuController : MonoBehaviour
         hasColorAdjustments = true;
 
         //Debug.Log("[PauseMenu] Brightness Volume creado en runtime. priority=" + runtimeBrightnessVolumePriority);
+    }
+
+    private void EnablePostProcessingOnSceneCameras()
+    {
+        Camera[] cameras = FindObjectsByType<Camera>(FindObjectsSortMode.None);
+
+        foreach (Camera sceneCamera in cameras)
+        {
+            UniversalAdditionalCameraData cameraData = sceneCamera.GetUniversalAdditionalCameraData();
+            if (cameraData != null)
+            {
+                cameraData.renderPostProcessing = true;
+            }
+        }
     }
 
     private void OnDestroy()

@@ -319,7 +319,7 @@ public class IntroSequenceController : MonoBehaviour
 
         if (musicManager != null)
         {
-            musicManager.PlayTensionMusic();
+            musicManager.Play("tension", 2f);
         }
 
         if (!string.IsNullOrEmpty(agitatedBreathingLoopId))

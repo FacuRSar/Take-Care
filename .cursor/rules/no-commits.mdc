@@ -1,0 +1,12 @@
+---
+description: No ofrecer ni sugerir commits de git
+alwaysApply: true
+---
+
+# Git: no ofrecer commits
+
+- NO ofrezcas ni sugieras hacer commits.
+- NO preguntes "querés que haga el commit?" ni propongas mensajes de commit.
+- NO ejecutes `git add`, `git commit`, `git push`, `git stash` ni comandos que modifiquen el estado del repo, salvo que el usuario lo pida explicitamente en el mensaje actual.
+- Comandos read-only de git (`git status`, `git diff`, `git log`) estan OK si son utiles para la tarea en curso, pero no los uses para abrir la puerta a un commit.
+- Si el usuario pide explicitamente un commit, recien ahi seguilo. No asumas que "terminamos un cambio" implica querer commitear.

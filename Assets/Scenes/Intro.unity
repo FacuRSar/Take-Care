@@ -9650,6 +9650,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3054767288379950306, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: d2ae7b386d81ecf40a869d79675ea4d4, type: 2}
+    - target: {fileID: 3054767288379950306, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2797761708840903264, guid: d2ae7b386d81ecf40a869d79675ea4d4, type: 2}
+    - target: {fileID: 3054767288379950306, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3393946080514611047, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
       propertyPath: m_Type
       value: 0
@@ -9680,6 +9692,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3393946080514611047, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
       propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6083806307513661965, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: d2ae7b386d81ecf40a869d79675ea4d4, type: 2}
+    - target: {fileID: 6083806307513661965, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2797761708840903264, guid: d2ae7b386d81ecf40a869d79675ea4d4, type: 2}
+    - target: {fileID: 6083806307513661965, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
+      propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6435894080901236109, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
@@ -17941,13 +17965,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd3b18ea14589c47a9663c39c5468fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PursuerSpawnController
-  pursuerObject: {fileID: 423475338071052038}
-  spawnPoint: {fileID: 802243430}
-  spawnDelay: 3
-  spawnOnlyOnce: 1
-  spawnSfxId: StalkerSpawn
-  playSpawnSoundAs3D: 1
-  showDebugLogs: 1
 --- !u!1 &1314123829 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3625027893673328274, guid: 8e46f8713675c274d8cc66d1b61689d1, type: 3}
@@ -31390,7 +31407,7 @@ MonoBehaviour:
   ambientVolumeParam: AmbientVolume
   globalVolume: {fileID: 1107352370}
   runtimeBrightnessVolumePriority: 100
-  menuSceneName: Menu2
+  menuSceneName: Menu
   pauseAudioOnPause: 1
   pauseAllowed: 1
   verboseBrightnessLog: 1
@@ -32547,11 +32564,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3098092209343874735, guid: c3d6b031c9a414449a173b9c42987cf8, type: 3}
   m_PrefabInstance: {fileID: 2093982766}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &423475338071052038 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7383236029711995422, guid: 4c9228fb2158a8a4ca9e0dbb948498fc, type: 3}
-  m_PrefabInstance: {fileID: 3970408889899025573}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &526285783033723866 stripped
 Transform:
