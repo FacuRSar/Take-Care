@@ -52,16 +52,17 @@ public class SFXManager : MonoBehaviour
         }
     }
 
-    public void Play2D(string id)
+    public AudioClip Play2D(string id)
     {
         AudioClip clip = GetRandomClip(id);
 
         if (clip == null || oneShotSource == null)
         {
-            return;
+            return null;
         }
 
         oneShotSource.PlayOneShot(clip);
+        return clip;
     }
 
     public void Play3D(string id, Vector3 position)

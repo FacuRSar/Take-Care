@@ -37,6 +37,10 @@ public class Menu3DButtonsController : MonoBehaviour
     // Panel/visual opcional que se apaga cuando se abre Settings y se vuelve a prender al cerrarlo.
     // Sirve para ocultar el visual del menu (mesa, fondo, lo que sea). Puede quedar vacio.
     [SerializeField] private GameObject menuVisualPanel;
+    // Secuencia opcional para el boton Play. Si esta asignada, en lugar de cargar la escena
+    // directo se dispara la secuencia (titileo + swap de texturas + risa + portazo) y al
+    // terminar ella misma carga la escena.
+    [SerializeField] private MenuPlaySequence playSequence;
 
     [Header("Raycast")]
     [SerializeField] private LayerMask buttonMask;
@@ -200,8 +204,14 @@ public class Menu3DButtonsController : MonoBehaviour
         switch (button.action)
         {
             case MenuButtonAction.Play:
-                // Si existe GameController, lo usamos para que limpie flags antes de cambiar de escena.
-                if (GameController.Instance != null)
+                if (playSequence != null)
+                {
+                    // Bloqueamos mas clicks durante la secuencia desactivando este controller.
+                    SetButtonsActive(false);
+                    enabled = false;
+                    playSequence.Run();
+                }
+                else if (GameController.Instance != null)
                 {
                     GameController.Instance.GoToScene(introSceneName);
                 }

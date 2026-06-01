@@ -48,7 +48,6 @@ public class PauseMenuController : MonoBehaviour
     [Header("Rangos")]
     [SerializeField] private float sensitivityMin = 0.1f;
     [SerializeField] private float sensitivityMax = 2f;
-    [SerializeField] private float defaultSensitivity = 0.4f;
     [SerializeField] private float brightnessMinExposure = -1.5f;
     [SerializeField] private float brightnessMaxExposure = 1.5f;
 
