@@ -12,6 +12,7 @@ public class DollEmotionSystem : MonoBehaviour
     #endregion
     private string currentStateName = "DollIdle";
     private bool isQuestActive = false;
+    private int idleStateCounter = 0;
 
     #region States
 
@@ -86,14 +87,14 @@ public class DollEmotionSystem : MonoBehaviour
                 break;
             case DollState.Watching:
                 watchingState.enabled = true;
-                break;
+                break;  
 
         }
     }
     private void Update()
     {
         currentMaxBar = GetStateByName(bars.getTopBar());
-        if (currentEmotion == idleState)
+       /* if (currentEmotion == idleState)
         {
             idleState.checkWatching(player.transform.position, doll.transform.position);
             if(currentMaxBar != Currentstate && !isQuestActive)
@@ -105,6 +106,32 @@ public class DollEmotionSystem : MonoBehaviour
             currentEmotion.CheckInteraction(audioSource);
             if (currentMaxBar != Currentstate && !isQuestActive)
                 ChangeState(currentMaxBar);
+        }*/
+       if(isQuestActive)
+        {
+            currentEmotion.CheckInteraction(audioSource);
+            if (currentMaxBar != Currentstate)
+                ChangeState(currentMaxBar);
+        }
+       else
+        {
+            if (currentEmotion != idleState)
+            {
+                idleStateCounter = 0;
+                ChangeState(DollState.Idle);
+            }
+            else
+            {
+                if (idleStateCounter < 5)
+                {
+                    idleStateCounter++;
+                    idleState.checkWatching(player.transform.position, doll.transform.position);
+                }
+                else
+                {
+                    bars.InvokeQuest();
+                }
+            }
         }
     }
     private DollEmotion GetEmotionByState(DollState state)

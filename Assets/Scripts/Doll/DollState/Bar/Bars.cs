@@ -187,7 +187,7 @@ public class Bars : MonoBehaviour
     }
 
 
-    void InvokeQuest()
+    public void InvokeQuest()
     {
         float Index = GetRandomIndex(Weights);
 
@@ -262,5 +262,19 @@ public class Bars : MonoBehaviour
                 break;
         }
     }
-
+    public string getTopBar()
+    {
+        if (CurrentHappyBar >= CurrentCryBar && CurrentHappyBar >= CurrentAngryBar)
+        {
+            return "DollHappy";
+        }
+        else if (CurrentCryBar >= CurrentAngryBar)
+        {
+            return "DollCry";
+        }
+        else
+        {
+            return "DollAngry";
+        }
+    }
 }
