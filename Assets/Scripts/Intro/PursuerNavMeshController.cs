@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -38,6 +39,12 @@ public class PursuerNavMeshController : MonoBehaviour
     [SerializeField] private float behindDotThreshold = -0.35f;
     [SerializeField] private string backGrabTriggerName = "BackGrab";
     [SerializeField] private string frontGrabTriggerName = "FrontGrab";
+
+    [Header("Cierre al capturar")]
+    // controlador del cierre (mismo final sin importar si agarra de frente o de espalda)
+    [SerializeField] private DemoEndController captureEndController;
+    // pequeña espera para que arranque la animacion de agarre antes del fade
+    [SerializeField] private float captureEndDelay = 0.4f;
 
     private NavMeshAgent agent;
     private float nextDestinationUpdateTime;
@@ -242,6 +249,37 @@ public class PursuerNavMeshController : MonoBehaviour
         else
         {
             GrabFromFront();
+        }
+
+        // El cierre es el mismo en ambos casos.
+        TriggerCaptureEnding();
+    }
+
+    private void TriggerCaptureEnding()
+    {
+        if (captureEndController == null)
+        {
+            Debug.LogWarning("PursuerNavMeshController: no hay captureEndController asignado para el cierre.");
+            return;
+        }
+
+        if (captureEndDelay > 0f)
+        {
+            StartCoroutine(CaptureEndAfterDelay());
+        }
+        else
+        {
+            captureEndController.StartCaptureEnd();
+        }
+    }
+
+    private IEnumerator CaptureEndAfterDelay()
+    {
+        yield return new WaitForSeconds(captureEndDelay);
+
+        if (captureEndController != null)
+        {
+            captureEndController.StartCaptureEnd();
         }
     }
 

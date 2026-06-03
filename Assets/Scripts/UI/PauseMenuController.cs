@@ -120,6 +120,12 @@ public class PauseMenuController : MonoBehaviour
 
     private void Update()
     {
+        // Click derecho = volver atras en la UI (ajustes / menu de pausa).
+        if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            HandleBackNavigation();
+        }
+
         // En menuMode no escuchamos Tab ni hacemos nada relacionado a pausa.
         if (menuMode)
         {
@@ -156,6 +162,37 @@ public class PauseMenuController : MonoBehaviour
         else
         {
             PauseGame();
+        }
+    }
+
+    // Click derecho: retrocede un nivel en la UI segun el contexto.
+    private void HandleBackNavigation()
+    {
+        if (menuMode)
+        {
+            // Menu principal: si el panel de opciones esta abierto, lo cerramos.
+            if (optionsPanel != null && optionsPanel.activeSelf)
+            {
+                CloseSettings();
+            }
+            return;
+        }
+
+        // En juego: solo tiene sentido si estamos en pausa.
+        if (!isPaused)
+        {
+            return;
+        }
+
+        // Si estamos en opciones volvemos al panel principal de pausa.
+        // Si ya estamos en el panel principal, reanudamos el juego.
+        if (optionsPanel != null && optionsPanel.activeSelf)
+        {
+            ShowPausePanel();
+        }
+        else
+        {
+            ResumeGame();
         }
     }
 

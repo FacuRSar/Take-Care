@@ -2,7 +2,7 @@ using UnityEngine;
 
 /* script reutilizable para puertas
 *  te deja configurar desde Inspector si:
-*  la puerta puede abrirse o no, si necesita una condiciÛn del juego o no y quÈ mensaje mostrar cuando est· bloqueada
+*  la puerta puede abrirse o no, si necesita una condiciùn del juego o no y quù mensaje mostrar cuando estù bloqueada
 *  no me gusto el anterior que habia armado, este es mas escalable
 */
 public class DoorInteractable : Interactable
@@ -36,7 +36,7 @@ public class DoorInteractable : Interactable
     [SerializeField] private bool startsOpened = false;
     // te tira si una puerta empieza abierta por si hace falta
 
-    [SerializeField] private string lockedMessage = "Parece que alguien la cerrÛ desde el otro lado.";
+    [SerializeField] private string lockedMessage = "Parece que alguien la cerrù desde el otro lado.";
     // mensaje cuando la puerta no puede abrirse full generico
 
     [Header("Requerimientos de puerta")]
@@ -45,6 +45,28 @@ public class DoorInteractable : Interactable
 
     [SerializeField] private string customFlagName = "";
     //nombre de flag personalizado si usamos DoorRequirementType.CustomFlag
+
+    [Header("Mensaje personalizado por flag (opcional)")]
+    [SerializeField] private bool useFlagMessageOverride = false;
+    // si esta activo y la flag de abajo esta encendida, el prompt y el feedback de bloqueo
+    // usan un mensaje del pool en vez del mensaje normal
+    [SerializeField] private string messageOverrideFlagName = "";
+    [TextArea]
+    [SerializeField] private string[] flagActiveMessages = new string[] { "La puerta no se abre" };
+    // pool de mensajes: se elige uno al azar mientras se mira la puerta
+
+    [Header("Cierre automatico por contacto (opcional)")]
+    [SerializeField] private bool closeOnPlayerContact = false;
+    // pensado para la intro: cuando el jugador toca la puerta, se cierra sola.
+    // en gameplay normal se deja desactivado.
+    [SerializeField] private string playerContactTag = "Player";
+    [SerializeField] private string contactCloseSfxId = "CloseDoor";
+    // el cierre por contacto SOLO ocurre si esta flag esta activa.
+    // si se deja vacio, cierra siempre que haya contacto.
+    [SerializeField] private string contactCloseFlagName = "";
+    // mensaje que salta al tocar la puerta mientras todavia no se puede cerrar/salir
+    [TextArea]
+    [SerializeField] private string contactBlockedMessage = "Todavia no puedo salir.";
 
     private bool isOpen;
     // estado actual de la puerta
@@ -56,6 +78,11 @@ public class DoorInteractable : Interactable
 
     private string pendingEndSound;
     // Sonido que queda pendiente para reproducirse cuando termina el movimiento
+
+    private string activeFlagMessage;
+    // mensaje del pool fijado mientras se mira la puerta (evita que titile entre frames)
+    private bool contactCloseDone;
+    // para que el cierre por contacto pase una sola vez
 
     private void Start()
     {
@@ -73,7 +100,7 @@ public class DoorInteractable : Interactable
 
     private void Update()
     {
-        // si la puerta est· moviendose le tiramos pa que siga hasta si objetivo
+        // si la puerta estù moviendose le tiramos pa que siga hasta si objetivo
         if (isMoving && doorPivot != null)
         {
             doorPivot.localRotation = Quaternion.Slerp(
@@ -98,6 +125,46 @@ public class DoorInteractable : Interactable
         }
     }
 
+    public override string PromptMessage
+    {
+        get
+        {
+            if (useFlagMessageOverride && IsMessageOverrideFlagActive())
+            {
+                // si todavia no fijamos uno (ej: la flag se prendio mientras miramos), elegimos al toque
+                if (string.IsNullOrEmpty(activeFlagMessage))
+                {
+                    activeFlagMessage = PickFlagMessage();
+                }
+
+                return activeFlagMessage;
+            }
+
+            return base.PromptMessage;
+        }
+    }
+
+    public override void OnFocus()
+    {
+        base.OnFocus();
+
+        // al empezar a mirar fijamos un mensaje del pool asi se mantiene estable
+        if (useFlagMessageOverride && IsMessageOverrideFlagActive())
+        {
+            activeFlagMessage = PickFlagMessage();
+        }
+        else
+        {
+            activeFlagMessage = null;
+        }
+    }
+
+    public override void OnLoseFocus()
+    {
+        base.OnLoseFocus();
+        activeFlagMessage = null;
+    }
+
     public override void Interact(PlayerInteraction player)
     {
         // Si la puerta esta moviendose, no dejo interactuar para evitar bugs o spam.
@@ -109,15 +176,15 @@ public class DoorInteractable : Interactable
         // si la puerta no puede abrirse por configuracion general mete feedback y sale
         if (!canOpen)
         {
-            SubtitleUI.Instance.ShowSubtitle(lockedMessage, 2.5f);
+            SubtitleUI.Instance.ShowSubtitle(GetLockedFeedbackMessage(), 2.5f);
             if (ClosedSound) SFXManager.Instance.Play3D("LockedDoor", transform.position);
             return;
         }
 
-        // si necesita una condiciÛn y no se cumple mete feedback y sale
+        // si necesita una condiciùn y no se cumple mete feedback y sale
         if (!CanOpenByState())
         {
-            SubtitleUI.Instance.ShowSubtitle(lockedMessage, 2.5f);
+            SubtitleUI.Instance.ShowSubtitle(GetLockedFeedbackMessage(), 2.5f);
             if (ClosedSound) SFXManager.Instance.Play3D("LockedDoor", transform.position);
             return;
         }
@@ -215,5 +282,110 @@ public class DoorInteractable : Interactable
 
         targetRotation = Quaternion.Euler(0f, 0f, openedZRotation);
         isMoving = true;
+    }
+
+    private bool IsMessageOverrideFlagActive()
+    {
+        if (string.IsNullOrEmpty(messageOverrideFlagName))
+        {
+            return false;
+        }
+
+        return GameStateController.Instance != null &&
+               GameStateController.Instance.GetFlag(messageOverrideFlagName);
+    }
+
+    private string PickFlagMessage()
+    {
+        if (flagActiveMessages == null || flagActiveMessages.Length == 0)
+        {
+            return base.PromptMessage;
+        }
+
+        int index = Random.Range(0, flagActiveMessages.Length);
+        return flagActiveMessages[index];
+    }
+
+    private string GetLockedFeedbackMessage()
+    {
+        // cuando la flag de override esta activa, el feedback de bloqueo usa el pool
+        if (useFlagMessageOverride && IsMessageOverrideFlagActive())
+        {
+            if (string.IsNullOrEmpty(activeFlagMessage))
+            {
+                activeFlagMessage = PickFlagMessage();
+            }
+
+            return activeFlagMessage;
+        }
+
+        return lockedMessage;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // cierre por contacto: solo si esta habilitado y no paso todavia
+        if (!closeOnPlayerContact || contactCloseDone)
+        {
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(playerContactTag) && !other.CompareTag(playerContactTag))
+        {
+            return;
+        }
+
+        // El cierre solo ocurre con la flag activa. Antes de eso, solo mostramos un mensaje al intentar salir.
+        if (IsContactCloseFlagActive())
+        {
+            ForceClose();
+        }
+        else
+        {
+            ShowContactBlockedMessage();
+        }
+    }
+
+    private bool IsContactCloseFlagActive()
+    {
+        // sin flag configurada se comporta como antes: cierra al primer contacto
+        if (string.IsNullOrEmpty(contactCloseFlagName))
+        {
+            return true;
+        }
+
+        return GameStateController.Instance != null &&
+               GameStateController.Instance.GetFlag(contactCloseFlagName);
+    }
+
+    private void ShowContactBlockedMessage()
+    {
+        if (string.IsNullOrEmpty(contactBlockedMessage) || SubtitleUI.Instance == null)
+        {
+            return;
+        }
+
+        SubtitleUI.Instance.ShowSubtitle(contactBlockedMessage, 2.5f);
+    }
+
+    // Cierre forzado (ej: portazo en la intro). No depende de canOpen ni de requisitos.
+    // Tambien se puede llamar desde un evento externo si no se usa el trigger.
+    public void ForceClose()
+    {
+        contactCloseDone = true;
+
+        if (doorPivot == null || (!isOpen && !isMoving))
+        {
+            return;
+        }
+
+        isOpen = false;
+        targetRotation = Quaternion.Euler(0f, 0f, closedZRotation);
+        isMoving = true;
+
+        if (!string.IsNullOrEmpty(contactCloseSfxId))
+        {
+            pendingEndSound = contactCloseSfxId;
+        }
     }
 }

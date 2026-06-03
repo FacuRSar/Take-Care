@@ -27,8 +27,6 @@ public class HintDialogueController : MonoBehaviour
     [SerializeField] private HintDialogueEntry[] hintPool;
 
     [Header("Legacy")]
-    [SerializeField] private string fallbackHintText = "deberia buscar si hay alguna manera de encender la luz";
-    [SerializeField] private float fallbackHintDuration = 3f;
     [SerializeField] private bool activeOnStart;
 
     private Coroutine hintRoutine;
@@ -116,13 +114,11 @@ public class HintDialogueController : MonoBehaviour
     {
         HintDialogueEntry hint = GetRandomAvailableHint();
 
+        // Si no hay ninguna hint disponible (por flags) no mostramos nada.
         if (hint != null)
         {
             ShowHint(hint.text, hint.duration);
-            return;
         }
-
-        ShowHint(fallbackHintText, fallbackHintDuration);
     }
 
     private HintDialogueEntry GetRandomAvailableHint()

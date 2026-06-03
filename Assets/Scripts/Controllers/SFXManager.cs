@@ -52,7 +52,7 @@ public class SFXManager : MonoBehaviour
         }
     }
 
-    public AudioClip Play2D(string id)
+    public AudioClip Play2D(string id, float volumeScale = 1f)
     {
         AudioClip clip = GetRandomClip(id);
 
@@ -61,7 +61,7 @@ public class SFXManager : MonoBehaviour
             return null;
         }
 
-        oneShotSource.PlayOneShot(clip);
+        oneShotSource.PlayOneShot(clip, volumeScale);
         return clip;
     }
 

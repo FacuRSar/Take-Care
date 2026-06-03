@@ -27,6 +27,18 @@ public class DemoEndController : MonoBehaviour
     // [SerializeField] private CameraFallEffect cameraFallEffect;
     // QUIZAS y solo quizas, meto algo asi.
 
+    [Header("Cierre por captura")]
+    // Texto dramatico dedicado: configura su fuente y color propios en el inspector.
+    [SerializeField] private TextMeshProUGUI captureMessageText;
+    [TextArea]
+    [SerializeField] private string captureMessage = "Todavia no es hora de irse querido...";
+    // risa del perseguidor al capturar
+    [SerializeField] private string captureLaughSfxId = "PursuerLaugh";
+    // efecto opcional de manos cerrandose sobre los ojos (id en ScreenEffectController). Vacio = sin efecto.
+    [SerializeField] private string handsEffectId = "hands";
+    // cuanto se mantiene el negro antes de cambiar de escena / mostrar mensaje final
+    [SerializeField] private float blackHoldDuration = 2f;
+
     private bool endingStarted;
 
     private void Awake()
@@ -43,6 +55,11 @@ public class DemoEndController : MonoBehaviour
         {
             finalMessageText.gameObject.SetActive(false);
         }
+
+        if (captureMessageText != null)
+        {
+            captureMessageText.gameObject.SetActive(false);
+        }
     }
 
     public void StartDemoEnd()
@@ -55,6 +72,67 @@ public class DemoEndController : MonoBehaviour
         endingStarted = true;
         // arranca una sola vez
         StartCoroutine(DemoEndRoutine());
+    }
+
+    // Cierre cuando el perseguidor atrapa al jugador (igual de frente o de espalda).
+    public void StartCaptureEnd()
+    {
+        if (endingStarted)
+        {
+            return;
+        }
+
+        endingStarted = true;
+        StartCoroutine(CaptureEndRoutine());
+    }
+
+    private IEnumerator CaptureEndRoutine()
+    {
+        // manos cerrandose sobre los ojos (opcional)
+        if (ScreenEffectController.Instance != null && !string.IsNullOrEmpty(handsEffectId))
+        {
+            ScreenEffectController.Instance.PlayEffect(handsEffectId);
+        }
+
+        // risa del perseguidor
+        if (SFXManager.Instance != null && !string.IsNullOrEmpty(captureLaughSfxId))
+        {
+            SFXManager.Instance.Play2D(captureLaughSfxId);
+        }
+
+        // subtitulo dramatico mientras se hace el fade
+        if (captureMessageText != null)
+        {
+            captureMessageText.text = captureMessage;
+            captureMessageText.gameObject.SetActive(true);
+        }
+
+        yield return FadeToBlack();
+
+        // el negro se mantiene un rato
+        if (blackHoldDuration > 0f)
+        {
+            yield return new WaitForSeconds(blackHoldDuration);
+        }
+
+        // si hay escena, cambia; si no, queda el fadeImage con el mensaje final
+        if (!string.IsNullOrWhiteSpace(endSceneName))
+        {
+            SceneManager.LoadScene(endSceneName);
+        }
+        else
+        {
+            if (captureMessageText != null)
+            {
+                captureMessageText.gameObject.SetActive(false);
+            }
+
+            if (finalMessageText != null)
+            {
+                finalMessageText.text = finalMessage;
+                finalMessageText.gameObject.SetActive(true);
+            }
+        }
     }
 
     private IEnumerator DemoEndRoutine()
