@@ -8,70 +8,47 @@ using static StructureQuest;
 
 public class QuestController : MonoBehaviour
 {
-   private Quest quest;
-
-    [SerializeField] private List<QuestData> allQuest = new List<QuestData>();
-
+    [SerializeField] private Quest quest;
     [SerializeField] private Bars bars;
 
     public void Initialize(List<QuestData> quests)
     {
-        allQuest.Clear();
-
-        allQuest.AddRange(quests);
-
-        // Se lo mandas a las barras
-        bars.InitializeQuestPools(allQuest);
+            bars.InitializeQuestPools(quests);
     }
-    public void ActivateQuest(Quest selectedQuest)
+    public void ActivateQuest(QuestData selectedQuest)
     {
-        if (quest != null && quest.getIsActive())
-        { 
-            Debug.LogWarning("Ya hay una misión en curso: " + quest.name);
-            return;
-        }
-        quest = selectedQuest;
-        quest.setActive(true);
+        //selectedQuest.setActive(true);
+        int index = quest.allQuests_.IndexOf(selectedQuest);
+        quest.ActivateQuest(index);
+        
 
-        Debug.Log("QuestController: Ejecutando misión: " + quest.name);
+        Debug.Log("QuestController: Ejecutando misión: " + quest.allQuests_.IndexOf(selectedQuest));
     }
     private void Update()
     {
         if (quest == null) return;
 
-        if (quest.getIsCompleted())
+        if (quest._getIsCompleted())
         {
             Debug.Log("Misión completada con éxito");
             FinalizeCurrentQuest();
         }
-        else if (quest.checkTimer())
+        else if (quest._checkTimer())
         {
             Debug.Log("Misión fallida por tiempo");
-            quest.FailQuest();
+            quest._FailQuest();
             FinalizeCurrentQuest();
         }
-        else if (quest.getTimer() >= quest.getTimerDuration() * 0.75f)
+        else if (quest._getTimer() >= quest._getTimerDuration() * 0.75f)
         {
-            quest.MarkObjective();
+            quest._MarkObjective();
         }
 
     }
 
     private void FinalizeCurrentQuest()
     {
-        quest.setActive(false);
+        quest._setActive(false);
         quest = null; // Queda libre para la siguiente misión que mande Bars
-    }
-
-    internal void ActivateQuest(QuestData selectedQuest)
-    {
-        if (!quest.getIsCompleted())
-        {
-            Debug.Log("No nos vamos nada QUest");
-        }
-        else
-        {
-            selectedQuest = null;
-        }
     }
 }

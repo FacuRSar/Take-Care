@@ -1,6 +1,7 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using TMPro;
+using Image = UnityEngine.UI.Image;
 
 /* este script va en el jugador para detectar objetos interactuables con raycast
 *  y disparar la interaccion cuando el jugador aprieta el boton correspondiente
@@ -35,16 +36,173 @@ public class PlayerInteraction : MonoBehaviour
     // guarda referencia al objeto interactuable que el jugador esta mirando actualmente y el agarrado
 
     private bool interactPressed;
-    private GrabbableObject pickedObject;
+    [SerializeField] private GrabbableObject pickedObject;
+
+    public GrabbableObject PickedObject => pickedObject;
     // bandera temporal para cuando el input de interactuar se apreto y la otra igual para los agarrados
 
     GameObject Select;
+
+    [Header("Inventario")]
+    [SerializeField] private Transform InventoryContent;
+    [SerializeField] private GameObject ItemIconPrefab_1;
+    [SerializeField] private GameObject ItemIconPrefab_2;
+    [SerializeField] private GameObject ItemIconPrefab_3;
+
+
+    private GrabbableObject[] slots = new GrabbableObject[3];
+    private GameObject[] UiInventory = new GameObject[3];
+
+    public GrabbableObject[] Slots => slots;
+
+    private GameObject[] UiItem = new GameObject[3];
+
+    int Slot;
 
     private void Update()
     {
         // checkeo que esta mirando
         CheckInteraction();
+
+
+        InputNumSlot();
     }
+
+    private void InputNumSlot()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Slot = 1;
+            if (OccupiedSlot_1)
+            {
+                RemoveToInventory(Slot);
+            }
+            else if (!OccupiedSlot_1 && HasObjectInHand())
+            {
+                AddToInventory(pickedObject, Slot);
+            }
+            else
+            {
+                Debug.Log($"No Tenes ningun obj en la mano ni en el {Slot}");
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Slot = 2;
+            if (OccupiedSlot_2)
+            {
+                RemoveToInventory(Slot);
+            }
+            else if (!OccupiedSlot_2 && HasObjectInHand())
+            {
+                AddToInventory(pickedObject, Slot);
+            }
+            else
+            {
+                Debug.Log($"No Tenes ningun obj en la mano ni en el {Slot}");
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Slot = 3;
+            if (OccupiedSlot_3)
+            {
+                RemoveToInventory(Slot);
+            }
+            else if (!OccupiedSlot_3 && HasObjectInHand())
+            {
+                AddToInventory(pickedObject, Slot);
+            }
+            else
+            {
+                Debug.Log($"No Tenes ningun obj en la mano ni en el {Slot}");
+            }
+        }
+        else return;
+    }
+    private void AddToInventory(GrabbableObject item, int slot)
+    {
+        int index = slot - 1;
+
+        if (slots[index] != null)
+        {
+            Debug.Log($"El slot {slot} ya está ocupado");
+            return;
+        }
+
+
+        slots[index] = item;
+        GameStateController.Instance.SetFlag(slots[index].objectID.ToString());
+        slots[index].transform.SetParent(handPoint);
+
+        switch (slot)
+        {
+            case 1:
+                UiItem[index] = Instantiate(ItemIconPrefab_1, InventoryContent);
+                break;
+            case 2:
+                UiItem[index] = Instantiate(ItemIconPrefab_2, InventoryContent);
+                break;
+            case 3:
+                UiItem[index] = Instantiate(ItemIconPrefab_3, InventoryContent);
+                break;
+        }
+
+        Image image = UiItem[index].GetComponent<Image>();
+        image.sprite = item.itemIcon;
+
+        UiInventory[index] = UiItem[index];
+
+        item.gameObject.SetActive(false);
+        pickedObject = null;
+    }
+
+    private void RemoveToInventory(int slot)
+    {
+        int index = slot - 1;
+
+        if (slots[index] == null)
+        {
+            Debug.Log($"El slot {slot} está vacío");
+            return;
+        }
+
+        ForceToObject();
+
+        GameStateController.Instance.RemoveFlag(slots[index].objectID.ToString());
+
+        slots[index].transform.SetParent(null);
+        slots[index].gameObject.SetActive(true);
+
+        pickedObject = slots[index].gameObject.GetComponent<GrabbableObject>();
+
+        slots[index] = null;
+
+        Destroy(UiInventory[index]);
+        UiInventory[index] = null;
+
+    }
+
+    // Fuerza soltar el objeto en mano
+    // Nota: la lógica de "agarrado" está en la clase GrabbableObject (métodos PickUp, Drop, InputNumSlot).
+    private void ForceToObject()
+    {
+        if (pickedObject != null)
+        {
+            // Si el jugador tiene un objeto en mano, forzamos su soltado.
+            pickedObject.Drop();
+            pickedObject = null;
+            return;
+        }
+        else
+        {
+            Debug.Log("No hay objeto en mano para forzar su soltado.");
+        }
+    }
+
+    public bool OccupiedSlot_1 => slots[0] != null;
+    public bool OccupiedSlot_2 => slots[1] != null;
+    public bool OccupiedSlot_3 => slots[2] != null;
 
     public void OnInteract(InputValue value)
     {
@@ -129,7 +287,6 @@ public class PlayerInteraction : MonoBehaviour
         ClearCurrentInteractable();
         HidePrompt();
     }
-
     private void ShowPrompt(string message)
     {
         if (promptRoot != null)

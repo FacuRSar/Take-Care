@@ -19,16 +19,19 @@ public class DollEmotion : MonoBehaviour
     {
         if(lowInteraction != null)
             dollVoice.PlayOneShot(lowInteraction);
+        //funcion de angel para generar un circulo que tapa parte de la camara en base a la barra de emocion
     }
     public void MediumInteraction(AudioSource dollVoice)
     {
         if(mediumInteraction != null)
            dollVoice.PlayOneShot(mediumInteraction);
+        //funcion de angel para generar un circulo que tapa parte de la camara en base a la barra de emocion
     }
     public void HighInteraction(AudioSource dollVoice)
     {
         if(highInteraction != null)
             dollVoice.PlayOneShot(highInteraction);
+        //funcion de angel para generar un circulo que tapa parte de la camara en base a la barra de emocion
     }
     public void CheckInteraction(AudioSource dollVoice)
     {
