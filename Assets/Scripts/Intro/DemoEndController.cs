@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,30 +7,20 @@ public class DemoEndController : MonoBehaviour
 {
     [Header("Visuales")]
     [SerializeField] private Image fadeImage;
-    [SerializeField] private TextMeshProUGUI finalMessageText;
-    [TextArea]
-    [SerializeField] private string finalMessage = "Fin de la demo";
 
     [Header("Timing")]
     [SerializeField] private float fadeDuration = 2f;
-    [SerializeField] private float messageDelay = 0.5f;
-    [SerializeField] private float sceneLoadDelay = 2f;
-
-    [Header("Audio")]
-    [SerializeField] private string finalSfxId = "FinalSting";
 
     [Header("Escena")]
     [SerializeField] private string endSceneName;
-
-    [Header("Efectos opcionales")]
-    // [SerializeField] private CameraFallEffect cameraFallEffect;
-    // QUIZAS y solo quizas, meto algo asi.
 
     [Header("Cierre por captura")]
     // El mensaje se muestra con el manager de dialogos/subtitulos por id (DialogueController).
     [SerializeField] private string captureMessageDialogueId = "captureMessege";
     // risa del perseguidor al capturar
     [SerializeField] private string captureLaughSfxId = "PursuerLaugh";
+    // frase/pista de audio que suena al ser atrapado. Vacio = sin sonido.
+    [SerializeField] private string endPhraseSfxId = "endPhrase";
     // sonido que suena junto con el subtitulo. Vacio = sin sonido.
     [SerializeField] private string captureMessageSfxId = "";
     // efecto opcional de manos cerrandose sobre los ojos (id en ScreenEffectController). Vacio = sin efecto.
@@ -55,23 +44,6 @@ public class DemoEndController : MonoBehaviour
             fadeImage.color = color;
             fadeImage.gameObject.SetActive(true);
         }
-
-        if (finalMessageText != null)
-        {
-            finalMessageText.gameObject.SetActive(false);
-        }
-    }
-
-    public void StartDemoEnd()
-    {
-        if (endingStarted)
-        {
-            return;
-        }
-
-        endingStarted = true;
-        // arranca una sola vez
-        StartCoroutine(DemoEndRoutine());
     }
 
     // Cierre cuando el perseguidor atrapa al jugador (igual de frente o de espalda).
@@ -113,6 +85,12 @@ public class DemoEndController : MonoBehaviour
             SFXManager.Instance.Play2D(captureLaughSfxId);
         }
 
+        // frase/pista de audio al ser atrapado
+        if (SFXManager.Instance != null && !string.IsNullOrEmpty(endPhraseSfxId))
+        {
+            SFXManager.Instance.Play2D(endPhraseSfxId);
+        }
+
         // subtitulo dramatico a traves del manager de dialogos/subtitulos
         if (DialogueController.Instance != null && !string.IsNullOrEmpty(captureMessageDialogueId))
         {
@@ -139,53 +117,7 @@ public class DemoEndController : MonoBehaviour
             yield return new WaitForSeconds(blackHoldDuration);
         }
 
-        // si hay escena, cambia; si no, queda el fadeImage con el mensaje final
-        if (!string.IsNullOrWhiteSpace(endSceneName))
-        {
-            SceneManager.LoadScene(endSceneName);
-        }
-        else
-        {
-            if (finalMessageText != null)
-            {
-                finalMessageText.text = finalMessage;
-                finalMessageText.gameObject.SetActive(true);
-            }
-        }
-    }
-
-    private IEnumerator DemoEndRoutine()
-    {
-        // Debug.Log("DemoEndController: cierre de demo iniciado.");
-
-        //if (cameraFallEffect != null)
-        //{
-        //    cameraFallEffect.Play();
-       // }
-
-        if (SFXManager.Instance != null)
-        {
-            SFXManager.Instance.Play2D(finalSfxId);
-        }
-
-        yield return FadeToBlack();
-
-        if (messageDelay > 0f)
-        {
-            yield return new WaitForSeconds(messageDelay);
-        }
-
-        if (finalMessageText != null)
-        {
-            finalMessageText.text = finalMessage;
-            finalMessageText.gameObject.SetActive(true);
-        }
-
-        if (sceneLoadDelay > 0f)
-        {
-            yield return new WaitForSeconds(sceneLoadDelay);
-        }
-
+        // si hay escena, cambia; si no, queda en negro.
         if (!string.IsNullOrWhiteSpace(endSceneName))
         {
             SceneManager.LoadScene(endSceneName);

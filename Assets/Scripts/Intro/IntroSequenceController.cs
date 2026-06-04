@@ -40,7 +40,6 @@ public class IntroSequenceController : MonoBehaviour
     [SerializeField] private GameStateController gameStateController;
     [SerializeField] private SFXManager sfxManager;
     [SerializeField] private MusicManager musicManager;
-    [SerializeField] private DemoEndController demoEndController;
     [SerializeField] private ScreenEffectController screenEffectController;
 
     [Header("Persecucion")]
@@ -371,14 +370,7 @@ public class IntroSequenceController : MonoBehaviour
 
         StopLoop(agitatedBreathingLoopId);
 
-        if (demoEndController != null)
-        {
-            demoEndController.StartDemoEnd();
-        }
-        else
-        {
-            Debug.LogWarning("IntroSequenceController: el controlador del cierre de demo no esta asignado.");
-        }
+        // El fade del cierre solo lo dispara la captura de la vieja (StartCaptureEnd), no el cerrar la puerta.
     }
 
     public bool IsEscapePhaseStarted()

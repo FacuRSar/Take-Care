@@ -48,12 +48,12 @@ public class DoorInteractable : Interactable
 
     [Header("Mensaje personalizado por flag (opcional)")]
     [SerializeField] private bool useFlagMessageOverride = false;
-    // si esta activo y la flag de abajo esta encendida, el prompt y el feedback de bloqueo
-    // usan un mensaje del pool en vez del mensaje normal
+    // si esta activo y la flag de abajo esta encendida, el feedback al interactuar
+    // usa un mensaje del pool en vez del mensaje normal
     [SerializeField] private string messageOverrideFlagName = "";
     [TextArea]
     [SerializeField] private string[] flagActiveMessages = new string[] { "La puerta no se abre" };
-    // pool de mensajes: se elige uno al azar mientras se mira la puerta
+    // pool de mensajes: se elige uno al azar al interactuar con la puerta bloqueada
 
     [Header("Cierre automatico por contacto (opcional)")]
     [SerializeField] private bool closeOnPlayerContact = false;
@@ -79,8 +79,6 @@ public class DoorInteractable : Interactable
     private string pendingEndSound;
     // Sonido que queda pendiente para reproducirse cuando termina el movimiento
 
-    private string activeFlagMessage;
-    // mensaje del pool fijado mientras se mira la puerta (evita que titile entre frames)
     private bool contactCloseDone;
     // para que el cierre por contacto pase una sola vez
 
@@ -123,46 +121,6 @@ public class DoorInteractable : Interactable
                 }
             }
         }
-    }
-
-    public override string PromptMessage
-    {
-        get
-        {
-            if (useFlagMessageOverride && IsMessageOverrideFlagActive())
-            {
-                // si todavia no fijamos uno (ej: la flag se prendio mientras miramos), elegimos al toque
-                if (string.IsNullOrEmpty(activeFlagMessage))
-                {
-                    activeFlagMessage = PickFlagMessage();
-                }
-
-                return activeFlagMessage;
-            }
-
-            return base.PromptMessage;
-        }
-    }
-
-    public override void OnFocus()
-    {
-        base.OnFocus();
-
-        // al empezar a mirar fijamos un mensaje del pool asi se mantiene estable
-        if (useFlagMessageOverride && IsMessageOverrideFlagActive())
-        {
-            activeFlagMessage = PickFlagMessage();
-        }
-        else
-        {
-            activeFlagMessage = null;
-        }
-    }
-
-    public override void OnLoseFocus()
-    {
-        base.OnLoseFocus();
-        activeFlagMessage = null;
     }
 
     public override void Interact(PlayerInteraction player)
@@ -308,15 +266,11 @@ public class DoorInteractable : Interactable
 
     private string GetLockedFeedbackMessage()
     {
-        // cuando la flag de override esta activa, el feedback de bloqueo usa el pool
+        // cuando la flag de override esta activa, solo el feedback al interactuar usa el pool.
+        // el prompt de cercania sigue siendo el PromptMessage base ("Interactuar", etc.).
         if (useFlagMessageOverride && IsMessageOverrideFlagActive())
         {
-            if (string.IsNullOrEmpty(activeFlagMessage))
-            {
-                activeFlagMessage = PickFlagMessage();
-            }
-
-            return activeFlagMessage;
+            return PickFlagMessage();
         }
 
         return lockedMessage;
