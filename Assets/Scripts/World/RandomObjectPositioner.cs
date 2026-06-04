@@ -8,7 +8,7 @@ public class RandomObjectPositioner : MonoBehaviour
     [Header("Position Settings")]
 
     [SerializeField] private List<Transform> Position;
-    [SerializeField] private List<GameObject> Obj;
+    [SerializeField] private List<GameObject> Obj = new List<GameObject>();
 
 
     [Header("Weight Settings")]
@@ -35,6 +35,8 @@ public class RandomObjectPositioner : MonoBehaviour
     }
     private void objValidator()
     {
+        
+
         foreach (GameObject Object in Obj)
         {
             Debug.Log("Validando el objeto: " + Object.name);
@@ -113,5 +115,34 @@ public class RandomObjectPositioner : MonoBehaviour
 
             }
         }
+    }
+
+    private void ObjAdd(StructureQuest.QuestGeneric.itemsToPick listItems)
+    {
+        GrabbableObject[] grabbableObjects = Resources.LoadAll<GrabbableObject>("");
+
+        Debug.Log("Objetos cargados: " + grabbableObjects.Length);
+
+        foreach (GrabbableObject grabbableObject in grabbableObjects)
+        {
+            Debug.Log($"Prefab: {grabbableObject.objectName} ID: {grabbableObject.objectID}");
+
+            if (listItems.itemID == grabbableObject.objectID)
+            {
+                for (int j = 0; j < listItems.quantity; j++)
+                {
+                    Obj.Add(grabbableObject.gameObject);
+                    Debug.Log("Objeto " + grabbableObject.objectName + " agregado a la lista Obj.");
+                }
+
+                Debug.Log("Cantidad en Obj: " + Obj.Count);
+                break;
+            }
+        }
+    }
+
+    public void _ObjAdd(StructureQuest.QuestGeneric.itemsToPick listItems)
+    {
+        ObjAdd(listItems);
     }
 }

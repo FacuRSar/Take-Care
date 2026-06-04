@@ -77,8 +77,6 @@ public class FixedCameraWithZoom : MonoBehaviour
         if (isPlayingSequence)
         {
             timer += Time.deltaTime;
-            Debug.Log(timer);
-            Debug.Log(DurationTotal);
 
             if (timer < DurationTotal)
             {
@@ -95,9 +93,8 @@ public class FixedCameraWithZoom : MonoBehaviour
         {
             canzoomed = false;
 
-            playerMovement.CantMove = false;
-
-            playerCamera.CantMoveCamera = false;
+            playerMovement.CantMove(false);
+            playerCamera._MoveCamera(false);
 
             playerCamera.SyncRotation();
 
@@ -173,8 +170,8 @@ public class FixedCameraWithZoom : MonoBehaviour
     {
         canzoomed = true;
 
-        playerMovement.CantMove = true;
-        playerCamera.CantMoveCamera = true;
+        playerMovement.CantMove(true);
+        playerCamera._MoveCamera(true);
     }
 
     private void ResetCameraSequence()
@@ -204,7 +201,7 @@ public class FixedCameraWithZoom : MonoBehaviour
     }
 
     // Activa la secuencia ya armada en pools (sin pasar foco ni tiempos desde afuera).
-    public void PlayFocusSequence()
+    private void PlayFocusSequence()
     {
         enabled = true;
         ResetCameraSequence();
@@ -213,13 +210,23 @@ public class FixedCameraWithZoom : MonoBehaviour
     }
 
     // Duración total de la secuencia (para coroutines que esperan al foco).
-    public float GetTotalSequenceDuration()
+    private float _GetTotalSequenceDuration()
     {
         DurationTotalScene();
         return DurationTotal;
     }
 
-    public void PlaySequence(int sequenceIndex)
+    public float GetTotalSequenceDuration()
+    {
+        return _GetTotalSequenceDuration();
+    }
+
+    public bool IsPlayingSequence()
+    {
+        return isPlayingSequence;
+    }
+
+    private void _PlaySequence(int sequenceIndex)
     {
 //<<<<<<< HEAD
         currentZoomFov = zoomFov;
@@ -237,10 +244,14 @@ public class FixedCameraWithZoom : MonoBehaviour
 
         isPlayingSequence = true;
     }
+    public void PlaySequence(int sequenceIndex)
+    {
+        _PlaySequence(sequenceIndex);
+    }
 
 //<<<<<<< HEAD
     //Aguego el nuevo PlaySequence pero con un zoom personalizado
-    public void PlaySequence(int sequenceIndex, float customZoomFov)
+    private void _PlaySequence(int sequenceIndex, float customZoomFov)
     {
         currentZoomFov = customZoomFov;
 
@@ -253,6 +264,11 @@ public class FixedCameraWithZoom : MonoBehaviour
         DurationTotalScene();
 
         isPlayingSequence = true;
+    }
+
+    public void PlaySequence(int sequenceIndex, float customZoomFov)
+    {
+        _PlaySequence(sequenceIndex, customZoomFov);
     }
 
 

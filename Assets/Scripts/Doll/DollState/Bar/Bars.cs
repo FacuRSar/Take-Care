@@ -102,33 +102,9 @@ public class Bars : MonoBehaviour
         Weights[1] = (CurrentCryBar / TotalBar);
         Weights[2] = (CurrentAngryBar / TotalBar);
 
-        
 
-      //  if (ActiveAddPointsForQuest) AddPointsForQuest();
     }
-    /* public void InitializeQuestPools(List<QuestData> allQuest)
-     {
-         foreach (QuestData quest in allQuest)
-         {
-             switch (quest.GetStateType())
-             {
-                 case questEmotionType.Happy:
-                     PoolHappyQuest.Add(quest);
-                     HappyQuestWeights.Add(1f);
-                     break;
 
-                 case questEmotionType.Cry:
-                     PoolCryQuest.Add(quest);
-                     CryQuestWeights.Add(1f);
-                     break;
-
-                 case questEmotionType.Angry:
-                     PoolAngryQuest.Add(quest);
-                     AngryQuestWeights.Add(1f);
-                     break;
-             }
-         }
-     }*/
 
     private void Update()
     {
@@ -137,7 +113,7 @@ public class Bars : MonoBehaviour
             InvokeQuest();
         }
     }
-    public void InitializeQuestPools(List<QuestData> allQuests)
+    public void _InitializeQuestPools(List<QuestData> allQuests)
     {
         foreach (var Quest_ in allQuests)
         {
@@ -157,6 +133,11 @@ public class Bars : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public void InitializeQuestPools(List<QuestData> allQuests)
+    {
+        _InitializeQuestPools(allQuests);
     }
 
         int GetRandomIndex(List<float> weights)
@@ -227,6 +208,27 @@ public class Bars : MonoBehaviour
         selectedQuest = null;
     }
 
+    private string _getTopBar()
+    {
+        if (HappyBar >= CryBar && HappyBar >= AngryBar)
+        {
+            return "DollHappy";
+        }
+        else if (CryBar >= HappyBar && CryBar >= AngryBar)
+        {
+            return "DollCry";
+        }
+        else
+        {
+            return "DollAngry";
+        }
+    }
+
+    public string getTopBar()
+    {
+        return _getTopBar();
+    }
+
     void MatchList()
     {
         Weights.Add(1f);
@@ -247,7 +249,7 @@ public class Bars : MonoBehaviour
         AngryBar += SpeedBar * Time.deltaTime;
     }
 
-    public void QuestFinished(questEmotionType value, int _value)
+    private void _QuestFinished(questEmotionType value, int _value)
     {
         switch (value)
         {
@@ -261,6 +263,11 @@ public class Bars : MonoBehaviour
                 AngryBar += _value;
                 break;
         }
+    }
+
+    public void QuestFinished(questEmotionType value, int _value)
+    {
+        _QuestFinished(value, _value);
     }
 
 }

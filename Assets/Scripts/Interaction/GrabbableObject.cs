@@ -1,3 +1,4 @@
+using System.Net;
 using UnityEngine;
 
 /*  esta logica mantiene la mecanica original de agarrar/soltar objetos
@@ -6,6 +7,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class GrabbableObject : MonoBehaviour
 {
+    [SerializeField] private string _objectName;
+    [SerializeField] private int _objectID;
+    public string objectName => _objectName;
+    public int objectID => _objectID;
+
+    public Sprite itemIcon;
+
     [Header("Configuraciones de objeto agarrado")]
     [SerializeField] private Vector3 heldLocalPosition = Vector3.zero;
     //posicion local que va a tener el objeto mientras esta agarrado
@@ -32,20 +40,29 @@ public class GrabbableObject : MonoBehaviour
     //me guarda si el objeto esta siendo sostenido
 
     private Transform currentHandPoint;
+    [SerializeField] private PlayerInteraction playerInteraction;
     //referencia al HandPoint actual
 
     private Vector3 targetLocalPosition;
     private Quaternion targetLocalRotation;
     //offset relativo al HandPoint para sostener el objeto como queremos
 
+    int Slot;
+
     private void Awake()
     {
+        
         rb = GetComponent<Rigidbody>();
         // Lo dejo porque creo que puede servir, si no les gusta borren esta declaracion porque no se usa.
         objectCollider = GetComponent<Collider>();
 
         originalScale = transform.localScale;
         originalLayer = gameObject.layer;
+    }
+
+    private void Start()
+    {
+        playerInteraction = FindAnyObjectByType<PlayerInteraction>();
     }
 
     private void FixedUpdate()
@@ -57,6 +74,7 @@ public class GrabbableObject : MonoBehaviour
 
         FollowHandPoint();
     }
+
 
     public void PickUp(Transform handPoint, int heldLayer)
     {

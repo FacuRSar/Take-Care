@@ -237,13 +237,13 @@ public class PauseMenuController : MonoBehaviour
         // CantMove/CantMoveCamera pueden quedar mal si la referencia no es la correcta
         if (playerMovement != null)
         {
-            playerMovement.CantMove = true;
+            playerMovement.CantMove(true);
             playerMovement.enabled = false;
         }
 
         if (playerCamera != null)
         {
-            playerCamera.CantMoveCamera = true;
+            playerCamera._MoveCamera(false);
             playerCamera.enabled = false;
         }
 
@@ -270,14 +270,14 @@ public class PauseMenuController : MonoBehaviour
 
         if (playerMovement != null)
         {
+            playerMovement.CantMove(false);
             playerMovement.enabled = true;
-            playerMovement.CantMove = false;
         }
 
         if (playerCamera != null)
         {
+            playerCamera._MoveCamera(false);
             playerCamera.enabled = true;
-            playerCamera.CantMoveCamera = false;
         }
 
         Cursor.lockState = CursorLockMode.Locked;

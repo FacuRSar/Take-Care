@@ -3,11 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using TreeEditor;
+using Unity.Mathematics;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using static UnityEditor.Progress;
 using static UnityEngine.Audio.ProcessorInstance;
 using static UnityEngine.Rendering.DebugUI;
+using static UnityEngine.Rendering.STP;
 
 [System.Serializable]
 public class QuestData
@@ -19,6 +23,7 @@ public class QuestData
 
     // Variables de estado dinámicas (cambian en tiempo de juego)
     public int QuestID;
+    public String QuestName;
 
     public bool isActive;
     public bool isComplete;
@@ -37,6 +42,7 @@ public class QuestData
         isActive = false;
         isComplete = false;
         QuestID = config.id;
+        QuestName = config.Name;
         timer = 0f;
         failPenaltyPoints = config.addPoints * -1.5f;
         AddPoints = config.addPoints;
@@ -57,6 +63,7 @@ public class Quest : MonoBehaviour
 {
     [Header("Quest Asset")]
     [SerializeField] private StructureQuest questDatabase;
+    [SerializeField] private RandomObjectPositioner randomObjectPositioner;
 
     [Header("Runtime Data")]
     [SerializeField] private List<QuestData> allQuests = new();
@@ -64,11 +71,12 @@ public class Quest : MonoBehaviour
     private QuestData activeQuest;
 
     [Header("Settings")]
-    [SerializeField] private float distanceMin = 10000f;
+    [SerializeField] private float distanceMin;
     [SerializeField] private int timerDuration = 60;
     [SerializeField] private Material transparentMaterial;
 
     Bars bars;
+    PlayerInteraction playerInteraction;
 
     [SerializeField] private Transform player;
     private QuestController controller;
@@ -77,10 +85,20 @@ public class Quest : MonoBehaviour
     internal QuestData questData;
 
     Transform Room;
+    Transform Player;
 
+    List<Transform> Obj_ = new List<Transform>();
+    List<int> ObjId = new List<int>();
+    List<float> distanceList = new List<float>();
 
+    int ObjInventory;
+    private void OnEnable()
+    {
+        SpawnObj();
+    }
     private void Awake()
     {
+        playerInteraction = FindFirstObjectByType<PlayerInteraction>();
         bars = FindFirstObjectByType<Bars>();
         controller = FindFirstObjectByType<QuestController>();
         rend = GetComponent<Renderer>();
@@ -89,6 +107,7 @@ public class Quest : MonoBehaviour
         {
             originalMaterial = rend.material;
         }
+        
     }
 
     private void Start()
@@ -103,35 +122,54 @@ public class Quest : MonoBehaviour
         }
 
         
+        
     }
 
     private void FixedUpdate()
     {
-        if (Room != null) distanceRoom();
+        Player = transform;
+
+        if (activeQuest == null || !activeQuest.isActive) return;
+
+        switch (questData.GetQuestType())
+        {
+            case questType.ToCollect:
+                LogicToCollect(); // Si llegamos la agragamos
+                break;
+            case questType.ToGo:
+                LogicToGo();
+                break;
+            case questType.ToDelivery:
+                LogicToDelivery();
+                break;
+        }
     }
     private void Update()
     {
-        if (activeQuest != null && activeQuest.isActive)
+        if (activeQuest == null || !activeQuest.isActive) return;
+        
+        activeQuest.timer += Time.deltaTime;
+        if (checkTimer())
         {
-            activeQuest.timer += Time.deltaTime;
-
-            if (checkTimer())
-            {
-                bars.QuestFinished(questData.GetEmotionIDType_Add(), (int)questData.failPenaltyPoints);
-                FailQuest();
-            }
+            bars.QuestFinished(questData.GetEmotionIDType_Add(), (int)questData.failPenaltyPoints);
+            FailQuest();
         }
+        
     }
 
-    public void AddQuest()
+
+    private void _AddQuest()
     {
-        if (controller != null)
-        {
-            controller.Initialize(allQuests);
-        }
+        if (controller == null) return;
+
+        controller.Initialize(allQuests);
+    }
+    public void AddQuest() 
+    {
+        _AddQuest();
     }
 
-    public void ActivateQuest(int index)
+    private void _ActivateQuest(int index)
     {
         if (index >= 0 && index < allQuests.Count)
         {
@@ -140,12 +178,18 @@ public class Quest : MonoBehaviour
             activeQuest.isActive = true;
             activeQuest.timer = 0f;
 
-            Debug.LogWarning(activeQuest.QuestID);
+            Debug.LogWarning($"Quest Activated: ID = {activeQuest.QuestID}, Name = {activeQuest.QuestName}");
 
             Rooms();
+            Obj();
         }
     }
-    public bool getIsActive()
+    public void ActivateQuest(int index)
+    {
+        _ActivateQuest(index);
+    }
+
+    private bool _getIsActive()
     {
         if (activeQuest != null && !activeQuest.isActive)
         {
@@ -153,8 +197,16 @@ public class Quest : MonoBehaviour
         }
         else return !activeQuest.isActive;
     }
+    public void getIsActive() 
+    {
+        _getIsActive();
+    }
 
-    public void setActive(bool value)
+    private void setActive(bool value)
+    {
+        _setActive(value);
+    }
+    public void _setActive(bool value)
     {
         if (activeQuest == null) return;
 
@@ -165,24 +217,39 @@ public class Quest : MonoBehaviour
             //setTimer();
         }
     }
-    public bool getIsCompleted() => activeQuest != null && activeQuest.isComplete;
 
-    public void setIsCompleted(bool value)
+
+    private bool getIsCompleted() => activeQuest != null && activeQuest.isComplete;
+
+    public bool _getIsCompleted()
+    {
+        return getIsCompleted();
+    }
+
+    private void setIsCompleted(bool value)
     {
         if (activeQuest != null) activeQuest.isComplete = value;
     }
-    public void FailQuest()
+    private void FailQuest()
     {
-        if (activeQuest != null)
-        {
-            activeQuest.isActive = false;
-            Debug.Log("Quest fallida:" + activeQuest.config.Name);
-        }
+        if (activeQuest == null) return;
+
+        activeQuest.isActive = false;
+        Debug.Log("Quest fallida:" + activeQuest.config.Name);
+    }
+    
+    public void _FailQuest()
+    {
+        FailQuest();
     }
 
-    public void MarkObjective()
+    private void MarkObjective()
     {
         StartCoroutine(TempVisibility());
+    }
+    public void _MarkObjective()
+    {
+        MarkObjective();
     }
 
     private IEnumerator TempVisibility()
@@ -195,52 +262,60 @@ public class Quest : MonoBehaviour
         rend.material = originalMaterial;
     }
 
-    public float getTimer() => activeQuest != null ? activeQuest.timer : 0f;
-
-    public bool checkTimer() => activeQuest != null && activeQuest.timer >= timerDuration;
-
-    public float getTimerDuration() => timerDuration;
-
-
-    public void TypeQuest()
+    private float getTimer() => activeQuest != null ? activeQuest.timer : 0f;
+    public float _getTimer()
     {
-        switch(questData.GetQuestType())
-        {
-            case questType.ToCollect:
-                LogicToCollect();       
-                break;
-            case questType.ToGo:
-                LogicToGo();
-                break;
-            case questType.ToDelivery:
-                LogicToDelivery();
-                break;
-        }
+        return getTimer();
     }
 
+    private bool checkTimer() => activeQuest != null && activeQuest.timer >= timerDuration;
+    public bool _checkTimer()
+    {
+        return checkTimer();
+    }
+
+    private float getTimerDuration() => timerDuration;
+    public float _getTimerDuration()
+    {
+        return getTimerDuration();
+    }
 
     private void LogicToCollect()
     {
-        bars.QuestFinished(questData.GetEmotionIDType_Add(), (int)questData.failPenaltyPoints);
-        FailQuest();
+        if (activeQuest == null) return;
+        if (activeQuest.GetQuestType() != questType.ToCollect) return;
+        if (playerInteraction == null) return;
+
+        // Recalcular cuántos items requeridos están en el inventario del jugador
+        var requiredItems = questData.ItemsToPick();// Lista de items requeridos por la quest
+        int totalRequired = requiredItems.Sum(it => it.quantity);// Cantidad total de items requeridos por la quest
+        int collectedCount = 0;
+
+        foreach (var req in requiredItems)
+        {
+            int itemID = req.itemID;
+            int requiredQty = req.quantity;
+            int inInventory = playerInteraction.Slots.Count(p => p != null && p.objectID == itemID);
+            collectedCount += Math.Min(inInventory, requiredQty);
+        }
+
+        Debug.Log($"Collected {collectedCount} / {totalRequired} for quest '{activeQuest.QuestName}'");
+
+        if (collectedCount >= totalRequired)
+        {
+            CompleteActiveQuest();
+        }
     }
     private void LogicToGo()
     {
         if (activeQuest == null) return;
+        if (activeQuest.GetQuestType() != questType.ToGo) return;
         if (Room == null)
         {
             Debug.LogWarning("No hay un desino asignado");
             return;
         }
 
-        float distance = Vector3.Distance(player.transform.position, Room.transform.position);
-
-        distanceRoom();
-
-    }
-
-    private void distanceRoom()
-    {
         float distance = Vector3.Distance(player.transform.position, Room.transform.position);
 
         Debug.Log(distance);
@@ -263,24 +338,28 @@ public class Quest : MonoBehaviour
 
         }
 
-        List<StructureQuest.QuestGeneric.itemsToPick> listItems =
-            new List<StructureQuest.QuestGeneric.itemsToPick>();
+        distanceList = new List<float>(new float[Obj_.Count]); // Reiniciar la lista de distancias para cada objeto
+        int ObjInRoom = 0;
 
-        listItems.AddRange(questData.ItemsToPick());
-
-        for (int i = 0; i < listItems.Count; i++)
+        for (int i = 0; i < Obj_.Count; i++)
         {
-            GameObject obj = listItems[i].gameObject;
+            float distance = Vector3.Distance(Obj_[i].gameObject.transform.position, Room.position);
+            //Debug.Log($"Distancia entre {Obj_[i].gameObject.name} y destino: {distance}");
 
-            if (obj == null) continue;
+            distanceList[i] = distance;
 
-            float distance = Vector3.Distance(obj.transform.position, Room.position);
-
-            if (distance <= distanceMin)
+            if (distanceList[i] <= distanceMin)
             {
-                CompleteActiveQuest();
-                return;
+                ObjInRoom++;
             }
+        }
+
+
+        if (ObjInRoom >= questData.ItemsToPick().Count)
+        {
+            CompleteActiveQuest();
+            ObjInRoom = 0;
+            return;
         }
     }
 
@@ -288,8 +367,11 @@ public class Quest : MonoBehaviour
     {
         if (activeQuest == null) return;
 
+
         activeQuest.isActive = false;
         activeQuest.isComplete = true;
+
+        Debug.Log("Quest completada: " + activeQuest.config.Name);
 
         bars.QuestFinished(activeQuest.GetEmotionIDType_Add(), (int)activeQuest.AddPoints);
         bars.QuestFinished(activeQuest.GetEmotionIDType_Remove(), -(int)activeQuest.RemovePoints);
@@ -304,7 +386,7 @@ public class Quest : MonoBehaviour
         }
 
         Piece[] allPieces = FindObjectsByType<Piece>(FindObjectsSortMode.None);
-        Piece piece = allPieces.FirstOrDefault(p => p.id == questData.roomID);
+        Piece piece = allPieces.FirstOrDefault(p => p.Id == questData.roomID);
 
         if (piece == null)
         {
@@ -314,5 +396,88 @@ public class Quest : MonoBehaviour
 
         Room = piece.transform;
     }
+    private void Obj()
+    {
+        if (questData == null)
+        {
+            Debug.LogWarning("Obj(): questData es null, no se puede asignar Obj.");
+            return;
+        }
+        Obj_.Clear();
+        ObjId.Clear();
 
+        List<StructureQuest.QuestGeneric.itemsToPick> listItems = questData.config.itemsToPickData;
+        GrabbableObject[] allObj = FindObjectsByType<GrabbableObject>(FindObjectsSortMode.None);
+
+
+        for (int i = 0; i < questData.ItemsToPick().Count; i++) 
+        {
+
+            int itemID = listItems[i].itemID;
+
+            GrabbableObject objInventory = playerInteraction.Slots.FirstOrDefault(p => p != null && itemID == p.objectID);
+            GrabbableObject objScene = allObj.FirstOrDefault(p => itemID == p.objectID);
+
+            if (objInventory != null)
+            {
+                if (activeQuest.GetQuestType() == questType.ToGo)
+                {
+                    ObjScena(itemID, objInventory);
+                }
+                else if (activeQuest.GetQuestType() == questType.ToCollect)
+                {
+                    ObjCollect(itemID, objInventory);
+                }
+                else
+                {
+                    Debug.LogWarning($"metodo incorrecto, no se deberia llamar a este metodo en este tipo de Quest");
+                    return;
+                }
+
+            }
+            else if (objScene != null)
+            {
+                Debug.Log($"Objeto encontrado para el ID {itemID}: {objScene.name}");
+                Obj_.Add(objScene.transform);
+                ObjId.Add(itemID);
+            }
+            else
+            {
+                // Si no lo encuentra, avisa en consola pero el juego Sigue corriendo bien
+                Debug.LogWarning($"No se encontró en la escena ni en el inventario el objeto con el ID: {itemID}");
+            }
+        }
+
+    }
+
+    private void ObjScena(int itemID, GrabbableObject objInventory)
+    {
+        Debug.Log($"Objeto encontrado para el ID {itemID}: {objInventory.name}");
+        Obj_.Add(objInventory.transform);
+    }
+    private void ObjCollect(int itemID, GrabbableObject objInventory)
+    {
+        Debug.Log($"Objeto encontrado para el ID {itemID}: {objInventory.name}");
+        Obj_.Add(objInventory.transform);
+        ObjId.Add(itemID);
+        ObjInventory++;
+    }
+
+    private void SpawnObj()
+    {
+        List<StructureQuest.QuestGeneric.itemsToPick> listItems = new();
+
+        for (int i = 0; i < questDatabase.quests.Length; i++)
+        {
+            listItems.AddRange(questDatabase.quests[i].itemsToPickData); // Tengo que verlo todavia
+        }
+
+        for (int j = 0; j < listItems.Count; j++)
+        {
+            //Debug.Log ($"Spawned {listItems[j].quantity} item ID {listItems[j].itemID}");
+            Debug.Log("Item actual [" + j + "]: " + listItems[j]);
+            randomObjectPositioner._ObjAdd(listItems[j]);
+            Debug.Log($"Spawned {listItems[j].quantity} item ID {listItems[j].itemID}");
+        }   
+    }
 }
