@@ -57,6 +57,15 @@ public class DollEmotionSystem : MonoBehaviour
     {
         InitiallizeFlags();
     }
+    public void FixedUpdate()
+    {
+        if (bars._CurrentHappyBar == 100)
+        {
+            // aqui se pone la logica que abre la puerta donde esta la llave
+        }
+        else
+            return;
+    }
     public void ChangeState(DollState newState)
     {
         if (Currentstate == newState) // Si el nuevo estado es el mismo que el actual, no hacemos nada
