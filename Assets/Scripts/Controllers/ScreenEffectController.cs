@@ -104,6 +104,32 @@ public class ScreenEffectController : MonoBehaviour
         }
     }
 
+    // Setea la intensidad de la vignette de un efecto por id y la aplica al instante.
+    public void SetVignetteIntensity(string id, float intensity)
+    {
+        ScreenEffect effect = GetEffect(id);
+        if (effect == null || effect.type != ScreenEffectType.Vignette)
+        {
+            return;
+        }
+
+        effect.targetVignetteIntensity = Mathf.Clamp01(intensity);
+        SetVignette(effect, effect.targetVignetteIntensity, effect.targetVignetteSmoothness);
+    }
+
+    // Setea el smoothness de la vignette de un efecto por id y lo aplica al instante.
+    public void SetVignetteSmoothness(string id, float smoothness)
+    {
+        ScreenEffect effect = GetEffect(id);
+        if (effect == null || effect.type != ScreenEffectType.Vignette)
+        {
+            return;
+        }
+
+        effect.targetVignetteSmoothness = Mathf.Clamp01(smoothness);
+        SetVignette(effect, GetVignetteIntensity(effect), effect.targetVignetteSmoothness);
+    }
+
     public void StopAll()
     {
         if (effects == null)
@@ -169,7 +195,20 @@ public class ScreenEffectController : MonoBehaviour
                 if (effect.image != null)
                 {
                     effect.image.gameObject.SetActive(true);
+
+                    // si el padre (panel/canvas) esta desactivado, la imagen no se ve aunque la prendamos
+                    if (!effect.image.isActiveAndEnabled)
+                    {
+                        Debug.LogWarning("[ScreenEffectController] El efecto '" + effect.id +
+                            "' tiene la Image asignada pero no queda activa en jerarquia. Revisa que su panel/Canvas padre este activo.");
+                    }
+
                     activeRoutines[effect.id] = StartCoroutine(ImageFadeRoutine(effect, effect.image.color.a, effect.targetAlpha, duration));
+                }
+                else
+                {
+                    Debug.LogWarning("[ScreenEffectController] El efecto '" + effect.id +
+                        "' es de tipo ImageAlpha pero no tiene ninguna Image asignada.");
                 }
                 break;
 

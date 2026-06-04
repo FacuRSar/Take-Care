@@ -28,14 +28,19 @@ public class DemoEndController : MonoBehaviour
     // QUIZAS y solo quizas, meto algo asi.
 
     [Header("Cierre por captura")]
-    // Texto dramatico dedicado: configura su fuente y color propios en el inspector.
-    [SerializeField] private TextMeshProUGUI captureMessageText;
-    [TextArea]
-    [SerializeField] private string captureMessage = "Todavia no es hora de irse querido...";
+    // El mensaje se muestra con el manager de dialogos/subtitulos por id (DialogueController).
+    [SerializeField] private string captureMessageDialogueId = "captureMessege";
     // risa del perseguidor al capturar
     [SerializeField] private string captureLaughSfxId = "PursuerLaugh";
+    // sonido que suena junto con el subtitulo. Vacio = sin sonido.
+    [SerializeField] private string captureMessageSfxId = "";
     // efecto opcional de manos cerrandose sobre los ojos (id en ScreenEffectController). Vacio = sin efecto.
     [SerializeField] private string handsEffectId = "hands";
+    // vignette opcional que "cierra" la pantalla en negro (id en ScreenEffectController). Vacio = sin vignette.
+    // reutilizamos el mismo efecto de fatiga.
+    [SerializeField] private string captureVignetteEffectId = "fatigue";
+    // margen para que las manos/vignette se vean antes de que arranque el fade a negro
+    [SerializeField] private float handsLeadTime = 0.6f;
     // cuanto se mantiene el negro antes de cambiar de escena / mostrar mensaje final
     [SerializeField] private float blackHoldDuration = 2f;
 
@@ -54,11 +59,6 @@ public class DemoEndController : MonoBehaviour
         if (finalMessageText != null)
         {
             finalMessageText.gameObject.SetActive(false);
-        }
-
-        if (captureMessageText != null)
-        {
-            captureMessageText.gameObject.SetActive(false);
         }
     }
 
@@ -79,6 +79,7 @@ public class DemoEndController : MonoBehaviour
     {
         if (endingStarted)
         {
+            Debug.Log("DemoEndController: StartCaptureEnd ignorado (el cierre ya habia arrancado).");
             return;
         }
 
@@ -88,10 +89,22 @@ public class DemoEndController : MonoBehaviour
 
     private IEnumerator CaptureEndRoutine()
     {
+        Debug.Log("DemoEndController: cierre por captura iniciado.");
+
         // manos cerrandose sobre los ojos (opcional)
         if (ScreenEffectController.Instance != null && !string.IsNullOrEmpty(handsEffectId))
         {
             ScreenEffectController.Instance.PlayEffect(handsEffectId);
+        }
+        else if (!string.IsNullOrEmpty(handsEffectId))
+        {
+            Debug.LogWarning("DemoEndController: no hay ScreenEffectController.Instance para las manos.");
+        }
+
+        // vignette que cierra la pantalla (opcional)
+        if (ScreenEffectController.Instance != null && !string.IsNullOrEmpty(captureVignetteEffectId))
+        {
+            ScreenEffectController.Instance.PlayEffect(captureVignetteEffectId);
         }
 
         // risa del perseguidor
@@ -100,11 +113,22 @@ public class DemoEndController : MonoBehaviour
             SFXManager.Instance.Play2D(captureLaughSfxId);
         }
 
-        // subtitulo dramatico mientras se hace el fade
-        if (captureMessageText != null)
+        // subtitulo dramatico a traves del manager de dialogos/subtitulos
+        if (DialogueController.Instance != null && !string.IsNullOrEmpty(captureMessageDialogueId))
         {
-            captureMessageText.text = captureMessage;
-            captureMessageText.gameObject.SetActive(true);
+            DialogueController.Instance.PlayDialogue(captureMessageDialogueId);
+        }
+
+        // sonido que acompaña al subtitulo
+        if (SFXManager.Instance != null && !string.IsNullOrEmpty(captureMessageSfxId))
+        {
+            SFXManager.Instance.Play2D(captureMessageSfxId);
+        }
+
+        // damos un margen para que las manos/vignette se vean antes de tapar con negro
+        if (handsLeadTime > 0f)
+        {
+            yield return new WaitForSeconds(handsLeadTime);
         }
 
         yield return FadeToBlack();
@@ -122,11 +146,6 @@ public class DemoEndController : MonoBehaviour
         }
         else
         {
-            if (captureMessageText != null)
-            {
-                captureMessageText.gameObject.SetActive(false);
-            }
-
             if (finalMessageText != null)
             {
                 finalMessageText.text = finalMessage;
