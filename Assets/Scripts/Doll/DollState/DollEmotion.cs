@@ -58,4 +58,8 @@ public class DollEmotion : MonoBehaviour
             return;
         }
     }
+    public float getCurrentBar()
+    {
+        return currentBar;
+    }
 }
