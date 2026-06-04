@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,6 +10,8 @@ public class PursuerNavMeshController : MonoBehaviour
 {
     [Header("Referencias")]
     [SerializeField] private Transform player;
+    // si player queda sin asignar, lo busca por tag al activarse
+    [SerializeField] private string playerTag = "Player";
     [SerializeField] private Animator animator;
 
     [Header("Movimiento")]
@@ -38,6 +41,13 @@ public class PursuerNavMeshController : MonoBehaviour
     [SerializeField] private float behindDotThreshold = -0.35f;
     [SerializeField] private string backGrabTriggerName = "BackGrab";
     [SerializeField] private string frontGrabTriggerName = "FrontGrab";
+    [SerializeField] private bool logGrabDistance = false;
+
+    [Header("Cierre al capturar")]
+    // controlador del cierre (mismo final sin importar si agarra de frente o de espalda)
+    [SerializeField] private DemoEndController captureEndController;
+    // pequeña espera para que arranque la animacion de agarre antes del fade
+    [SerializeField] private float captureEndDelay = 0.4f;
 
     private NavMeshAgent agent;
     private float nextDestinationUpdateTime;
@@ -65,6 +75,21 @@ public class PursuerNavMeshController : MonoBehaviour
     {
         hasGrabbedPlayer = false;
         rampStartTime = Time.time;
+
+        // si no se asigno el player en el inspector, lo busco por tag
+        if (player == null && !string.IsNullOrEmpty(playerTag))
+        {
+            GameObject found = GameObject.FindGameObjectWithTag(playerTag);
+
+            if (found != null)
+            {
+                player = found.transform;
+            }
+            else
+            {
+                Debug.LogWarning("PursuerNavMeshController: no hay player asignado ni se encontro por tag '" + playerTag + "'.");
+            }
+        }
 
         if (agent != null)
         {
@@ -217,6 +242,11 @@ public class PursuerNavMeshController : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, player.position);
 
+        if (logGrabDistance)
+        {
+            Debug.Log("PursuerNavMeshController: distancia al player = " + distance.ToString("0.00") + " | grabDistance = " + grabDistance);
+        }
+
         if (distance > grabDistance)
         {
             return;
@@ -242,6 +272,39 @@ public class PursuerNavMeshController : MonoBehaviour
         else
         {
             GrabFromFront();
+        }
+
+        // El cierre es el mismo en ambos casos.
+        TriggerCaptureEnding();
+    }
+
+    private void TriggerCaptureEnding()
+    {
+        Debug.Log("PursuerNavMeshController: captura detectada, disparando cierre.");
+
+        if (captureEndController == null)
+        {
+            Debug.LogWarning("PursuerNavMeshController: no hay captureEndController asignado para el cierre.");
+            return;
+        }
+
+        if (captureEndDelay > 0f)
+        {
+            StartCoroutine(CaptureEndAfterDelay());
+        }
+        else
+        {
+            captureEndController.StartCaptureEnd();
+        }
+    }
+
+    private IEnumerator CaptureEndAfterDelay()
+    {
+        yield return new WaitForSeconds(captureEndDelay);
+
+        if (captureEndController != null)
+        {
+            captureEndController.StartCaptureEnd();
         }
     }
 

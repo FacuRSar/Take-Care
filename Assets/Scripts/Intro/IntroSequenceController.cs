@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class IntroSequenceController : MonoBehaviour
 {
@@ -40,22 +41,20 @@ public class IntroSequenceController : MonoBehaviour
     [SerializeField] private SFXManager sfxManager;
     [SerializeField] private MusicManager musicManager;
     [SerializeField] private DemoEndController demoEndController;
+    [SerializeField] private ScreenEffectController screenEffectController;
 
     [Header("Persecucion")]
-    //[SerializeField] private PursuerSpawnController pursuerSpawnController;
-    // Reemplaza al MirrorChaseEpilogue viejo. Se dispara al terminar el focus del ba�o.
+    // El spawner de la pursuer se referencia mas abajo (pursuerSpawnController) y se dispara en la fase de escape.
 
     [Header("Escape / Shock")]
     [SerializeField] private string agitatedBreathingLoopId = "AgitatedBreathing";
     [SerializeField] private GameObject playerHeadBobTarget;
     [SerializeField] private string headBobEscapeMessage = "ApplyEscapeConfig";
-    [SerializeField] private Image mentalFatigueImage;
-    [SerializeField] private float mentalFatigueFadeDuration = 45f;
-    [SerializeField] private float mentalFatigueTargetAlpha = 0.55f;
+    [SerializeField] private string mentalFatigueEffectId = "fatigue";
     /* Esto deja preparado el estado mental del jugador para la persecucion:
      * respiracion agitada en loop
      * cambio opcional del headbob usando SendMessage
-     * cierre lento de pantalla con una Image negra/vignette
+     * cierre lento de pantalla mediante ScreenEffectController
      */
 
     [Header("Mensaje del espejo (objetos en escena)")]
@@ -74,8 +73,20 @@ public class IntroSequenceController : MonoBehaviour
     [Header("SFX opcionales")]
     [SerializeField] private string dollAppearExtraSfxId = "";
 
+    [Header("Teclas de debug (opcional)")]
+    // Si esta activo: Numpad 1 dispara el circulo de fatiga, Numpad 2 togglea la respiracion agitada,
+    // Numpad 3 spawnea la pursuer.
+    [SerializeField] private bool enableDebugKeys = false;
+    // Se usa tanto para el spawn normal (fase de escape) como para la tecla de debug (Numpad 3).
+    [FormerlySerializedAs("debugPursuerSpawnController")]
+    [SerializeField] private PursuerSpawnController pursuerSpawnController;
+
     [Space(10)] // Para separar los focus
     [SerializeField] private float dollLaughDelay = 0f;
+    // Tiempo entre que suena la risa y se activa el zoom de la muneca (la risa va "un segundo antes").
+    [SerializeField] private float dollLaughLeadTime = 1f;
+    // Volumen del golpe de "romper" (2D). >1 lo hace sonar mas fuerte.
+    [SerializeField] private float bathroomBreakVolume = 1.5f;
     [SerializeField] private float energyReactionDialogueDelay = 0f;
     [SerializeField] private float phoneHelloDialogueDelay = 0f;
     [SerializeField] private float dollReactionDialogueDelay = 0f;
@@ -94,7 +105,7 @@ public class IntroSequenceController : MonoBehaviour
     private bool mirrorTriggered;
     private bool faucetClosed;
     private bool escapeAttempted;
-    private Coroutine mentalFatigueRoutine;
+    private bool debugBreathingActive;
 
     private void Awake()
     {
@@ -108,6 +119,11 @@ public class IntroSequenceController : MonoBehaviour
         if (sfxManager == null)
         {
             sfxManager = SFXManager.Instance;
+        }
+
+        if (screenEffectController == null)
+        {
+            screenEffectController = ScreenEffectController.Instance;
         }
     }
 
@@ -126,14 +142,6 @@ public class IntroSequenceController : MonoBehaviour
         if (mirrorMessageHideOnStart)
         {
             SetMirrorMessageObjectsActive(false);
-        }
-
-        if (mentalFatigueImage != null)
-        {
-            Color color = mentalFatigueImage.color;
-            color.a = 0f;
-            mentalFatigueImage.color = color;
-            mentalFatigueImage.gameObject.SetActive(true);
         }
 
         if (playIntroOnStart)
@@ -160,10 +168,8 @@ public class IntroSequenceController : MonoBehaviour
         SetFlag("power_on", true);
         SetFlag("energy_restored", true);
 
-        if (HintDialogueController.Instance != null)
-        {
-            HintDialogueController.Instance.StopHints();
-        }
+        // Ya no frenamos las hints aca: el timer corre siempre y el filtrado por
+        // required/blocked flags decide cuales estan disponibles para disparar.
 
         PlayFocusSequence(energyFocusSequenceIndex, useCustomEnergyZoom, energyCustomZoomFov);
         StartCoroutine(EnablePhoneAfterFocus());
@@ -221,6 +227,12 @@ public class IntroSequenceController : MonoBehaviour
             Debug.LogWarning("IntroSequenceController: la muneca no esta asignada, no aparece pero no rompe.");
         }
 
+        // La risa suena un segundo antes del zoom de la muneca.
+        if (dollLaughLeadTime > 0f)
+        {
+            yield return new WaitForSeconds(dollLaughLeadTime);
+        }
+
         PlayFocusSequence(dollFocusSequenceIndex, useCustomDollZoom, dollCustomZoomFov);
         StartCoroutine(PlayDialogueAndWait(PhoneSurpriseDialogueId, 0f, 0f));
     }
@@ -247,7 +259,8 @@ public class IntroSequenceController : MonoBehaviour
 
         Vector3 bathroomPosition = bathroomSoundPoint != null ? bathroomSoundPoint.position : transform.position;
 
-        Play3D("BathroomBreak", bathroomPosition);
+        // El golpe de romper va en 2D y mas fuerte. La canilla si queda en 3D.
+        Play2D("BathroomBreak", bathroomBreakVolume);
         Play2D("JumpScare");
         PlayLoop3D("FaucetLoop", bathroomPosition);
 
@@ -334,7 +347,7 @@ public class IntroSequenceController : MonoBehaviour
 
         StartMentalFatigueFade();
 
-        /*if (pursuerSpawnController != null)
+        if (pursuerSpawnController != null)
         {
             pursuerSpawnController.StartSpawnSequence();
         }
@@ -342,7 +355,6 @@ public class IntroSequenceController : MonoBehaviour
         {
             Debug.LogWarning("IntroSequenceController: pursuerSpawnController no esta asignado.");
         }
-    }*/
     }
 
     public void OnEscapeAttempted()
@@ -376,39 +388,12 @@ public class IntroSequenceController : MonoBehaviour
 
     private void StartMentalFatigueFade()
     {
-        if (mentalFatigueImage == null)
+        ScreenEffectController targetEffects = screenEffectController != null ? screenEffectController : ScreenEffectController.Instance;
+
+        if (targetEffects != null && !string.IsNullOrEmpty(mentalFatigueEffectId))
         {
-            return;
+            targetEffects.PlayEffect(mentalFatigueEffectId);
         }
-
-        if (mentalFatigueRoutine != null)
-        {
-            StopCoroutine(mentalFatigueRoutine);
-        }
-
-        mentalFatigueRoutine = StartCoroutine(MentalFatigueFadeRoutine());
-    }
-
-    private IEnumerator MentalFatigueFadeRoutine()
-    {
-        float elapsed = 0f;
-
-        Color color = mentalFatigueImage.color;
-        float startAlpha = color.a;
-
-        while (elapsed < mentalFatigueFadeDuration)
-        {
-            elapsed += Time.deltaTime;
-
-            float t = mentalFatigueFadeDuration <= 0f ? 1f : Mathf.Clamp01(elapsed / mentalFatigueFadeDuration);
-            color.a = Mathf.Lerp(startAlpha, mentalFatigueTargetAlpha, t);
-            mentalFatigueImage.color = color;
-
-            yield return null;
-        }
-
-        color.a = mentalFatigueTargetAlpha;
-        mentalFatigueImage.color = color;
     }
 
     private IEnumerator PlayDialogueAfterDelay(string dialogueId, float delay)
@@ -511,13 +496,74 @@ public class IntroSequenceController : MonoBehaviour
         return targetDialogue != null ? targetDialogue.GetDialogueDuration(dialogueId) : 0f;
     }
 
-    private void Play2D(string id)
+    private void Update()
+    {
+        if (!enableDebugKeys || Keyboard.current == null)
+        {
+            return;
+        }
+
+        if (Keyboard.current.numpad1Key.wasPressedThisFrame)
+        {
+            StartMentalFatigueFade();
+        }
+
+        if (Keyboard.current.numpad2Key.wasPressedThisFrame)
+        {
+            ToggleDebugBreathing();
+        }
+
+        if (Keyboard.current.numpad3Key.wasPressedThisFrame)
+        {
+            DebugSpawnPursuer();
+        }
+    }
+
+    private void DebugSpawnPursuer()
+    {
+        if (pursuerSpawnController == null)
+        {
+            Debug.LogWarning("IntroSequenceController: no hay pursuerSpawnController asignado para el spawn de debug.");
+            return;
+        }
+
+        pursuerSpawnController.StartSpawnSequence();
+    }
+
+    private void ToggleDebugBreathing()
+    {
+        if (string.IsNullOrEmpty(agitatedBreathingLoopId))
+        {
+            Debug.LogWarning("IntroSequenceController: no hay agitatedBreathingLoopId configurado para la respiracion.");
+            return;
+        }
+
+        SFXManager targetSfx = sfxManager != null ? sfxManager : SFXManager.Instance;
+        if (targetSfx == null)
+        {
+            Debug.LogWarning("IntroSequenceController: no hay SFXManager para reproducir la respiracion.");
+            return;
+        }
+
+        if (debugBreathingActive)
+        {
+            StopLoop(agitatedBreathingLoopId);
+            debugBreathingActive = false;
+        }
+        else
+        {
+            PlayLoop2D(agitatedBreathingLoopId);
+            debugBreathingActive = true;
+        }
+    }
+
+    private void Play2D(string id, float volumeScale = 1f)
     {
         SFXManager targetSfx = sfxManager != null ? sfxManager : SFXManager.Instance;
 
         if (targetSfx != null)
         {
-            targetSfx.Play2D(id);
+            targetSfx.Play2D(id, volumeScale);
         }
     }
 

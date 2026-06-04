@@ -27,6 +27,23 @@ public class DemoEndController : MonoBehaviour
     // [SerializeField] private CameraFallEffect cameraFallEffect;
     // QUIZAS y solo quizas, meto algo asi.
 
+    [Header("Cierre por captura")]
+    // El mensaje se muestra con el manager de dialogos/subtitulos por id (DialogueController).
+    [SerializeField] private string captureMessageDialogueId = "captureMessege";
+    // risa del perseguidor al capturar
+    [SerializeField] private string captureLaughSfxId = "PursuerLaugh";
+    // sonido que suena junto con el subtitulo. Vacio = sin sonido.
+    [SerializeField] private string captureMessageSfxId = "";
+    // efecto opcional de manos cerrandose sobre los ojos (id en ScreenEffectController). Vacio = sin efecto.
+    [SerializeField] private string handsEffectId = "hands";
+    // vignette opcional que "cierra" la pantalla en negro (id en ScreenEffectController). Vacio = sin vignette.
+    // reutilizamos el mismo efecto de fatiga.
+    [SerializeField] private string captureVignetteEffectId = "fatigue";
+    // margen para que las manos/vignette se vean antes de que arranque el fade a negro
+    [SerializeField] private float handsLeadTime = 0.6f;
+    // cuanto se mantiene el negro antes de cambiar de escena / mostrar mensaje final
+    [SerializeField] private float blackHoldDuration = 2f;
+
     private bool endingStarted;
 
     private void Awake()
@@ -55,6 +72,86 @@ public class DemoEndController : MonoBehaviour
         endingStarted = true;
         // arranca una sola vez
         StartCoroutine(DemoEndRoutine());
+    }
+
+    // Cierre cuando el perseguidor atrapa al jugador (igual de frente o de espalda).
+    public void StartCaptureEnd()
+    {
+        if (endingStarted)
+        {
+            Debug.Log("DemoEndController: StartCaptureEnd ignorado (el cierre ya habia arrancado).");
+            return;
+        }
+
+        endingStarted = true;
+        StartCoroutine(CaptureEndRoutine());
+    }
+
+    private IEnumerator CaptureEndRoutine()
+    {
+        Debug.Log("DemoEndController: cierre por captura iniciado.");
+
+        // manos cerrandose sobre los ojos (opcional)
+        if (ScreenEffectController.Instance != null && !string.IsNullOrEmpty(handsEffectId))
+        {
+            ScreenEffectController.Instance.PlayEffect(handsEffectId);
+        }
+        else if (!string.IsNullOrEmpty(handsEffectId))
+        {
+            Debug.LogWarning("DemoEndController: no hay ScreenEffectController.Instance para las manos.");
+        }
+
+        // vignette que cierra la pantalla (opcional)
+        if (ScreenEffectController.Instance != null && !string.IsNullOrEmpty(captureVignetteEffectId))
+        {
+            ScreenEffectController.Instance.PlayEffect(captureVignetteEffectId);
+        }
+
+        // risa del perseguidor
+        if (SFXManager.Instance != null && !string.IsNullOrEmpty(captureLaughSfxId))
+        {
+            SFXManager.Instance.Play2D(captureLaughSfxId);
+        }
+
+        // subtitulo dramatico a traves del manager de dialogos/subtitulos
+        if (DialogueController.Instance != null && !string.IsNullOrEmpty(captureMessageDialogueId))
+        {
+            DialogueController.Instance.PlayDialogue(captureMessageDialogueId);
+        }
+
+        // sonido que acompaña al subtitulo
+        if (SFXManager.Instance != null && !string.IsNullOrEmpty(captureMessageSfxId))
+        {
+            SFXManager.Instance.Play2D(captureMessageSfxId);
+        }
+
+        // damos un margen para que las manos/vignette se vean antes de tapar con negro
+        if (handsLeadTime > 0f)
+        {
+            yield return new WaitForSeconds(handsLeadTime);
+        }
+
+        yield return FadeToBlack();
+
+        // el negro se mantiene un rato
+        if (blackHoldDuration > 0f)
+        {
+            yield return new WaitForSeconds(blackHoldDuration);
+        }
+
+        // si hay escena, cambia; si no, queda el fadeImage con el mensaje final
+        if (!string.IsNullOrWhiteSpace(endSceneName))
+        {
+            SceneManager.LoadScene(endSceneName);
+        }
+        else
+        {
+            if (finalMessageText != null)
+            {
+                finalMessageText.text = finalMessage;
+                finalMessageText.gameObject.SetActive(true);
+            }
+        }
     }
 
     private IEnumerator DemoEndRoutine()

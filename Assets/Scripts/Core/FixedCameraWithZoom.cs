@@ -242,7 +242,7 @@ public class FixedCameraWithZoom : MonoBehaviour
     //Aguego el nuevo PlaySequence pero con un zoom personalizado
     public void PlaySequence(int sequenceIndex, float customZoomFov)
     {
-        currentZoomFov = customZoomFov;
+        currentZoomFov = customZoomFov > 0f ? customZoomFov : nomalFov;
 
         currentSequenceIndex = sequenceIndex;
 

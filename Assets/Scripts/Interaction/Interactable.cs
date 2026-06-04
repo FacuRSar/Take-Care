@@ -14,8 +14,9 @@ public abstract class Interactable : MonoBehaviour
     *  sin hacerlo público para otros scripts.
     */
 
-    public string PromptMessage => promptMessage;
-    // Para que el resto lo pueda usar, lo asigno asi. No lo pueden cambiar
+    public virtual string PromptMessage => promptMessage;
+    // Para que el resto lo pueda usar, lo asigno asi.
+    // Es virtual asi un interactuable concreto (ej: puerta) puede devolver un mensaje dinamico.
 
     public virtual void OnFocus()
     {

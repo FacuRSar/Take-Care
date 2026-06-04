@@ -14,6 +14,11 @@ public class GameStateController : MonoBehaviour
     private Dictionary<string, bool> flags = new Dictionary<string, bool>();
     // Flags personalizadas para eventos futuros, lo meti por el DoorInteractable
 
+    [Header("Flags activas (solo lectura / debug)")]
+    // Espejo visual del diccionario para poder ver las flags desde el inspector en runtime.
+    // No se usa para logica, es solo informativo. El diccionario sigue siendo la fuente real.
+    [SerializeField] private List<string> activeFlagsView = new List<string>();
+
     private void Awake()
     {
         // aseguramos una sola instancia para evitar conflictos
@@ -44,6 +49,8 @@ public class GameStateController : MonoBehaviour
         bool previousValue = GetFlag(flagName);
         flags[flagName] = value;
 
+        RefreshInspectorView();
+
         if (previousValue != value)
         {
             OnFlagChanged?.Invoke(flagName, value);
@@ -72,6 +79,7 @@ public class GameStateController : MonoBehaviour
         if (flags.ContainsKey(flagName))
         {
             flags.Remove(flagName);
+            RefreshInspectorView();
             OnFlagChanged?.Invoke(flagName, false);
         }
     }
@@ -86,6 +94,8 @@ public class GameStateController : MonoBehaviour
 
         IntroActivated = false;
         flags.Clear();
+
+        RefreshInspectorView();
 
         foreach (string flagName in activeFlags)
         {
@@ -114,6 +124,20 @@ public class GameStateController : MonoBehaviour
         {
             flags.Remove(key);
             OnFlagChanged?.Invoke(key, false);
+        }
+
+        RefreshInspectorView();
+    }
+
+    // Reconstruye la lista visible en el inspector a partir del diccionario real.
+    // Muestra cada flag con su valor, ej: "intro_started = true".
+    private void RefreshInspectorView()
+    {
+        activeFlagsView.Clear();
+
+        foreach (KeyValuePair<string, bool> kv in flags)
+        {
+            activeFlagsView.Add(kv.Key + " = " + kv.Value);
         }
     }
 }
