@@ -16,21 +16,16 @@ public class StructureQuest : ScriptableObject
         public int id;
 
         [Header("To Collect")]
-        public bool differentItems;
         public List<itemsToPick> itemsToPickData; // Corregido typo de "Date" a "Data"
 
         [System.Serializable]
         public struct itemsToPick
         {
-            public string name;
             public int quantity;
             public int itemID;
-
-            public GameObject gameObject;
         }
 
         [Header("ToGo or Delivery")]
-        public bool deliveryEnabled;
 
         public String roomID;
 

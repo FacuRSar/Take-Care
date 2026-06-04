@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     private float targetHeight;
     private float targetCameraY;
 
-    public bool CantMove;
+    private bool _CantMove;
 
     private float movementFeelMultiplier = 1f;
 
@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (!CantMove)
+        if (!_CantMove)
         {
             HandleSprintInput(); // mira si Shift esta apretado
             HandleCrouchInput(); // mira si Ctrl esta apretado
@@ -63,8 +63,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!CantMove) MovePlayer(); //llamada a funcion movimiento en fixed update asi no choca con la fisica del juego
+        if (!_CantMove) MovePlayer(); //llamada a funcion movimiento en fixed update asi no choca con la fisica del juego
     }
+
+    public void CantMove(bool value)
+    {
+        _CantMove = value;
+    }
+
     //callback del input system, se llama cada vez que el jugador clickea teclas de movimiento
     public void OnMovement(InputValue value)
     {
