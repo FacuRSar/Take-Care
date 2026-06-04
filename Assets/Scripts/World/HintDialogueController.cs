@@ -64,7 +64,7 @@ public class HintDialogueController : MonoBehaviour
     {
         StopHintRoutine();
         hintRoutine = StartCoroutine(HintRoutine());
-        Debug.Log("pistas de dialogo iniciadas");
+        //Debug.Log("pistas de dialogo iniciadas");
     }
 
     public void StopHints()

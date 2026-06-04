@@ -27,6 +27,7 @@ public class PlayerHeadBob : MonoBehaviour
     private float bobTimer;
     private float debugTimer;
     private float panicBobMultiplier = 1f;
+    private bool focusFreeze;
 
     private void Start()
     {
@@ -59,6 +60,12 @@ public class PlayerHeadBob : MonoBehaviour
 
     private void HandleHeadBob()
     {
+        if (focusFreeze)
+        {
+            // Durante el foco la camara la controla Cinemachine; no aplicamos bob.
+            return;
+        }
+
         if (playerMovement == null || playerCamera == null)
         {
             if (debugHeadBob)
@@ -113,5 +120,10 @@ public class PlayerHeadBob : MonoBehaviour
     public void SetPanicBobMultiplier(float multiplier)
     {
         panicBobMultiplier = Mathf.Max(1f, multiplier);
+    }
+
+    public void SetFocusFreeze(bool value)
+    {
+        focusFreeze = value;
     }
 }

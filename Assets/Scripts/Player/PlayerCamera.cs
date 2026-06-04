@@ -26,7 +26,7 @@ public class PlayerCamera : MonoBehaviour
         yRotation = transform.eulerAngles.y;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (!_CantMoveCamera)
         {
