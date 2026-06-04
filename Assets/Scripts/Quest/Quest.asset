@@ -14,41 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StructureQuest
   quests:
   - State: 0
-    QuestType: 1
-    Name: 
+    QuestType: 0
+    Name: Llevar cosas
     description: 
     id: 0
-    differentItems: 0
-    itemsToPickData: []
-    deliveryEnabled: 0
+    itemsToPickData:
+    - quantity: 1
+      itemID: 0
+    - quantity: 1
+      itemID: 1
+    - quantity: 1
+      itemID: 2
     roomID: Room_0
     EmotionID: 1
     addPoints: 1
     EmotionID_: 2
     removePoints: 2
-  - State: 1
-    QuestType: 1
-    Name: 
-    description: 
-    id: 0
-    differentItems: 0
-    itemsToPickData: []
-    deliveryEnabled: 0
-    roomID: Room_0
-    EmotionID: 1
-    addPoints: 4
-    EmotionID_: 2
-    removePoints: 5
-  - State: 2
-    QuestType: 1
-    Name: 
-    description: 
-    id: 0
-    differentItems: 0
-    itemsToPickData: []
-    deliveryEnabled: 0
-    roomID: Room_0
-    EmotionID: 1
-    addPoints: 89
-    EmotionID_: 2
-    removePoints: 67

@@ -28,27 +28,27 @@ public class QuestController : MonoBehaviour
     {
         if (quest == null) return;
 
-        if (quest.getIsCompleted())
+        if (quest._getIsCompleted())
         {
             Debug.Log("Misión completada con éxito");
             FinalizeCurrentQuest();
         }
-        else if (quest.checkTimer())
+        else if (quest._checkTimer())
         {
             Debug.Log("Misión fallida por tiempo");
-            quest.FailQuest();
+            quest._FailQuest();
             FinalizeCurrentQuest();
         }
-        else if (quest.getTimer() >= quest.getTimerDuration() * 0.75f)
+        else if (quest._getTimer() >= quest._getTimerDuration() * 0.75f)
         {
-            quest.MarkObjective();
+            quest._MarkObjective();
         }
 
     }
 
     private void FinalizeCurrentQuest()
     {
-        quest.setActive(false);
+        quest._setActive(false);
         quest = null; // Queda libre para la siguiente misión que mande Bars
     }
 }

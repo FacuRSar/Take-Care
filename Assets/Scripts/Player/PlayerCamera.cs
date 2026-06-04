@@ -15,7 +15,7 @@ public class PlayerCamera : MonoBehaviour
     private float xRotation = 0f;//rotacion en el eje x para limitar la rotacion de la camara
     private float yRotation = 0f;//rotacion acumulada del jugador en eje Y
 
-    public bool CantMoveCamera;
+    [SerializeField] private bool _CantMoveCamera;
 
     void Start()
     {
@@ -26,9 +26,18 @@ public class PlayerCamera : MonoBehaviour
         yRotation = transform.eulerAngles.y;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if(!CantMoveCamera)HandleMouseCam(); //llamada a la funcion que maneja la rotacion de la camara con el mouse
+        if (!_CantMoveCamera)
+        {
+            HandleMouseCam(); //llamada a la funcion que maneja la rotacion de la camara con el mouse
+        } 
+            
+    }
+
+    public void _MoveCamera(bool value)
+    {
+        _CantMoveCamera = value;
     }
 
     void HandleMouseCam()
@@ -64,7 +73,7 @@ public class PlayerCamera : MonoBehaviour
 
 //=======
 //>>>>>>> DollEmotionSystem
-    public void SyncRotation()
+    private void _SyncRotation()
     {
         yRotation = transform.eulerAngles.y;
 
@@ -74,5 +83,9 @@ public class PlayerCamera : MonoBehaviour
 //=======
         if (xRotation > 180f) xRotation -= 360f;
 //>>>>>>> DollEmotionSystem
+    }
+    public void SyncRotation()
+    {
+        _SyncRotation();
     }
 }

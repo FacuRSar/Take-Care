@@ -2,5 +2,6 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
-    public string id;
+    [SerializeField] private string id;
+    public string Id => id;
 }
