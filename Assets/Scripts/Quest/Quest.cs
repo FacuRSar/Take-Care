@@ -1,17 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using TreeEditor;
-using Unity.Mathematics;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-using static UnityEditor.Progress;
-using static UnityEngine.Audio.ProcessorInstance;
-using static UnityEngine.Rendering.DebugUI;
-using static UnityEngine.Rendering.STP;
 
 [System.Serializable]
 public class QuestData
@@ -28,6 +19,8 @@ public class QuestData
     public bool isActive;
     public bool isComplete;
     public float timer;
+    public float TimerDuration;
+    public string SubtitlesForQuest;
 
     public float failPenaltyPoints;
     public float AddPoints;
@@ -43,7 +36,10 @@ public class QuestData
         isComplete = false;
         QuestID = config.id;
         QuestName = config.Name;
-        timer = 0f;
+        timer = 0;
+        TimerDuration = config.timer;
+        SubtitlesForQuest = config.SubtitlesForQuest;
+
         failPenaltyPoints = config.addPoints * -1.5f;
         AddPoints = config.addPoints;
         RemovePoints = config.removePoints;
@@ -61,43 +57,42 @@ public class QuestData
 
 public class Quest : MonoBehaviour
 {
-    [Header("Quest Asset")]
+    [Header("Refence")]
     [SerializeField] private StructureQuest questDatabase;
     [SerializeField] private RandomObjectPositioner randomObjectPositioner;
+    private QuestController controller;
+    private DialogueController dialogue;
+    private QuestData activeQuest;
+
 
     [Header("Runtime Data")]
     [SerializeField] private List<QuestData> allQuests = new();
     public List<QuestData> allQuests_ { get { return allQuests; } set { allQuests = value; } }
-    private QuestData activeQuest;
 
     [Header("Settings")]
     [SerializeField] private float distanceMin;
-    [SerializeField] private int timerDuration = 60;
     [SerializeField] private Material transparentMaterial;
 
     Bars bars;
     PlayerInteraction playerInteraction;
 
     [SerializeField] private Transform player;
-    private QuestController controller;
     private Renderer rend;
     private Material originalMaterial;
-    internal QuestData questData;
+
 
     Transform Room;
-    Transform Player;
 
     List<Transform> Obj_ = new List<Transform>();
     List<int> ObjId = new List<int>();
     List<float> distanceList = new List<float>();
 
+    public bool isActive;
+
     int ObjInventory;
-    private void OnEnable()
-    {
-        SpawnObj();
-    }
     private void Awake()
     {
+        dialogue = FindAnyObjectByType<DialogueController>();
         playerInteraction = FindFirstObjectByType<PlayerInteraction>();
         bars = FindFirstObjectByType<Bars>();
         controller = FindFirstObjectByType<QuestController>();
@@ -108,6 +103,10 @@ public class Quest : MonoBehaviour
             originalMaterial = rend.material;
         }
         
+    }
+    private void OnEnable()
+    {
+        SpawnObj();
     }
 
     private void Start()
@@ -120,18 +119,13 @@ public class Quest : MonoBehaviour
             }
             AddQuest();
         }
-
-        
-        
     }
 
     private void FixedUpdate()
     {
-        Player = transform;
-
         if (activeQuest == null || !activeQuest.isActive) return;
 
-        switch (questData.GetQuestType())
+        switch (activeQuest.GetQuestType())
         {
             case questType.ToCollect:
                 LogicToCollect(); // Si llegamos la agragamos
@@ -144,20 +138,6 @@ public class Quest : MonoBehaviour
                 break;
         }
     }
-    private void Update()
-    {
-        if (activeQuest == null || !activeQuest.isActive) return;
-        
-        activeQuest.timer += Time.deltaTime;
-        if (checkTimer())
-        {
-            bars.QuestFinished(questData.GetEmotionIDType_Add(), (int)questData.failPenaltyPoints);
-            FailQuest();
-        }
-        
-    }
-
-
     private void _AddQuest()
     {
         if (controller == null) return;
@@ -174,8 +154,9 @@ public class Quest : MonoBehaviour
         if (index >= 0 && index < allQuests.Count)
         {
             activeQuest = allQuests[index];
-            questData = activeQuest;
             activeQuest.isActive = true;
+            dialogue.PlayDialogue(activeQuest.SubtitlesForQuest);
+            isActive = activeQuest.isActive;
             activeQuest.timer = 0f;
 
             Debug.LogWarning($"Quest Activated: ID = {activeQuest.QuestID}, Name = {activeQuest.QuestName}");
@@ -188,47 +169,11 @@ public class Quest : MonoBehaviour
     {
         _ActivateQuest(index);
     }
-
-    private bool _getIsActive()
-    {
-        if (activeQuest != null && !activeQuest.isActive)
-        {
-            return activeQuest.isActive;
-        }
-        else return !activeQuest.isActive;
-    }
-    public void getIsActive() 
-    {
-        _getIsActive();
-    }
-
-    private void setActive(bool value)
-    {
-        _setActive(value);
-    }
-    public void _setActive(bool value)
-    {
-        if (activeQuest == null) return;
-
-        activeQuest.isActive = value;
-
-        if (activeQuest.isActive)
-        {
-            //setTimer();
-        }
-    }
-
-
     private bool getIsCompleted() => activeQuest != null && activeQuest.isComplete;
 
     public bool _getIsCompleted()
     {
         return getIsCompleted();
-    }
-
-    private void setIsCompleted(bool value)
-    {
-        if (activeQuest != null) activeQuest.isComplete = value;
     }
     private void FailQuest()
     {
@@ -268,13 +213,13 @@ public class Quest : MonoBehaviour
         return getTimer();
     }
 
-    private bool checkTimer() => activeQuest != null && activeQuest.timer >= timerDuration;
+    private bool checkTimer() => activeQuest != null && activeQuest.timer >= activeQuest.TimerDuration;
     public bool _checkTimer()
     {
         return checkTimer();
     }
 
-    private float getTimerDuration() => timerDuration;
+    private float getTimerDuration() => activeQuest.timer;
     public float _getTimerDuration()
     {
         return getTimerDuration();
@@ -287,7 +232,7 @@ public class Quest : MonoBehaviour
         if (playerInteraction == null) return;
 
         // Recalcular cuántos items requeridos están en el inventario del jugador
-        var requiredItems = questData.ItemsToPick();// Lista de items requeridos por la quest
+        var requiredItems = activeQuest.ItemsToPick();// Lista de items requeridos por la quest
         int totalRequired = requiredItems.Sum(it => it.quantity);// Cantidad total de items requeridos por la quest
         int collectedCount = 0;
 
@@ -355,7 +300,7 @@ public class Quest : MonoBehaviour
         }
 
 
-        if (ObjInRoom >= questData.ItemsToPick().Count)
+        if (ObjInRoom >= activeQuest.ItemsToPick().Count)
         {
             CompleteActiveQuest();
             ObjInRoom = 0;
@@ -369,28 +314,31 @@ public class Quest : MonoBehaviour
 
 
         activeQuest.isActive = false;
+        isActive = activeQuest.isActive;
         activeQuest.isComplete = true;
 
         Debug.Log("Quest completada: " + activeQuest.config.Name);
 
         bars.QuestFinished(activeQuest.GetEmotionIDType_Add(), (int)activeQuest.AddPoints);
         bars.QuestFinished(activeQuest.GetEmotionIDType_Remove(), -(int)activeQuest.RemovePoints);
+
+        Debug.Log($"Se completo la quest se le sumo {activeQuest.AddPoints} a {activeQuest.GetEmotionIDType_Add()} y se le resto {activeQuest.RemovePoints} a {activeQuest.GetEmotionIDType_Remove()}");
     }
 
     private void Rooms()
     {
-        if (questData == null)
+        if (activeQuest == null)
         {
             Debug.LogWarning("Rooms(): questData es null, no se puede asignar Room.");
             return;
         }
 
         Piece[] allPieces = FindObjectsByType<Piece>(FindObjectsSortMode.None);
-        Piece piece = allPieces.FirstOrDefault(p => p.Id == questData.roomID);
+        Piece piece = allPieces.FirstOrDefault(p => p.Id == activeQuest.roomID);
 
         if (piece == null)
         {
-            Debug.LogWarning($"Rooms(): no encontré ninguna pieza con ID {questData.roomID}");
+            Debug.LogWarning($"Rooms(): no encontré ninguna pieza con ID {activeQuest.roomID}");
             return;
         }
 
@@ -398,7 +346,7 @@ public class Quest : MonoBehaviour
     }
     private void Obj()
     {
-        if (questData == null)
+        if (activeQuest == null)
         {
             Debug.LogWarning("Obj(): questData es null, no se puede asignar Obj.");
             return;
@@ -406,11 +354,11 @@ public class Quest : MonoBehaviour
         Obj_.Clear();
         ObjId.Clear();
 
-        List<StructureQuest.QuestGeneric.itemsToPick> listItems = questData.config.itemsToPickData;
+        List<StructureQuest.QuestGeneric.itemsToPick> listItems = activeQuest.config.itemsToPickData;
         GrabbableObject[] allObj = FindObjectsByType<GrabbableObject>(FindObjectsSortMode.None);
 
 
-        for (int i = 0; i < questData.ItemsToPick().Count; i++) 
+        for (int i = 0; i < activeQuest.ItemsToPick().Count; i++) 
         {
 
             int itemID = listItems[i].itemID;
@@ -469,12 +417,11 @@ public class Quest : MonoBehaviour
 
         for (int i = 0; i < questDatabase.quests.Length; i++)
         {
-            listItems.AddRange(questDatabase.quests[i].itemsToPickData); // Tengo que verlo todavia
+            listItems.AddRange(questDatabase.quests[i].itemsToPickData);
         }
 
         for (int j = 0; j < listItems.Count; j++)
         {
-            //Debug.Log ($"Spawned {listItems[j].quantity} item ID {listItems[j].itemID}");
             Debug.Log("Item actual [" + j + "]: " + listItems[j]);
             randomObjectPositioner._ObjAdd(listItems[j]);
             Debug.Log($"Spawned {listItems[j].quantity} item ID {listItems[j].itemID}");

@@ -39,15 +39,11 @@ public class DollEmotionSystem : MonoBehaviour
     [Header("GameState Reference")]
     private GameStateController gameStateController;
     private Bars bars;
+    private Quest quest;
     private DollState currentMaxBar;
-    private ScreenEffectController screenEffectController;
-    private bool isEffectActive = false;
-    private QuestController questController;
 
     void Awake()
     {
-        questController = FindAnyObjectByType<QuestController>();
-        screenEffectController = FindAnyObjectByType<ScreenEffectController>();
         idleState = GetComponent<Idle>();
         watchingState = GetComponent<Watching>();
         happyState = GetComponent<Happy>();
@@ -60,6 +56,7 @@ public class DollEmotionSystem : MonoBehaviour
     }
     private void Start()
     {
+        quest = FindAnyObjectByType<Quest>();
         InitiallizeFlags();
     }
     public void ChangeState(DollState newState)
@@ -112,51 +109,29 @@ public class DollEmotionSystem : MonoBehaviour
             if (currentMaxBar != Currentstate && !isQuestActive)
                 ChangeState(currentMaxBar);
         }*/
-       if(isQuestActive)
+       if(quest.isActive)
         {
-            currentEmotion.CheckInteraction(audioSource);
-            if(!isEffectActive)
-            {
-                screenEffectController.PlayEffect("fatigue");
-                isEffectActive = true;
-                if (currentMaxBar != Currentstate)
-                    ChangeState(currentMaxBar);
-            }
-            else if (currentMaxBar != DollState.Happy)
-            {
-
-                screenEffectController.SetVignetteIntensity("fatigue",currentEmotion.getCurrentBar());
-                isEffectActive = false;
-                if (currentMaxBar != Currentstate)
-                    ChangeState(currentMaxBar);
-            }
-
+           // currentEmotion.CheckInteraction(audioSource);
+            if (currentMaxBar != Currentstate)
+                ChangeState(currentMaxBar);
         }
        else
         {
-            if (false)
+            if (currentEmotion != idleState)
             {
-                screenEffectController.StopEffect("fatigue");
-                isEffectActive = false;
+                idleStateCounter = 0;
+                ChangeState(DollState.Idle);
             }
             else
             {
-                if (currentEmotion != idleState)
+                if (idleStateCounter < 5)
                 {
-                    idleStateCounter = 0;
-                    ChangeState(DollState.Idle);
+                    idleStateCounter++;
+                    idleState.checkWatching(player.transform.position, doll.transform.position);
                 }
                 else
                 {
-                    if (idleStateCounter < 5)
-                    {
-                        idleStateCounter++;
-                        idleState.checkWatching(player.transform.position, doll.transform.position);
-                    }
-                    else
-                    {
-                        bars.InvokeQuest();
-                    }
+                    bars.InvokeQuest();
                 }
             }
         }
