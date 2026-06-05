@@ -18,7 +18,7 @@ public class AmbientManager : MonoBehaviour
     // AudioSources que reproducen ambiente constante
     // (lluvia afuera, viento, interior de casa, etc)
 
-    [SerializeField] private float ambientVolume = 1f;
+    //[SerializeField] private float ambientVolume = 1f;
     // Volumen normal del ambiente
 
     [SerializeField] private bool playOnStart = true;
@@ -92,7 +92,7 @@ public class AmbientManager : MonoBehaviour
             }
 
             source.loop = true;
-            source.volume = ambientVolume;
+           // source.volume = ambientVolume;
 
             if (!source.isPlaying)
             {
@@ -114,7 +114,7 @@ public class AmbientManager : MonoBehaviour
             source.Stop();
         }
     }
-
+    /*
     public void SetAmbientVolume(float volume)
     {
         ambientVolume = volume;
@@ -129,7 +129,7 @@ public class AmbientManager : MonoBehaviour
             source.volume = ambientVolume;
         }
     }
-
+    */
     public void StartThunderLoop()
     {
         if (thunderRoutine != null)

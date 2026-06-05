@@ -222,8 +222,14 @@ public class DoorInteractable : Interactable
         {
             targetZ = closedZRotation;
 
+            // Suena inmediatamente al empezar a cerrar.
+            SFXManager.Instance.Play3D("CloseDoor", transform.position);
+
+            pendingEndSound = null;
+            /*
             // Al cerrar, el sonido queda pendiente y suena cuando llega al final.
-            pendingEndSound = "CloseDoor";
+            pendingEndSound = "CloseDoor"; 
+            */
         }
 
         targetRotation = Quaternion.Euler(0f, 0f, targetZ);

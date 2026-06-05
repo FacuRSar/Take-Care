@@ -36,6 +36,11 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private Slider ambientVolumeSlider;
 
+    [Header("Audio UI")]
+    [SerializeField] private UIAudioManager uiAudioManager;
+
+
+
     [Header("Etiquetas numericas (opcional)")]
     // Si las dejas vacias no se muestra nada, no rompe.
     [SerializeField] private TMP_Text sensitivityValueLabel;
@@ -62,6 +67,11 @@ public class PauseMenuController : MonoBehaviour
 
     [Header("Audio (AudioMixer)")]
     [SerializeField] private AudioMixer audioMixer;
+    // Lowpass filter para el menu de pausa
+    [SerializeField] private string pauseLowPassParam = "PauseLowPass";
+    [SerializeField] private float normalLowpass = 22000f;
+    [SerializeField] private float pausedLowpass = 500f;
+
     [SerializeField] private string masterVolumeParam = "MasterVolume";
     [SerializeField] private string musicVolumeParam = "MusicVolume";
     [SerializeField] private string sfxVolumeParam = "SFXVolume";
@@ -156,6 +166,7 @@ public class PauseMenuController : MonoBehaviour
             }
             else
             {
+                uiAudioManager?.PlayBack();
                 ResumeGame();
             }
         }
@@ -222,6 +233,8 @@ public class PauseMenuController : MonoBehaviour
     // Boton "Volver" del panel de opciones cuando estamos en menu principal.
     public void CloseSettings()
     {
+
+        uiAudioManager?.PlayBack();
         if (optionsPanel != null)
         {
             optionsPanel.SetActive(false);
@@ -260,11 +273,14 @@ public class PauseMenuController : MonoBehaviour
 
     public void OnContinueClicked()
     {
+        uiAudioManager?.PlaySelect();
         ResumeGame();
     }
 
     public void OnOptionsClicked()
     {
+
+        uiAudioManager?.PlaySelect();
         if (pausePanel != null)
         {
             pausePanel.SetActive(false);
@@ -282,18 +298,15 @@ public class PauseMenuController : MonoBehaviour
 
     public void OnOptionsBackClicked()
     {
+        uiAudioManager?.PlayBack();
         ShowPausePanel();
     }
 
     public void OnBackToMenuClicked()
     {
+        uiAudioManager?.PlaySelect();
         Time.timeScale = 1f;
-
-        if (pauseAudioOnPause)
-        {
-            AudioListener.pause = false;
-        }
-
+      
         if (!string.IsNullOrWhiteSpace(menuSceneName))
         {
             SceneManager.LoadScene(menuSceneName);
@@ -302,14 +315,20 @@ public class PauseMenuController : MonoBehaviour
 
     private void PauseGame()
     {
+        uiAudioManager?.PlayBack();
         isPaused = true;
         Time.timeScale = 0f;
-
+        
+        if (audioMixer != null)
+        {
+            audioMixer.SetFloat(pauseLowPassParam, pausedLowpass);
+        }
+        /*
         if (pauseAudioOnPause)
         {
             AudioListener.pause = true;
         }
-
+        */
         if (MusicManager.Instance != null)
         {
             MusicManager.Instance.OnGamePauseStart();
@@ -342,8 +361,13 @@ public class PauseMenuController : MonoBehaviour
 
     private void ResumeGame()
     {
+        
         isPaused = false;
         Time.timeScale = 1f;
+        if (audioMixer != null)
+        {
+            audioMixer.SetFloat(pauseLowPassParam, normalLowpass);
+        }
 
         if (pauseAudioOnPause)
         {

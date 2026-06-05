@@ -23,6 +23,7 @@ public class LightSwitch : Interactable
 
     private void Start()
     {
+        
         switchIsOn = switchStartsOn;
         // estado interno del switch, separado de si hay energia o no
 
@@ -30,10 +31,17 @@ public class LightSwitch : Interactable
         {
             ApplySwitchState();
         }
+
+      
     }
 
     public override void Interact(PlayerInteraction player)
     {
+        if (SFXManager.Instance != null)
+        {
+            SFXManager.Instance.Play2D("LightSwitch");
+        }
+
         if (!CanUseSwitch())
         {
             if (SubtitleUI.Instance != null)
@@ -47,10 +55,20 @@ public class LightSwitch : Interactable
         switchIsOn = !switchIsOn;
         // pulso el switch interno y despues aplico el estado al grupo de luces
         ApplySwitchState();
+
+        if (lightGroup != null)
+        {
+            lightGroup.ToggleLights();
+        }
+        else
+        {
+            ApplySwitchState();
+        }
     }
 
     private void ApplySwitchState()
     {
+        
         if (lightGroup != null)
         {
             lightGroup.SetLights(switchIsOn);

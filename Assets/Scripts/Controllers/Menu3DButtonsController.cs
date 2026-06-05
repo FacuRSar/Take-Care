@@ -46,6 +46,8 @@ public class Menu3DButtonsController : MonoBehaviour
     [SerializeField] private LayerMask buttonMask;
     [SerializeField] private float rayDistance = 100f;
 
+    [SerializeField] private UIAudioManager uiAudioManager;
+
     private Menu3DButtonVisual currentVisual;
     private MenuButtonData currentButton;
     private bool subscribedToSettings;
@@ -162,6 +164,8 @@ public class Menu3DButtonsController : MonoBehaviour
                     currentVisual = hitVisual;
                     currentButton = hitButton;
                     currentVisual.SetHover(true);
+
+                    uiAudioManager?.PlayHover();
                 }
 
                 if (Input.GetMouseButtonDown(0))
@@ -204,6 +208,7 @@ public class Menu3DButtonsController : MonoBehaviour
         switch (button.action)
         {
             case MenuButtonAction.Play:
+                uiAudioManager?.PlayPlay();
                 if (playSequence != null)
                 {
                     // Bloqueamos mas clicks durante la secuencia desactivando este controller.
@@ -231,6 +236,8 @@ public class Menu3DButtonsController : MonoBehaviour
                 break;
 
             case MenuButtonAction.Settings:
+
+                uiAudioManager?.PlaySelect();
                 if (settingsMenuController != null)
                 {
                     settingsMenuController.OpenSettings();
