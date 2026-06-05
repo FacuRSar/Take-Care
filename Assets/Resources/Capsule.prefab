@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrabbableObject
   _objectName: Capsula
-  _objectID: 0
+  _objectID: 900
   itemIcon: {fileID: 21300000, guid: 71581e981ab52074c9c58c58b5ab53e5, type: 3}
   heldLocalPosition: {x: 0, y: 0, z: 0}
   heldLocalRotation: {x: 0, y: 0, z: 0}

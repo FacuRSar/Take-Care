@@ -21,10 +21,14 @@ public class QuestData
     public float timer;
     public float TimerDuration;
     public string SubtitlesForQuest;
+    public string SubtitlesForQuestComplete;
+    public string SubtitlesForQuestFail;
 
     public float failPenaltyPoints;
     public float AddPoints;
     public float RemovePoints;
+
+    public String TpDollID;
 
     public String roomID;
 
@@ -38,7 +42,12 @@ public class QuestData
         QuestName = config.Name;
         timer = 0;
         TimerDuration = config.timer;
+
+        TpDollID = config.TpDollID;
+
         SubtitlesForQuest = config.SubtitlesForQuest;
+        SubtitlesForQuestComplete = config.SubtitlesForQuestComplete;
+        SubtitlesForQuestFail = config.SubtitlesForQuestFail;
 
         failPenaltyPoints = config.addPoints * -1.5f;
         AddPoints = config.addPoints;
@@ -82,6 +91,8 @@ public class Quest : MonoBehaviour
 
 
     Transform Room;
+
+    [SerializeField]Transform Doll;
 
     List<Transform> Obj_ = new List<Transform>();
     List<int> ObjId = new List<int>();
@@ -163,6 +174,7 @@ public class Quest : MonoBehaviour
 
             Rooms();
             Obj();
+            TpDoll();
         }
     }
     public void ActivateQuest(int index)
@@ -179,6 +191,7 @@ public class Quest : MonoBehaviour
     {
         if (activeQuest == null) return;
 
+        dialogue.PlayDialogue(activeQuest.SubtitlesForQuestFail);
         activeQuest.isActive = false;
         Debug.Log("Quest fallida:" + activeQuest.config.Name);
     }
@@ -274,22 +287,13 @@ public class Quest : MonoBehaviour
         if (activeQuest == null) return;
         if (activeQuest.GetQuestType() != questType.ToDelivery) return;
 
-        // Si el destino está asignado, comprobamos proximidad del player
-
-        if (Room == null)
-        {
-            Debug.LogWarning($"Delivery sin destino en {activeQuest.config.Name}");
-            return;
-
-        }
-
         distanceList = new List<float>(new float[Obj_.Count]); // Reiniciar la lista de distancias para cada objeto
         int ObjInRoom = 0;
 
         for (int i = 0; i < Obj_.Count; i++)
         {
             float distance = Vector3.Distance(Obj_[i].gameObject.transform.position, Room.position);
-            //Debug.Log($"Distancia entre {Obj_[i].gameObject.name} y destino: {distance}");
+            Debug.Log($"Distancia entre {Obj_[i].gameObject.name} y destino: {distance}");
 
             distanceList[i] = distance;
 
@@ -316,13 +320,23 @@ public class Quest : MonoBehaviour
         activeQuest.isActive = false;
         isActive = activeQuest.isActive;
         activeQuest.isComplete = true;
-
+        dialogue.PlayDialogue(activeQuest.SubtitlesForQuestComplete);
         Debug.Log("Quest completada: " + activeQuest.config.Name);
 
         bars.QuestFinished(activeQuest.GetEmotionIDType_Add(), (int)activeQuest.AddPoints);
         bars.QuestFinished(activeQuest.GetEmotionIDType_Remove(), -(int)activeQuest.RemovePoints);
 
         Debug.Log($"Se completo la quest se le sumo {activeQuest.AddPoints} a {activeQuest.GetEmotionIDType_Add()} y se le resto {activeQuest.RemovePoints} a {activeQuest.GetEmotionIDType_Remove()}");
+    }
+
+    private void TpDoll()
+    {
+        if (activeQuest == null) return;
+
+        TpsDoll[] allTp = FindObjectsByType<TpsDoll>(FindObjectsSortMode.None);
+        TpsDoll Tp = allTp.FirstOrDefault(p => p.IdTP == activeQuest.TpDollID);
+
+        Doll = Tp.transform;
     }
 
     private void Rooms()

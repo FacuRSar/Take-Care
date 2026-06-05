@@ -122,9 +122,9 @@ public class Bars : MonoBehaviour
     }
     private void Update()
     {
-        HappyBarText.text = CurrentHappyBar.ToString();
+        /*HappyBarText.text = CurrentHappyBar.ToString();
         CryBarText.text = CurrentCryBar.ToString();
-        AngryBarText.text = CurrentAngryBar.ToString();    
+        AngryBarText.text = CurrentAngryBar.ToString();  */  
     }
 
     public void InitializeQuestPools(List<QuestData> allQuests)
@@ -287,9 +287,9 @@ public class Bars : MonoBehaviour
             return "DollAngry";
         }
     }
-    public void restaAngryBar(float value)
+    public void sumAngryBar(float value)
     {
-        AngryBar -= value;
+        AngryBar += value;
     }
     public void restaHappyBar(float value)
     {
@@ -297,7 +297,7 @@ public class Bars : MonoBehaviour
     }
     public void restaCryBar(float value)
     {
-        CryBar -= value;
+        CryBar += value;
     }
     private bool ToCheckWeights(List<float> Pools)
     {

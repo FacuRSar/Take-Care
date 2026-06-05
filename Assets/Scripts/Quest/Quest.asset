@@ -13,20 +13,23 @@ MonoBehaviour:
   m_Name: Quest
   m_EditorClassIdentifier: Assembly-CSharp::StructureQuest
   quests:
-  - State: 0
-    QuestType: 0
-    Name: Llevar cosas
-    description: 
+  - State: 2
+    QuestType: 2
+    SubtitlesForQuest: "T\xE9_In"
+    SubtitlesForQuestComplete: "T\xE9_Complete"
+    SubtitlesForQuestFail: "T\xE9_Fail"
+    timer: 180
+    Name: "La Hora del T\xE9 de las Astillas"
+    description: "La mu\xF1eca quiere organizar una fiesta de t\xE9 en el comedor.
+      El jugador debe recolectar los fragmentos de porcelana rota esparcidos por
+      la sala de estar antes de que el t\xE9 se enfr\xEDe."
     id: 0
+    TpDollID: TpChairTea
     itemsToPickData:
-    - quantity: 1
+    - quantity: 4
       itemID: 0
-    - quantity: 1
-      itemID: 1
-    - quantity: 1
-      itemID: 2
-    roomID: Room_0
+    roomID: TableForTheTea
     EmotionID: 2
-    addPoints: 1
-    EmotionID_: 2
-    removePoints: 2
+    addPoints: 25
+    EmotionID_: 0
+    removePoints: 12
