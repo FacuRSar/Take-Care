@@ -1,0 +1,246 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6915659629371079682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2529741190186058621}
+  m_Layer: 0
+  m_Name: BathroomSoundPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2529741190186058621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6915659629371079682}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 16.33, y: -0.911, z: -10.077}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2345319176724352545}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7293273071419432983
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2345319176724352545}
+  - component: {fileID: 3403648148325188125}
+  - component: {fileID: 7269204785544600966}
+  m_Layer: 0
+  m_Name: SFXManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2345319176724352545
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7293273071419432983}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2529741190186058621}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &3403648148325188125
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7293273071419432983}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6170308234408914342, guid: 4d0b0d8e2520dd74c9e91046863fc510, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &7269204785544600966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7293273071419432983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da1796db8a6afc2479c3ef48355c0c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SFXManager
+  oneShotSource: {fileID: 3403648148325188125}
+  pools:
+  - id: WoodCreak
+    clips:
+    - {fileID: 8300000, guid: 83bf3a182ba79e840933a0f8aee7a767, type: 3}
+    - {fileID: 8300000, guid: f96d5b6c6f63a1848bb1fc11c2bb8634, type: 3}
+    - {fileID: 8300000, guid: 48a8dd9804f385a47a690e52fd27a67f, type: 3}
+    - {fileID: 8300000, guid: 1e87c7f45462f904db5812260be9d074, type: 3}
+    - {fileID: 8300000, guid: 44ea6ef30677b4b4cb17f74e3740a5ad, type: 3}
+    - {fileID: 8300000, guid: d0ff8e7b515a5a244be84a618777c231, type: 3}
+    volume: 1
+  - id: PhoneRing
+    clips:
+    - {fileID: 8300000, guid: ad38064bd8268fe43bc4c42a2caeb63e, type: 3}
+    volume: 1
+  - id: OpenDoor
+    clips:
+    - {fileID: 8300000, guid: 2555a05e29a7d5a41b72071aec265e3a, type: 3}
+    volume: 1
+  - id: CloseDoor
+    clips:
+    - {fileID: 8300000, guid: 88814db6b9d96e6438abbb558be5c594, type: 3}
+    volume: 1
+  - id: LockedDoor
+    clips:
+    - {fileID: 8300000, guid: 3c5201153d9b3994a89ddcf292adf999, type: 3}
+    volume: 1
+  - id: OpenFaucet
+    clips:
+    - {fileID: 8300000, guid: 54e63097dbde56e4db001b35051d6985, type: 3}
+    volume: 1
+  - id: CloseFaucet
+    clips:
+    - {fileID: 8300000, guid: 5d0f9f269383f3e4da07ac8bce5e9b9b, type: 3}
+    volume: 1
+  - id: FaucetLoop
+    clips:
+    - {fileID: 8300000, guid: aa809b246103cb2448b684e74eb3eb04, type: 3}
+    volume: 1
+  - id: EnergyRestored
+    clips:
+    - {fileID: 8300000, guid: b97661f23e4c293489262eed7e4de8db, type: 3}
+    volume: 1
+  - id: DollLaugh
+    clips:
+    - {fileID: 8300000, guid: 27f8d6e7145021249b3ea76ff07c63ae, type: 3}
+    volume: 1
+  - id: JumpScare
+    clips: []
+    volume: 1
+  - id: PhoneStatic
+    clips:
+    - {fileID: 8300000, guid: 5bcbebf6072a49845b70541c38f4c0cb, type: 3}
+    volume: 1
+  - id: MirrorReveal
+    clips:
+    - {fileID: 8300000, guid: dd3340a04caed894bb33cbaeb7975b99, type: 3}
+    volume: 1
+  - id: BathroomBreak
+    clips:
+    - {fileID: 8300000, guid: 95b2867fe86c1dc44b2c7fe1ee3df950, type: 3}
+    volume: 1
+  - id: LightSwitch
+    clips:
+    - {fileID: 8300000, guid: 1120954fa8aa8164f91cb925a96b75e3, type: 3}
+    - {fileID: 8300000, guid: 6a93ba30b7efeff4bb183066d15ef632, type: 3}
+    - {fileID: 8300000, guid: 1c4504bf41c0682408a040b84afbb8dc, type: 3}
+    - {fileID: 8300000, guid: fe9518d31b84f7b41a076163373fbfe2, type: 3}
+    volume: 1
+  default3DVolume: 1

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /* Manager de musica.
  * Patron similar al SFXManager pero:
@@ -52,6 +53,15 @@ public class MusicManager : MonoBehaviour
     // Duracion del fade al entrar/salir de pausa, en segundos.
     [SerializeField] private float pauseFade = 0.3f;
 
+    [Header("Debug (testeo)")]
+    // Si esta activo, las teclas del numpad 7/8/9 reproducen los ids de abajo con Play().
+    [SerializeField] private bool enableDebugKeys = false;
+    [SerializeField] private string debugTrackId7 = "";
+    [SerializeField] private string debugTrackId8 = "";
+    [SerializeField] private string debugTrackId9 = "";
+    // Fade que usa el debug al cambiar de pista.
+    [SerializeField] private float debugFade = 1f;
+
     private readonly Dictionary<string, AudioSource> layeredSources = new Dictionary<string, AudioSource>();
     private readonly Dictionary<AudioSource, Coroutine> activeFades = new Dictionary<AudioSource, Coroutine>();
 
@@ -80,6 +90,47 @@ public class MusicManager : MonoBehaviour
         }
 
         ConfigureSource(mainSource);
+    }
+
+    private void Update()
+    {
+        HandleDebugKeys();
+    }
+
+    // Debug de testeo: numpad 7/8/9 reproducen los ids configurados en el inspector.
+    private void HandleDebugKeys()
+    {
+        if (!enableDebugKeys || Keyboard.current == null)
+        {
+            return;
+        }
+
+        if (Keyboard.current.numpad7Key.wasPressedThisFrame)
+        {
+            DebugPlay(debugTrackId7);
+        }
+
+        if (Keyboard.current.numpad8Key.wasPressedThisFrame)
+        {
+            DebugPlay(debugTrackId8);
+        }
+
+        if (Keyboard.current.numpad9Key.wasPressedThisFrame)
+        {
+            DebugPlay(debugTrackId9);
+        }
+    }
+
+    private void DebugPlay(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            Debug.LogWarning("[MusicManager] Debug: no hay id configurado para esa tecla.");
+            return;
+        }
+
+        Debug.Log("[MusicManager] Debug Play: " + id);
+        Play(id, debugFade);
     }
 
     // ----------------------- API publica -----------------------

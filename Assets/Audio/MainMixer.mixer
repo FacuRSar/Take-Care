@@ -240,6 +240,8 @@ AudioMixerController:
     name: PauseLowPass
   - guid: 5cd19d3fbba4dd14c8c0a27f11a7833a
     name: MasterVolume
+  - guid: 354e2189079cada4c97ed803f8ccaae1
+    name: MusicVolume
   - guid: 9977156dcf84c7747a4d004f129f0f15
     name: PauseLowPass
   - guid: 53cbea79bc2bb094387d6c26a12b97f8
@@ -260,7 +262,7 @@ AudioMixerController:
     - dea1efd05b8dd224cacd31021d96b5bb
     name: View
   m_CurrentViewIndex: 0
-  m_TargetSnapshot: {fileID: 7683868824176201006}
+  m_TargetSnapshot: {fileID: 24500006}
 --- !u!243 &24300002
 AudioMixerGroupController:
   m_ObjectHideFlags: 0

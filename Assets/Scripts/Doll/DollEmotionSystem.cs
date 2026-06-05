@@ -134,7 +134,7 @@ public class DollEmotionSystem : MonoBehaviour
         }
        else
         {
-            if (null)
+            if (false)
             {
                 screenEffectController.StopEffect("fatigue");
                 isEffectActive = false;

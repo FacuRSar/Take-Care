@@ -98,6 +98,10 @@ public class IntroSequenceController : MonoBehaviour
     [SerializeField] private float bathroomReactionDelay = 1f;
     [SerializeField] private float mirrorReactionDelay = 2f;
 
+    [Space(10)]
+    // Fade (en segundos) con el que entra la musica de tension al sonar el espejo.
+    [SerializeField] private float tensionMusicFade = 2f;
+
     private bool energyRestored;
     private bool phoneAnswered;
     private bool dollTriggered;
@@ -302,6 +306,12 @@ public class IntroSequenceController : MonoBehaviour
         SetMirrorMessageObjectsActive(true);
 
         Play2D("MirrorReveal");
+
+        // Apenas suena el espejo arrancamos la musica de tension (con fade).
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.Play("tension", tensionMusicFade);
+        }
 
         float mirrorDialogueDuration = GetDialogueDuration(MirrorReactionDialogueId);
         StartCoroutine(PlayDialogueAfterDelay(MirrorReactionDialogueId, mirrorReactionDialogueDelay));
@@ -555,7 +565,7 @@ public class IntroSequenceController : MonoBehaviour
 
         if (targetSfx != null)
         {
-            targetSfx.Play2D(id, volumeScale);
+            targetSfx.Play2D(id);
         }
     }
 
