@@ -68,7 +68,7 @@ MonoBehaviour:
     itemsToPickData:
     - quantity: 1
       itemID: 1
-    roomID: "Mu\xF1eca"
+    roomID: Chimenea
     EmotionID: 1
     addPoints: 35
     EmotionID_: 1

@@ -124,12 +124,12 @@ public class DollEmotionSystem : MonoBehaviour
             }
             else
             {
-                if (idleStateCounter < 300)
+                if (idleStateCounter < 900)
                 {
                     idleStateCounter++;
                     idleState.checkWatching(player.transform.position, doll.transform.position);
                 }
-                else
+                else if(idleStateCounter >= 900 && !isQuestActive)
                 {
                     bars.InvokeQuest();
                 }
