@@ -43,7 +43,7 @@ public class QuestData
         timer = 0;
         TimerDuration = config.timer;
 
-        TpDollID = config.roomID;
+        TpDollID = config.TpDollID;
 
         SubtitlesForQuest = config.SubtitlesForQuest;
         SubtitlesForQuestComplete = config.SubtitlesForQuestComplete;
@@ -91,7 +91,6 @@ public class Quest : MonoBehaviour
 
 
     Transform Room;
-    Transform DollTp;
 
     [SerializeField]Transform Doll;
 
@@ -288,22 +287,13 @@ public class Quest : MonoBehaviour
         if (activeQuest == null) return;
         if (activeQuest.GetQuestType() != questType.ToDelivery) return;
 
-        // Si el destino está asignado, comprobamos proximidad del player
-
-        if (Room == null)
-        {
-            Debug.LogWarning($"Delivery sin destino en {activeQuest.config.Name}");
-            return;
-
-        }
-
         distanceList = new List<float>(new float[Obj_.Count]); // Reiniciar la lista de distancias para cada objeto
         int ObjInRoom = 0;
 
         for (int i = 0; i < Obj_.Count; i++)
         {
             float distance = Vector3.Distance(Obj_[i].gameObject.transform.position, Room.position);
-            //Debug.Log($"Distancia entre {Obj_[i].gameObject.name} y destino: {distance}");
+            Debug.Log($"Distancia entre {Obj_[i].gameObject.name} y destino: {distance}");
 
             distanceList[i] = distance;
 
@@ -346,9 +336,7 @@ public class Quest : MonoBehaviour
         TpsDoll[] allTp = FindObjectsByType<TpsDoll>(FindObjectsSortMode.None);
         TpsDoll Tp = allTp.FirstOrDefault(p => p.IdTP == activeQuest.TpDollID);
 
-        DollTp = Tp.transform;
-
-        Doll = DollTp;
+        Doll = Tp.transform;
     }
 
     private void Rooms()

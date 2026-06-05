@@ -42,7 +42,7 @@ public class Angry : DollEmotion
         timerRestar++;
         if (timerRestar >= 15)
         {
-            bars.restaAngryBar(1);
+            bars.sumAngryBar(1);
             timerRestar = 0;
         }
     }

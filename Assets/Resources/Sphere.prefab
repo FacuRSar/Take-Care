@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrabbableObject
   _objectName: Esfera
-  _objectID: 2
+  _objectID: 700
   itemIcon: {fileID: 21300000, guid: 8c537ea824a7e41479d6a14f1311a609, type: 3}
   heldLocalPosition: {x: 0, y: 0, z: 0}
   heldLocalRotation: {x: 0, y: 0, z: 0}

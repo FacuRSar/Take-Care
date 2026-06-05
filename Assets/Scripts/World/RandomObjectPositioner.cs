@@ -8,12 +8,12 @@ public class RandomObjectPositioner : MonoBehaviour
     [Header("Position Settings")]
 
     [SerializeField] private List<Transform> Position;
-    [SerializeField] private List<GameObject> Obj = new List<GameObject>();
+    private List<GameObject> Obj = new List<GameObject>();
 
 
     [Header("Weight Settings")]
 
-    [SerializeField] private List<float> Weights; // Lista de probabilidades para cada posición, debe tener la misma cantidad de elementos que la lista Position
+    private List<float> Weights = new List<float>(); // Lista de probabilidades para cada posición, debe tener la misma cantidad de elementos que la lista Position
 
     [SerializeField] private float WeightMin;// Valor mínimo para la probabilidad de una posición, para evitar que se vuelva completamente imposible seleccionar esa posición
     [SerializeField] private float NewWeight; // Valor para reducir la probabilidad de una posición después de ser seleccionada
