@@ -15,8 +15,10 @@ public class DialogueLine
 public class DialoguePool
 {
     public string id;
-    [Tooltip("Color del fondo del panel de subtítulos mientras corre este grupo (ej. muñeca vs protagonista).")]
-    public Color subtitleBackgroundColor = new Color(0f, 0f, 0f, 0.72f);
+    [Tooltip("Si esta activo, el texto de este grupo usa el color de abajo. Si no, usa el color por defecto del subtitulo.")]
+    public bool useCustomTextColor = false;
+    [Tooltip("Color del TEXTO del subtítulo mientras corre este grupo (ej. muñeca vs protagonista). Solo se usa si 'Use Custom Text Color' esta activo.")]
+    public Color subtitleTextColor = Color.white;
     public DialogueLine[] lines;
 }
 
@@ -60,7 +62,9 @@ public class DialogueController : MonoBehaviour
             return;
         }
 
-        PlayLines(pool.lines, pool.subtitleBackgroundColor);
+        // solo pasamos color custom si el pool lo pide; si no, el subtitulo usa su color por defecto
+        Color? textColor = pool.useCustomTextColor ? pool.subtitleTextColor : (Color?)null;
+        PlayLines(pool.lines, textColor);
     }
 
     public float GetDialogueDuration(string id)
@@ -74,10 +78,10 @@ public class DialogueController : MonoBehaviour
         StopCurrentRoutine();
     }
 
-    private void PlayLines(DialogueLine[] lines, Color subtitleBackdrop)
+    private void PlayLines(DialogueLine[] lines, Color? textColor)
     {
         StopCurrentRoutine();
-        currentRoutine = StartCoroutine(PlayRoutine(lines, subtitleBackdrop));
+        currentRoutine = StartCoroutine(PlayRoutine(lines, textColor));
     }
 
     private void StopCurrentRoutine()
@@ -115,7 +119,7 @@ public class DialogueController : MonoBehaviour
         return pool != null ? pool.lines : null;
     }
 
-    private IEnumerator PlayRoutine(DialogueLine[] lines, Color subtitleBackdrop)
+    private IEnumerator PlayRoutine(DialogueLine[] lines, Color? textColor)
     {
         foreach (DialogueLine line in lines)
         {
@@ -133,7 +137,8 @@ public class DialogueController : MonoBehaviour
 
             if (targetSubtitle != null)
             {
-                targetSubtitle.ShowSubtitle(line.text, line.duration, SubtitlePriority.Dialogue, subtitleBackdrop);
+                // el fondo lo dejamos por defecto (transparente segun config del panel) y solo pasamos el color del texto
+                targetSubtitle.ShowSubtitle(line.text, line.duration, SubtitlePriority.Dialogue, null, textColor);
             }
             else
             {
