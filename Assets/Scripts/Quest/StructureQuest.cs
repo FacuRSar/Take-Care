@@ -12,12 +12,16 @@ public class StructureQuest : ScriptableObject
         public questType QuestType;
 
         public string SubtitlesForQuest;
+        public string SubtitlesForQuestComplete;
+        public string SubtitlesForQuestFail;
 
         public int timer;
 
         public string Name;
         [TextArea(2, 5)] public string description; // Añadido para mejor visualización en el inspector
         public int id;
+
+        public string TpDollID;
 
         [Header("To Collect")]
         public List<itemsToPick> itemsToPickData; // Corregido typo de "Date" a "Data"
