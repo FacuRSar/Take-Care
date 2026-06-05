@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -117,6 +118,47 @@ public class RandomObjectPositioner : MonoBehaviour
         }
     }
 
+    public void ObjRandomAdd(GameObject obj)
+    {
+        Obj.Clear();
+        Obj.Add(obj);
+        
+        int GetRandomIndex()  // Variable para almacenar el índice de la posición seleccionada
+        {
+            float WeightTotal = 0;
+
+            // Suma las probabilidades para obtener el total
+            foreach (float weight in Weights)
+            {
+                WeightTotal += weight;
+            }
+
+            // Genera un número aleatorio entre 0 y el total de probabilidades
+            float randomValue = Random.Range(0, WeightTotal);
+
+            float cumulativeWeight = 0; // Variable para acumular las probabilidades
+
+            // Recorre las posiciones y sus probabilidades
+            for (int i = 0; i < Weights.Count; i++)
+            {
+                cumulativeWeight += Weights[i]; // Acumula la probabilidad actual
+
+                if (cumulativeWeight > randomValue) // Verifica si el número aleatorio es menor que la probabilidad acumulada
+                {
+                    return i; // Asigna el índice de la posición seleccionada
+                }
+            }
+
+            Debug.Log("Nota: Asegúrate de que las probabilidades en la lista Weights estén configuradas correctamente para evitar problemas en la selección de posiciones.");
+            return 0; // Devuelve un índice predeterminado en caso de que no se seleccione ninguna posición (esto no debería ocurrir si las probabilidades son correctas)
+
+        }
+
+        Index = GetRandomIndex();
+
+        obj.transform.position = Position[Index].position;
+        Weights[Index] = Mathf.Max(WeightMin, Weights[Index] * NewWeight);
+    }
     private void ObjAdd(StructureQuest.QuestGeneric.itemsToPick listItems)
     {
         GrabbableObject[] grabbableObjects = Resources.LoadAll<GrabbableObject>("");

@@ -72,6 +72,7 @@ public class Quest : MonoBehaviour
     private QuestController controller;
     private DialogueController dialogue;
     private QuestData activeQuest;
+    private PlayerInteraction playerInteraction;
 
 
     [Header("Runtime Data")]
@@ -83,7 +84,6 @@ public class Quest : MonoBehaviour
     [SerializeField] private Material transparentMaterial;
 
     Bars bars;
-    PlayerInteraction playerInteraction;
 
     [SerializeField] private Transform player;
     private Renderer rend;
@@ -92,7 +92,8 @@ public class Quest : MonoBehaviour
 
     Transform Room;
 
-    [SerializeField]Transform Doll;
+    [SerializeField] private Transform Doll;
+    [SerializeField] private GameObject Doll_;
 
     List<Transform> Obj_ = new List<Transform>();
     List<int> ObjId = new List<int>();
@@ -165,6 +166,14 @@ public class Quest : MonoBehaviour
         if (index >= 0 && index < allQuests.Count)
         {
             activeQuest = allQuests[index];
+
+            if (index == 1)
+            {
+                randomObjectPositioner.ObjRandomAdd(Doll_);
+            }
+
+
+
             activeQuest.isActive = true;
             dialogue.PlayDialogue(activeQuest.SubtitlesForQuest);
             isActive = activeQuest.isActive;
@@ -174,7 +183,9 @@ public class Quest : MonoBehaviour
 
             Rooms();
             Obj();
-            TpDoll();
+
+            if (index != 1)
+                TpDoll();
         }
     }
     public void ActivateQuest(int index)
@@ -321,12 +332,12 @@ public class Quest : MonoBehaviour
         isActive = activeQuest.isActive;
         activeQuest.isComplete = true;
         dialogue.PlayDialogue(activeQuest.SubtitlesForQuestComplete);
-        Debug.Log("Quest completada: " + activeQuest.config.Name);
+        Debug.LogWarning("Quest completada: " + activeQuest.config.Name);
 
         bars.QuestFinished(activeQuest.GetEmotionIDType_Add(), (int)activeQuest.AddPoints);
         bars.QuestFinished(activeQuest.GetEmotionIDType_Remove(), -(int)activeQuest.RemovePoints);
 
-        Debug.Log($"Se completo la quest se le sumo {activeQuest.AddPoints} a {activeQuest.GetEmotionIDType_Add()} y se le resto {activeQuest.RemovePoints} a {activeQuest.GetEmotionIDType_Remove()}");
+        Debug.LogWarning($"Se completo la quest se le sumo {activeQuest.AddPoints} a {activeQuest.GetEmotionIDType_Add()} y se le resto {activeQuest.RemovePoints} a {activeQuest.GetEmotionIDType_Remove()}");
     }
 
     private void TpDoll()
@@ -336,7 +347,7 @@ public class Quest : MonoBehaviour
         TpsDoll[] allTp = FindObjectsByType<TpsDoll>(FindObjectsSortMode.None);
         TpsDoll Tp = allTp.FirstOrDefault(p => p.IdTP == activeQuest.TpDollID);
 
-        Doll = Tp.transform;
+        Doll.position = Tp.transform.position;
     }
 
     private void Rooms()
@@ -365,6 +376,9 @@ public class Quest : MonoBehaviour
             Debug.LogWarning("Obj(): questData es null, no se puede asignar Obj.");
             return;
         }
+
+        if (activeQuest.GetQuestType() == questType.ToDelivery) return;
+
         Obj_.Clear();
         ObjId.Clear();
 

@@ -33,3 +33,22 @@ MonoBehaviour:
     addPoints: 25
     EmotionID_: 0
     removePoints: 12
+  - State: 2
+    QuestType: 1
+    SubtitlesForQuest: "\xBFD\xF3nde Estoy?_In"
+    SubtitlesForQuestComplete: "\xBFD\xF3nde Estoy?_Complete"
+    SubtitlesForQuestFail: "\xBFD\xF3nde Estoy?_Fail"
+    timer: 120
+    Name: "\xBFD\xF3nde Estoy?"
+    description: "La mu\xF1eca desaparece de su lugar con una risa ecoica e inicia
+      un juego forzado de escondidas dentro de la caba\xF1a. Se posiciona f\xEDsicamente
+      en un punto oculto (por ejemplo, debajo de la cama de la habitaci\xF3n de hu\xE9spedes)
+      y el jugador debe inspeccionar la casa hasta encontrarla y recogerla."
+    id: 1
+    TpDollID: 
+    itemsToPickData: []
+    roomID: "Mu\xF1eca"
+    EmotionID: 2
+    addPoints: 25
+    EmotionID_: 1
+    removePoints: 12

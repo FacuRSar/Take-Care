@@ -18,7 +18,7 @@ public class StructureQuest : ScriptableObject
         public int timer;
 
         public string Name;
-        [TextArea(2, 5)] public string description; // Añadido para mejor visualización en el inspector
+        [TextArea(4, 10)] public string description; // Añadido para mejor visualización en el inspector
         public int id;
 
         public string TpDollID;
