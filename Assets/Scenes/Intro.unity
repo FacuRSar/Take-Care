@@ -18117,7 +18117,8 @@ MonoBehaviour:
   subtitleUI: {fileID: 2024097066}
   pools:
   - id: "T\xE9_In"
-    subtitleBackgroundColor: {r: 0.38679248, g: 0.14048594, b: 0.37322932, a: 0}
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 1, g: 1, b: 1, a: 1}
     lines:
     - text: "\xA1Es una tarde hermosa para una fiesta! Pero mis invitadas fueron
         malas y rompieron las tazas... \xBFMe ayud\xE1s a juntar los pedazos del
@@ -18141,14 +18142,16 @@ MonoBehaviour:
       delayBefore: 162
       duration: 4.5
   - id: "T\xE9_Complete"
-    subtitleBackgroundColor: {r: 0.38679248, g: 0.14048594, b: 0.37322932, a: 0}
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 1, g: 1, b: 1, a: 1}
     lines:
     - text: "\xA1Perfecto! Mir\xE1 qu\xE9 lindos quedaron pegados. Ahora sentate
         con nosotras... prometemos no morder"
       delayBefore: 0
       duration: 5
   - id: "T\xE9_Fail"
-    subtitleBackgroundColor: {r: 0.38679248, g: 0.14048594, b: 0.37322932, a: 0}
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 1, g: 1, b: 1, a: 1}
     lines:
     - text: "Se enfri\xF3... Se enfri\xF3 por tu culpa. Sos un p\xE9simo anfitri\xF3n.
         Ahora mis amigas se van a tener que divertir... con vos"

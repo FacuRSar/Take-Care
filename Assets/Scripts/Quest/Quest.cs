@@ -42,26 +42,20 @@ public class QuestData
         QuestName = config.Name;
         timer = 0;
         TimerDuration = config.timer;
-
         TpDollID = config.TpDollID;
-
         SubtitlesForQuest = config.SubtitlesForQuest;
         SubtitlesForQuestComplete = config.SubtitlesForQuestComplete;
         SubtitlesForQuestFail = config.SubtitlesForQuestFail;
-
         failPenaltyPoints = config.addPoints * -1.5f;
         AddPoints = config.addPoints;
         RemovePoints = config.removePoints;
-
         roomID = config.roomID;
     }
     public questType GetQuestType() => config.QuestType;
     public questEmotionType GetStateType() => config.State;
     public questEmotionType GetEmotionIDType_Add() => config.EmotionID;
     public questEmotionType GetEmotionIDType_Remove() => config.EmotionID_;
-
     public List<StructureQuest.QuestGeneric.itemsToPick> ItemsToPick() => config.itemsToPickData;
-
 }
 
 public class Quest : MonoBehaviour

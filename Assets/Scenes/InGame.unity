@@ -25430,15 +25430,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
       propertyPath: walkSpeed
-      value: 1.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
       propertyPath: crouchSpeed
-      value: 0.75
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
       propertyPath: sprintSpeed
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
       propertyPath: crouchHeight
@@ -26729,6 +26729,7 @@ MonoBehaviour:
   lowInteraction: {fileID: 0}
   mediumInteraction: {fileID: 0}
   highInteraction: {fileID: 0}
+  dollVoice: {fileID: 0}
 --- !u!114 &3421263198304677491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26746,6 +26747,7 @@ MonoBehaviour:
   lowInteraction: {fileID: 0}
   mediumInteraction: {fileID: 0}
   highInteraction: {fileID: 0}
+  dollVoice: {fileID: 0}
 --- !u!114 &3990924122806491032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26758,9 +26760,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbdbd199eeed99641acee0286a1c029e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bars
-  HappyBarText: {fileID: 0}
-  CryBarText: {fileID: 0}
-  AngryBarText: {fileID: 0}
   SpeedBar: 1
   PoolHappyQuest: []
   PoolCryQuest: []
@@ -26832,6 +26831,7 @@ MonoBehaviour:
   lowInteraction: {fileID: 0}
   mediumInteraction: {fileID: 0}
   highInteraction: {fileID: 0}
+  dollVoice: {fileID: 0}
 --- !u!114 &5807606387740167535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26849,6 +26849,7 @@ MonoBehaviour:
   lowInteraction: {fileID: 0}
   mediumInteraction: {fileID: 0}
   highInteraction: {fileID: 0}
+  dollVoice: {fileID: 0}
   distanceToPlayerMin: 5
 --- !u!1001 &6277128806698087627
 PrefabInstance:
@@ -27002,6 +27003,7 @@ MonoBehaviour:
   lowInteraction: {fileID: 0}
   mediumInteraction: {fileID: 0}
   highInteraction: {fileID: 0}
+  dollVoice: {fileID: 0}
 --- !u!1001 &7670006764278436313
 PrefabInstance:
   m_ObjectHideFlags: 0

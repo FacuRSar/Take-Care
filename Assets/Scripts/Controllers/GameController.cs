@@ -22,7 +22,8 @@ public class GameController : MonoBehaviour
     [Header("Nombres de escenas")]
     [SerializeField] private string menuSceneName = "Menu";
     [SerializeField] private string introSceneName = "Intro";
-    [SerializeField] private string playSceneName = "Play";
+    [SerializeField] private string playSceneName = "InGame";
+    [SerializeField] private string gameOverSceneName = "GameOver";
 
     [Header("Flags persistentes entre escenas")]
     // Ids de flags del GameStateController que NO se borran al cambiar de escena.
@@ -87,6 +88,11 @@ public class GameController : MonoBehaviour
     public void Intro()
     {
         TransitionToScene(introSceneName);
+    }
+    
+    public void GameOver()
+    {
+        TransitionToScene(gameOverSceneName);
     }
 
     public void GoToScene(string sceneName)
