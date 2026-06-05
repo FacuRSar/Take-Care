@@ -109,10 +109,9 @@ public class DollEmotionSystem : MonoBehaviour
              if (currentMaxBar != Currentstate && !isQuestActive)
                  ChangeState(currentMaxBar);
          }*/
-        if (isQuestActive)
+        if (quest.isActive)
         {
             currentEmotion.setCurrentBar();
-            //currentEmotion.CheckInteraction(audioSource);
             if(currentMaxBar != Currentstate)
                 ChangeState(currentMaxBar);
         }
@@ -125,7 +124,7 @@ public class DollEmotionSystem : MonoBehaviour
             }
             else
             {
-                if (idleStateCounter < 5)
+                if (idleStateCounter < 300)
                 {
                     idleStateCounter++;
                     idleState.checkWatching(player.transform.position, doll.transform.position);
@@ -133,7 +132,6 @@ public class DollEmotionSystem : MonoBehaviour
                 else
                 {
                     bars.InvokeQuest();
-                    SetQuestActive(true);
                 }
             }
         }

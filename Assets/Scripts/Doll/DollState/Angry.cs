@@ -5,6 +5,7 @@ using UnityEngine;
 public class Angry : DollEmotion
 {
     DollEmotionSystem dollEmotionSystem;
+    
 
     public event Action AddAngryBar;
 
@@ -17,10 +18,7 @@ public class Angry : DollEmotion
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
 
-    }
 
     // Update is called once per frame
 
@@ -40,7 +38,11 @@ public class Angry : DollEmotion
     public void FixedUpdate()
     {
         timerRestar++;
-        if (timerRestar >= 15)
+        screenController.SetVignetteIntensity("fatigue", currentBar / 100);
+
+        CheckInteraction();
+
+        if (timerRestar >= 120)
         {
             bars.sumAngryBar(1);
             timerRestar = 0;

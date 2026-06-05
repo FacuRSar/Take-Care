@@ -13,42 +13,20 @@ MonoBehaviour:
   m_Name: Quest
   m_EditorClassIdentifier: Assembly-CSharp::StructureQuest
   quests:
-  - State: 2
-    QuestType: 2
-    SubtitlesForQuest: "T\xE9_In"
-    SubtitlesForQuestComplete: "T\xE9_Complete"
-    SubtitlesForQuestFail: "T\xE9_Fail"
-    timer: 180
-    Name: "La Hora del T\xE9 de las Astillas"
-    description: "La mu\xF1eca quiere organizar una fiesta de t\xE9 en el comedor.
-      El jugador debe recolectar los fragmentos de porcelana rota esparcidos por
-      la sala de estar antes de que el t\xE9 se enfr\xEDe."
+  - State: 0
+    QuestType: 0
+    Name: Llevar cosas
+    description: 
     id: 0
-    TpDollID: TpChairTea
     itemsToPickData:
-    - quantity: 4
+    - quantity: 1
       itemID: 0
-    roomID: TableForTheTea
+    - quantity: 1
+      itemID: 1
+    - quantity: 1
+      itemID: 2
+    roomID: Room_0
     EmotionID: 2
-    addPoints: 25
+    addPoints: 5
     EmotionID_: 0
-    removePoints: 12
-  - State: 2
-    QuestType: 1
-    SubtitlesForQuest: "\xBFD\xF3nde Estoy?_In"
-    SubtitlesForQuestComplete: "\xBFD\xF3nde Estoy?_Complete"
-    SubtitlesForQuestFail: "\xBFD\xF3nde Estoy?_Fail"
-    timer: 120
-    Name: "\xBFD\xF3nde Estoy?"
-    description: "La mu\xF1eca desaparece de su lugar con una risa ecoica e inicia
-      un juego forzado de escondidas dentro de la caba\xF1a. Se posiciona f\xEDsicamente
-      en un punto oculto (por ejemplo, debajo de la cama de la habitaci\xF3n de hu\xE9spedes)
-      y el jugador debe inspeccionar la casa hasta encontrarla y recogerla."
-    id: 1
-    TpDollID: 
-    itemsToPickData: []
-    roomID: "Mu\xF1eca"
-    EmotionID: 2
-    addPoints: 25
-    EmotionID_: 1
-    removePoints: 12
+    removePoints: 2

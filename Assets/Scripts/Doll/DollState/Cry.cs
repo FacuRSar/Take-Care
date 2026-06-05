@@ -15,10 +15,6 @@ public class Cry : DollEmotion
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
 
@@ -38,10 +34,14 @@ public class Cry : DollEmotion
     public void FixedUpdate()
     {
         timerRestar++;
-        if (timerRestar >= 15)
+        screenController.SetVignetteIntensity("fatigue", currentBar / 100);
+
+        CheckInteraction();
+
+        if (timerRestar >= 60)
         {
             timerRestar = 0;
-            bars.restaCryBar(1);
+            bars.sumCryBar(1);
         }
     }
     /*void Update()
