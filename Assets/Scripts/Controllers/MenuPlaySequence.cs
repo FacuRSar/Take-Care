@@ -49,11 +49,11 @@ public class MenuPlaySequence : MonoBehaviour
     // 240/255 = 0.941.
     [SerializeField, Range(0f, 1f)] private float darkOverlayAlpha = 240f / 255f;
 
-    [Header("Sonidos (SFXManager ids)")]
-    [SerializeField] private string laughSfxId = "menu_laugh";
+    //[Header("Sonidos (SFXManager ids)")]
+    //[SerializeField] private string laughSfxId = "menu_laugh";
     [SerializeField] private string doorSlamSfxId = "menu_door_slam";
     // Duracion a usar si el SFX todavia no esta registrado en el SFXManager.
-    [SerializeField] private float fallbackLaughDuration = 1.5f;
+    //[SerializeField] private float fallbackLaughDuration = 1.5f;
     [SerializeField] private float fallbackDoorSlamDuration = 1f;
 
     [Header("Escena destino")]
@@ -130,9 +130,9 @@ public class MenuPlaySequence : MonoBehaviour
         // Etapa 2: ultima vez que se apaga la luz. Apenas se apaga suena la risa.
         SetDark(true);
 
-        AudioClip laughClip = PlaySfx(laughSfxId);
-        float laughDuration = laughClip != null ? laughClip.length : fallbackLaughDuration;
-        yield return new WaitForSecondsRealtime(laughDuration);
+        //AudioClip laughClip = PlaySfx(laughSfxId);
+        //float laughDuration = laughClip != null ? laughClip.length : fallbackLaughDuration;
+        //yield return new WaitForSecondsRealtime(laughDuration);
 
         // La risa termino: luz ON y swap de texturas/colores simultaneo.
         ApplyTextureSwaps();

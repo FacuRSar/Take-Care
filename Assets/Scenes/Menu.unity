@@ -812,7 +812,8 @@ Transform:
   m_LocalPosition: {x: -4.83, y: 0, z: -3.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1939801268}
   m_Father: {fileID: 915427358}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &331330058
@@ -829,7 +830,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AmbientManager
   ambientSources:
   - {fileID: 1620000430}
-  ambientVolume: 0.3
   playOnStart: 1
   thunderSources:
   - {fileID: 785704953}
@@ -1428,9 +1428,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 049f33fc143b45049948304c955d0951, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicManager
-  tracks: []
+  tracks:
+  - id: Tension
+    clip: {fileID: 8300000, guid: a5558ec6f79da9746a763a54f4e81021, type: 3}
+    defaultVolume: 0.974
+  - id: ExtraTension
+    clip: {fileID: 8300000, guid: 87d6379842b5879469f04bd6acb86933, type: 3}
+    defaultVolume: 0.974
   mainSource: {fileID: 0}
-  mixerGroup: {fileID: 0}
+  mixerGroup: {fileID: -3274087309592685413, guid: 4d0b0d8e2520dd74c9e91046863fc510, type: 2}
   globalVolume: 1
   pauseBehavior: 0
   pauseVolumeMultiplier: 0.5
@@ -3234,6 +3240,7 @@ Transform:
   - {fileID: 331330057}
   - {fileID: 752710251}
   - {fileID: 450696700}
+  - {fileID: 1354132187}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &930487513
@@ -4252,6 +4259,153 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca2cece8c0cb69b44ba1bfd9172f7691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Menu3DButtonVisual
+--- !u!1 &1354132186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1354132187}
+  - component: {fileID: 1354132189}
+  - component: {fileID: 1354132188}
+  m_Layer: 0
+  m_Name: UIAudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1354132187
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354132186}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 915427358}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1354132188
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354132186}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 5824229522278681929, guid: 4d0b0d8e2520dd74c9e91046863fc510, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &1354132189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354132186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85dc3ff3a3d05804285d71516a2152d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  source: {fileID: 1354132188}
+  select: {fileID: 8300000, guid: e5faabc3eaad05b42bd020f0502a24b6, type: 3}
+  back: {fileID: 8300000, guid: 98d925eb5cd44314ab27b6a553aa633a, type: 3}
+  hover: {fileID: 8300000, guid: 944fd3b28c82de0469d8256091a07f5c, type: 3}
+  play: {fileID: 8300000, guid: ec73bbf8b9c340b43a8ca955b90683ab, type: 3}
 --- !u!1001 &1361568185
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5050,6 +5204,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   rayDistance: 100
+  uiAudioManager: {fileID: 1354132189}
 --- !u!1 &1549993272
 GameObject:
   m_ObjectHideFlags: 0
@@ -5413,11 +5568,11 @@ AudioSource:
   m_GameObject: {fileID: 1620000428}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -4846750647214698937, guid: 4d0b0d8e2520dd74c9e91046863fc510, type: 2}
+  OutputAudioMixerGroup: {fileID: 3946789725806067447, guid: 4d0b0d8e2520dd74c9e91046863fc510, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 4bfe1c67eb14f474d9f1ac8ce204a62c, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.7
+  m_Volume: 1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -5554,6 +5709,7 @@ MonoBehaviour:
   musicVolumeSlider: {fileID: 385374252}
   sfxVolumeSlider: {fileID: 726734323}
   ambientVolumeSlider: {fileID: 312005105}
+  uiAudioManager: {fileID: 1354132189}
   sensitivityValueLabel: {fileID: 1692569110}
   brightnessValueLabel: {fileID: 936255237}
   masterVolumeValueLabel: {fileID: 1316680387}
@@ -5568,6 +5724,9 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   playerMovement: {fileID: 0}
   audioMixer: {fileID: 24100000, guid: 4d0b0d8e2520dd74c9e91046863fc510, type: 2}
+  pauseLowPassParam: PauseLowPass
+  normalLowpass: 22000
+  pausedLowpass: 800
   masterVolumeParam: MasterVolume
   musicVolumeParam: MusicVolume
   sfxVolumeParam: SFXVolume
@@ -6453,7 +6612,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -4846750647214698937, guid: 4d0b0d8e2520dd74c9e91046863fc510, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: fa402c08db078174483b656f57c5f910, type: 3}
+  m_Resource: {fileID: 8300000, guid: 7e78b6864de71ac4d8ac1cdd38d902fe, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.7
   m_Pitch: 1
@@ -7060,15 +7219,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1939801267}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.3596, y: 2.42137, z: 22.91612}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.83, y: 0, z: 3.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1770886178}
   - {fileID: 1620000429}
   - {fileID: 785704952}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 331330057}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1967834409
 GameObject:
@@ -7601,9 +7760,7 @@ MonoBehaviour:
     creepyColor: {r: 0.33333334, g: 0.3529412, b: 0.3019608, a: 0}
   fadeImage: {fileID: 1549993275}
   darkOverlayAlpha: 0.9411765
-  laughSfxId: DollLaugh
   doorSlamSfxId: OpenDoor
-  fallbackLaughDuration: 1.5
   fallbackDoorSlamDuration: 1
   introSceneName: Intro
   flickerCycles: 4
@@ -8405,7 +8562,6 @@ SceneRoots:
   - {fileID: 1361568185}
   - {fileID: 864031900}
   - {fileID: 915427358}
-  - {fileID: 1939801268}
   - {fileID: 2059859968}
   - {fileID: 1107352369}
   - {fileID: 1668556589}

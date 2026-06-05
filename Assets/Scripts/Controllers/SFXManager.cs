@@ -19,6 +19,9 @@ public class SFXManager : MonoBehaviour
 
         public AudioClip[] clips;
         // variantes posibles del sonido
+
+        [Range(0f, 1f)] public float volume = 1f;
+        // volumen
     }
 
     [Header("Audio Source")]
@@ -55,13 +58,14 @@ public class SFXManager : MonoBehaviour
     public AudioClip Play2D(string id)
     {
         AudioClip clip = GetRandomClip(id);
+        SFXPool pool = GetPool(id);
 
         if (clip == null || oneShotSource == null)
         {
             return null;
         }
-
-        oneShotSource.PlayOneShot(clip);
+        oneShotSource.PlayOneShot(clip, pool.volume);
+        //oneShotSource.PlayOneShot(clip);
         return clip;
     }
 
@@ -73,8 +77,15 @@ public class SFXManager : MonoBehaviour
         {
             return;
         }
+        SFXPool pool = GetPool(id);
 
-        AudioSource.PlayClipAtPoint(clip, position, default3DVolume);
+        if (pool == null)
+        {
+            return;
+        }
+
+        AudioSource.PlayClipAtPoint(clip,position,default3DVolume * pool.volume);
+        //AudioSource.PlayClipAtPoint(clip, position, default3DVolume);
     }
 
     public AudioSource PlayLoop2D(string id)
