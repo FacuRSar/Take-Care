@@ -102,7 +102,14 @@ public class Bars : MonoBehaviour
         Weights[1] = (CurrentCryBar / TotalBar);
         Weights[2] = (CurrentAngryBar / TotalBar);
 
+        if (ToCheckWeights(HappyQuestWeights))
+            Weights[0] = 0;
 
+        if (ToCheckWeights(CryQuestWeights))
+            Weights[1] = 0;
+
+        if (ToCheckWeights(AngryQuestWeights))
+            Weights[2] = 0;
     }
 
 
@@ -168,44 +175,57 @@ public class Bars : MonoBehaviour
     }
 
 
-    void InvokeQuest()
+    public void InvokeQuest()
     {
         float Index = GetRandomIndex(Weights);
+        switch (Index)
+        {
+            case 0:
+                int IndexHappyQuest = GetRandomIndex(HappyQuestWeights);
+                selectedQuest = PoolHappyQuest[IndexHappyQuest];
 
-            switch (Index)
-            {
-                case 0:
-                    int IndexHappyQuest = GetRandomIndex(HappyQuestWeights);
-                    selectedQuest = PoolHappyQuest[IndexHappyQuest];
+                questController.ActivateQuest(selectedQuest);
 
-                    questController.ActivateQuest(selectedQuest);
+                HappyQuestWeights[IndexHappyQuest] = 0;
+                break;
 
-                    HappyQuestWeights[IndexHappyQuest] = 0;
-                    break;
+            case 1:
+                int IndexCryQuest = GetRandomIndex(CryQuestWeights);
+                selectedQuest = PoolCryQuest[IndexCryQuest];
 
-                case 1:
-                    int IndexCryQuest = GetRandomIndex(CryQuestWeights);
-                    selectedQuest = PoolCryQuest[IndexCryQuest];
+                questController.ActivateQuest(selectedQuest);
 
-                    questController.ActivateQuest(selectedQuest);
+                CryQuestWeights[IndexCryQuest] = 0;
+                break;
 
-                    CryQuestWeights[IndexCryQuest] = 0;
-                    break;
+            case 2:
+                int IndexAngryQuest = GetRandomIndex(AngryQuestWeights);
+                selectedQuest = PoolAngryQuest[IndexAngryQuest];
 
-                case 2:
-                    int IndexAngryQuest = GetRandomIndex(AngryQuestWeights);
-                    selectedQuest = PoolAngryQuest[IndexAngryQuest];
+                questController.ActivateQuest(selectedQuest);
 
-                    questController.ActivateQuest(selectedQuest);
+                AngryQuestWeights[IndexAngryQuest] = 0;
+                break;
+        }
 
-                    AngryQuestWeights[IndexAngryQuest] = 0;
-                    break;
-            }
-        
+
 
 
         Debug.Log("Toco Quest" + selectedQuest);
         selectedQuest = null;
+    }
+
+    private bool ToCheckWeights(List <float> Pools)
+    {
+        for (int i = 0; i < Pools.Count; i++)
+        {
+            if (Pools[i] != 0)
+            {
+                return false;
+            }
+            
+        }
+        return true;
     }
 
     private string _getTopBar()

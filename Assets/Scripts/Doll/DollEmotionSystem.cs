@@ -39,6 +39,7 @@ public class DollEmotionSystem : MonoBehaviour
     [Header("GameState Reference")]
     private GameStateController gameStateController;
     private Bars bars;
+    private Quest quest;
     private DollState currentMaxBar;
 
     void Awake()
@@ -55,16 +56,8 @@ public class DollEmotionSystem : MonoBehaviour
     }
     private void Start()
     {
+        quest = FindAnyObjectByType<Quest>();
         InitiallizeFlags();
-    }
-    public void FixedUpdate()
-    {
-        if (bars._CurrentHappyBar == 100)
-        {
-            // aqui se pone la logica que abre la puerta donde esta la llave
-        }
-        else
-            return;
     }
     public void ChangeState(DollState newState)
     {
@@ -100,7 +93,7 @@ public class DollEmotionSystem : MonoBehaviour
 
         }
     }
-    private void Update()
+    private void FixedUpdate()
     {
         currentMaxBar = GetStateByName(bars.getTopBar());
        /* if (currentEmotion == idleState)
@@ -116,9 +109,9 @@ public class DollEmotionSystem : MonoBehaviour
             if (currentMaxBar != Currentstate && !isQuestActive)
                 ChangeState(currentMaxBar);
         }*/
-       if(isQuestActive)
+       if(quest.isActive)
         {
-            currentEmotion.CheckInteraction(audioSource);
+           // currentEmotion.CheckInteraction(audioSource);
             if (currentMaxBar != Currentstate)
                 ChangeState(currentMaxBar);
         }
