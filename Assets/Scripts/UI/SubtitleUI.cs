@@ -34,9 +34,17 @@ public class SubtitleUI : MonoBehaviour
     private SubtitlePriority currentPriority;
     // guardo la coroutine actual para poder detenerla si entra un subtitulo nuevo antes de que termine el anterior
 
+    private Color defaultTextColor = Color.white;
+    // color original del texto, para volver a el cuando un subtitulo no pide color custom
+
     private void Awake()
     {
         Instance = this;
+
+        if (subtitleText != null)
+        {
+            defaultTextColor = subtitleText.color;
+        }
 
         if (subtitleRoot != null)
         {
@@ -51,7 +59,7 @@ public class SubtitleUI : MonoBehaviour
         }
     }
 
-    public bool ShowSubtitle(string message, float duration = 2.5f, SubtitlePriority priority = SubtitlePriority.Environment, Color? subtitleBackdrop = null)
+    public bool ShowSubtitle(string message, float duration = 2.5f, SubtitlePriority priority = SubtitlePriority.Environment, Color? subtitleBackdrop = null, Color? textColor = null)
     {
         if (!gameObject.activeInHierarchy)
         {
@@ -80,6 +88,12 @@ public class SubtitleUI : MonoBehaviour
         if (subtitleBackgroundImage != null)
         {
             subtitleBackgroundImage.color = backdrop;
+        }
+
+        // color del texto: el que pida el subtitulo o, si no pide, el color por defecto
+        if (subtitleText != null)
+        {
+            subtitleText.color = textColor ?? defaultTextColor;
         }
 
         currentRoutine = StartCoroutine(ShowRoutine(message, duration));
