@@ -33,4 +33,17 @@ public class Angry : DollEmotion
     {
         Debug.Log("La muñeca deja de llorar");
     }
+    public override void  setCurrentBar()
+    {
+        currentBar = bars._CurrentAngryBar;
+    }
+    public void FixedUpdate()
+    {
+        timerRestar++;
+        if (timerRestar >= 15)
+        {
+            bars.restaAngryBar(1);
+            timerRestar = 0;
+        }
+    }
 }

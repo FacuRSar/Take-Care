@@ -96,23 +96,24 @@ public class DollEmotionSystem : MonoBehaviour
     private void FixedUpdate()
     {
         currentMaxBar = GetStateByName(bars.getTopBar());
-       /* if (currentEmotion == idleState)
-        {
-            idleState.checkWatching(player.transform.position, doll.transform.position);
-            if(currentMaxBar != Currentstate && !isQuestActive)
-                ChangeState(currentMaxBar);
+        /* if (currentEmotion == idleState)
+         {
+             idleState.checkWatching(player.transform.position, doll.transform.position);
+             if(currentMaxBar != Currentstate && !isQuestActive)
+                 ChangeState(currentMaxBar);
 
-        }
-        else if (currentEmotion != watchingState)
+         }
+         else if (currentEmotion != watchingState)
+         {
+             currentEmotion.CheckInteraction(audioSource);
+             if (currentMaxBar != Currentstate && !isQuestActive)
+                 ChangeState(currentMaxBar);
+         }*/
+        if (isQuestActive)
         {
-            currentEmotion.CheckInteraction(audioSource);
-            if (currentMaxBar != Currentstate && !isQuestActive)
-                ChangeState(currentMaxBar);
-        }*/
-       if(quest.isActive)
-        {
-           // currentEmotion.CheckInteraction(audioSource);
-            if (currentMaxBar != Currentstate)
+            currentEmotion.setCurrentBar();
+            //currentEmotion.CheckInteraction(audioSource);
+            if(currentMaxBar != Currentstate)
                 ChangeState(currentMaxBar);
         }
        else
@@ -132,6 +133,7 @@ public class DollEmotionSystem : MonoBehaviour
                 else
                 {
                     bars.InvokeQuest();
+                    SetQuestActive(true);
                 }
             }
         }
