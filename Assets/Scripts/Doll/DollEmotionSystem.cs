@@ -124,7 +124,7 @@ public class DollEmotionSystem : MonoBehaviour
             }
             else
             {
-                if (idleStateCounter < 5)
+                if (idleStateCounter < 300)
                 {
                     idleStateCounter++;
                     idleState.checkWatching(player.transform.position, doll.transform.position);

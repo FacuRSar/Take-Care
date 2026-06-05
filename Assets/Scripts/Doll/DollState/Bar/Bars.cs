@@ -24,10 +24,6 @@ public class Bars : MonoBehaviour
     float CurrentAngryBar;
     public float _CurrentAngryBar { get { return CurrentAngryBar; } private set { CurrentAngryBar = value; } }
     #endregion
-    [Header("Testing settings")]
-    [SerializeField] TextMeshProUGUI HappyBarText;
-    [SerializeField] TextMeshProUGUI CryBarText;
-    [SerializeField] TextMeshProUGUI AngryBarText;
 
     [Header("Bar Settings")]
     float TotalBar;
@@ -119,12 +115,6 @@ public class Bars : MonoBehaviour
     {
         AngryBar = 10;
         CryBar = 10;
-    }
-    private void Update()
-    {
-        HappyBarText.text = CurrentHappyBar.ToString();
-        CryBarText.text = CurrentCryBar.ToString();
-        AngryBarText.text = CurrentAngryBar.ToString();    
     }
 
     public void InitializeQuestPools(List<QuestData> allQuests)
