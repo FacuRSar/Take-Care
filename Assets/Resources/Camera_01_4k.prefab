@@ -80,9 +80,25 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
       objectReference: {fileID: 2100000, guid: 87de78ceab087aa4f95548be222732a7, type: 2}
+    - target: {fileID: -1510381904493913627, guid: 7323d772195188548acdf0c239087403, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7323d772195188548acdf0c239087403, type: 3}
       propertyPath: m_Name
       value: Camera_01_4k
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7323d772195188548acdf0c239087403, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7323d772195188548acdf0c239087403, type: 3}
+      propertyPath: m_TagString
+      value: ObjectInteract
+      objectReference: {fileID: 0}
+    - target: {fileID: 3607080026638055866, guid: 7323d772195188548acdf0c239087403, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -94,6 +110,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7323d772195188548acdf0c239087403, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5070809290490686908}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7323d772195188548acdf0c239087403, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2430373217998148195}
   m_SourcePrefab: {fileID: 100100000, guid: 7323d772195188548acdf0c239087403, type: 3}
 --- !u!1 &6505881059076722118 stripped
 GameObject:
@@ -140,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrabbableObject
   _objectName: Camera
-  _objectID: 2
+  _objectID: 1
   itemIcon: {fileID: 0}
   heldLocalPosition: {x: 0, y: 0, z: 0}
   heldLocalRotation: {x: 0, y: 0, z: 0}
@@ -148,3 +167,24 @@ MonoBehaviour:
   followRotationSpeed: 20
   maxFollowVelocity: 15
   playerInteraction: {fileID: 0}
+--- !u!65 &2430373217998148195
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6505881059076722118}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.12983567, y: 0.065200344, z: 0.07575318}
+  m_Center: {x: 0.0012536875, y: 0.044706203, z: 0.020925608}
