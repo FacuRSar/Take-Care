@@ -117,8 +117,8 @@ public class Bars : MonoBehaviour
     }
     private void Start()
     {
-        AngryBar = 50;
-        CryBar = 50;
+        AngryBar = 10;
+        CryBar = 10;
     }
     private void Update()
     {
@@ -298,6 +298,18 @@ public class Bars : MonoBehaviour
     public void restaCryBar(float value)
     {
         CryBar -= value;
+    }
+    public void sumCryBar(float value)
+    {
+        CryBar += value;
+    }
+    public void sumHappyBar(float value)
+    {
+        HappyBar += value;
+    }
+    public void sumAngryBar(float value)
+    {
+        AngryBar += value;
     }
     private bool ToCheckWeights(List<float> Pools)
     {

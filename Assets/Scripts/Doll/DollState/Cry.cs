@@ -38,10 +38,15 @@ public class Cry : DollEmotion
     public void FixedUpdate()
     {
         timerRestar++;
+        screenController.SetVignetteIntensity("fatigue", currentBar / 100);
+        if (dollVoice != null)
+        {
+            CheckInteraction(dollVoice);
+        }
         if (timerRestar >= 15)
         {
             timerRestar = 0;
-            bars.restaCryBar(1);
+            bars.sumCryBar(1);
         }
     }
     /*void Update()

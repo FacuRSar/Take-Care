@@ -5,6 +5,7 @@ using UnityEngine;
 public class Angry : DollEmotion
 {
     DollEmotionSystem dollEmotionSystem;
+    
 
     public event Action AddAngryBar;
 
@@ -40,9 +41,14 @@ public class Angry : DollEmotion
     public void FixedUpdate()
     {
         timerRestar++;
-        if (timerRestar >= 15)
+        screenController.SetVignetteIntensity("fatigue", currentBar / 100);
+        if (dollVoice!=null)
         {
-            bars.restaAngryBar(1);
+            CheckInteraction(dollVoice);
+        }
+        if (timerRestar >= 30)
+        {
+            bars.sumAngryBar(1);
             timerRestar = 0;
         }
     }

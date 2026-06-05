@@ -13,9 +13,10 @@ public class DollEmotion : MonoBehaviour
     [SerializeField] AudioClip lowInteraction;
     [SerializeField] AudioClip mediumInteraction;
     [SerializeField] AudioClip highInteraction;
-    ScreenEffectController screenController;
+    protected ScreenEffectController screenController;
     protected int timerRestar;
-     void Awake()
+    [SerializeField] protected AudioSource dollVoice;
+    void Awake()
     {
         screenController = FindAnyObjectByType<ScreenEffectController>();
         screenController.PlayEffect("fatigue");
@@ -42,7 +43,6 @@ public class DollEmotion : MonoBehaviour
     }
     public void CheckInteraction(AudioSource dollVoice)
     {
-        screenController.SetVignetteIntensity("fatigue",currentBar/100);
 
         if (currentBar >= bars._MaxBar)
         {

@@ -112,7 +112,6 @@ public class DollEmotionSystem : MonoBehaviour
         if (isQuestActive)
         {
             currentEmotion.setCurrentBar();
-            //currentEmotion.CheckInteraction(audioSource);
             if(currentMaxBar != Currentstate)
                 ChangeState(currentMaxBar);
         }
