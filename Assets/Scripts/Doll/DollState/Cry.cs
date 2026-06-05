@@ -31,6 +31,19 @@ public class Cry : DollEmotion
     {
         Debug.Log("La muñeca deja de llorar");
     }
+    public override void setCurrentBar()
+    {
+        currentBar = bars._CurrentCryBar;
+    }
+    public void FixedUpdate()
+    {
+        timerRestar++;
+        if (timerRestar >= 15)
+        {
+            timerRestar = 0;
+            bars.restaCryBar(1);
+        }
+    }
     /*void Update()
     {
 

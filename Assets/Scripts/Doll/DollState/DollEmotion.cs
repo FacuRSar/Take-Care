@@ -13,6 +13,13 @@ public class DollEmotion : MonoBehaviour
     [SerializeField] AudioClip lowInteraction;
     [SerializeField] AudioClip mediumInteraction;
     [SerializeField] AudioClip highInteraction;
+    ScreenEffectController screenController;
+    protected int timerRestar;
+     void Awake()
+    {
+        screenController = FindAnyObjectByType<ScreenEffectController>();
+        screenController.PlayEffect("fatigue");
+    }
 
 
     public void LowInteraction(AudioSource dollVoice)
@@ -35,8 +42,9 @@ public class DollEmotion : MonoBehaviour
     }
     public void CheckInteraction(AudioSource dollVoice)
     {
+        screenController.SetVignetteIntensity("fatigue",currentBar/100);
 
-        if (currentBar >= bars._MaxBar * 0.75f)
+        if (currentBar >= bars._MaxBar)
         {
             // Llanto extremo o distorsionado
             // Sonido de llanto fuerte, Lágrimas visibles, Agitación intensa
@@ -45,13 +53,13 @@ public class DollEmotion : MonoBehaviour
             HighInteraction(dollVoice);
             return;
         }
-        else if (currentBar >= bars._MaxBar * 0.5f)
+        else if (currentBar >= bars._MaxBar)
         {
             //Lágrimas ocasionales, Sonido de llanto suave,Cabeza baja a ratos
             MediumInteraction(dollVoice);
             return;
         }
-        else if (currentBar >= bars._MaxBar * 0.25f)
+        else if (currentBar >= bars._MaxBar)
         {
             //Micro sonidos (sniffling leve)
             LowInteraction(dollVoice);
@@ -62,4 +70,5 @@ public class DollEmotion : MonoBehaviour
     {
         return currentBar;
     }
+    public virtual void setCurrentBar() { }
 }

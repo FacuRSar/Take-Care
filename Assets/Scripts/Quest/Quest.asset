@@ -26,7 +26,7 @@ MonoBehaviour:
     - quantity: 1
       itemID: 2
     roomID: Room_0
-    EmotionID: 1
+    EmotionID: 2
     addPoints: 1
     EmotionID_: 2
     removePoints: 2
