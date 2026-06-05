@@ -6832,6 +6832,51 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 7280244571378047835, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
   m_PrefabInstance: {fileID: 2016877956}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &583049603
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 583049605}
+  - component: {fileID: 583049604}
+  m_Layer: 0
+  m_Name: TpsDoll
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &583049604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583049603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a87b2929547f6374e9d153bd9d7583b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TpsDoll
+  IdTP_: Comedor
+--- !u!4 &583049605
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583049603}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 16.67, y: 1.747, z: 28.116}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &606559558 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 11436022196bd154b92540ff368a136e, type: 3}
@@ -18827,9 +18872,41 @@ MonoBehaviour:
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
     lines:
-    - text: "Se termin\xF3 el tiempo... Perdiste. Qu\xE9 tramposo, no buscaste bien. "
+    - text: "Se termin\xF3 el tiempo... Perdiste. Qu\xE9 tramposo, no buscaste bien.\n"
       delayBefore: 0
+      duration: 5
+  - id: El Reflejo Mentiroso_in
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Esa maldita camara me est\xE1 mirando mal! \xA1Dice que soy fea! \xA1Agarralo
+        y llevalo a la chimenea ya mismo!"
+      delayBefore: 0
+      duration: 5
+    - text: "\xA1No lo mires! \xA1Te va a mentir a vos tambi\xE9n! \xA1Camin\xE1
+        m\xE1s r\xE1pido, carajo!"
+      delayBefore: 30
       duration: 4
+    - text: "\xA1No lo mires! \xA1Te va a mentir a vos tambi\xE9n! \xA1Camin\xE1
+        m\xE1s r\xE1pido, carajo! \xA1Apurate antes de que le rompa la cara yo misma!"
+      delayBefore: 60
+      duration: 4
+  - id: El Reflejo Mentiroso_Fail
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "\xA1Te tardaste! Se rompi\xF3... y sus pedazos me est\xE1n cortando
+        por dentro... \xA1Es toda tu culpa!"
+      delayBefore: 0
+      duration: 5
+  - id: El Reflejo Mentiroso_Complete
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "\xA1Eso! Mir\xE1 c\xF3mo se derrite... \xBFQui\xE9n se r\xEDe ahora,
+        eh? Nadie se burla de m\xED en mi casa\n"
+      delayBefore: 0
+      duration: 5
 --- !u!4 &1497450607
 Transform:
   m_ObjectHideFlags: 0
@@ -19275,6 +19352,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &1569702524 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3224941106996528260, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
+  m_PrefabInstance: {fileID: 7670006764278436313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1569702526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569702524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f70f5ad0aa09b04e9f794dcc203f303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Piece
+  id: Chimenea
 --- !u!1 &1597069895
 GameObject:
   m_ObjectHideFlags: 0
@@ -25343,7 +25438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
       propertyPath: sprintSpeed
-      value: 2.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
       propertyPath: crouchHeight
@@ -27086,6 +27181,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 685313172168078315, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 372369869}
+    - targetCorrespondingSourceObject: {fileID: 3224941106996528260, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1569702526}
     - targetCorrespondingSourceObject: {fileID: 657409086196749406, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1925791799}
@@ -27125,4 +27223,5 @@ SceneRoots:
   - {fileID: 2059859968}
   - {fileID: 2036229288}
   - {fileID: 41072660353528840}
+  - {fileID: 583049605}
   - {fileID: 2081839076}

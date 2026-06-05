@@ -52,3 +52,24 @@ MonoBehaviour:
     addPoints: 25
     EmotionID_: 1
     removePoints: 12
+  - State: 1
+    QuestType: 2
+    SubtitlesForQuest: El Reflejo Mentiroso_In
+    SubtitlesForQuestComplete: El Reflejo Mentiroso_Complete
+    SubtitlesForQuestFail: El Reflejo Mentiroso_Fail
+    timer: 120
+    Name: El Reflejo Mentiroso
+    description: "La mu\xF1eca entra en un estado de furia ciega porque afirma que
+      la camara vieja  se est\xE1 burlando de ella y mostr\xE1ndole \"otra cara\".
+      Le ordena al jugador que lo tome inmediatamente y lo transporte hasta la chimenea
+      encendida del sal\xF3n para destruirlo."
+    id: 2
+    TpDollID: Comedor
+    itemsToPickData:
+    - quantity: 1
+      itemID: 2
+    roomID: "Mu\xF1eca"
+    EmotionID: 1
+    addPoints: 35
+    EmotionID_: 1
+    removePoints: 20
