@@ -109,7 +109,7 @@ public class DollEmotionSystem : MonoBehaviour
              if (currentMaxBar != Currentstate && !isQuestActive)
                  ChangeState(currentMaxBar);
          }*/
-        if (isQuestActive)
+        if (quest.isActive)
         {
             currentEmotion.setCurrentBar();
             if(currentMaxBar != Currentstate)
@@ -132,7 +132,6 @@ public class DollEmotionSystem : MonoBehaviour
                 else
                 {
                     bars.InvokeQuest();
-                    SetQuestActive(true);
                 }
             }
         }

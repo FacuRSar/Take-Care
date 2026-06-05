@@ -27,6 +27,6 @@ MonoBehaviour:
       itemID: 2
     roomID: Room_0
     EmotionID: 2
-    addPoints: 1
-    EmotionID_: 2
+    addPoints: 5
+    EmotionID_: 0
     removePoints: 2

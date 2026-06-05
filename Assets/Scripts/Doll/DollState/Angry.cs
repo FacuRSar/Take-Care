@@ -18,10 +18,7 @@ public class Angry : DollEmotion
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
 
-    }
 
     // Update is called once per frame
 
@@ -42,11 +39,10 @@ public class Angry : DollEmotion
     {
         timerRestar++;
         screenController.SetVignetteIntensity("fatigue", currentBar / 100);
-        if (dollVoice!=null)
-        {
-            CheckInteraction(dollVoice);
-        }
-        if (timerRestar >= 30)
+
+        CheckInteraction();
+
+        if (timerRestar >= 120)
         {
             bars.sumAngryBar(1);
             timerRestar = 0;

@@ -16,7 +16,7 @@ public class DollEmotion : MonoBehaviour
     protected ScreenEffectController screenController;
     protected int timerRestar;
     [SerializeField] protected AudioSource dollVoice;
-    void Awake()
+    void Start()
     {
         screenController = FindAnyObjectByType<ScreenEffectController>();
         screenController.PlayEffect("fatigue");
@@ -41,11 +41,13 @@ public class DollEmotion : MonoBehaviour
             dollVoice.PlayOneShot(highInteraction);
         //funcion de angel para generar un circulo que tapa parte de la camara en base a la barra de emocion
     }
-    public void CheckInteraction(AudioSource dollVoice)
+    public void CheckInteraction()
     {
 
         if (currentBar >= bars._MaxBar)
         {
+            if (dollVoice == null)
+                return;
             // Llanto extremo o distorsionado
             // Sonido de llanto fuerte, Lágrimas visibles, Agitación intensa
             //Posible trigger de ataque si no se calma
@@ -55,12 +57,16 @@ public class DollEmotion : MonoBehaviour
         }
         else if (currentBar >= bars._MaxBar)
         {
+            if (dollVoice == null)
+                return;
             //Lágrimas ocasionales, Sonido de llanto suave,Cabeza baja a ratos
             MediumInteraction(dollVoice);
             return;
         }
         else if (currentBar >= bars._MaxBar)
         {
+            if (dollVoice == null)
+                return;
             //Micro sonidos (sniffling leve)
             LowInteraction(dollVoice);
             return;
