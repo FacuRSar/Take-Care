@@ -102,33 +102,16 @@ public class Bars : MonoBehaviour
         Weights[1] = (CurrentCryBar / TotalBar);
         Weights[2] = (CurrentAngryBar / TotalBar);
 
-        
+        if (ToCheckWeights(HappyQuestWeights))
+            Weights[0] = 0;
 
-      //  if (ActiveAddPointsForQuest) AddPointsForQuest();
+        if (ToCheckWeights(CryQuestWeights))
+            Weights[1] = 0;
+
+        if (ToCheckWeights(AngryQuestWeights))
+            Weights[2] = 0;
     }
-    /* public void InitializeQuestPools(List<QuestData> allQuest)
-     {
-         foreach (QuestData quest in allQuest)
-         {
-             switch (quest.GetStateType())
-             {
-                 case questEmotionType.Happy:
-                     PoolHappyQuest.Add(quest);
-                     HappyQuestWeights.Add(1f);
-                     break;
 
-                 case questEmotionType.Cry:
-                     PoolCryQuest.Add(quest);
-                     CryQuestWeights.Add(1f);
-                     break;
-
-                 case questEmotionType.Angry:
-                     PoolAngryQuest.Add(quest);
-                     AngryQuestWeights.Add(1f);
-                     break;
-             }
-         }
-     }*/
 
     private void Update()
     {
@@ -137,7 +120,7 @@ public class Bars : MonoBehaviour
             InvokeQuest();
         }
     }
-    public void InitializeQuestPools(List<QuestData> allQuests)
+    public void _InitializeQuestPools(List<QuestData> allQuests)
     {
         foreach (var Quest_ in allQuests)
         {
@@ -157,6 +140,11 @@ public class Bars : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public void InitializeQuestPools(List<QuestData> allQuests)
+    {
+        _InitializeQuestPools(allQuests);
     }
 
         int GetRandomIndex(List<float> weights)
@@ -190,41 +178,75 @@ public class Bars : MonoBehaviour
     public void InvokeQuest()
     {
         float Index = GetRandomIndex(Weights);
+        switch (Index)
+        {
+            case 0:
+                int IndexHappyQuest = GetRandomIndex(HappyQuestWeights);
+                selectedQuest = PoolHappyQuest[IndexHappyQuest];
 
-            switch (Index)
-            {
-                case 0:
-                    int IndexHappyQuest = GetRandomIndex(HappyQuestWeights);
-                    selectedQuest = PoolHappyQuest[IndexHappyQuest];
+                questController.ActivateQuest(selectedQuest);
 
-                    questController.ActivateQuest(selectedQuest);
+                HappyQuestWeights[IndexHappyQuest] = 0;
+                break;
 
-                    HappyQuestWeights[IndexHappyQuest] = 0;
-                    break;
+            case 1:
+                int IndexCryQuest = GetRandomIndex(CryQuestWeights);
+                selectedQuest = PoolCryQuest[IndexCryQuest];
 
-                case 1:
-                    int IndexCryQuest = GetRandomIndex(CryQuestWeights);
-                    selectedQuest = PoolCryQuest[IndexCryQuest];
+                questController.ActivateQuest(selectedQuest);
 
-                    questController.ActivateQuest(selectedQuest);
+                CryQuestWeights[IndexCryQuest] = 0;
+                break;
 
-                    CryQuestWeights[IndexCryQuest] = 0;
-                    break;
+            case 2:
+                int IndexAngryQuest = GetRandomIndex(AngryQuestWeights);
+                selectedQuest = PoolAngryQuest[IndexAngryQuest];
 
-                case 2:
-                    int IndexAngryQuest = GetRandomIndex(AngryQuestWeights);
-                    selectedQuest = PoolAngryQuest[IndexAngryQuest];
+                questController.ActivateQuest(selectedQuest);
 
-                    questController.ActivateQuest(selectedQuest);
+                AngryQuestWeights[IndexAngryQuest] = 0;
+                break;
+        }
 
-                    AngryQuestWeights[IndexAngryQuest] = 0;
-                    break;
-            }
-        
+
 
 
         Debug.Log("Toco Quest" + selectedQuest);
         selectedQuest = null;
+    }
+
+    private bool ToCheckWeights(List <float> Pools)
+    {
+        for (int i = 0; i < Pools.Count; i++)
+        {
+            if (Pools[i] != 0)
+            {
+                return false;
+            }
+            
+        }
+        return true;
+    }
+
+    private string _getTopBar()
+    {
+        if (HappyBar >= CryBar && HappyBar >= AngryBar)
+        {
+            return "DollHappy";
+        }
+        else if (CryBar >= HappyBar && CryBar >= AngryBar)
+        {
+            return "DollCry";
+        }
+        else
+        {
+            return "DollAngry";
+        }
+    }
+
+    public string getTopBar()
+    {
+        return _getTopBar();
     }
 
     void MatchList()
@@ -247,7 +269,7 @@ public class Bars : MonoBehaviour
         AngryBar += SpeedBar * Time.deltaTime;
     }
 
-    public void QuestFinished(questEmotionType value, int _value)
+    private void _QuestFinished(questEmotionType value, int _value)
     {
         switch (value)
         {
@@ -262,19 +284,10 @@ public class Bars : MonoBehaviour
                 break;
         }
     }
-    public string getTopBar()
+
+    public void QuestFinished(questEmotionType value, int _value)
     {
-        if (CurrentHappyBar >= CurrentCryBar && CurrentHappyBar >= CurrentAngryBar)
-        {
-            return "DollHappy";
-        }
-        else if (CurrentCryBar >= CurrentAngryBar)
-        {
-            return "DollCry";
-        }
-        else
-        {
-            return "DollAngry";
-        }
+        _QuestFinished(value, _value);
     }
+
 }

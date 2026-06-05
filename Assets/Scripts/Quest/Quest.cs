@@ -91,6 +91,8 @@ public class Quest : MonoBehaviour
     List<int> ObjId = new List<int>();
     List<float> distanceList = new List<float>();
 
+    public bool isActive;
+
     int ObjInventory;
     private void OnEnable()
     {
@@ -120,13 +122,12 @@ public class Quest : MonoBehaviour
             }
             AddQuest();
         }
-
-        
-        
     }
 
     private void FixedUpdate()
     {
+        
+
         Player = transform;
 
         if (activeQuest == null || !activeQuest.isActive) return;
@@ -176,6 +177,7 @@ public class Quest : MonoBehaviour
             activeQuest = allQuests[index];
             questData = activeQuest;
             activeQuest.isActive = true;
+            isActive = activeQuest.isActive;
             activeQuest.timer = 0f;
 
             Debug.LogWarning($"Quest Activated: ID = {activeQuest.QuestID}, Name = {activeQuest.QuestName}");
@@ -369,6 +371,7 @@ public class Quest : MonoBehaviour
 
 
         activeQuest.isActive = false;
+        isActive = activeQuest.isActive;
         activeQuest.isComplete = true;
 
         Debug.Log("Quest completada: " + activeQuest.config.Name);
