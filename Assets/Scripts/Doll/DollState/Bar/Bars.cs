@@ -1,0 +1,314 @@
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using Random = UnityEngine.Random;
+
+public class Bars : MonoBehaviour
+{
+    private DollEmotionSystem dollEmotionSystem;
+
+    #region HappyBar
+    float HappyBar;
+    float CurrentHappyBar;
+    public float _CurrentHappyBar { get { return CurrentHappyBar; } private set { CurrentHappyBar = value; } }
+    #endregion
+
+    #region CryBar
+    float CryBar;
+    float CurrentCryBar;
+    public float _CurrentCryBar { get { return CurrentCryBar; } private set { CurrentCryBar = value; } }
+    #endregion
+
+    #region AngryBar
+    float AngryBar;
+    float CurrentAngryBar;
+    public float _CurrentAngryBar { get { return CurrentAngryBar; } private set { CurrentAngryBar = value; } }
+    #endregion
+    [Header("Testing settings")]
+    [SerializeField] TextMeshProUGUI HappyBarText;
+    [SerializeField] TextMeshProUGUI CryBarText;
+    [SerializeField] TextMeshProUGUI AngryBarText;
+
+    [Header("Bar Settings")]
+    float TotalBar;
+    [SerializeField] float SpeedBar = 1f;
+    float MaxBar = 100f;
+    float MinBar = 0f;
+    public float _MaxBar { get { return MaxBar; } private set { MaxBar = value; } }
+
+    int IndexQuest;
+    int AddPoints;
+    bool ActiveAddPointsForQuest;
+    bool ToCallQuest;
+
+    [SerializeField] private List<QuestData> PoolHappyQuest = new List<QuestData>();
+    [SerializeField] private List<QuestData> PoolCryQuest = new List<QuestData>();
+    [SerializeField] private List<QuestData> PoolAngryQuest = new List<QuestData>();
+
+    private List<float> Weights = new List<float>();
+    private List<float> HappyQuestWeights = new List<float>();
+    private List<float> CryQuestWeights = new List<float>();
+    private List<float> AngryQuestWeights = new List<float>();
+
+    [SerializeField] QuestData selectedQuest;
+    [SerializeField] QuestController questController;
+
+
+
+    void Awake()
+    {
+        dollEmotionSystem = GetComponent<DollEmotionSystem>();
+
+        Watching watching = GetComponent<Watching>();
+        Angry angry = GetComponent<Angry>();
+        Cry cry = GetComponent<Cry>();
+        Happy happy = GetComponent<Happy>();
+        Idle idle = GetComponent<Idle>();
+
+            // Compruebo nulos antes de suscribir para evitar NullReferenceException
+        if (idle != null)
+        {
+            idle.AddAngryBar += _AddAngryBar;
+            idle.AddHappyBar += _AddHappyBar;
+            idle.AddCryBar += _AddCryBar;
+        }
+
+        if (watching != null)
+        {
+            watching.AddHappyBar += _AddHappyBar;
+            watching.AddCryBar += _AddCryBar;
+            watching.AddAngryBar += _AddAngryBar;
+        }
+
+        if (angry != null)
+            angry.AddAngryBar += _AddAngryBar;
+        if (cry != null)
+            cry.AddCryBar += _AddCryBar;
+        if (happy != null)
+            happy.AddHappyBar += _AddHappyBar;
+
+        MatchList();
+    }
+
+    void FixedUpdate()
+    {
+        HappyBar = Mathf.Clamp(HappyBar, MinBar, MaxBar);
+        CurrentHappyBar = HappyBar;
+
+        CryBar = Mathf.Clamp(CryBar, MinBar, MaxBar);
+        CurrentCryBar = CryBar;
+
+        AngryBar = Mathf.Clamp(AngryBar, MinBar, MaxBar);
+        CurrentAngryBar = AngryBar;
+
+        TotalBar = CurrentHappyBar + CurrentAngryBar + CurrentCryBar;
+
+        Weights[0] = (CurrentHappyBar / TotalBar);
+        Weights[1] = (CurrentCryBar / TotalBar);
+        Weights[2] = (CurrentAngryBar / TotalBar);
+        if (ToCheckWeights(HappyQuestWeights))
+            Weights[0] = 0;
+
+        if (ToCheckWeights(CryQuestWeights))
+            Weights[1] = 0;
+
+        if (ToCheckWeights(AngryQuestWeights))
+            Weights[2] = 0;
+    }
+    private void Start()
+    {
+        AngryBar = 50;
+        CryBar = 50;
+    }
+    private void Update()
+    {
+        /*HappyBarText.text = CurrentHappyBar.ToString();
+        CryBarText.text = CurrentCryBar.ToString();
+        AngryBarText.text = CurrentAngryBar.ToString();  */  
+    }
+
+    public void InitializeQuestPools(List<QuestData> allQuests)
+    {
+        foreach (var Quest_ in allQuests)
+        {
+            switch (Quest_.GetStateType())
+            {
+                case questEmotionType.Happy:
+                    PoolHappyQuest.Add(Quest_);
+                    HappyQuestWeights.Add(1f);
+                    break;
+                case questEmotionType.Cry:
+                    PoolCryQuest.Add(Quest_);
+                    CryQuestWeights.Add(1f);
+                    break;
+                case questEmotionType.Angry:
+                    PoolAngryQuest.Add(Quest_);
+                    AngryQuestWeights.Add(1f);
+                    break;
+            }
+        }
+    }
+
+    int GetRandomIndex(List<float> weights)
+    {
+        float WeightTotal = 0f;
+        foreach (float weight in weights)
+        {
+            WeightTotal += weight;
+        }
+
+        // Uso explícito de float para Random.Range
+        float randomValue = Random.Range(0f, WeightTotal > 0f ? WeightTotal : 0f);
+        float cumulativeWeight = 0f;
+
+        for (int i = 0; i < weights.Count; i++)
+        {
+            cumulativeWeight += weights[i];
+            if (cumulativeWeight > randomValue)
+            {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    public void InvokeQuest()
+    {
+        // Index debe ser int para usar switch
+        int Index = GetRandomIndex(Weights);
+
+        switch (Index)
+        {
+            case 0:
+                if (HappyQuestWeights.Count == 0 || PoolHappyQuest.Count == 0)
+                {
+                    Debug.LogWarning("No hay quests 'Happy' disponibles.");
+                    break;
+                }
+                int IndexHappyQuest = GetRandomIndex(HappyQuestWeights);
+                if (IndexHappyQuest < 0 || IndexHappyQuest >= PoolHappyQuest.Count)
+                {
+                    Debug.LogWarning("IndexHappyQuest fuera de rango.");
+                    break;
+                }
+                selectedQuest = PoolHappyQuest[IndexHappyQuest];
+                questController?.ActivateQuest(selectedQuest);
+                HappyQuestWeights[IndexHappyQuest] = 0;
+                break;
+
+            case 1:
+                if (CryQuestWeights.Count == 0 || PoolCryQuest.Count == 0)
+                {
+                    Debug.LogWarning("No hay quests 'Cry' disponibles.");
+                    break;
+                }
+                int IndexCryQuest = GetRandomIndex(CryQuestWeights);
+                if (IndexCryQuest < 0 || IndexCryQuest >= PoolCryQuest.Count)
+                {
+                    Debug.LogWarning("IndexCryQuest fuera de rango.");
+                    break;
+                }
+                selectedQuest = PoolCryQuest[IndexCryQuest];
+                questController?.ActivateQuest(selectedQuest);
+                CryQuestWeights[IndexCryQuest] = 0;
+                break;
+
+            case 2:
+                if (AngryQuestWeights.Count == 0 || PoolAngryQuest.Count == 0)
+                {
+                    Debug.LogWarning("No hay quests 'Angry' disponibles.");
+                    break;
+                }
+                int IndexAngryQuest = GetRandomIndex(AngryQuestWeights);
+                if (IndexAngryQuest < 0 || IndexAngryQuest >= PoolAngryQuest.Count)
+                {
+                    Debug.LogWarning("IndexAngryQuest fuera de rango.");
+                    break;
+                }
+                selectedQuest = PoolAngryQuest[IndexAngryQuest];
+                questController?.ActivateQuest(selectedQuest);
+                AngryQuestWeights[IndexAngryQuest] = 0;
+                break;
+        }
+
+        Debug.Log("Toco Quest: " + (selectedQuest != null ? selectedQuest.QuestName : "null"));
+        selectedQuest = null;
+    }
+
+    void MatchList()
+    {
+        Weights.Add(1f);
+        Weights.Add(1f);
+        Weights.Add(1f);
+    }
+
+    void _AddHappyBar()
+    {
+        HappyBar += SpeedBar * Time.deltaTime;
+    }
+    void _AddCryBar()
+    {
+        CryBar += SpeedBar * Time.deltaTime;
+    }
+    void _AddAngryBar()
+    {
+        AngryBar += SpeedBar * Time.deltaTime;
+    }
+
+    public void QuestFinished(questEmotionType value, int _value)
+    {
+        dollEmotionSystem.SetQuestActive(false);
+        switch (value)
+        {
+            case questEmotionType.Cry:
+                CryBar += _value;
+                break;
+            case questEmotionType.Happy:
+                HappyBar += _value;
+                break;
+            case questEmotionType.Angry:
+                AngryBar += _value;
+                break;
+        }
+    }
+    public string getTopBar()
+    {
+        if (CurrentHappyBar > CurrentCryBar && CurrentHappyBar > CurrentAngryBar)
+        {
+            return "DollHappy";
+        }
+        else if (CurrentCryBar > CurrentAngryBar)
+        {
+            return "DollCry";
+        }
+        else
+        {
+            return "DollAngry";
+        }
+    }
+    public void sumAngryBar(float value)
+    {
+        AngryBar += value;
+    }
+    public void restaHappyBar(float value)
+    {
+        HappyBar -= value;
+    }
+    public void restaCryBar(float value)
+    {
+        CryBar += value;
+    }
+    private bool ToCheckWeights(List<float> Pools)
+    {
+        for (int i = 0; i < Pools.Count; i++)
+        {
+            if (Pools[i] != 0)
+            {
+                return false;
+            }
+
+        }
+        return true;
+    }
+}

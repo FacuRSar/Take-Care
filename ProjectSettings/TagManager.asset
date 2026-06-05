@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - ObjectInteract
+  - LighSwitch
   layers:
   - Default
   - TransparentFX
@@ -12,13 +13,13 @@ TagManager:
   - Raycast Detect
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Interactable
+  - HandleItem
+  - Player
+  - Doors
+  - MenuButton
+  - Surface
+  - NotSurface
   - 
   - 
   - 

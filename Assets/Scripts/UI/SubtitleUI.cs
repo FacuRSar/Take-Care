@@ -1,0 +1,139 @@
+using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+// Para que no se pisen dialogos importantes meto este Enum
+public enum SubtitlePriority
+{
+    Hint = 0,
+    Environment = 1,
+    Dialogue = 2,
+    Critical = 3
+}
+
+// controlador simple de subtitulos para mostrar frases del protagonista o mensajes narrativos en pantalla
+public class SubtitleUI : MonoBehaviour
+{
+    public static SubtitleUI Instance;
+    // singleton simple para acceder mas tranqui desde otros scripts
+
+    [Header("Subtitulos")]
+    [SerializeField] private GameObject subtitleRoot;
+    // contenedor principal del subtitulo (panel, fondo, etc.)
+
+    [SerializeField] private TextMeshProUGUI subtitleText;
+    // texto donde aparece el mensaje
+
+    [Header("Fondo (opcional)")]
+    [SerializeField] private Image subtitleBackgroundImage;
+    [SerializeField] private Color defaultSubtitleBackdrop = new Color(0f, 0f, 0f, 0.72f);
+
+    private CanvasGroup subtitleCanvasGroup;
+    private Coroutine currentRoutine;
+    private SubtitlePriority currentPriority;
+    // guardo la coroutine actual para poder detenerla si entra un subtitulo nuevo antes de que termine el anterior
+
+    private Color defaultTextColor = Color.white;
+    // color original del texto, para volver a el cuando un subtitulo no pide color custom
+
+    private void Awake()
+    {
+        Instance = this;
+
+        if (subtitleText != null)
+        {
+            defaultTextColor = subtitleText.color;
+        }
+
+        if (subtitleRoot != null)
+        {
+            subtitleCanvasGroup = subtitleRoot.GetComponent<CanvasGroup>();
+
+            if (subtitleRoot == gameObject && subtitleCanvasGroup == null)
+            {
+                subtitleCanvasGroup = subtitleRoot.AddComponent<CanvasGroup>();
+            }
+
+            SetSubtitleVisible(false);
+        }
+    }
+
+    public bool ShowSubtitle(string message, float duration = 2.5f, SubtitlePriority priority = SubtitlePriority.Environment, Color? subtitleBackdrop = null, Color? textColor = null)
+    {
+        if (!gameObject.activeInHierarchy)
+        {
+            gameObject.SetActive(true);
+        }
+
+        if (!isActiveAndEnabled)
+        {
+            Debug.LogWarning("SubtitleUI: no puede mostrar subtitulo porque el componente esta deshabilitado.");
+            return false;
+        }
+
+        if (currentRoutine != null && priority < currentPriority)
+        {
+            return false;
+        }
+
+        // si ya habia una rutina, la freno para reemplazar el subtitulo
+        if (currentRoutine != null)
+        {
+            StopCoroutine(currentRoutine);
+        }
+
+        currentPriority = priority;
+        Color backdrop = subtitleBackdrop ?? defaultSubtitleBackdrop;
+        if (subtitleBackgroundImage != null)
+        {
+            subtitleBackgroundImage.color = backdrop;
+        }
+
+        // color del texto: el que pida el subtitulo o, si no pide, el color por defecto
+        if (subtitleText != null)
+        {
+            subtitleText.color = textColor ?? defaultTextColor;
+        }
+
+        currentRoutine = StartCoroutine(ShowRoutine(message, duration));
+        return true;
+    }
+
+    private IEnumerator ShowRoutine(string message, float duration)
+    {
+        if (subtitleText != null)
+        {
+            subtitleText.text = message;
+        }
+
+        SetSubtitleVisible(true);
+
+        yield return new WaitForSeconds(duration);
+
+        SetSubtitleVisible(false);
+        if (subtitleBackgroundImage != null)
+        {
+            subtitleBackgroundImage.color = defaultSubtitleBackdrop;
+        }
+
+        currentRoutine = null;
+        currentPriority = SubtitlePriority.Hint;
+    }
+
+    private void SetSubtitleVisible(bool visible)
+    {
+        if (subtitleRoot == null)
+        {
+            return;
+        }
+
+        if (subtitleRoot != gameObject)
+        {
+            // si el root es un hijo, lo prendo/apago normal
+            // esto evita apagar el monobehaviour que tiene que arrancar la coroutine, sino, tremendo tiro en el pie
+            subtitleRoot.SetActive(visible);
+            return;
+        }
+    }
+}
