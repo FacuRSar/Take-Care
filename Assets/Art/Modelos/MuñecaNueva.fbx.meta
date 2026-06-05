@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6e5f956e413890c4b872f6259fb2d914
+guid: a91c7cd5e65960c4ba9a66da0abdc128
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,23 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: PM3D_Cylinder3D1
-    second: {fileID: 2100000, guid: 887705b3e010a1144b2fe4eac99e6588, type: 2}
+      name: Material.008
+    second: {fileID: 2100000, guid: 728baf9ad149e764ca2d83fe8d498132, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: PM3D_Cylinder3D2
-    second: {fileID: 2100000, guid: 6f2205ddec42d0b49a89a2097b66bdaa, type: 2}
+      name: Material.018
+    second: {fileID: 2100000, guid: 06d459e7214ddd54a90d57c22cfb13a0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: RingMandrel
-    second: {fileID: 2100000, guid: 39947c75090b35643ad347886ad030a6, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: UMesh_PM3D_Cube3D2
-    second: {fileID: 2100000, guid: c0fcf9bace419454eac7f93f7de67f46, type: 2}
+      name: vestido
+    second: {fileID: 2100000, guid: a1bbabc4b2999ee4fb4f4db6da428c89, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

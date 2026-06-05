@@ -1,29 +1,9 @@
 fileFormatVersion: 2
-guid: 6e5f956e413890c4b872f6259fb2d914
+guid: c628d2597a8b41d468c8bc1de113b634
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: PM3D_Cylinder3D1
-    second: {fileID: 2100000, guid: 887705b3e010a1144b2fe4eac99e6588, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: PM3D_Cylinder3D2
-    second: {fileID: 2100000, guid: 6f2205ddec42d0b49a89a2097b66bdaa, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: RingMandrel
-    second: {fileID: 2100000, guid: 39947c75090b35643ad347886ad030a6, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: UMesh_PM3D_Cube3D2
-    second: {fileID: 2100000, guid: c0fcf9bace419454eac7f93f7de67f46, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
