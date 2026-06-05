@@ -11,6 +11,10 @@ public class StructureQuest : ScriptableObject
         public questEmotionType State;
         public questType QuestType;
 
+        public string SubtitlesForQuest;
+
+        public int timer;
+
         public string Name;
         [TextArea(2, 5)] public string description; // Añadido para mejor visualización en el inspector
         public int id;

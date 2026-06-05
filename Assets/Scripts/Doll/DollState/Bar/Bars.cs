@@ -37,14 +37,6 @@ public class Bars : MonoBehaviour
 
     public float _MaxBar { get { return MaxBar; } private set { MaxBar = value; } }
 
-    int IndexQuest;
-
-    int AddPoints;
-
-    bool ActiveAddPointsForQuest;
-
-    bool ToCallQuest;
-
     [SerializeField] private List<QuestData> PoolHappyQuest = new List<QuestData>();
     [SerializeField] private List<QuestData> PoolCryQuest = new List<QuestData>();
     [SerializeField] private List<QuestData> PoolAngryQuest = new List<QuestData>();
@@ -84,9 +76,18 @@ public class Bars : MonoBehaviour
 
         MatchList();
     }
+
+    private void Start()
+    {
+        HappyBar = 0f;
+        CryBar = 0f;
+        AngryBar = 0f;
+    }
     // Update is called once per frame
     void FixedUpdate()
     {
+        Debug.Log($"{CurrentHappyBar} {CurrentCryBar} {CurrentAngryBar}");
+
         HappyBar = Mathf.Clamp(HappyBar, MinBar, MaxBar);
         CurrentHappyBar = HappyBar;
 
@@ -283,6 +284,9 @@ public class Bars : MonoBehaviour
                 AngryBar += _value;
                 break;
         }
+
+        value = 0;
+        _value = 0;
     }
 
     public void QuestFinished(questEmotionType value, int _value)
