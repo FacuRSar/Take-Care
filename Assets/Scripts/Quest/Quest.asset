@@ -99,7 +99,7 @@ MonoBehaviour:
   - State: 0
     QuestType: 2
     SubtitlesForQuest: Palta_In
-    SubtitlesForQuestComplete: PaltaComplete
+    SubtitlesForQuestComplete: Palta_Complete
     SubtitlesForQuestFail: Palta_Fail
     timer: 90
     Name: La Palta del Lamento
@@ -114,6 +114,30 @@ MonoBehaviour:
     - quantity: 1
       itemID: 4
     roomID: Cuna
+    EmotionID: 0
+    addPoints: 30
+    EmotionID_: 2
+    removePoints: 15
+  - State: 0
+    QuestType: 2
+    SubtitlesForQuest: Acorde_In
+    SubtitlesForQuestComplete: Acorde_Complete
+    SubtitlesForQuestFail: Acorde_Fail
+    timer: 60
+    Name: El Acorde del Silencio
+    description: "La mu\xF1eca llora en silencio mirando fijamente hacia la ventana.
+      Afirma que la vieja guitarra ac\xFAstica de la caba\xF1a est\xE1 \"sufriendo\"
+      porque tiene las cuerdas rotas y el polvo la est\xE1 asfixiando. Le ordena
+      al jugador buscarla por la casa \u2014aparecer\xE1 en un punto aleatorio en
+      cada partida\u2014 y transportarla con cuidado hasta la mecedora de madera
+      del sal\xF3n principal para que pueda descansar. Mientras el jugador carga
+      la guitarra, el script reduce su velocidad un 30% por la incomodidad del objeto."
+    id: 5
+    TpDollID: Habitacion2
+    itemsToPickData:
+    - quantity: 1
+      itemID: 5
+    roomID: Habitacion2
     EmotionID: 0
     addPoints: 30
     EmotionID_: 2
