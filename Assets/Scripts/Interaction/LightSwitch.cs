@@ -53,17 +53,8 @@ public class LightSwitch : Interactable
         }
 
         switchIsOn = !switchIsOn;
-        // pulso el switch interno y despues aplico el estado al grupo de luces
+        // pulso el switch interno y aplico el estado una sola vez (al grupo o a las luces locales)
         ApplySwitchState();
-
-        if (lightGroup != null)
-        {
-            lightGroup.ToggleLights();
-        }
-        else
-        {
-            ApplySwitchState();
-        }
     }
 
     private void ApplySwitchState()
