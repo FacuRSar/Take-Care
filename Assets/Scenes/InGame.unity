@@ -6318,6 +6318,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4ca6f8af4e28d45ad0e679ea94ab39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSanity
+--- !u!114 &375775408 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2992635802311489209, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
+  m_PrefabInstance: {fileID: 2016877956}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375775384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cc0984a53eafc4498fdcebb85babcc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
 --- !u!108 &414498733 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 5870873649511683678, guid: 2815d54546e5ca84fb76ce7ad6f5f883, type: 3}
@@ -6805,6 +6816,150 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!1 &559739533
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 559739534}
+  - component: {fileID: 559739538}
+  - component: {fileID: 559739537}
+  - component: {fileID: 559739536}
+  - component: {fileID: 559739535}
+  m_Layer: 6
+  m_Name: juguetequest2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &559739534
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559739533}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.6339635, y: -0.31319356, z: -0.34033218, w: 0.6198178}
+  m_LocalPosition: {x: 17.233, y: -5.389, z: 4.646}
+  m_LocalScale: {x: 1.8200002, y: 1.8199999, z: 1.82}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 3437141914534934336}
+  m_LocalEulerAnglesHint: {x: -92.48, y: -90, z: 34.939}
+--- !u!114 &559739535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559739533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff42adca207178f40893837a76ce0d5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabbableObject
+  _objectName: 
+  _objectID: 0
+  itemIcon: {fileID: 0}
+  heldLocalPosition: {x: 0, y: 0, z: 0}
+  heldLocalRotation: {x: 0, y: 0, z: 0}
+  followPositionSpeed: 20
+  followRotationSpeed: 20
+  maxFollowVelocity: 15
+  lockRotation: 0
+  useFixedGrabRotation: 0
+  useCustomDistance: 0
+  customHoldDistance: 1
+  playerInteraction: {fileID: 375775408}
+--- !u!54 &559739536
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559739533}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!23 &559739537
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559739533}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -876546973899608171, guid: 6069abbe240729c4fb6cd5d36976164b, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &559739538
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559739533}
+  m_Mesh: {fileID: -462981019419857548, guid: 6069abbe240729c4fb6cd5d36976164b, type: 3}
 --- !u!1 &565472759 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1850372407064024070, guid: bd6860c27b5ae0940afa620bf9ac729c, type: 3}
@@ -19268,6 +19423,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueController
   subtitleUI: {fileID: 2024097066}
+  voiceSource: {fileID: 0}
+  minVoicePitch: 0.5
+  maxVoicePitch: 2.5
   pools:
   - id: "T\xE9_In"
     useCustomTextColor: 1
@@ -19278,22 +19436,27 @@ MonoBehaviour:
         No dejes que se enfr\xEDe el t\xE9"
       delayBefore: 0
       duration: 7.5
+      audioClip: {fileID: 0}
     - text: "\xA1Eso es! Uno por ac\xE1... Ten\xE9 cuidado, la porcelana muerde si
         la apret\xE1s mucho, jeje"
       delayBefore: 45
       duration: 4.5
+      audioClip: {fileID: 0}
     - text: "Faltan pocos. Mis amigas ya se est\xE1n sentando a la mesa. No las hagas
         esperar, no les gusta la mala educaci\xF3n"
       delayBefore: 90
       duration: 5.5
+      audioClip: {fileID: 0}
     - text: "\xA1Ya casi! Casi puedo oler el t\xE9... aunque hoy tiene un olor un
         poco met\xE1lico, \xBFverdad?"
       delayBefore: 135
       duration: 5
+      audioClip: {fileID: 0}
     - text: "\xA1El \xFAltimo fragmento! Ponelo en la mesa r\xE1pido, \xA1r\xE1pido!,
         \xA1que ya van a tomar el primer sorbo!"
       delayBefore: 162
       duration: 4.5
+      audioClip: {fileID: 0}
   - id: "T\xE9_Complete"
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19302,6 +19465,7 @@ MonoBehaviour:
         con nosotras... prometemos no morder"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: "T\xE9_Fail"
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19310,6 +19474,7 @@ MonoBehaviour:
         Ahora mis amigas se van a tener que divertir... con vos"
       delayBefore: 0
       duration: 6.5
+      audioClip: {fileID: 0}
   - id: "\xBF?_In"
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19317,21 +19482,26 @@ MonoBehaviour:
     - text: "\xA1Me aburro! Vamos a jugar a las escondidas. Conta hasta tres"
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "ya me escond\xED... Si no me encontr\xE1s r\xE1pido, me voy a enojar.
         \xA1A buscarme!"
       delayBefore: 4
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Fr\xEDo, fr\xEDo... Est\xE1s lej\xEDsimos. Mir\xE1s en los lugares equivocados.
         \xBFAcaso no quer\xE9s jugar conmigo?"
       delayBefore: 30
       duration: 5
+      audioClip: {fileID: 0}
     - text: "Te est\xE1s templando... puedo escuchar tus pasos torpes por la madera.
         Apurate que me da calor ac\xE1 adentro"
       delayBefore: 60
       duration: 5
+      audioClip: {fileID: 0}
     - text: "\xA1Te quem\xE1s! \xA1Estoy ac\xE1! Estir\xE1 la mano... \xA1recogeme!"
       delayBefore: 60
       duration: 4
+      audioClip: {fileID: 0}
   - id: "\xBF?_Complete"
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19340,6 +19510,7 @@ MonoBehaviour:
         sueltes m\xE1s, \xBFdale?"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: "\xBF?_Fail"
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19347,6 +19518,7 @@ MonoBehaviour:
     - text: "Se termin\xF3 el tiempo... Perdiste. Qu\xE9 tramposo, no buscaste bien.\n"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: Mentiroso_In
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19355,14 +19527,17 @@ MonoBehaviour:
         y llevalo a la chimenea ya mismo!"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
     - text: "\xA1No lo mires! \xA1Te va a mentir a vos tambi\xE9n! \xA1Camin\xE1
         m\xE1s r\xE1pido, carajo!"
       delayBefore: 30
       duration: 4
+      audioClip: {fileID: 0}
     - text: "\xA1No lo mires! \xA1Te va a mentir a vos tambi\xE9n! \xA1Camin\xE1
         m\xE1s r\xE1pido, carajo! \xA1Apurate antes de que le rompa la cara yo misma!"
       delayBefore: 60
       duration: 4
+      audioClip: {fileID: 0}
   - id: Mentiroso_Fail
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19371,6 +19546,7 @@ MonoBehaviour:
         por dentro... \xA1Es toda tu culpa!"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: Mentiroso_Complete
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19379,6 +19555,7 @@ MonoBehaviour:
         eh? Nadie se burla de m\xED en mi casa\n"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: Sonriente_In
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19388,14 +19565,17 @@ MonoBehaviour:
         \xA1dale!"
       delayBefore: 0
       duration: 7
+      audioClip: {fileID: 0}
     - text: "\xA1Ya casi los tenemos a todos juntos otra vez! Me pregunto si se van
         a alegrar de verte..."
       delayBefore: 30
       duration: 7
+      audioClip: {fileID: 0}
     - text: "\xA1La \xFAltima! Agarrala r\xE1pido antes de que se borren sus sonrisas...
         \xA1R\xE1pido!"
       delayBefore: 50
       duration: 7
+      audioClip: {fileID: 0}
   - id: Sonriente_Complete
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19404,6 +19584,7 @@ MonoBehaviour:
         familia. Nos vamos a quedar ac\xE1 adentro para siempre!"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: Sonriente_Fail
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19414,6 +19595,7 @@ MonoBehaviour:
 '
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: ingame_intro
     useCustomTextColor: 0
     subtitleTextColor: {r: 0, g: 0, b: 0, a: 1}
@@ -19423,12 +19605,15 @@ MonoBehaviour:
 '
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
     - text: Un segundo! Ese fantasma me...
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
     - text: Oh no, tengo que salir de aca!
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: captureMessege
     useCustomTextColor: 1
     subtitleTextColor: {r: 1, g: 0, b: 0, a: 1}
@@ -19438,6 +19623,7 @@ MonoBehaviour:
 '
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: Palta_In
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19446,49 +19632,63 @@ MonoBehaviour:
         en lo oscuro."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Su piel se siente como carne vieja y me est\xE1 mirando... Su carozo
         es un ojo ciego que no para de llorar aceite..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: Buscala y llevala a la cuna para taparla... por favor...
       delayBefore: 20
       duration: 3
+      audioClip: {fileID: 0}
     - text: Las cosas que se pudren cambian de color...
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "primero verdes, despu\xE9s negras, como los moretones en los brazos."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "A m\xED tambi\xE9n se me est\xE1 poniendo la piel negra de tanto llorar
         en este pasillo..."
       delayBefore: 20
       duration: 3
+      audioClip: {fileID: 0}
     - text: 'Me acuerdo cuando la cortaron con el cuchillo de la cocina... '
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "un tajo largo, de punta a punta, para arrancarle el coraz\xF3n."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "El carozo estaba tan pegado a la pulpa... igual que mis recuerdos a
         esta caba\xF1a... hip... doli\xF3 tanto..."
       delayBefore: 20
       duration: 3
+      audioClip: {fileID: 0}
     - text: El aceite que suelta es tan resbaladizo... me llena las manos, me llena
         la cara.
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Todo se vuelve h\xFAmedo y rancio ac\xE1 adentro. No dejes que me toque..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "no dejes que me ensucie m\xE1s..."
       delayBefore: 20
       duration: 3
+      audioClip: {fileID: 0}
     - text: ya me vio... ya sabe que estoy llorando...
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "no dejes que me ensucie m\xE1s..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
   - id: Palta_Complete
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19496,10 +19696,12 @@ MonoBehaviour:
     - text: "Ah... suspiro... ya est\xE1 en la cuna, abajo de las mantas viejas."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Ah\xED est\xE1 oscuro y el ojo ya no puede parpadear. Quedate ac\xE1
         conmigo, tapame a m\xED tambi\xE9n... hace fr\xEDo"
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
   - id: Palta_Fail
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19508,6 +19710,7 @@ MonoBehaviour:
         en los ojos. Ahora ya no puedo ver nada... solo puedo llorar..."
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: Acorde_In
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19516,52 +19719,66 @@ MonoBehaviour:
         por el desuso."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Buscala en alg\xFAn rinc\xF3n de la caba\xF1a y llevala a la vieja mecedora
         del sal\xF3n..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: por favor, hacelo antes de que su madera se termine de partir de la tristeza...
       delayBefore: 20
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Pap\xE1 sol\xEDa tocar una canci\xF3n muy triste cuando la tormenta
         golpeaba las ventanas del techo."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Una melod\xEDa sin letra, pesada como el plomo."
       delayBefore: 0
       duration: 2
+      audioClip: {fileID: 0}
     - text: "Ahora la guitarra est\xE1 sola en la oscuridad, intentando imitar mis
         sollozos... snif..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Me acuerdo perfectamente del d\xEDa en que se cort\xF3 la primera cuerda..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "son\xF3 como un latigazo seco en el pasillo. Nadie volvi\xF3 a tocarla
         desde esa noche."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Se qued\xF3 ah\xED tirada, llen\xE1ndose de moho, de polvo... y de recuerdos
         rotos... hip..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "El sonido del viento pasando a trav\xE9s de su caja de resonancia vac\xEDa
         es horrible..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: 'se siente como si me estuvieran apretando el cuello con manos heladas. '
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "\xBFPor qu\xE9 tard\xE1s tanto? No dejes que se caiga al suelo..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Ya casi no queda tiempo para la \xFAltima nota... se est\xE1 apagando
         el eco adentro de las maderas de la casa..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: ya no escucho nada...
       delayBefore: 0
       duration: 2
+      audioClip: {fileID: 0}
   - id: Acorde_Complete
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19570,10 +19787,12 @@ MonoBehaviour:
         el aire fr\xEDo mueva las cuerdas flojas."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Sentate en el piso ac\xE1 al lado m\xEDo... vamos a quedarnos quietos
         escuchando el silencio"
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
   - id: Acorde_Fail
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19582,9 +19801,11 @@ MonoBehaviour:
         nunca m\xE1s vamos a tener m\xFAsica en esta caba\xF1a."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Ahora solo nos queda el ruido de las sombras devor\xE1ndonos..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
 --- !u!4 &1497450607
 Transform:
   m_ObjectHideFlags: 0
@@ -19614,6 +19835,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HintDialogueController
   subtitleUI: {fileID: 2024097066}
   gameStateController: {fileID: 1490577939}
+  voiceSource: {fileID: 0}
+  minVoicePitch: 0.5
+  maxVoicePitch: 2.5
   firstHintDelay: 15
   repeatInterval: 18
   hintPool:
@@ -19622,12 +19846,14 @@ MonoBehaviour:
     requiredFlags: []
     blockedFlags:
     - power_on
+    audioClip: {fileID: 0}
   - text: "Todo empezo con esa mu\xF1eca! Quizas..."
     duration: 0
     requiredFlags:
     - intro_finished
     blockedFlags:
     - DollIdle
+    audioClip: {fileID: 0}
   activeOnStart: 0
 --- !u!114 &1500531872 stripped
 MonoBehaviour:
@@ -20404,6 +20630,172 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1704397914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1704397920}
+  - component: {fileID: 1704397919}
+  - component: {fileID: 1704397918}
+  - component: {fileID: 1704397917}
+  - component: {fileID: 1704397916}
+  - component: {fileID: 1704397915}
+  m_Layer: 6
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1704397915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704397914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff42adca207178f40893837a76ce0d5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabbableObject
+  _objectName: 
+  _objectID: 0
+  itemIcon: {fileID: 0}
+  heldLocalPosition: {x: 0, y: 0, z: 0}
+  heldLocalRotation: {x: 0, y: 0, z: 0}
+  followPositionSpeed: 20
+  followRotationSpeed: 20
+  maxFollowVelocity: 15
+  lockRotation: 0
+  useFixedGrabRotation: 0
+  useCustomDistance: 0
+  customHoldDistance: 1
+  playerInteraction: {fileID: 375775408}
+--- !u!54 &1704397916
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704397914}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &1704397917
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704397914}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1704397918
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704397914}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1704397919
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704397914}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1704397920
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704397914}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0248, y: -4.38, z: 31.6065}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1755562772
 GameObject:
   m_ObjectHideFlags: 0
@@ -42314,6 +42706,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9134509517938877753}
+  - {fileID: 559739534}
   - {fileID: 6976393540726345114}
   - {fileID: 597887618}
   - {fileID: 7223702876590549846}
@@ -66818,3 +67211,4 @@ SceneRoots:
   - {fileID: 2081839076}
   - {fileID: 2059859968}
   - {fileID: 2036229288}
+  - {fileID: 1704397920}
