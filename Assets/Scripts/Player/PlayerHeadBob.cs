@@ -14,8 +14,8 @@ public class PlayerHeadBob : MonoBehaviour
     // Referencia al movimiento para leer velocidad y estados sin duplicar configuracion.
 
     [Header("Efecto visual")]
-    [SerializeField] private float bobFrequencyMultiplier = 2f;
-    [SerializeField] private float bobAmountMultiplier = 0.012f;
+    [SerializeField] private float bobFrequencyMultiplier = 1.2f;
+    [SerializeField] private float bobAmountMultiplier = 0.008f;
     [SerializeField] private float crouchBobMultiplier = 0.4f;
     [SerializeField] private float returnSpeed = 8f;
 

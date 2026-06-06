@@ -30,7 +30,7 @@ public class QuestController : MonoBehaviour
             Debug.Log("Misión fallida por tiempo");
             quest._FailQuest();
         }
-        else if (quest._getTimer() >= quest._getTimerDuration() * 0.75f)
+        else if (quest._getTimerDuration() > 0f && quest._getTimer() >= quest._getTimerDuration() * 0.75f)
         {
             quest._MarkObjective();
         }

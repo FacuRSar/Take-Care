@@ -24621,6 +24621,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7097106398717118654, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
+      propertyPath: debugHeadBob
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7097106398717118654, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
+      propertyPath: bobFrequencyMultiplier
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
+      propertyPath: walkSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
+      propertyPath: sprintSpeed
+      value: 4.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8695235324604155894, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.11
