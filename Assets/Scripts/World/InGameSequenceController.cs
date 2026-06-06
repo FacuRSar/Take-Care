@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -64,6 +65,13 @@ public class InGameSequenceController : MonoBehaviour
     // Opcional: texto para mostrar el tiempo restante. Si queda vacio no se usa.
     [SerializeField] private TMP_Text timerLabel;
 
+    [Header("Debug (solo para testear, apagar en la entrega)")]
+    [SerializeField] private bool debugKeys = false;
+    // Tecla que fuerza la victoria: llena la felicidad y dispara el escape.
+    [SerializeField] private Key debugWinKey = Key.F1;
+    // Tecla que pone el timer en 0 y spawnea la Pursuer.
+    [SerializeField] private Key debugPursuerKey = Key.F2;
+
     private int happiness;
     private bool introFinished;
     private bool questsStarted;
@@ -101,6 +109,11 @@ public class InGameSequenceController : MonoBehaviour
 
     private void Update()
     {
+        if (debugKeys)
+        {
+            HandleDebugKeys();
+        }
+
         // ya termino la intro pero todavia no arrancaron las quests: espero que el jugador
         // se acerque a la muneca para disparar todo.
         if (introFinished && !questsStarted)
@@ -386,6 +399,29 @@ public class InGameSequenceController : MonoBehaviour
         if (GameStateController.Instance != null && !string.IsNullOrEmpty(flagName))
         {
             GameStateController.Instance.SetFlag(flagName, value);
+        }
+    }
+
+    private void HandleDebugKeys()
+    {
+        if (Keyboard.current == null)
+        {
+            return;
+        }
+
+        if (Keyboard.current[debugWinKey].wasPressedThisFrame)
+        {
+            Debug.Log("[DEBUG] Forzando victoria: felicidad al maximo y disparando escape.");
+            happiness = happinessToWin;
+            TriggerEscape();
+        }
+
+        if (Keyboard.current[debugPursuerKey].wasPressedThisFrame)
+        {
+            Debug.Log("[DEBUG] Forzando timer en 0 y spawn de la Pursuer.");
+            timeLeft = 0f;
+            timerRunning = false;
+            SpawnPursuer();
         }
     }
 }
