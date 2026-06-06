@@ -11,9 +11,9 @@ using UnityEngine.UI;
  * espera unos segundos y recien ahi habilita las quests de la muneca junto con un
  * timer. Si el timer se acaba sin que el jugador haya escapado, aparece la Pursuer.
  *
- * Tambien lleva la cuenta de la felicidad: cada mision completada suma puntos y, si
- * se llega al tope, se abre la puerta de salida (condicion de victoria). Fallar una
- * mision resta felicidad (nunca baja de 0).
+ * Tambien lleva un parametro de "complete": cada mision completada suma puntos segun su
+ * dificultad y, al llegar a 100, se abre la puerta de salida (condicion de victoria).
+ * Fallar una mision no suma nada (no resta tampoco).
  *
  * Quest.cs avisa a este controlador cuando una mision se completa o falla.
  */
@@ -25,7 +25,7 @@ public class InGameSequenceController : MonoBehaviour
     // este controlador lo prende cuando empiezan las quests.
     [SerializeField] private DollEmotionSystem dollEmotionSystem;
     [SerializeField] private PursuerSpawnController pursuerSpawn;
-    // Puerta de salida. Se deja bloqueada por flag hasta llegar a la felicidad necesaria.
+    // Puerta de salida. Se deja bloqueada por flag hasta llegar al progreso necesario.
     [SerializeField] private DoorInteractable escapeDoor;
     [SerializeField] private string escapeDoorFlagName = "escape_door_unlocked";
 
@@ -49,11 +49,10 @@ public class InGameSequenceController : MonoBehaviour
     // Flag que se prende al arrancar las quests. Util para enganchar HintDialogue.
     [SerializeField] private string questsStartedFlag = "quests_started";
 
-    [Header("Victoria (felicidad)")]
-    [SerializeField] private int happinessPerMission = 30;
-    // Cuanto se resta al fallar una mision (no baja de 0). Ajustable.
-    [SerializeField] private int happinessLostOnFail = 30;
-    [SerializeField] private int happinessToWin = 100;
+    [Header("Victoria (progreso de escape)")]
+    // El parametro "complete" arranca en 0 y cada mision suma sus completePoints (por dificultad).
+    // Al llegar a este tope se abre la puerta. Pensado para necesitar 3 o 4 misiones.
+    [SerializeField] private int completeToWin = 100;
     [SerializeField, TextArea] private string escapeMessage = "La muñeca esta feliz y te abrio la puerta. RAPIDO! ESCAPA!";
     [SerializeField] private float escapeMessageDuration = 6f;
     // Escena que se carga cuando el jugador cruza la puerta ya abierta (victoria).
@@ -62,6 +61,9 @@ public class InGameSequenceController : MonoBehaviour
     [Header("Derrota (timer)")]
     // 10 minutos por defecto.
     [SerializeField] private float questPhaseDuration = 600f;
+    // Segundos que pasan desde que termina la intro hasta que arranca el timer global.
+    // El timer corre aunque el jugador todavia no se haya acercado a la muneca (mete presion).
+    [SerializeField] private float timerStartDelayAfterIntro = 10f;
     // Opcional: texto para mostrar el tiempo restante. Si queda vacio no se usa.
     [SerializeField] private TMP_Text timerLabel;
 
@@ -72,7 +74,7 @@ public class InGameSequenceController : MonoBehaviour
     // Tecla que pone el timer en 0 y spawnea la Pursuer.
     [SerializeField] private Key debugPursuerKey = Key.F2;
 
-    private int happiness;
+    private int completeProgress;
     private bool introFinished;
     private bool questsStarted;
     private bool timerRunning;
@@ -156,6 +158,27 @@ public class InGameSequenceController : MonoBehaviour
         introFinished = true;
         SetFlag(introFinishedFlag, true);
         SetIntroUiVisible(true);
+
+        // el timer global arranca solo, unos segundos despues de la intro.
+        StartCoroutine(StartTimerAfterDelay());
+    }
+
+    private IEnumerator StartTimerAfterDelay()
+    {
+        yield return new WaitForSeconds(timerStartDelayAfterIntro);
+        StartGlobalTimer();
+    }
+
+    private void StartGlobalTimer()
+    {
+        if (timerRunning || hasEscaped)
+        {
+            return;
+        }
+
+        timeLeft = questPhaseDuration;
+        timerRunning = true;
+        UpdateTimerLabel();
     }
 
     private void CheckDollApproach()
@@ -226,37 +249,28 @@ public class InGameSequenceController : MonoBehaviour
         }
 
         SetFlag(questsStartedFlag, true);
-
-        timeLeft = questPhaseDuration;
-        timerRunning = true;
-        UpdateTimerLabel();
     }
 
-    // La llama Quest al completar una mision.
-    public void OnMissionCompleted()
+    // La llama Quest al completar una mision, con los puntos de "complete" de esa mision.
+    public void OnMissionCompleted(int completePoints)
     {
         if (hasEscaped)
         {
             return;
         }
 
-        happiness = Mathf.Clamp(happiness + happinessPerMission, 0, happinessToWin);
+        completeProgress += Mathf.Max(0, completePoints);
+        Debug.Log($"InGameSequenceController: complete = {completeProgress}/{completeToWin}");
 
-        if (happiness >= happinessToWin)
+        if (completeProgress >= completeToWin)
         {
             TriggerEscape();
         }
     }
 
-    // La llama Quest al fallar una mision.
+    // La llama Quest al fallar una mision. Fallar no da complete (ni resta).
     public void OnMissionFailed()
     {
-        if (hasEscaped)
-        {
-            return;
-        }
-
-        happiness = Mathf.Max(0, happiness - happinessLostOnFail);
     }
 
     private void TriggerEscape()
@@ -411,8 +425,8 @@ public class InGameSequenceController : MonoBehaviour
 
         if (Keyboard.current[debugWinKey].wasPressedThisFrame)
         {
-            Debug.Log("[DEBUG] Forzando victoria: felicidad al maximo y disparando escape.");
-            happiness = happinessToWin;
+            Debug.Log("[DEBUG] Forzando victoria: progreso de escape al maximo.");
+            completeProgress = completeToWin;
             TriggerEscape();
         }
 

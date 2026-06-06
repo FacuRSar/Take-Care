@@ -23,10 +23,16 @@ public class QuestData
     public string SubtitlesForQuest;
     public string SubtitlesForQuestComplete;
     public string SubtitlesForQuestFail;
+    public string SubtitlesForQuestHalf;
 
     public float failPenaltyPoints;
     public float AddPoints;
     public float RemovePoints;
+
+    // puntos que suma al progreso de escape al completarse
+    public int CompletePoints;
+    // para no disparar el aviso de "mitad" mas de una vez por mision
+    public bool halfNotified;
 
     public String TpDollID;
 
@@ -46,9 +52,12 @@ public class QuestData
         SubtitlesForQuest = config.SubtitlesForQuest;
         SubtitlesForQuestComplete = config.SubtitlesForQuestComplete;
         SubtitlesForQuestFail = config.SubtitlesForQuestFail;
+        SubtitlesForQuestHalf = config.SubtitlesForQuestHalf;
         failPenaltyPoints = config.addPoints * -1.5f;
         AddPoints = config.addPoints;
         RemovePoints = config.removePoints;
+        CompletePoints = config.completePoints;
+        halfNotified = false;
         roomID = config.roomID;
     }
     public questType GetQuestType() => config.QuestType;
@@ -97,6 +106,9 @@ public class Quest : MonoBehaviour
     public bool isActive;
 
     int ObjInventory;
+
+    // cuantas quests se completaron hasta ahora (para flags de progreso)
+    private int completedCount;
     private void Awake()
     {
         dialogue = FindAnyObjectByType<DialogueController>();
@@ -173,9 +185,13 @@ public class Quest : MonoBehaviour
 
 
             activeQuest.isActive = true;
+            activeQuest.halfNotified = false;
             dialogue.PlayDialogue(activeQuest.SubtitlesForQuest);
             isActive = activeQuest.isActive;
             activeQuest.timer = 0f;
+
+            // flag para que los HintDialogue sepan que mision esta en curso
+            SetQuestFlag($"quest_{activeQuest.QuestID}_active", true);
 
             Debug.LogWarning($"Quest Activated: ID = {activeQuest.QuestID}, Name = {activeQuest.QuestName}");
 
@@ -204,6 +220,10 @@ public class Quest : MonoBehaviour
         activeQuest.isActive = false;
         isActive = activeQuest.isActive;
         Debug.Log("Quest fallida:" + activeQuest.config.Name);
+
+        SetQuestFlag($"quest_{activeQuest.QuestID}_active", false);
+        SetQuestFlag($"quest_{activeQuest.QuestID}_active_half", false);
+        SetQuestFlag($"quest_{activeQuest.QuestID}_failed", true);
 
         if (flow != null) flow.OnMissionFailed();
     }
@@ -271,6 +291,8 @@ public class Quest : MonoBehaviour
 
         Debug.Log($"Collected {collectedCount} / {totalRequired} for quest '{activeQuest.QuestName}'");
 
+        CheckHalfProgress(collectedCount, totalRequired);
+
         if (collectedCount >= totalRequired)
         {
             CompleteActiveQuest();
@@ -317,11 +339,33 @@ public class Quest : MonoBehaviour
         }
 
 
+        CheckHalfProgress(ObjInRoom, activeQuest.ItemsToPick().Count);
+
         if (ObjInRoom >= activeQuest.ItemsToPick().Count)
         {
             CompleteActiveQuest();
             ObjInRoom = 0;
             return;
+        }
+    }
+
+    // Avisa una sola vez cuando la mision pasa la mitad. Solo tiene sentido si requiere
+    // 2 o mas objetos (ToCollect / ToDelivery); con 1 solo, la mitad seria completarla.
+    private void CheckHalfProgress(int current, int total)
+    {
+        if (activeQuest == null || activeQuest.halfNotified) return;
+        if (total < 2) return;
+
+        if (current >= Mathf.CeilToInt(total / 2f))
+        {
+            activeQuest.halfNotified = true;
+
+            if (!string.IsNullOrEmpty(activeQuest.SubtitlesForQuestHalf))
+            {
+                dialogue.PlayDialogue(activeQuest.SubtitlesForQuestHalf);
+            }
+
+            SetQuestFlag($"quest_{activeQuest.QuestID}_active_half", true);
         }
     }
 
@@ -341,7 +385,23 @@ public class Quest : MonoBehaviour
 
         Debug.LogWarning($"Se completo la quest se le sumo {activeQuest.AddPoints} a {activeQuest.GetEmotionIDType_Add()} y se le resto {activeQuest.RemovePoints} a {activeQuest.GetEmotionIDType_Remove()}");
 
-        if (flow != null) flow.OnMissionCompleted();
+        // al completarse se sacan las flags de "activo" y queda solo la de "done"
+        SetQuestFlag($"quest_{activeQuest.QuestID}_active", false);
+        SetQuestFlag($"quest_{activeQuest.QuestID}_active_half", false);
+        SetQuestFlag($"quest_{activeQuest.QuestID}_done", true);
+        completedCount++;
+        SetQuestFlag($"missions_completed_{completedCount}", true);
+
+        if (flow != null) flow.OnMissionCompleted(activeQuest.CompletePoints);
+    }
+
+    // setea una flag en el estado global, si existe el controlador
+    private void SetQuestFlag(string flagName, bool value)
+    {
+        if (GameStateController.Instance != null)
+        {
+            GameStateController.Instance.SetFlag(flagName, value);
+        }
     }
 
     private void TpDoll()
