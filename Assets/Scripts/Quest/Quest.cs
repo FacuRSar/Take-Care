@@ -67,6 +67,7 @@ public class Quest : MonoBehaviour
     private DialogueController dialogue;
     private QuestData activeQuest;
     private PlayerInteraction playerInteraction;
+    private InGameSequenceController flow;
 
 
     [Header("Runtime Data")]
@@ -102,6 +103,7 @@ public class Quest : MonoBehaviour
         playerInteraction = FindFirstObjectByType<PlayerInteraction>();
         bars = FindFirstObjectByType<Bars>();
         controller = FindFirstObjectByType<QuestController>();
+        flow = FindFirstObjectByType<InGameSequenceController>();
         rend = GetComponent<Renderer>();
 
         if (rend != null)
@@ -130,6 +132,8 @@ public class Quest : MonoBehaviour
     private void FixedUpdate()
     {
         if (activeQuest == null || !activeQuest.isActive) return;
+
+        activeQuest.timer += Time.fixedDeltaTime;
 
         switch (activeQuest.GetQuestType())
         {
@@ -198,7 +202,10 @@ public class Quest : MonoBehaviour
 
         dialogue.PlayDialogue(activeQuest.SubtitlesForQuestFail);
         activeQuest.isActive = false;
+        isActive = activeQuest.isActive;
         Debug.Log("Quest fallida:" + activeQuest.config.Name);
+
+        if (flow != null) flow.OnMissionFailed();
     }
     
     public void _FailQuest()
@@ -231,13 +238,13 @@ public class Quest : MonoBehaviour
         return getTimer();
     }
 
-    private bool checkTimer() => activeQuest != null && activeQuest.timer >= activeQuest.TimerDuration;
+    private bool checkTimer() => activeQuest != null && activeQuest.TimerDuration > 0f && activeQuest.timer >= activeQuest.TimerDuration;
     public bool _checkTimer()
     {
         return checkTimer();
     }
 
-    private float getTimerDuration() => activeQuest.timer;
+    private float getTimerDuration() => activeQuest != null ? activeQuest.TimerDuration : 0f;
     public float _getTimerDuration()
     {
         return getTimerDuration();
@@ -333,6 +340,8 @@ public class Quest : MonoBehaviour
         bars.QuestFinished(activeQuest.GetEmotionIDType_Remove(), -(int)activeQuest.RemovePoints);
 
         Debug.LogWarning($"Se completo la quest se le sumo {activeQuest.AddPoints} a {activeQuest.GetEmotionIDType_Add()} y se le resto {activeQuest.RemovePoints} a {activeQuest.GetEmotionIDType_Remove()}");
+
+        if (flow != null) flow.OnMissionCompleted();
     }
 
     private void TpDoll()

@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float targetHeight;
     private float targetCameraY;
+    private float capsuleBaseY;
 
     private bool _CantMove;
 
@@ -44,6 +45,20 @@ public class PlayerMovement : MonoBehaviour
 
         if (capsule == null) // Me fijo que el componente no este asignado antes para asignarlo en el start
             capsule = GetComponent<CapsuleCollider>();
+
+        // Parto de la altura real del collider en la escena. Asi no lo agrando ni lo achico
+        // de golpe al iniciar (eso trababa al jugador contra el techo).
+        standingHeight = capsule.height;
+        capsuleBaseY = capsule.center.y - capsule.height * 0.5f;
+        // El agacharse nunca puede ser mas alto que estar parado.
+        crouchHeight = Mathf.Clamp(crouchHeight, 0.1f, standingHeight);
+
+        // Uso la altura real de la camara en escena como punto de reposo.
+        // Asi no pelea con el HeadBob si el prefab tiene un override distinto.
+        if (playerCamera != null)
+        {
+            standingCameraY = playerCamera.localPosition.y;
+        }
 
         // defino los target de ambos ejes para que no arranque feo
         targetHeight = standingHeight;
@@ -136,9 +151,8 @@ public class PlayerMovement : MonoBehaviour
         float newHeight = Mathf.Lerp(capsule.height, targetHeight, crouchLerpSpeed * Time.deltaTime);
         capsule.height = newHeight;
 
-        // Mantiene la base de la capsula en el mismo lugar.
-        // Si la altura baja, el centro tambien baja la mitad.
-        capsule.center = new Vector3(0f, 0f, 0f);
+        // Mantiene la base de la capsula en el mismo lugar para que el jugador no se hunda.
+        capsule.center = new Vector3(capsule.center.x, capsuleBaseY + newHeight * 0.5f, capsule.center.z);
 
         Vector3 camPos = playerCamera.localPosition;
         camPos.y = Mathf.Lerp(camPos.y, targetCameraY, crouchLerpSpeed * Time.deltaTime);
