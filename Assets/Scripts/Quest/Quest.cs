@@ -291,6 +291,7 @@ public class Quest : MonoBehaviour
     {
         if (activeQuest == null) return;
         if (activeQuest.GetQuestType() != questType.ToDelivery) return;
+        Debug.Log(activeQuest.GetQuestType());
 
         distanceList = new List<float>(new float[Obj_.Count]); // Reiniciar la lista de distancias para cada objeto
         int ObjInRoom = 0;
@@ -371,7 +372,6 @@ public class Quest : MonoBehaviour
             return;
         }
 
-        if (activeQuest.GetQuestType() == questType.ToDelivery) return;
 
         Obj_.Clear();
         ObjId.Clear();
