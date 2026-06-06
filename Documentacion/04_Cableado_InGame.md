@@ -180,16 +180,62 @@ Hoy la escena `InGame` **no tiene** ni el Pursuer ni el `DemoEndController` (sol
 
 ---
 
-## 8. Verificación de las quests (felicidad + timer por misión)
+## 8. Verificación de las quests (progreso de escape + timer por misión)
 
 Ya está cableado por código: `Quest` busca el `InGameSequenceController` solo y le avisa.
 No tenés que arrastrar nada acá, pero revisá:
 
-1. Que haya **4 misiones** definidas (cada completada suma 30; 4 × 30 = 120 → con 4 ya ganás
-   pasando los 100). Si querés que sea exacto 100, dejá 4 misiones igual: el flow clampea a 100.
-2. **Timer por misión**: para que fallar reste felicidad, cada `StructureQuest` tiene que tener
-   `TimerDuration > 0`. Si una misión tiene timer 0, nunca falla sola (solo suma).
-3. No hace falta tocar `QuestController`: ya tiene el guard para no spamear cuando el timer es 0.
+1. **Timer por misión**: para que fallar reste felicidad, cada misión necesita `timer > 0` en
+   `Quest.asset`. **Ya están las 6 con timer** (ver tabla abajo), así que esto está OK.
+2. No hace falta tocar `QuestController`: ya tiene el guard para no spamear cuando el timer es 0.
+
+### Parte de misiones (Quest.asset)
+
+Definidas en `Assets/Scripts/Quest/Quest.asset`. Tipos: `ToCollect` (juntar en inventario),
+`ToGo` (llegar a un lugar), `ToDelivery` (llevar objeto/s a una sala). Emociones: Cry / Angry / Happy.
+
+| id | Nombre | Tipo | Objetos | Destino | Timer | complete | Felicidad (barras muñeca) |
+|----|--------|------|---------|---------|-------|----------|---------------------------|
+| 0 | La Hora del Té de las Astillas | ToDelivery | 4× fragmentos de porcelana (itemID 0) | mesa del té (`TableForTheTea`) | 180 s | **30** | +25 Happy / -12 Cry |
+| 1 | ¿Dónde Estoy? | ToGo | ninguno (escondidas) | la muñeca escondida (`Muñeca`) | 120 s | **20** | +25 Happy / -12 Angry |
+| 2 | El Reflejo Mentiroso | ToDelivery | 1× cámara vieja (itemID 1) | chimenea (`Chimenea`) | 120 s | **30** | +35 Angry / -20 Angry |
+| 3 | El Álbum de la Familia Sonriente | ToCollect | 2× fotos (itemID 2 y 3) | — (juntar en inventario) | 120 s | **30** | +25 Happy / -12 Cry |
+| 4 | La Palta del Lamento | ToDelivery | 1× palta/corazón (itemID 4, pos. random) | cuna (`Cuna`) | 90 s | **35** | +30 Cry / -15 Happy |
+| 5 | El Acorde del Silencio | ToDelivery | 1× guitarra (itemID 5, pos. random, -30% vel.) | mecedora (`Habitacion2`) | 60 s | **40** | +30 Cry / -15 Happy |
+
+Pools de diálogo por misión (en `DialogueController`): `<prefijo>_In` (inicio), `_Complete`,
+`_Fail` y el nuevo `_Half` (mitad). Prefijos: `Té`, `¿?`, `Mentiroso`, `Sonriente`, `Palta`, `Acorde`.
+
+> La columna **complete** es el aporte de cada misión al parámetro de escape (tope 100). Con estos
+> valores hacen falta entre **3 y 4** misiones para abrir la puerta (3 difíciles ≈ 105, 4 fáciles ≈ 100).
+> La columna **Felicidad** son las barras de emoción de la muñeca (sistema aparte, no afecta el escape).
+>
+> Los pools `_In` / `_Complete` / `_Fail` ya se disparan solos. El `_Half` es nuevo y opcional:
+> lo cargás en el campo `Subtitles For Quest Half` de cada misión (en el inspector del `Quest.asset`).
+
+### Flags de progreso (para HintDialogue)
+
+Además de los subtítulos por misión, ahora `Quest` prende flags en `GameStateController` para
+que puedas colgar `HintDialogue` con `requiredFlags` / `blockedFlags` y mostrar progreso:
+
+- `quest_<id>_active` → true mientras esa misión está en curso (false al completarla/fallarla).
+- `quest_<id>_active_half` → true al pasar la **mitad** de una misión `ToCollect`/`ToDelivery`
+  de **2+ objetos** (también dispara el diálogo `_Half` si lo cargaste). Se apaga al completar/fallar.
+- `quest_<id>_done` → true cuando se completó esa misión.
+- `quest_<id>_failed` → true si se falló esa misión.
+- `missions_completed_<n>` → true al llegar a N misiones completadas (1, 2, 3...).
+
+> La flag de mitad solo aplica a misiones con 2 o más objetos: **id 0** (4 fragmentos) e
+> **id 3** (2 fotos). Las de 1 objeto no la usan (su "mitad" sería completarla).
+
+Ejemplos de uso en el `hintPool` de `HintDialogueController`:
+- Pista solo durante la misión 2: `requiredFlags = [quest_2_active]`.
+- Aliento al ir por la mitad: `requiredFlags = [quest_0_active_half]`, `blockedFlags = [quest_0_done]`.
+- Frase tras 3 misiones: `requiredFlags = [missions_completed_3]`.
+- Recordatorio que desaparece al terminar: `requiredFlags = [quest_0_active]`, `blockedFlags = [quest_0_done]`.
+
+> Los `<id>` son los de la tabla (0 a 5). Las flags se prenden solas desde el código, vos solo
+> las referenciás en las entradas del `hintPool`.
 
 ---
 
@@ -231,21 +277,25 @@ Ahora sí, seleccioná `GameFlow` y completá todos los campos:
 - `dollApproachDistance`: 3 (radio para que, terminada la intro, al acercarte a la muñeca arranquen las quests).
 - `questsStartedFlag`: `quests_started` (flag que se prende al arrancar las quests; útil para HintDialogue).
 
-> Flujo nuevo: termina la intro → se prende `intro_finished` → te acercás a la muñeca →
-> arrancan las quests al instante (sin la espera larga del idle), arranca el timer y se
-> prende `quests_started`.
-- `delayBeforeQuests`: 5 (los 5 segundos pedidos antes de arrancar las quests).
+> Flujo nuevo: termina la intro → se prende `intro_finished` → a los `timerStartDelayAfterIntro`
+> segundos arranca el timer global (corra o no la primera quest). Cuando te acercás a la muñeca
+> se prenden las quests al instante (sin la espera larga del idle) y se prende `quests_started`.
 
-**Victoria (felicidad)**
-- `happinessPerMission`: 30.
-- `happinessLostOnFail`: 30.
-- `happinessToWin`: 100.
+**Victoria (progreso de escape)**
+- `completeToWin`: 100. El parámetro `complete` arranca en 0 y cada misión suma sus
+  `completePoints` (definidos por dificultad en `Quest.asset`). **Fallar no suma nada.**
+  Al llegar a 100 se abre la puerta. Calibrado para necesitar **3 o 4 misiones**.
 - `escapeMessage`: "La muñeca esta feliz y te abrio la puerta. RAPIDO! ESCAPA!".
 - `escapeMessageDuration`: 6.
 - `winSceneName`: `Win` (o el nombre real de tu escena de victoria).
 
+> Ojo: esto está **desacoplado de la felicidad de la muñeca** (las barras de emoción siguen
+> funcionando igual con `addPoints`/`removePoints`). El escape ahora depende solo de `complete`.
+
 **Derrota (timer)**
 - `questPhaseDuration`: 600 (10 minutos).
+- `timerStartDelayAfterIntro`: 10 (segundos desde que termina la intro hasta que arranca el timer).
+  El timer corre **solo**, aunque todavía no te hayas acercado a la muñeca → mete más presión.
 - `timerLabel`: opcional. Si querés mostrar el tiempo, creá un `TextMeshPro - Text (UI)` en el
   Canvas y arrastralo acá. Si lo dejás vacío, el timer corre igual pero no se ve.
 

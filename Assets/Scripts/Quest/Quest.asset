@@ -33,6 +33,7 @@ MonoBehaviour:
     addPoints: 25
     EmotionID_: 0
     removePoints: 12
+    completePoints: 30
   - State: 2
     QuestType: 1
     SubtitlesForQuest: "\xBF?_In"
@@ -52,6 +53,7 @@ MonoBehaviour:
     addPoints: 25
     EmotionID_: 1
     removePoints: 12
+    completePoints: 20
   - State: 1
     QuestType: 2
     SubtitlesForQuest: Mentiroso_In
@@ -73,6 +75,7 @@ MonoBehaviour:
     addPoints: 35
     EmotionID_: 1
     removePoints: 20
+    completePoints: 30
   - State: 1
     QuestType: 0
     SubtitlesForQuest: Sonriente_In
@@ -96,6 +99,7 @@ MonoBehaviour:
     addPoints: 25
     EmotionID_: 0
     removePoints: 12
+    completePoints: 30
   - State: 0
     QuestType: 2
     SubtitlesForQuest: Palta_In
@@ -118,6 +122,7 @@ MonoBehaviour:
     addPoints: 30
     EmotionID_: 2
     removePoints: 15
+    completePoints: 35
   - State: 0
     QuestType: 2
     SubtitlesForQuest: Acorde_In
@@ -142,3 +147,4 @@ MonoBehaviour:
     addPoints: 30
     EmotionID_: 2
     removePoints: 15
+    completePoints: 40
