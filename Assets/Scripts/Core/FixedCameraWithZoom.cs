@@ -1,340 +1,253 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
-
-
-[Serializable]
-public class ObjectWithFocus
-{
-    [Tooltip("Objetivo de la cámara")]
-    public Transform TargetsMrBeast;
-    public float TransitionDuration;
-    public float SpeedCamera;
-}
-
-[Serializable]
-public class CameraSequence
-{
-    public List<ObjectWithFocus> objectives;
-}
 
 public class FixedCameraWithZoom : MonoBehaviour
 {
+    private static FixedCameraWithZoom currentOwner;
+    private static int focusVersion;
+    // hay varios focos en escena. este currentowner evita que uno inactivo desbloquee la camara del otro,
+    // lo agregue porque estaba rompiendome y la camara se movia como wachin mandibuleando
 
-    [Header("Components")]
+    [Header("Componentes")]
 
-    [SerializeField] private PlayerCamera playerCamera;
-    [SerializeField] private PlayerMovement playerMovement;
+    PlayerCamera playerCamera;
+
+    PlayerMovement playerMovement;
+
+    [SerializeField] private float Speed;
+
+
+    [Header("FixedCamera")]
+
     [SerializeField] private Transform Player;
-    [SerializeField] private Camera cam;
-
-    [Header("Cinemachine (opcional)")]
-    // Si se asigna, el foco usa esta camara virtual en vez de rotar la camara a mano.
-    [SerializeField] private CinemachineCamera focusVirtualCamera;
-    // Opcional: se congela durante el foco para que no pelee con la posicion de la camara.
-    [SerializeField] private PlayerHeadBob headBob;
-    // Posicion world capturada al iniciar el foco: la camara virtual queda clavada aca.
-    private Vector3 focusAnchorPosition;
-
-
-    [Header("Objetivos")]
-    [SerializeField] private CameraSequence[] sequences;
 
     [SerializeField] private float minAngle;
-    [SerializeField] private float SpeedZoom;
-    [SerializeField] public bool isPlayingSequence;
 
-    private float targetTimer;
-    private int currentTargetIndex;
+    [SerializeField] private bool restoreViewOnEnd = false;
+    // si esta activo, cuando termina el focus vuelve a mirar como estaba antes
+    // por defecto queda apagado porque a veces queremos que el susto te deje mirando para alla
 
-    bool canzoomed;
+    bool canzoomed = false;
 
+    private Quaternion savedPlayerRotation;
+    private Quaternion savedCameraRotation;
+    // guardo la rotacion previa por si este focus tiene que devolver la mirada al terminar
 
     [Header("CameraZoom")]
 
+    [SerializeField] private Camera cam;
+
     [SerializeField] private float zoomFov;
+
     [SerializeField] private float nomalFov;
 
     private float targetFov;
-    private float currentZoomFov;
-    //Angel: Agrego esta variable para que pueda hacer el llamado con un zoom personalizado.
 
 
     [Header("Timer")]
 
-    [SerializeField] private float DurationTotal;
     private float timer = 0f;
+    private int myFocusVersion;
+    private bool wasCancelled;
 
+    [SerializeField] private float duration;
 
-    private int currentSequenceIndex;
+    [SerializeField] public bool active;
+
 
 
     private void Start()
     {
-//<<<<<<< HEAD
-        currentZoomFov = zoomFov;
-        /*Angel: Lo inicializo igual al fov del inspector.
-=======
->>>>>>> DollEmotionSystem*/
-        DurationTotalScene();
+        Player = GameObject.FindGameObjectWithTag("Player").transform;
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+
+        playerCamera = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCamera>();
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
     }
-    private void Update()
+
+    private void LateUpdate()
     {
-        if (isPlayingSequence)
+        if (active && (currentOwner != this || myFocusVersion != focusVersion))
         {
-            if (focusVirtualCamera != null && !focusVirtualCamera.enabled)
-            {
-                // Clavamos el foco EXACTAMENTE en la posicion/rotacion que tiene la camara real ahora.
-                focusAnchorPosition = cam.transform.position;
-                focusVirtualCamera.transform.SetPositionAndRotation(cam.transform.position, cam.transform.rotation);
-                focusVirtualCamera.enabled = true;
+            CancelFocusWithoutUnlock();
+        }
 
-                if (headBob != null)
-                    headBob.SetFocusFreeze(true);
-            }
-
+        if (active)
+        {
             timer += Time.deltaTime;
+            // Debug.Log("Camara fija: timer " + timer);
 
-            if (timer < DurationTotal)
+            LockPlayerControl();
+
+            if (timer < duration)
             {
                 FixedCamera();
             }
-            else if (timer >= DurationTotal)
+            else
             {
-                isPlayingSequence = false;
+                active = false;
             }
-            else Debug.LogWarning("Error en el Timer");
-
         }
         else
         {
-            if (focusVirtualCamera != null && focusVirtualCamera.enabled)
-            {
-                focusVirtualCamera.enabled = false;
-
-                if (headBob != null)
-                    headBob.SetFocusFreeze(false);
-            }
+            timer = 0f;
 
             canzoomed = false;
 
-            playerMovement.CantMove(false);
-            playerCamera._MoveCamera(false);
+            if (currentOwner == this && playerMovement != null)
+            {
+                playerMovement.CantMove = false;
+            }
 
-            playerCamera.SyncRotation();
+            if (currentOwner == this && playerCamera != null)
+            {
+                playerCamera.CantMoveCamera = false;
+            }
 
-            ResetCameraSequence();
+            if (currentOwner == this)
+            {
+                if (!wasCancelled)
+                {
+                    RestoreViewIfNeeded();
+                }
+
+                currentOwner = null;
+            }
         }
+
+        //if (input.getkeydown(keycode.z)) active = true;
 
         CameraZoom();
-
-        if (Input.GetKey(KeyCode.Z))
-        {
-            PlaySequence(0);
-        }
-        if (Input.GetKey(KeyCode.F))
-        {
-            PlaySequence(1);
-        }
     }
 
     private void CameraZoom()
     {
-        if (canzoomed) targetFov = currentZoomFov;
+        if (canzoomed) targetFov = zoomFov;
         else targetFov = nomalFov;
-        //Angel: Cambio para usar currentZoomFov
 
-        if (focusVirtualCamera != null && focusVirtualCamera.enabled)
+        if (cam == null)
         {
-            LensSettings lens = focusVirtualCamera.Lens;
-            lens.FieldOfView = Mathf.Lerp(lens.FieldOfView, targetFov, Time.deltaTime * SpeedZoom);
-            focusVirtualCamera.Lens = lens;
+            return;
         }
-        else
-        {
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetFov, Time.deltaTime * SpeedZoom);
-        }
+
+        cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetFov, Time.deltaTime * Speed);
     }
+
     private void FixedCamera()
     {
-        if (sequences == null || sequences.Length == 0 || currentSequenceIndex < 0 || currentSequenceIndex >= sequences.Length)
-            return;
-
-        CameraSequence currentSequence = sequences[currentSequenceIndex];
-        if (currentSequence == null || currentSequence.objectives == null || currentSequence.objectives.Count == 0)
-            return;
-
-        if (currentTargetIndex < 0 || currentTargetIndex >= currentSequence.objectives.Count)
+        if (Player == null || cam == null)
         {
-            isPlayingSequence = false;
             return;
         }
 
-        ObjectWithFocus step = currentSequence.objectives[currentTargetIndex];
-        if (step == null || step.TargetsMrBeast == null)
-            return;
-
-        Transform target = step.TargetsMrBeast;
-        float transitionTime = step.TransitionDuration;
-        float speedCamera = step.SpeedCamera;
-
-        Vector3 directionPlayer = target.position - Player.position;
+        // el player gira solo en horizontal, la camara si mira al punto completo
+        // asi no termina el cuerpo mirando al techo como pose rarasa
+        Vector3 directionPlayer = transform.position - Player.position;
         directionPlayer.y = 0;
 
+        Vector3 directionCam = transform.position - cam.transform.position;
+
         Quaternion PlayerRotation = Quaternion.LookRotation(directionPlayer);
-        Player.transform.rotation = Quaternion.Lerp(Player.rotation, PlayerRotation, speedCamera * Time.deltaTime);
+        Quaternion CamRotation = Quaternion.LookRotation(directionCam);
 
-        if (focusVirtualCamera != null)
+        float angle = Quaternion.Angle(Player.rotation, PlayerRotation);
+
+        if (angle > minAngle)
         {
-            // Mantenemos la camara virtual clavada en la posicion capturada (no se mueve, no orbita).
-            focusVirtualCamera.transform.position = focusAnchorPosition;
-
-            // Solo rotamos suave hacia el objetivo desde esa posicion fija.
-            Vector3 directionCam = target.position - focusAnchorPosition;
-            if (directionCam.sqrMagnitude > 0.0001f)
-            {
-                Quaternion CamRotation = Quaternion.LookRotation(directionCam);
-                focusVirtualCamera.transform.rotation = Quaternion.Lerp(focusVirtualCamera.transform.rotation, CamRotation, speedCamera * Time.deltaTime);
-            }
-        }
-        else
-        {
-            Vector3 directionCam = target.position - cam.transform.position;
-
-            Quaternion CamRotation = Quaternion.LookRotation(directionCam);
-            cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, CamRotation, speedCamera * Time.deltaTime);
+            Player.rotation = Quaternion.Lerp(Player.rotation, PlayerRotation, Speed * Time.deltaTime);
         }
 
+        cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, CamRotation, Speed * Time.deltaTime);
+    }
 
-
-        targetTimer += Time.deltaTime;
-
-        AngelMetodo();
-
-        if (targetTimer >= transitionTime)
+    private void LockPlayerControl()
+    {
+        // bloqueo movimiento y mouse mientras dura el foco. se hace cada frame para ganarle al input
+        if (playerMovement != null)
         {
-            targetTimer = 0f;
+            playerMovement.CantMove = true;
+        }
 
-            if (currentTargetIndex < currentSequence.objectives.Count - 1)
-            {
-                currentTargetIndex++;
-                Debug.Log("Cambiando al Target: " + currentTargetIndex);
-            }
+        if (playerCamera != null)
+        {
+            playerCamera.CantMoveCamera = true;
         }
     }
 
-
-
-
-    private void AngelMetodo()
+    public bool Active
     {
+        get { return active; }
+        private set { active = value; }
+    }
+
+    public void ActivateForDuration(float newDuration)
+    {
+        if (currentOwner != null && currentOwner != this)
+        {
+            currentOwner.CancelFocusWithoutUnlock();
+            // si otro focus estaba vivo, lo corto sin desbloquear input
+            // el nuevo focus se encarga de tomar control
+        }
+
+        if (newDuration > 0f)
+        {
+            duration = newDuration;
+        }
+
+        SaveCurrentView();
+        // guardo la mirada justo antes de mover la camara
+
+        focusVersion++;
+        myFocusVersion = focusVersion;
+        wasCancelled = false;
+
+        timer = 0f;
+        currentOwner = this;
         canzoomed = true;
-
-        playerMovement.CantMove(true);
-        playerCamera._MoveCamera(true);
+        active = true;
     }
 
-    private void ResetCameraSequence()
+    private void CancelFocusWithoutUnlock()
     {
-        currentTargetIndex = 0;
-        targetTimer = 0f;
+        active = false;
         timer = 0f;
+        canzoomed = false;
+        wasCancelled = true;
+        // corto este focus pero no libero movimiento aca
+        // eso lo maneja el focus que queda como dueno real
     }
 
-    private void DurationTotalScene()
+    private void SaveCurrentView()
     {
-        DurationTotal = 0f;
-        if (sequences == null || sequences.Length == 0 || currentSequenceIndex < 0 || currentSequenceIndex >= sequences.Length)
-            return;
-
-        CameraSequence currentSequence = sequences[currentSequenceIndex];
-        if (currentSequence == null || currentSequence.objectives == null)
-            return;
-
-        foreach (ObjectWithFocus obj in currentSequence.objectives)
+        // esto solo importa si restoreviewonend esta activo
+        // igual guardarlo no cuesta nada y evita ramificar de mas
+        if (Player != null)
         {
-            if (obj != null)
-            {
-                DurationTotal += obj.TransitionDuration;
-            }
+            savedPlayerRotation = Player.rotation;
+        }
+
+        if (cam != null)
+        {
+            savedCameraRotation = cam.transform.rotation;
         }
     }
 
-    // Activa la secuencia ya armada en pools (sin pasar foco ni tiempos desde afuera).
-    private void PlayFocusSequence()
+    private void RestoreViewIfNeeded()
     {
-        enabled = true;
-        ResetCameraSequence();
-        DurationTotalScene();
-        isPlayingSequence = true;
+        if (!restoreViewOnEnd)
+        {
+            return;
+        }
+
+        // vuelvo la mirada original solo en focos que lo pidan
+        // si no, dejamos el encuadre dramatico donde quedo
+        if (Player != null)
+        {
+            Player.rotation = savedPlayerRotation;
+        }
+
+        if (cam != null)
+        {
+            cam.transform.rotation = savedCameraRotation;
+        }
     }
-
-    // Duración total de la secuencia (para coroutines que esperan al foco).
-    private float _GetTotalSequenceDuration()
-    {
-        DurationTotalScene();
-        return DurationTotal;
-    }
-
-    public float GetTotalSequenceDuration()
-    {
-        return _GetTotalSequenceDuration();
-    }
-
-    public bool IsPlayingSequence()
-    {
-        return isPlayingSequence;
-    }
-
-    private void _PlaySequence(int sequenceIndex)
-    {
-//<<<<<<< HEAD
-        currentZoomFov = zoomFov;
-        //Angel: Reseteo el zoom normal
-
-//=======
-//>>>>>>> DollEmotionSystem
-        currentSequenceIndex = sequenceIndex;
-
-        currentTargetIndex = 0;
-        targetTimer = 0f;
-        timer = 0f;
-
-        DurationTotalScene();
-
-        isPlayingSequence = true;
-    }
-    public void PlaySequence(int sequenceIndex)
-    {
-        _PlaySequence(sequenceIndex);
-    }
-
-//<<<<<<< HEAD
-    //Aguego el nuevo PlaySequence pero con un zoom personalizado
-    private void _PlaySequence(int sequenceIndex, float customZoomFov)
-    {
-        currentZoomFov = customZoomFov > 0f ? customZoomFov : nomalFov;
-
-        currentSequenceIndex = sequenceIndex;
-
-        currentTargetIndex = 0;
-        targetTimer = 0f;
-        timer = 0f;
-
-        DurationTotalScene();
-
-        isPlayingSequence = true;
-    }
-
-    public void PlaySequence(int sequenceIndex, float customZoomFov)
-    {
-        _PlaySequence(sequenceIndex, customZoomFov);
-    }
-
-
 }
-//=======
-//>>>>>>> DollEmotionSystem
