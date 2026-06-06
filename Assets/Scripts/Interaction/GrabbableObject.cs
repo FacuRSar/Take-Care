@@ -1,5 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
+// Configuracion compartida del agarre. Vive una sola vez en PlayerInteraction y se le
+// pasa a cada objeto al agarrarlo, asi no hay que repetir los valores en cada prop.
+[System.Serializable]
+public class GrabSettings
+{
+    public float minDistance = 0.6f;
+    public float maxDistance = 2.5f;
+    public float defaultDistance = 1f;
+    public float scrollStep = 0.15f;
+    public float rotateSensitivity = 0.4f;
+}
 
 /*  esta logica mantiene la mecanica original de agarrar/soltar objetos
 *   pero reorganizada para separar responsabilidades y facilitar mantenimiento
@@ -30,6 +43,25 @@ public class GrabbableObject : MonoBehaviour
 
     [SerializeField] private float maxFollowVelocity = 15f;
     //limite de velocidad para que no salga disparado si se desacomoda
+
+    [Header("Opciones de este objeto")]
+    [SerializeField] private bool lockRotation = false;
+    //si esta tildado, no se puede rotar con click derecho
+
+    [SerializeField] private bool useFixedGrabRotation = false;
+    //si esta tildado, al agarrarlo siempre toma la rotacion de "heldLocalRotation"
+
+    [SerializeField] private bool useCustomDistance = false;
+    //si esta tildado, usa "customHoldDistance" como distancia inicial en vez de la default
+
+    [SerializeField] private float customHoldDistance = 1f;
+    //distancia inicial propia de este objeto (solo se usa si useCustomDistance esta tildado)
+
+    // config compartida que llega desde PlayerInteraction al agarrar
+    private GrabSettings settings;
+    private float currentHoldDistance;
+    private PlayerCamera playerCamera;
+    private bool cameraFrozenByMe;
 
     private Rigidbody rb;
     private Collider objectCollider;
@@ -68,6 +100,17 @@ public class GrabbableObject : MonoBehaviour
         playerInteraction = FindAnyObjectByType<PlayerInteraction>();
     }
 
+    private void Update()
+    {
+        if (!isHeld)
+        {
+            return;
+        }
+
+        HandleHoldDistance();
+        HandleHoldRotation();
+    }
+
     private void FixedUpdate()
     {
         if (!isHeld || currentHandPoint == null)
@@ -79,7 +122,7 @@ public class GrabbableObject : MonoBehaviour
     }
 
 
-    public void PickUp(Transform handPoint, int heldLayer)
+    public void PickUp(Transform handPoint, int heldLayer, GrabSettings grabSettings)
     {
         //cuando agarraro:
         // - apaga gravedad
@@ -94,11 +137,29 @@ public class GrabbableObject : MonoBehaviour
 
         currentHandPoint = handPoint;
         isHeld = true;
+        settings = grabSettings;
         IgnorePlayerCollisions(true);
 
-        // guardo la pose local
-        targetLocalPosition = heldLocalPosition;
-        targetLocalRotation = Quaternion.Euler(heldLocalRotation);
+        // referencia a la camara del jugador para poder frenarla mientras roto el objeto
+        if (playerCamera == null)
+        {
+            playerCamera = handPoint.GetComponentInParent<PlayerCamera>();
+        }
+
+        // distancia inicial: la custom del objeto o la default compartida
+        float startDistance = useCustomDistance ? customHoldDistance : settings.defaultDistance;
+        currentHoldDistance = Mathf.Clamp(startDistance, settings.minDistance, settings.maxDistance);
+        targetLocalPosition = new Vector3(heldLocalPosition.x, heldLocalPosition.y, currentHoldDistance);
+
+        // rotacion inicial: fija configurada, o mantener la orientacion actual del objeto
+        if (useFixedGrabRotation)
+        {
+            targetLocalRotation = Quaternion.Euler(heldLocalRotation);
+        }
+        else
+        {
+            targetLocalRotation = Quaternion.Inverse(handPoint.rotation) * rb.rotation;
+        }
 
         //restauro escala original para evitar deformaciones por jerarquia (Tuve un error cambiando las escalas de algunas cosas)
         transform.localScale = originalScale;
@@ -116,6 +177,7 @@ public class GrabbableObject : MonoBehaviour
         // - el objeto vuelve a su layer original
         isHeld = false;
         IgnorePlayerCollisions(false);
+        FreezeCamera(false);
         currentHandPoint = null;
 
         rb.useGravity = true;
@@ -182,6 +244,76 @@ public class GrabbableObject : MonoBehaviour
                 Physics.IgnoreCollision(heldCollider, playerCollider, ignore);
             }
         }
+    }
+
+    private void HandleHoldDistance()
+    {
+        if (Mouse.current == null || settings == null)
+        {
+            return;
+        }
+
+        // la rueda acerca (positivo) o aleja (negativo) el objeto, siempre dentro del rango
+        float scrollY = Mouse.current.scroll.ReadValue().y;
+
+        if (scrollY > 0f)
+        {
+            currentHoldDistance += settings.scrollStep;
+        }
+        else if (scrollY < 0f)
+        {
+            currentHoldDistance -= settings.scrollStep;
+        }
+
+        currentHoldDistance = Mathf.Clamp(currentHoldDistance, settings.minDistance, settings.maxDistance);
+        targetLocalPosition = new Vector3(heldLocalPosition.x, heldLocalPosition.y, currentHoldDistance);
+    }
+
+    private void HandleHoldRotation()
+    {
+        // este objeto no se puede rotar
+        if (lockRotation || settings == null)
+        {
+            FreezeCamera(false);
+            return;
+        }
+
+        bool rightHeld = Mouse.current != null && Mouse.current.rightButton.isPressed;
+
+        // mientras roto el objeto freno la camara para no marear; al soltar el click la libero
+        if (!rightHeld)
+        {
+            FreezeCamera(false);
+            return;
+        }
+
+        FreezeCamera(true);
+
+        Vector2 delta = Mouse.current.delta.ReadValue();
+
+        Quaternion yaw = Quaternion.AngleAxis(delta.x * settings.rotateSensitivity, Vector3.up);
+        Quaternion pitch = Quaternion.AngleAxis(-delta.y * settings.rotateSensitivity, Vector3.right);
+
+        // acumulo el giro sobre la pose que ya tenia (relativo al HandPoint)
+        targetLocalRotation = yaw * pitch * targetLocalRotation;
+    }
+
+    private void FreezeCamera(bool freeze)
+    {
+        // solo toco la camara si fui yo quien la freno, asi no piso otros bloqueos
+        if (playerCamera == null || cameraFrozenByMe == freeze)
+        {
+            return;
+        }
+
+        playerCamera._MoveCamera(freeze);
+        cameraFrozenByMe = freeze;
+    }
+
+    private void OnDisable()
+    {
+        // por si el objeto se manda al inventario o se desactiva mientras lo rotaba
+        FreezeCamera(false);
     }
 
     private void FollowHandPoint()
