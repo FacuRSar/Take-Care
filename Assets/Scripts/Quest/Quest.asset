@@ -85,7 +85,7 @@ MonoBehaviour:
       Le exige al jugador encontrar tres fotos espec\xEDficas que est\xE1n tiradas
       por la habitaci\xF3n."
     id: 3
-    TpDollID: 
+    TpDollID: Comedor
     itemsToPickData:
     - quantity: 1
       itemID: 3
@@ -96,3 +96,25 @@ MonoBehaviour:
     addPoints: 25
     EmotionID_: 0
     removePoints: 12
+  - State: 0
+    QuestType: 2
+    SubtitlesForQuest: Palta_In
+    SubtitlesForQuestComplete: PaltaComplete
+    SubtitlesForQuestFail: Palta_Fail
+    timer: 90
+    Name: La Palta del Lamento
+    description: "La mu\xF1eca entra en p\xE1nico porque dice que perdi\xF3 su vieja
+      palta de trapo y felpa en alg\xFAn lugar de la caba\xF1a y que \"est\xE1 empezando
+      a dejar de sentir\". El jugador debe registrar la caba\xF1a para encontrar
+      el coraz\xF3n \u2014que aparece en una ubicaci\xF3n completamente aleatoria
+      en cada partida"
+    id: 4
+    TpDollID: Cuna
+    itemsToPickData:
+    - quantity: 1
+      itemID: 4
+    roomID: Cuna
+    EmotionID: 0
+    addPoints: 30
+    EmotionID_: 2
+    removePoints: 15
