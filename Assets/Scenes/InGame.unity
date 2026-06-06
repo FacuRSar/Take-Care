@@ -5352,6 +5352,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3771045492383984751, guid: 2815d54546e5ca84fb76ce7ad6f5f883, type: 3}
   m_PrefabInstance: {fileID: 705036597}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &220756824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8830619681817966135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &233186662 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1583252280771064067, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
@@ -6518,6 +6538,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &448094263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8830619681817966133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &450696699
 GameObject:
   m_ObjectHideFlags: 0
@@ -8539,6 +8579,31 @@ MonoBehaviour:
   WeightMin: 0
   NewWeight: 0.2
   CantRepeatPositions: 0
+--- !u!1 &1036498168 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6664376492202194333, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+  m_PrefabInstance: {fileID: 8830619681817966128}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1036498172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036498168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!114 &1085746105 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2100724006607642493, guid: af103be088adec84a9a5aea2e36663d4, type: 3}
@@ -13484,6 +13549,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 365844216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1176589362 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4758492813308174572, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
+  m_PrefabInstance: {fileID: 7670006764278436313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1176589365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176589362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &1178411492
 GameObject:
   m_ObjectHideFlags: 0
@@ -13853,7 +13943,10 @@ MonoBehaviour:
   uiObjectsHiddenDuringIntro: []
   introDialogueId: ingame_intro
   lockPlayerDuringIntro: 0
-  delayBeforeQuests: 5
+  delayBeforeQuests: 0
+  introFinishedFlag: intro_finished
+  dollApproachDistance: 3
+  questsStartedFlag: quests_started
   happinessPerMission: 30
   happinessLostOnFail: 30
   happinessToWin: 100
@@ -18838,8 +18931,8 @@ MonoBehaviour:
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
-  m_UseGeometry: 0
+    m_Bits: 6144
+  m_UseGeometry: 1
   m_DefaultArea: 0
   m_GenerateLinks: 0
   m_IgnoreNavMeshAgent: 1
@@ -19614,6 +19707,153 @@ MonoBehaviour:
 '
       delayBefore: 0
       duration: 5
+  - id: Palta_In
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Est\xE1 en alguna parte... snif... una fruta verde y pesada, escondida
+        en lo oscuro."
+      delayBefore: 0
+      duration: 3
+    - text: "Su piel se siente como carne vieja y me est\xE1 mirando... Su carozo
+        es un ojo ciego que no para de llorar aceite..."
+      delayBefore: 0
+      duration: 3
+    - text: Buscala y llevala a la cuna para taparla... por favor...
+      delayBefore: 20
+      duration: 3
+    - text: Las cosas que se pudren cambian de color...
+      delayBefore: 0
+      duration: 3
+    - text: "primero verdes, despu\xE9s negras, como los moretones en los brazos."
+      delayBefore: 0
+      duration: 3
+    - text: "A m\xED tambi\xE9n se me est\xE1 poniendo la piel negra de tanto llorar
+        en este pasillo..."
+      delayBefore: 20
+      duration: 3
+    - text: 'Me acuerdo cuando la cortaron con el cuchillo de la cocina... '
+      delayBefore: 0
+      duration: 3
+    - text: "un tajo largo, de punta a punta, para arrancarle el coraz\xF3n."
+      delayBefore: 0
+      duration: 3
+    - text: "El carozo estaba tan pegado a la pulpa... igual que mis recuerdos a
+        esta caba\xF1a... hip... doli\xF3 tanto..."
+      delayBefore: 20
+      duration: 3
+    - text: El aceite que suelta es tan resbaladizo... me llena las manos, me llena
+        la cara.
+      delayBefore: 0
+      duration: 3
+    - text: "Todo se vuelve h\xFAmedo y rancio ac\xE1 adentro. No dejes que me toque..."
+      delayBefore: 0
+      duration: 3
+    - text: "no dejes que me ensucie m\xE1s..."
+      delayBefore: 20
+      duration: 3
+    - text: ya me vio... ya sabe que estoy llorando...
+      delayBefore: 0
+      duration: 3
+    - text: "no dejes que me ensucie m\xE1s..."
+      delayBefore: 0
+      duration: 3
+  - id: Palta_Complete
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Ah... suspiro... ya est\xE1 en la cuna, abajo de las mantas viejas."
+      delayBefore: 0
+      duration: 3
+    - text: "Ah\xED est\xE1 oscuro y el ojo ya no puede parpadear. Quedate ac\xE1
+        conmigo, tapame a m\xED tambi\xE9n... hace fr\xEDo"
+      delayBefore: 0
+      duration: 3
+  - id: Palta_Fail
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Se aplast\xF3... se deshizo en el suelo y el aceite negro me entr\xF3
+        en los ojos. Ahora ya no puedo ver nada... solo puedo llorar..."
+      delayBefore: 0
+      duration: 5
+  - id: Acorde_In
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "La guitarra est\xE1 llorando... tiene las cuerdas rotas y desafinadas
+        por el desuso."
+      delayBefore: 0
+      duration: 3
+    - text: "Buscala en alg\xFAn rinc\xF3n de la caba\xF1a y llevala a la vieja mecedora
+        del sal\xF3n..."
+      delayBefore: 0
+      duration: 3
+    - text: por favor, hacelo antes de que su madera se termine de partir de la tristeza...
+      delayBefore: 20
+      duration: 3
+    - text: "Pap\xE1 sol\xEDa tocar una canci\xF3n muy triste cuando la tormenta
+        golpeaba las ventanas del techo."
+      delayBefore: 0
+      duration: 3
+    - text: "Una melod\xEDa sin letra, pesada como el plomo."
+      delayBefore: 0
+      duration: 2
+    - text: "Ahora la guitarra est\xE1 sola en la oscuridad, intentando imitar mis
+        sollozos... snif..."
+      delayBefore: 0
+      duration: 3
+    - text: "Me acuerdo perfectamente del d\xEDa en que se cort\xF3 la primera cuerda..."
+      delayBefore: 0
+      duration: 3
+    - text: "son\xF3 como un latigazo seco en el pasillo. Nadie volvi\xF3 a tocarla
+        desde esa noche."
+      delayBefore: 0
+      duration: 3
+    - text: "Se qued\xF3 ah\xED tirada, llen\xE1ndose de moho, de polvo... y de recuerdos
+        rotos... hip..."
+      delayBefore: 0
+      duration: 3
+    - text: "El sonido del viento pasando a trav\xE9s de su caja de resonancia vac\xEDa
+        es horrible..."
+      delayBefore: 0
+      duration: 3
+    - text: 'se siente como si me estuvieran apretando el cuello con manos heladas. '
+      delayBefore: 0
+      duration: 3
+    - text: "\xBFPor qu\xE9 tard\xE1s tanto? No dejes que se caiga al suelo..."
+      delayBefore: 0
+      duration: 3
+    - text: "Ya casi no queda tiempo para la \xFAltima nota... se est\xE1 apagando
+        el eco adentro de las maderas de la casa..."
+      delayBefore: 0
+      duration: 3
+    - text: ya no escucho nada...
+      delayBefore: 0
+      duration: 2
+  - id: Acorde_Complete
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Ah... suspiro. Ya est\xE1 en la mecedora. Dejala ah\xED tranquila, que
+        el aire fr\xEDo mueva las cuerdas flojas."
+      delayBefore: 0
+      duration: 3
+    - text: "Sentate en el piso ac\xE1 al lado m\xEDo... vamos a quedarnos quietos
+        escuchando el silencio"
+      delayBefore: 0
+      duration: 3
+  - id: Acorde_Fail
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Se parti\xF3 el m\xE1stil... se rompi\xF3 del todo por tu culpa. Ya
+        nunca m\xE1s vamos a tener m\xFAsica en esta caba\xF1a."
+      delayBefore: 0
+      duration: 3
+    - text: "Ahora solo nos queda el ruido de las sombras devor\xE1ndonos..."
+      delayBefore: 0
+      duration: 3
 --- !u!4 &1497450607
 Transform:
   m_ObjectHideFlags: 0
@@ -19645,7 +19885,18 @@ MonoBehaviour:
   gameStateController: {fileID: 1490577939}
   firstHintDelay: 15
   repeatInterval: 18
-  hintPool: []
+  hintPool:
+  - text: Deberia de intentar encender la luz primero
+    duration: 0
+    requiredFlags: []
+    blockedFlags:
+    - power_on
+  - text: "Todo empezo con esa mu\xF1eca! Quizas..."
+    duration: 0
+    requiredFlags:
+    - intro_finished
+    blockedFlags:
+    - DollIdle
   activeOnStart: 0
 --- !u!114 &1500531872 stripped
 MonoBehaviour:
@@ -20402,6 +20653,26 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1651162448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8830619681817966129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &1685245404
 GameObject:
   m_ObjectHideFlags: 0
@@ -28916,6 +29187,10 @@ PrefabInstance:
       propertyPath: introSequenceController
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 597588502621698637, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 672796059042917581, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
       propertyPath: m_Name
       value: SweetHome
@@ -29056,6 +29331,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3289901732113019734, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 3624711768784573364, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
       propertyPath: canOpen
       value: 1
@@ -29152,6 +29431,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 4.526
       objectReference: {fileID: 0}
+    - target: {fileID: 4758492813308174572, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 5105969563727917988, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
       propertyPath: m_Layer
       value: 12
@@ -29187,6 +29470,10 @@ PrefabInstance:
     - target: {fileID: 5871019541979047738, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
       propertyPath: m_LocalPosition.z
       value: -6.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6158469286235284659, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6298733218549601457, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
       propertyPath: m_LocalPosition.y
@@ -29244,6 +29531,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 1.801
       objectReference: {fileID: 0}
+    - target: {fileID: 8555382074415788091, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 8979508804848030449, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
@@ -29271,6 +29562,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5105969563727917988, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7670006764278436316}
+    - targetCorrespondingSourceObject: {fileID: 4758492813308174572, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1176589365}
     - targetCorrespondingSourceObject: {fileID: 4810895902518242081, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -29357,6 +29651,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 77514389802092307, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 1340696108124054901, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.714
@@ -29420,6 +29718,10 @@ PrefabInstance:
     - target: {fileID: 1842396973438632056, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.725
+      objectReference: {fileID: 0}
+    - target: {fileID: 2203534113854949799, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2388078301700009678, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       propertyPath: m_LocalScale.x
@@ -29565,6 +29867,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3356150938332208360, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 4863453175667052739, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       propertyPath: m_LocalScale.x
       value: 127.600006
@@ -29616,6 +29922,26 @@ PrefabInstance:
     - target: {fileID: 4874184651928818929, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       propertyPath: m_LocalPosition.z
       value: -1.993
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203245581691062905, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5743835753455760042, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5872619732490991123, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6664376492202194333, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6808008190162632287, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6834633444363974916, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       propertyPath: m_LocalScale.x
@@ -29701,6 +30027,18 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7691238218434531402, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8094110726005136345, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8225560972893240801, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 8466596058736495040, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.462
@@ -29724,24 +30062,42 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7691238218434531402, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8830619681817966140}
+    - targetCorrespondingSourceObject: {fileID: 7691238218434531402, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 220756824}
     - targetCorrespondingSourceObject: {fileID: 3356150938332208360, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8830619681817966139}
+    - targetCorrespondingSourceObject: {fileID: 3356150938332208360, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8830619681817966147}
     - targetCorrespondingSourceObject: {fileID: 5203245581691062905, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8830619681817966138}
+    - targetCorrespondingSourceObject: {fileID: 5203245581691062905, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 448094263}
     - targetCorrespondingSourceObject: {fileID: 7436095672574527090, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8830619681817966137}
+    - targetCorrespondingSourceObject: {fileID: 6664376492202194333, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1036498172}
     - targetCorrespondingSourceObject: {fileID: 77514389802092307, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8830619681817966136}
+    - targetCorrespondingSourceObject: {fileID: 77514389802092307, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8830619681817966144}
     - targetCorrespondingSourceObject: {fileID: 761223143097225762, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       insertIndex: -1
       addedObject: {fileID: 838022143}
     - targetCorrespondingSourceObject: {fileID: 6808008190162632287, guid: 845698c81fce5a54fba4015c664328db, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1147086744}
+    - targetCorrespondingSourceObject: {fileID: 6808008190162632287, guid: 845698c81fce5a54fba4015c664328db, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1651162448}
   m_SourcePrefab: {fileID: 100100000, guid: 845698c81fce5a54fba4015c664328db, type: 3}
 --- !u!1 &8830619681817966129 stripped
 GameObject:
@@ -29908,6 +30264,46 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.97230196, z: 0.75692177}
   m_Center: {x: 0, y: 0.64204645, z: -0.121539116}
+--- !u!114 &8830619681817966144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8830619681817966131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
+--- !u!114 &8830619681817966147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8830619681817966134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

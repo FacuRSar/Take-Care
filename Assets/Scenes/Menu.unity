@@ -1378,6 +1378,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1523088091}
+  - {fileID: 2045248100}
   - {fileID: 1636885186}
   - {fileID: 1490577940}
   - {fileID: 331330057}
@@ -1480,6 +1481,18 @@ PrefabInstance:
     - target: {fileID: 5737749054618147240, guid: af103be088adec84a9a5aea2e36663d4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5868516122576071634, guid: af103be088adec84a9a5aea2e36663d4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6384236607929527546, guid: af103be088adec84a9a5aea2e36663d4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1636885187}
+    - target: {fileID: 6384236607929527546, guid: af103be088adec84a9a5aea2e36663d4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseSettings
       objectReference: {fileID: 0}
     - target: {fileID: 6540453416116849651, guid: af103be088adec84a9a5aea2e36663d4, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2166,6 +2179,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 932646416280209080, guid: f417dbdca8d1961439f67e5972466b59, type: 3}
   m_PrefabInstance: {fileID: 1361568185}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1421680522 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8828527731761236642, guid: af103be088adec84a9a5aea2e36663d4, type: 3}
+  m_PrefabInstance: {fileID: 1293526165}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!4 &1490577940 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8467555593094026672, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
@@ -3299,6 +3323,7 @@ MonoBehaviour:
   menuSceneName: Menu
   introSceneName: Intro
   playSceneName: Play
+  gameOverSceneName: GameOver
   persistentFlagIds: []
 --- !u!1 &2045248098
 GameObject:
@@ -3332,7 +3357,7 @@ MonoBehaviour:
   lights:
   - {fileID: 638115237}
   textureSwaps:
-  - renderer: {fileID: 0}
+  - renderer: {fileID: 717474151}
     materialIndex: 0
     creepyTexture: {fileID: 2800000, guid: def78907f8f15854dafd14468c69e95c, type: 3}
   - renderer: {fileID: 118721957}
@@ -3357,8 +3382,8 @@ MonoBehaviour:
   - renderer: {fileID: 564628311}
     materialIndex: 0
     creepyColor: {r: 0.33333334, g: 0.3529412, b: 0.3019608, a: 0}
-  fadeImage: {fileID: 0}
-  darkOverlayAlpha: 0.9411765
+  fadeImage: {fileID: 1421680522}
+  darkOverlayAlpha: 0.9
   doorSlamSfxId: OpenDoor
   fallbackDoorSlamDuration: 1
   introSceneName: Intro
@@ -3378,12 +3403,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2045248098}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.07944, y: 1.26039, z: 11.86296}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13.43904, y: -1.16098, z: -11.053161}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 915427358}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2059859967
 GameObject:
@@ -3693,4 +3718,3 @@ SceneRoots:
   - {fileID: 2059859968}
   - {fileID: 1107352369}
   - {fileID: 1668556589}
-  - {fileID: 2045248100}

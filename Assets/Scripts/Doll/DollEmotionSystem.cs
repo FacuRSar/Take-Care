@@ -186,4 +186,10 @@ public class DollEmotionSystem : MonoBehaviour
     { 
         isQuestActive = isActive;
     }
+
+    // Salta la espera del idle y hace que la muneca pida una quest en el proximo frame.
+    public void ForceStartQuest()
+    {
+        idleStateCounter = 900;
+    }
 }

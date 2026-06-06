@@ -18,6 +18,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float standingCameraY = 1.6f;
     [SerializeField] private float crouchCameraY = 1.0f;
     [SerializeField] private float crouchLerpSpeed = 10f;
+    // Cuanto encoge el collider al agacharse (0.6 = queda al 60% de su altura parada).
+    [SerializeField] private float crouchHeightFactor = 0.6f;
+    // Cuanto baja la camara al agacharse, en unidades locales.
+    [SerializeField] private float cameraCrouchDrop = 0.45f;
 
     private Rigidbody rb;
     private Vector2 moveInput;
@@ -31,8 +35,15 @@ public class PlayerMovement : MonoBehaviour
     public bool IsSprinting => isSprinting;
 
     private float targetHeight;
-    private float targetCameraY;
     private float capsuleBaseY;
+    private float cameraStandY;
+    private float cameraCrouchY;
+    private float cameraTargetY;
+    private float cameraBaseLocalY;
+
+    // Altura local de la camara que maneja el agacharse. El HeadBob la usa como base
+    // para sumarle el balanceo, asi un solo script escribe la posicion de la camara.
+    public float CameraBaseLocalY => cameraBaseLocalY;
 
     private bool _CantMove;
 
@@ -46,23 +57,19 @@ public class PlayerMovement : MonoBehaviour
         if (capsule == null) // Me fijo que el componente no este asignado antes para asignarlo en el start
             capsule = GetComponent<CapsuleCollider>();
 
-        // Parto de la altura real del collider en la escena. Asi no lo agrando ni lo achico
-        // de golpe al iniciar (eso trababa al jugador contra el techo).
+        // Parto de la altura real del collider en la escena. El agacharse lo encoge desde aca,
+        // nunca lo agranda (eso trababa al jugador contra el techo ni lo hunde).
         standingHeight = capsule.height;
         capsuleBaseY = capsule.center.y - capsule.height * 0.5f;
-        // El agacharse nunca puede ser mas alto que estar parado.
-        crouchHeight = Mathf.Clamp(crouchHeight, 0.1f, standingHeight);
+        crouchHeight = Mathf.Max(0.1f, standingHeight * crouchHeightFactor);
 
-        // Uso la altura real de la camara en escena como punto de reposo.
-        // Asi no pelea con el HeadBob si el prefab tiene un override distinto.
-        if (playerCamera != null)
-        {
-            standingCameraY = playerCamera.localPosition.y;
-        }
+        // La camara parada queda donde esta en la escena; agachado baja un poco.
+        cameraStandY = playerCamera != null ? playerCamera.localPosition.y : standingCameraY;
+        cameraCrouchY = cameraStandY - cameraCrouchDrop;
+        cameraBaseLocalY = cameraStandY;
+        cameraTargetY = cameraStandY;
 
-        // defino los target de ambos ejes para que no arranque feo
         targetHeight = standingHeight;
-        targetCameraY = standingCameraY;
         // playerInput = new PlayerInput(); // Lo mismo, no se necesita, por eso lo saco. Si queremos agregar algun boton por codigo tambien se puede, pero no necesita playerInput
     }
 
@@ -143,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         targetHeight = isCrouching ? crouchHeight : standingHeight;
-        targetCameraY = isCrouching ? crouchCameraY : standingCameraY;
+        cameraTargetY = isCrouching ? cameraCrouchY : cameraStandY;
     }
 
     private void HandleCrouchVisuals()
@@ -154,9 +161,8 @@ public class PlayerMovement : MonoBehaviour
         // Mantiene la base de la capsula en el mismo lugar para que el jugador no se hunda.
         capsule.center = new Vector3(capsule.center.x, capsuleBaseY + newHeight * 0.5f, capsule.center.z);
 
-        Vector3 camPos = playerCamera.localPosition;
-        camPos.y = Mathf.Lerp(camPos.y, targetCameraY, crouchLerpSpeed * Time.deltaTime);
-        playerCamera.localPosition = camPos;
+        // Solo actualizo la base de la camara. Quien la escribe es el HeadBob (CameraBaseLocalY).
+        cameraBaseLocalY = Mathf.Lerp(cameraBaseLocalY, cameraTargetY, crouchLerpSpeed * Time.deltaTime);
     }
 
     /////////////////////////////////////////////////////// Codigo muerto?

@@ -37,8 +37,16 @@ public class InGameSequenceController : MonoBehaviour
     [Header("Intro")]
     [SerializeField] private string introDialogueId = "ingame_intro";
     [SerializeField] private bool lockPlayerDuringIntro = false;
-    // Espera entre que termina el dialogo y arrancan las quests.
-    [SerializeField] private float delayBeforeQuests = 5f;
+    // Espera entre que termina el dialogo y que la muneca queda lista para activarse al acercarte.
+    [SerializeField] private float delayBeforeQuests = 0f;
+    // Flag que se prende cuando termina la intro. Util para enganchar HintDialogue.
+    [SerializeField] private string introFinishedFlag = "intro_finished";
+
+    [Header("Activacion por cercania a la muneca")]
+    // Cuando termino la intro y el jugador entra en este radio de la muneca, arrancan las quests.
+    [SerializeField] private float dollApproachDistance = 3f;
+    // Flag que se prende al arrancar las quests. Util para enganchar HintDialogue.
+    [SerializeField] private string questsStartedFlag = "quests_started";
 
     [Header("Victoria (felicidad)")]
     [SerializeField] private int happinessPerMission = 30;
@@ -57,6 +65,7 @@ public class InGameSequenceController : MonoBehaviour
     [SerializeField] private TMP_Text timerLabel;
 
     private int happiness;
+    private bool introFinished;
     private bool questsStarted;
     private bool timerRunning;
     private bool hasEscaped;
@@ -92,6 +101,13 @@ public class InGameSequenceController : MonoBehaviour
 
     private void Update()
     {
+        // ya termino la intro pero todavia no arrancaron las quests: espero que el jugador
+        // se acerque a la muneca para disparar todo.
+        if (introFinished && !questsStarted)
+        {
+            CheckDollApproach();
+        }
+
         if (!timerRunning || hasEscaped)
         {
             return;
@@ -123,7 +139,29 @@ public class InGameSequenceController : MonoBehaviour
         yield return new WaitForSeconds(dialogueDuration);
         yield return new WaitForSeconds(delayBeforeQuests);
 
-        StartQuests();
+        // la intro termino: a partir de aca, acercarse a la muneca dispara las quests.
+        introFinished = true;
+        SetFlag(introFinishedFlag, true);
+        SetIntroUiVisible(true);
+    }
+
+    private void CheckDollApproach()
+    {
+        if (dollEmotionSystem == null || playerMovement == null)
+        {
+            return;
+        }
+
+        // Uso el transform real de la muneca (no el del objeto que tiene el script,
+        // que esta corrido del modelo visible).
+        Transform dollTransform = dollEmotionSystem.Doll != null ? dollEmotionSystem.Doll : dollEmotionSystem.transform;
+
+        float distance = Vector3.Distance(playerMovement.transform.position, dollTransform.position);
+
+        if (distance <= dollApproachDistance)
+        {
+            StartQuests();
+        }
     }
 
     private IEnumerator FadeIn()
@@ -170,9 +208,11 @@ public class InGameSequenceController : MonoBehaviour
         if (dollEmotionSystem != null)
         {
             dollEmotionSystem.enabled = true;
+            // arranca la primera quest sin esperar el idle largo de la muneca
+            dollEmotionSystem.ForceStartQuest();
         }
 
-        SetIntroUiVisible(true);
+        SetFlag(questsStartedFlag, true);
 
         timeLeft = questPhaseDuration;
         timerRunning = true;

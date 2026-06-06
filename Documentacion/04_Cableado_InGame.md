@@ -224,6 +224,16 @@ Ahora sí, seleccioná `GameFlow` y completá todos los campos:
 **Intro**
 - `introDialogueId`: `ingame_intro` (paso 3).
 - `lockPlayerDuringIntro`: **false** (el jugador se puede mover durante la intro).
+- `delayBeforeQuests`: **0** (apenas termina la intro ya podés activar acercándote a la muñeca).
+- `introFinishedFlag`: `intro_finished` (flag que se prende al terminar la intro; útil para HintDialogue).
+
+**Activación por cercanía a la muñeca**
+- `dollApproachDistance`: 3 (radio para que, terminada la intro, al acercarte a la muñeca arranquen las quests).
+- `questsStartedFlag`: `quests_started` (flag que se prende al arrancar las quests; útil para HintDialogue).
+
+> Flujo nuevo: termina la intro → se prende `intro_finished` → te acercás a la muñeca →
+> arrancan las quests al instante (sin la espera larga del idle), arranca el timer y se
+> prende `quests_started`.
 - `delayBeforeQuests`: 5 (los 5 segundos pedidos antes de arrancar las quests).
 
 **Victoria (felicidad)**

@@ -1,4 +1,4 @@
-using System.Net;
+using System.Collections.Generic;
 using UnityEngine;
 
 /*  esta logica mantiene la mecanica original de agarrar/soltar objetos
@@ -33,6 +33,8 @@ public class GrabbableObject : MonoBehaviour
 
     private Rigidbody rb;
     private Collider objectCollider;
+    private Collider[] objectColliders;
+    private readonly List<Collider> ignoredPlayerColliders = new List<Collider>();
     private Vector3 originalScale;
     private int originalLayer;
 
@@ -55,6 +57,7 @@ public class GrabbableObject : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         // Lo dejo porque creo que puede servir, si no les gusta borren esta declaracion porque no se usa.
         objectCollider = GetComponent<Collider>();
+        objectColliders = GetComponentsInChildren<Collider>();
 
         originalScale = transform.localScale;
         originalLayer = gameObject.layer;
@@ -91,6 +94,7 @@ public class GrabbableObject : MonoBehaviour
 
         currentHandPoint = handPoint;
         isHeld = true;
+        IgnorePlayerCollisions(true);
 
         // guardo la pose local
         targetLocalPosition = heldLocalPosition;
@@ -111,6 +115,7 @@ public class GrabbableObject : MonoBehaviour
         // - dejo de seguir el HandPoint
         // - el objeto vuelve a su layer original
         isHeld = false;
+        IgnorePlayerCollisions(false);
         currentHandPoint = null;
 
         rb.useGravity = true;
@@ -122,6 +127,61 @@ public class GrabbableObject : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         // para la linear revisar si queda bien, si se ve medio mal solo se comenta y listo, no rompe nada, solo esta para reiniciar por si se suelta con inercia rara
         rb.linearVelocity = Vector3.zero;
+    }
+
+    private void IgnorePlayerCollisions(bool ignore)
+    {
+        if (!ignore)
+        {
+            foreach (Collider playerCollider in ignoredPlayerColliders)
+            {
+                SetCollisionWithPlayer(playerCollider, false);
+            }
+
+            ignoredPlayerColliders.Clear();
+            return;
+        }
+
+        PlayerInteraction targetPlayer = playerInteraction;
+
+        if (targetPlayer == null && currentHandPoint != null)
+        {
+            targetPlayer = currentHandPoint.GetComponentInParent<PlayerInteraction>();
+        }
+
+        if (targetPlayer == null)
+        {
+            return;
+        }
+
+        Collider[] playerColliders = targetPlayer.GetComponentsInParent<Collider>();
+
+        foreach (Collider playerCollider in playerColliders)
+        {
+            if (playerCollider == null || ignoredPlayerColliders.Contains(playerCollider))
+            {
+                continue;
+            }
+
+            SetCollisionWithPlayer(playerCollider, true);
+            ignoredPlayerColliders.Add(playerCollider);
+        }
+    }
+
+    private void SetCollisionWithPlayer(Collider playerCollider, bool ignore)
+    {
+        if (objectColliders == null || playerCollider == null)
+        {
+            return;
+        }
+
+        foreach (Collider heldCollider in objectColliders)
+        {
+            if (heldCollider != null)
+            {
+                Physics.IgnoreCollision(heldCollider, playerCollider, ignore);
+            }
+        }
     }
 
     private void FollowHandPoint()

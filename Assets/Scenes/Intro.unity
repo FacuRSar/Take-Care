@@ -5058,7 +5058,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DemoEndController
   fadeImage: {fileID: 2024097067}
   fadeDuration: 2
-  endSceneName: GameOver
+  endSceneName: InGame
   captureMessageDialogueId: captureMessege
   captureLaughSfxId: PursuerLaugh
   endPhraseSfxId: endPhrase
@@ -24609,6 +24609,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 377775614775580987, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
+      propertyPath: m_Height
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 377775614775580987, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2992635802311489209, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
       propertyPath: promptRoot
       value: 
