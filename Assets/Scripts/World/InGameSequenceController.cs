@@ -43,9 +43,13 @@ public class InGameSequenceController : MonoBehaviour
     // Flag que se prende cuando termina la intro. Util para enganchar HintDialogue.
     [SerializeField] private string introFinishedFlag = "intro_finished";
 
-    [Header("Activacion por cercania a la muneca")]
-    // Cuando termino la intro y el jugador entra en este radio de la muneca, arrancan las quests.
-    [SerializeField] private float dollApproachDistance = 3f;
+    [Header("Activacion por flags (las prenden eventos)")]
+    // Cuando esta flag se prende, arrancan las quests de la muneca.
+    // La idea es setearla con un evento de cercania (AmbientEvent PlayerEnter cerca de la muneca).
+    [SerializeField] private string startQuestsFlag = "doll_quests_start";
+    // Cuando esta flag se prende, arranca el timer global.
+    // Por ahora se setea con un evento de tiempo (AmbientEvent Timed), pero puede ser cualquier evento.
+    [SerializeField] private string startTimerFlag = "game_timer_start";
     // Flag que se prende al arrancar las quests. Util para enganchar HintDialogue.
     [SerializeField] private string questsStartedFlag = "quests_started";
 
@@ -61,9 +65,6 @@ public class InGameSequenceController : MonoBehaviour
     [Header("Derrota (timer)")]
     // 10 minutos por defecto.
     [SerializeField] private float questPhaseDuration = 600f;
-    // Segundos que pasan desde que termina la intro hasta que arranca el timer global.
-    // El timer corre aunque el jugador todavia no se haya acercado a la muneca (mete presion).
-    [SerializeField] private float timerStartDelayAfterIntro = 10f;
     // Opcional: texto para mostrar el tiempo restante. Si queda vacio no se usa.
     [SerializeField] private TMP_Text timerLabel;
 
@@ -99,6 +100,16 @@ public class InGameSequenceController : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        GameStateController.OnFlagChanged += HandleFlagChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameStateController.OnFlagChanged -= HandleFlagChanged;
+    }
+
     private void Start()
     {
         if (lockPlayerDuringIntro && playerMovement != null)
@@ -107,6 +118,43 @@ public class InGameSequenceController : MonoBehaviour
         }
 
         StartCoroutine(IntroRoutine());
+
+        // por si alguna flag ya estaba puesta antes de arrancar
+        if (IsFlagOn(startQuestsFlag))
+        {
+            StartQuests();
+        }
+
+        if (IsFlagOn(startTimerFlag))
+        {
+            StartGlobalTimer();
+        }
+    }
+
+    // Las quests y el timer ahora los disparan flags (que prenden eventos).
+    private void HandleFlagChanged(string flagName, bool value)
+    {
+        if (!value)
+        {
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(startQuestsFlag) && flagName == startQuestsFlag)
+        {
+            StartQuests();
+        }
+
+        if (!string.IsNullOrEmpty(startTimerFlag) && flagName == startTimerFlag)
+        {
+            StartGlobalTimer();
+        }
+    }
+
+    private bool IsFlagOn(string flagName)
+    {
+        return GameStateController.Instance != null &&
+               !string.IsNullOrEmpty(flagName) &&
+               GameStateController.Instance.GetFlag(flagName);
     }
 
     private void Update()
@@ -114,13 +162,6 @@ public class InGameSequenceController : MonoBehaviour
         if (debugKeys)
         {
             HandleDebugKeys();
-        }
-
-        // ya termino la intro pero todavia no arrancaron las quests: espero que el jugador
-        // se acerque a la muneca para disparar todo.
-        if (introFinished && !questsStarted)
-        {
-            CheckDollApproach();
         }
 
         if (!timerRunning || hasEscaped)
@@ -154,19 +195,10 @@ public class InGameSequenceController : MonoBehaviour
         yield return new WaitForSeconds(dialogueDuration);
         yield return new WaitForSeconds(delayBeforeQuests);
 
-        // la intro termino: a partir de aca, acercarse a la muneca dispara las quests.
+        // la intro termino. El timer y las quests ahora los disparan flags (las prenden eventos).
         introFinished = true;
         SetFlag(introFinishedFlag, true);
         SetIntroUiVisible(true);
-
-        // el timer global arranca solo, unos segundos despues de la intro.
-        StartCoroutine(StartTimerAfterDelay());
-    }
-
-    private IEnumerator StartTimerAfterDelay()
-    {
-        yield return new WaitForSeconds(timerStartDelayAfterIntro);
-        StartGlobalTimer();
     }
 
     private void StartGlobalTimer()
@@ -179,25 +211,6 @@ public class InGameSequenceController : MonoBehaviour
         timeLeft = questPhaseDuration;
         timerRunning = true;
         UpdateTimerLabel();
-    }
-
-    private void CheckDollApproach()
-    {
-        if (dollEmotionSystem == null || playerMovement == null)
-        {
-            return;
-        }
-
-        // Uso el transform real de la muneca (no el del objeto que tiene el script,
-        // que esta corrido del modelo visible).
-        Transform dollTransform = dollEmotionSystem.Doll != null ? dollEmotionSystem.Doll : dollEmotionSystem.transform;
-
-        float distance = Vector3.Distance(playerMovement.transform.position, dollTransform.position);
-
-        if (distance <= dollApproachDistance)
-        {
-            StartQuests();
-        }
     }
 
     private IEnumerator FadeIn()
