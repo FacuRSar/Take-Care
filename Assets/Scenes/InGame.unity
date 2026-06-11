@@ -5961,6 +5961,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0da9f0998130860459883b3e660e311f, type: 3}
   thunderDelayRange: {x: 2, y: 15}
   thunderChance: 0.5
+  randomAmbientSfxIds: []
+  randomAmbientDelayRange: {x: 20, y: 45}
+  randomAmbientChance: 0.7
+  randomAmbientAs3D: 0
+  randomAmbientPoints: []
+  playRandomAmbientOnStart: 0
   lightningLights:
   - {fileID: 319300006}
   - {fileID: 1755562775}
@@ -7742,6 +7748,9 @@ MonoBehaviour:
     sfx3D: 0
     dialogueId: reaccion_muerto
     shakeEffectId: 
+    screenEffectId: 
+    stopScreenEffect: 0
+    screenEffectAutoStop: 0
     prefab: {fileID: 0}
     spawnPoint: {fileID: 0}
     flagName: 
@@ -7760,6 +7769,9 @@ MonoBehaviour:
     sfx3D: 0
     dialogueId: reaccion_muerto
     shakeEffectId: 
+    screenEffectId: 
+    stopScreenEffect: 0
+    screenEffectAutoStop: 0
     prefab: {fileID: 0}
     spawnPoint: {fileID: 0}
     flagName: 
@@ -7778,6 +7790,9 @@ MonoBehaviour:
     sfx3D: 0
     dialogueId: reaccion_muerto
     shakeEffectId: shake_soft
+    screenEffectId: 
+    stopScreenEffect: 0
+    screenEffectAutoStop: 0
     prefab: {fileID: 0}
     spawnPoint: {fileID: 0}
     flagName: 
@@ -12880,14 +12895,14 @@ MonoBehaviour:
   lockPlayerDuringIntro: 0
   delayBeforeQuests: 0
   introFinishedFlag: intro_finished
-  dollApproachDistance: 3
+  startQuestsFlag: doll_quests_start
+  startTimerFlag: game_timer_start
   questsStartedFlag: quests_started
   completeToWin: 100
   escapeMessage: "La mu\xF1eca esta feliz y te abrio la puerta. RAPIDO! ESCAPA!"
   escapeMessageDuration: 6
   winSceneName: Win
   questPhaseDuration: 600
-  timerStartDelayAfterIntro: 10
   timerLabel: {fileID: 1814187738}
   debugKeys: 1
   debugWinKey: 88
@@ -17990,6 +18005,87 @@ MonoBehaviour:
   back: {fileID: 8300000, guid: 98d925eb5cd44314ab27b6a553aa633a, type: 3}
   hover: {fileID: 8300000, guid: 944fd3b28c82de0469d8256091a07f5c, type: 3}
   play: {fileID: 8300000, guid: ec73bbf8b9c340b43a8ca955b90683ab, type: 3}
+--- !u!1 &1360338390
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1360338391}
+  - component: {fileID: 1360338392}
+  m_Layer: 0
+  m_Name: startTimer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1360338391
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360338390}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2036918171}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1360338392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360338390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f225a42ee9418c4f8fb181b922e9763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AmbientEvent
+  eventId: 
+  triggerMode: 2
+  requiredFlag: 
+  startDelay: 10
+  onlyPlayer: 1
+  lookTarget: {fileID: 0}
+  lookDistance: 3
+  lookAngle: 15
+  lookHoldTime: 0.3
+  requireLineOfSight: 1
+  lookMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  triggerOnce: 1
+  debugLog: 0
+  actions:
+  - type: 7
+    delay: 0
+    target: {fileID: 0}
+    setActiveValue: 0
+    moveTarget: {x: 0, y: 0, z: 0}
+    moveLocal: 0
+    alsoRotate: 0
+    rotateTarget: {x: 0, y: 0, z: 0}
+    moveDuration: 0
+    physicsImpulse: {x: 0, y: 0, z: 0}
+    sfxId: 
+    sfx3D: 0
+    dialogueId: 
+    shakeEffectId: 
+    screenEffectId: 
+    stopScreenEffect: 0
+    screenEffectAutoStop: 0
+    prefab: {fileID: 0}
+    spawnPoint: {fileID: 0}
+    flagName: game_timer_start
+    flagValue: 1
 --- !u!1 &1382602749
 GameObject:
   m_ObjectHideFlags: 0
@@ -19181,6 +19277,109 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1 &1603113757
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1603113758}
+  - component: {fileID: 1603113759}
+  - component: {fileID: 1603113760}
+  m_Layer: 0
+  m_Name: startQuestsFlag
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1603113758
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603113757}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.94, y: 1.57, z: 15.98}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2036918171}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1603113759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603113757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f225a42ee9418c4f8fb181b922e9763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AmbientEvent
+  eventId: 
+  triggerMode: 0
+  requiredFlag: 
+  startDelay: 0
+  onlyPlayer: 1
+  lookTarget: {fileID: 0}
+  lookDistance: 3
+  lookAngle: 15
+  lookHoldTime: 0.3
+  requireLineOfSight: 1
+  lookMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  triggerOnce: 1
+  debugLog: 0
+  actions:
+  - type: 7
+    delay: 0
+    target: {fileID: 0}
+    setActiveValue: 0
+    moveTarget: {x: 0, y: 0, z: 0}
+    moveLocal: 0
+    alsoRotate: 0
+    rotateTarget: {x: 0, y: 0, z: 0}
+    moveDuration: 0
+    physicsImpulse: {x: 0, y: 0, z: 0}
+    sfxId: 
+    sfx3D: 0
+    dialogueId: 
+    shakeEffectId: 
+    screenEffectId: 
+    stopScreenEffect: 0
+    screenEffectAutoStop: 0
+    prefab: {fileID: 0}
+    spawnPoint: {fileID: 0}
+    flagName: doll_quests_start
+    flagValue: 1
+--- !u!65 &1603113760
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603113757}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4, y: 3, z: 3}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1620000428
 GameObject:
   m_ObjectHideFlags: 0
@@ -25965,6 +26164,8 @@ Transform:
   m_Children:
   - {fileID: 1283252677}
   - {fileID: 1841626537}
+  - {fileID: 1360338391}
+  - {fileID: 1603113758}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2058637883
@@ -27325,6 +27526,9 @@ MonoBehaviour:
     sfx3D: 0
     dialogueId: 
     shakeEffectId: 
+    screenEffectId: 
+    stopScreenEffect: 0
+    screenEffectAutoStop: 0
     prefab: {fileID: 0}
     spawnPoint: {fileID: 0}
     flagName: 
@@ -27343,6 +27547,9 @@ MonoBehaviour:
     sfx3D: 0
     dialogueId: 
     shakeEffectId: 
+    screenEffectId: 
+    stopScreenEffect: 0
+    screenEffectAutoStop: 0
     prefab: {fileID: 0}
     spawnPoint: {fileID: 0}
     flagName: 
@@ -27361,6 +27568,9 @@ MonoBehaviour:
     sfx3D: 0
     dialogueId: 
     shakeEffectId: shake_strong
+    screenEffectId: 
+    stopScreenEffect: 0
+    screenEffectAutoStop: 0
     prefab: {fileID: 0}
     spawnPoint: {fileID: 0}
     flagName: 
