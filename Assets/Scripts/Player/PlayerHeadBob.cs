@@ -14,8 +14,8 @@ public class PlayerHeadBob : MonoBehaviour
     // Referencia al movimiento para leer velocidad y estados sin duplicar configuracion.
 
     [Header("Efecto visual")]
-    [SerializeField] private float bobFrequencyMultiplier = 2f;
-    [SerializeField] private float bobAmountMultiplier = 0.012f;
+    [SerializeField] private float bobFrequencyMultiplier = 1.2f;
+    [SerializeField] private float bobAmountMultiplier = 0.008f;
     [SerializeField] private float crouchBobMultiplier = 0.4f;
     [SerializeField] private float returnSpeed = 8f;
 
@@ -80,13 +80,17 @@ public class PlayerHeadBob : MonoBehaviour
             debugTimer = 0f;
         }
 
+        // base de la camara: x/z original, y la define el agacharse (PlayerMovement)
+        float baseY = playerMovement.CameraBaseLocalY != 0f ? playerMovement.CameraBaseLocalY : originalLocalPosition.y;
+        Vector3 basePosition = new Vector3(originalLocalPosition.x, baseY, originalLocalPosition.z);
+
         if (!playerMovement.IsMoving)
         {
             bobTimer = 0f;
 
             playerCamera.localPosition = Vector3.Lerp(
                 playerCamera.localPosition,
-                originalLocalPosition,
+                basePosition,
                 Time.deltaTime * returnSpeed
             );
 
@@ -108,7 +112,7 @@ public class PlayerHeadBob : MonoBehaviour
 
         float yOffset = Mathf.Sin(bobTimer) * bobAmount;
 
-        Vector3 targetPosition = originalLocalPosition + new Vector3(0f, yOffset, 0f);
+        Vector3 targetPosition = basePosition + new Vector3(0f, yOffset, 0f);
 
         playerCamera.localPosition = Vector3.Lerp(
             playerCamera.localPosition,

@@ -2,7 +2,7 @@ using UnityEngine;
 
 /* script reutilizable para puertas
 *  te deja configurar desde Inspector si:
-*  la puerta puede abrirse o no, si necesita una condiciùn del juego o no y quù mensaje mostrar cuando estù bloqueada
+*  la puerta puede abrirse o no, si necesita una condiciÔøΩn del juego o no y quÔøΩ mensaje mostrar cuando estÔøΩ bloqueada
 *  no me gusto el anterior que habia armado, este es mas escalable
 */
 public class DoorInteractable : Interactable
@@ -36,8 +36,13 @@ public class DoorInteractable : Interactable
     [SerializeField] private bool startsOpened = false;
     // te tira si una puerta empieza abierta por si hace falta
 
-    [SerializeField] private string lockedMessage = "Parece que alguien la cerrù desde el otro lado.";
+    [SerializeField] private string lockedMessage = "Parece que alguien la cerrÔøΩ desde el otro lado.";
     // mensaje cuando la puerta no puede abrirse full generico
+
+    [SerializeField] private string openedFlagName = "";
+    // si lo completas, al abrir esta puerta se prende esa flag.
+    // sirve para enganchar un AmbientEvent (ej: que se caiga algo cuando abris la puerta).
+    // queda en true y no se apaga al cerrar.
 
     [Header("Requerimientos de puerta")]
     [SerializeField] private DoorRequirementType requirementType = DoorRequirementType.None;
@@ -98,7 +103,7 @@ public class DoorInteractable : Interactable
 
     private void Update()
     {
-        // si la puerta estù moviendose le tiramos pa que siga hasta si objetivo
+        // si la puerta estÔøΩ moviendose le tiramos pa que siga hasta si objetivo
         if (isMoving && doorPivot != null)
         {
             doorPivot.localRotation = Quaternion.Slerp(
@@ -139,7 +144,7 @@ public class DoorInteractable : Interactable
             return;
         }
 
-        // si necesita una condiciùn y no se cumple mete feedback y sale
+        // si necesita una condiciÔøΩn y no se cumple mete feedback y sale
         if (!CanOpenByState())
         {
             SubtitleUI.Instance.ShowSubtitle(GetLockedFeedbackMessage(), 2.5f);
@@ -217,6 +222,8 @@ public class DoorInteractable : Interactable
 
             // No dejo sonido pendiente para el final de apertura asi eso lo tira cuando se cierra
             pendingEndSound = null;
+
+            RaiseOpenedFlag();
         }
         else
         {
@@ -246,6 +253,18 @@ public class DoorInteractable : Interactable
 
         targetRotation = Quaternion.Euler(0f, 0f, openedZRotation);
         isMoving = true;
+
+        RaiseOpenedFlag();
+    }
+
+    private void RaiseOpenedFlag()
+    {
+        if (string.IsNullOrEmpty(openedFlagName) || GameStateController.Instance == null)
+        {
+            return;
+        }
+
+        GameStateController.Instance.SetFlag(openedFlagName, true);
     }
 
     private bool IsMessageOverrideFlagActive()

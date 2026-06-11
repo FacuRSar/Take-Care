@@ -24,10 +24,6 @@ public class Bars : MonoBehaviour
     float CurrentAngryBar;
     public float _CurrentAngryBar { get { return CurrentAngryBar; } private set { CurrentAngryBar = value; } }
     #endregion
-    [Header("Testing settings")]
-    [SerializeField] TextMeshProUGUI HappyBarText;
-    [SerializeField] TextMeshProUGUI CryBarText;
-    [SerializeField] TextMeshProUGUI AngryBarText;
 
     [Header("Bar Settings")]
     float TotalBar;
@@ -117,14 +113,8 @@ public class Bars : MonoBehaviour
     }
     private void Start()
     {
-        AngryBar = 50;
-        CryBar = 50;
-    }
-    private void Update()
-    {
-        /*HappyBarText.text = CurrentHappyBar.ToString();
-        CryBarText.text = CurrentCryBar.ToString();
-        AngryBarText.text = CurrentAngryBar.ToString();  */  
+        AngryBar = 10;
+        CryBar = 10;
     }
 
     public void InitializeQuestPools(List<QuestData> allQuests)
@@ -287,9 +277,9 @@ public class Bars : MonoBehaviour
             return "DollAngry";
         }
     }
-    public void sumAngryBar(float value)
+    public void restaAngryBar(float value)
     {
-        AngryBar += value;
+        AngryBar -= value;
     }
     public void restaHappyBar(float value)
     {
@@ -297,7 +287,19 @@ public class Bars : MonoBehaviour
     }
     public void restaCryBar(float value)
     {
+        CryBar -= value;
+    }
+    public void sumCryBar(float value)
+    {
         CryBar += value;
+    }
+    public void sumHappyBar(float value)
+    {
+        HappyBar += value;
+    }
+    public void sumAngryBar(float value)
+    {
+        AngryBar += value;
     }
     private bool ToCheckWeights(List<float> Pools)
     {

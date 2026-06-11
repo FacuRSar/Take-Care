@@ -33,11 +33,12 @@ MonoBehaviour:
     addPoints: 25
     EmotionID_: 0
     removePoints: 12
+    completePoints: 30
   - State: 2
     QuestType: 1
-    SubtitlesForQuest: "\xBFD\xF3nde Estoy?_In"
-    SubtitlesForQuestComplete: "\xBFD\xF3nde Estoy?_Complete"
-    SubtitlesForQuestFail: "\xBFD\xF3nde Estoy?_Fail"
+    SubtitlesForQuest: "\xBF?_In"
+    SubtitlesForQuestComplete: "\xBF?_Complete"
+    SubtitlesForQuestFail: "\xBF?_Fail"
     timer: 120
     Name: "\xBFD\xF3nde Estoy?"
     description: "La mu\xF1eca desaparece de su lugar con una risa ecoica e inicia
@@ -52,3 +53,98 @@ MonoBehaviour:
     addPoints: 25
     EmotionID_: 1
     removePoints: 12
+    completePoints: 20
+  - State: 1
+    QuestType: 2
+    SubtitlesForQuest: Mentiroso_In
+    SubtitlesForQuestComplete: Mentiroso_Complete
+    SubtitlesForQuestFail: Mentiroso_Fail
+    timer: 120
+    Name: El Reflejo Mentiroso
+    description: "La mu\xF1eca entra en un estado de furia ciega porque afirma que
+      la camara vieja  se est\xE1 burlando de ella y mostr\xE1ndole \"otra cara\".
+      Le ordena al jugador que lo tome inmediatamente y lo transporte hasta la chimenea
+      encendida del sal\xF3n para destruirlo."
+    id: 2
+    TpDollID: Comedor
+    itemsToPickData:
+    - quantity: 1
+      itemID: 1
+    roomID: Chimenea
+    EmotionID: 1
+    addPoints: 35
+    EmotionID_: 1
+    removePoints: 20
+    completePoints: 30
+  - State: 1
+    QuestType: 0
+    SubtitlesForQuest: Sonriente_In
+    SubtitlesForQuestComplete: Sonriente_Complete
+    SubtitlesForQuestFail: Sonriente_Fail
+    timer: 120
+    Name: "El \xC1lbum de la Familia Sonriente"
+    description: "La mu\xF1eca quiere mostrarle al jugador las fotos de sus \"antiguos
+      due\xF1os\" en el estudio de la caba\xF1a, pero las p\xE1ginas se cayeron.
+      Le exige al jugador encontrar tres fotos espec\xEDficas que est\xE1n tiradas
+      por la habitaci\xF3n."
+    id: 3
+    TpDollID: Comedor
+    itemsToPickData:
+    - quantity: 1
+      itemID: 3
+    - quantity: 1
+      itemID: 2
+    roomID: 
+    EmotionID: 2
+    addPoints: 25
+    EmotionID_: 0
+    removePoints: 12
+    completePoints: 30
+  - State: 0
+    QuestType: 2
+    SubtitlesForQuest: Palta_In
+    SubtitlesForQuestComplete: Palta_Complete
+    SubtitlesForQuestFail: Palta_Fail
+    timer: 90
+    Name: La Palta del Lamento
+    description: "La mu\xF1eca entra en p\xE1nico porque dice que perdi\xF3 su vieja
+      palta de trapo y felpa en alg\xFAn lugar de la caba\xF1a y que \"est\xE1 empezando
+      a dejar de sentir\". El jugador debe registrar la caba\xF1a para encontrar
+      el coraz\xF3n \u2014que aparece en una ubicaci\xF3n completamente aleatoria
+      en cada partida"
+    id: 4
+    TpDollID: Cuna
+    itemsToPickData:
+    - quantity: 1
+      itemID: 4
+    roomID: Cuna
+    EmotionID: 0
+    addPoints: 30
+    EmotionID_: 2
+    removePoints: 15
+    completePoints: 35
+  - State: 0
+    QuestType: 2
+    SubtitlesForQuest: Acorde_In
+    SubtitlesForQuestComplete: Acorde_Complete
+    SubtitlesForQuestFail: Acorde_Fail
+    timer: 60
+    Name: El Acorde del Silencio
+    description: "La mu\xF1eca llora en silencio mirando fijamente hacia la ventana.
+      Afirma que la vieja guitarra ac\xFAstica de la caba\xF1a est\xE1 \"sufriendo\"
+      porque tiene las cuerdas rotas y el polvo la est\xE1 asfixiando. Le ordena
+      al jugador buscarla por la casa \u2014aparecer\xE1 en un punto aleatorio en
+      cada partida\u2014 y transportarla con cuidado hasta la mecedora de madera
+      del sal\xF3n principal para que pueda descansar. Mientras el jugador carga
+      la guitarra, el script reduce su velocidad un 30% por la incomodidad del objeto."
+    id: 5
+    TpDollID: Habitacion2
+    itemsToPickData:
+    - quantity: 1
+      itemID: 5
+    roomID: Habitacion2
+    EmotionID: 0
+    addPoints: 30
+    EmotionID_: 2
+    removePoints: 15
+    completePoints: 40

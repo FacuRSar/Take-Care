@@ -37,10 +37,16 @@ public class PursuerNavMeshController : MonoBehaviour
     [SerializeField] private AudioSource footstepLoopSource;
     [SerializeField] private float minSpeedForFootsteps = 0.15f;
 
+    [Header("Animator")]
+    // Float que maneja la transicion Idle <-> Walk en el Animator.
+    // Le pasamos la velocidad real del agente; en el Animator: Walk si Speed > 0.1, Idle si Speed < 0.1.
+    [SerializeField] private string speedParameterName = "Speed";
+    // Suavizado del valor que mandamos al Animator (segundos). 0 = sin suavizado.
+    [SerializeField] private float speedDampTime = 0.1f;
+    // Trigger de ataque: se usa al abrir una puerta y tambien al capturar al jugador. Vacio = no dispara.
+    [SerializeField] private string attackTriggerName = "Attack";
+
     [Header("Captura")]
-    [SerializeField] private float behindDotThreshold = -0.35f;
-    [SerializeField] private string backGrabTriggerName = "BackGrab";
-    [SerializeField] private string frontGrabTriggerName = "FrontGrab";
     [SerializeField] private bool logGrabDistance = false;
 
     [Header("Cierre al capturar")]
@@ -114,6 +120,7 @@ public class PursuerNavMeshController : MonoBehaviour
         if (player == null || hasGrabbedPlayer)
         {
             StopFootstepLoop();
+            UpdateAnimatorSpeed(0f);
             return;
         }
 
@@ -121,7 +128,46 @@ public class PursuerNavMeshController : MonoBehaviour
         UpdateDestination();
         TryOpenDoorAhead();
         HandleFootstepLoop();
+        UpdateAnimatorSpeed(GetCurrentMoveSpeed());
         CheckGrabPlayer();
+    }
+
+    // Velocidad real de desplazamiento del agente (0 si esta detenido o fuera del NavMesh).
+    private float GetCurrentMoveSpeed()
+    {
+        if (agent == null || !agent.isOnNavMesh || agent.isStopped)
+        {
+            return 0f;
+        }
+
+        return agent.velocity.magnitude;
+    }
+
+    // Manda la velocidad al Animator para la transicion Idle <-> Walk.
+    private void UpdateAnimatorSpeed(float speed)
+    {
+        if (animator == null || string.IsNullOrEmpty(speedParameterName))
+        {
+            return;
+        }
+
+        if (speedDampTime > 0f)
+        {
+            animator.SetFloat(speedParameterName, speed, speedDampTime, Time.deltaTime);
+        }
+        else
+        {
+            animator.SetFloat(speedParameterName, speed);
+        }
+    }
+
+    // Dispara la animacion de ataque (compartida por abrir puerta y capturar).
+    private void TriggerAttackAnimation()
+    {
+        if (animator != null && !string.IsNullOrEmpty(attackTriggerName))
+        {
+            animator.SetTrigger(attackTriggerName);
+        }
     }
 
     private void UpdateSpeedRamp()
@@ -194,6 +240,9 @@ public class PursuerNavMeshController : MonoBehaviour
                 if (!door.IsOpen() && !door.IsMoving())
                 {
                     door.OpenFromAI();
+
+                    // dispara la animacion de ataque/golpe al abrir la puerta
+                    TriggerAttackAnimation();
                 }
 
                 Debug.Log("PursuerNavMeshController: stalker intento abrir puerta: " + door.gameObject.name);
@@ -262,19 +311,10 @@ public class PursuerNavMeshController : MonoBehaviour
 
         StopFootstepLoop();
 
-        Vector3 playerToPursuer = (transform.position - player.position).normalized;
-        float dot = Vector3.Dot(player.forward, playerToPursuer);
+        // La vieja solo camina o ataca: al atrapar, dispara el Attack.
+        TriggerAttackAnimation();
 
-        if (dot < behindDotThreshold)
-        {
-            GrabFromBehind();
-        }
-        else
-        {
-            GrabFromFront();
-        }
-
-        // El cierre es el mismo en ambos casos.
+        // El cierre es el mismo sin importar desde donde agarre.
         TriggerCaptureEnding();
     }
 
@@ -306,29 +346,5 @@ public class PursuerNavMeshController : MonoBehaviour
         {
             captureEndController.StartCaptureEnd();
         }
-    }
-
-    private void GrabFromBehind()
-    {
-        Debug.Log("PursuerNavMeshController: captura de espalda.");
-
-        if (animator != null)
-        {
-            animator.SetTrigger(backGrabTriggerName);
-        }
-
-        // Despues conectamos aca FixedCameraWithZoom.
-    }
-
-    private void GrabFromFront()
-    {
-        Debug.Log("PursuerNavMeshController: captura de frente.");
-
-        if (animator != null)
-        {
-            animator.SetTrigger(frontGrabTriggerName);
-        }
-
-        // Despues conectamos aca animacion de manos tapando la vista.
     }
 }

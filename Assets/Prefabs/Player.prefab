@@ -602,9 +602,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646675e99462c324cb2dd12ac6e49e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  walkSpeed: 1.5
-  sprintSpeed: 2.5
-  crouchSpeed: 0.75
+  walkSpeed: 4
+  sprintSpeed: 6.5
+  crouchSpeed: 2
   capsule: {fileID: 377775614775580987}
   playerCamera: {fileID: 8269313867149107321}
   standingHeight: 2
@@ -682,8 +682,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHeadBob
   playerCamera: {fileID: 8269313867149107321}
   playerMovement: {fileID: 8174115033227467844}
-  bobFrequencyMultiplier: 2.5
-  bobAmountMultiplier: 0.03
+  bobFrequencyMultiplier: 1.2
+  bobAmountMultiplier: 0.008
   crouchBobMultiplier: 0.2
   returnSpeed: 8
   debugHeadBob: 1

@@ -1,4 +1,3 @@
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class DollEmotionSystem : MonoBehaviour
@@ -109,10 +108,9 @@ public class DollEmotionSystem : MonoBehaviour
              if (currentMaxBar != Currentstate && !isQuestActive)
                  ChangeState(currentMaxBar);
          }*/
-        if (isQuestActive)
+        if (quest.isActive)
         {
             currentEmotion.setCurrentBar();
-            //currentEmotion.CheckInteraction(audioSource);
             if(currentMaxBar != Currentstate)
                 ChangeState(currentMaxBar);
         }
@@ -125,15 +123,14 @@ public class DollEmotionSystem : MonoBehaviour
             }
             else
             {
-                if (idleStateCounter < 5)
+                if (idleStateCounter < 900)
                 {
                     idleStateCounter++;
                     idleState.checkWatching(player.transform.position, doll.transform.position);
                 }
-                else
+                else if(idleStateCounter >= 900 && !isQuestActive)
                 {
                     bars.InvokeQuest();
-                    SetQuestActive(true);
                 }
             }
         }
@@ -187,5 +184,11 @@ public class DollEmotionSystem : MonoBehaviour
     public void SetQuestActive(bool isActive)
     { 
         isQuestActive = isActive;
+    }
+
+    // Salta la espera del idle y hace que la muneca pida una quest en el proximo frame.
+    public void ForceStartQuest()
+    {
+        idleStateCounter = 900;
     }
 }

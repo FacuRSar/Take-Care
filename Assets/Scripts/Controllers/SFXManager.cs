@@ -36,6 +36,11 @@ public class SFXManager : MonoBehaviour
     [SerializeField] private float default3DVolume = 1f;
     // volumen usado por defecto para sonidos 3d
 
+    [SerializeField] private float min3DDistance = 3f;
+    // hasta esta distancia el sonido 3d suena a volumen full. mas alto = se escucha fuerte aunque estes algo lejos
+    [SerializeField] private float max3DDistance = 25f;
+    // distancia donde el sonido 3d ya no se escucha
+
     private Dictionary<string, AudioSource> activeLoops = new Dictionary<string, AudioSource>();
 
     private void Awake()
@@ -69,23 +74,43 @@ public class SFXManager : MonoBehaviour
         return clip;
     }
 
-    public void Play3D(string id, Vector3 position)
+    public AudioClip Play3D(string id, Vector3 position)
     {
         AudioClip clip = GetRandomClip(id);
 
         if (clip == null)
         {
-            return;
+            return null;
         }
         SFXPool pool = GetPool(id);
 
         if (pool == null)
         {
-            return;
+            return null;
         }
 
-        AudioSource.PlayClipAtPoint(clip,position,default3DVolume * pool.volume);
-        //AudioSource.PlayClipAtPoint(clip, position, default3DVolume);
+        // antes usaba PlayClipAtPoint, pero ese arranca con minDistance 1 y rolloff logaritmico,
+        // asi que a pocos metros casi no se escuchaba. armo un AudioSource propio con rolloff lineal
+        // y distancias configurables para que el golpe se oiga bien.
+        GameObject soundObject = new GameObject("OneShot3D_" + id);
+        soundObject.transform.position = position;
+
+        // resguardo: si las distancias quedaron en 0 (campo nuevo sobre un componente ya serializado)
+        // uso valores sanos, si no el sonido sale mudo por maxDistance 0
+        float minDist = min3DDistance > 0f ? min3DDistance : 3f;
+        float maxDist = max3DDistance > minDist ? max3DDistance : minDist + 22f;
+
+        AudioSource source = soundObject.AddComponent<AudioSource>();
+        source.clip = clip;
+        source.volume = default3DVolume * pool.volume;
+        source.spatialBlend = 1f;
+        source.rolloffMode = AudioRolloffMode.Linear;
+        source.minDistance = minDist;
+        source.maxDistance = maxDist;
+        source.Play();
+
+        Destroy(soundObject, clip.length + 0.1f);
+        return clip;
     }
 
     public AudioSource PlayLoop2D(string id)

@@ -23,10 +23,16 @@ public class QuestData
     public string SubtitlesForQuest;
     public string SubtitlesForQuestComplete;
     public string SubtitlesForQuestFail;
+    public string SubtitlesForQuestHalf;
 
     public float failPenaltyPoints;
     public float AddPoints;
     public float RemovePoints;
+
+    // puntos que suma al progreso de escape al completarse
+    public int CompletePoints;
+    // para no disparar el aviso de "mitad" mas de una vez por mision
+    public bool halfNotified;
 
     public String TpDollID;
 
@@ -42,26 +48,23 @@ public class QuestData
         QuestName = config.Name;
         timer = 0;
         TimerDuration = config.timer;
-
         TpDollID = config.TpDollID;
-
         SubtitlesForQuest = config.SubtitlesForQuest;
         SubtitlesForQuestComplete = config.SubtitlesForQuestComplete;
         SubtitlesForQuestFail = config.SubtitlesForQuestFail;
-
+        SubtitlesForQuestHalf = config.SubtitlesForQuestHalf;
         failPenaltyPoints = config.addPoints * -1.5f;
         AddPoints = config.addPoints;
         RemovePoints = config.removePoints;
-
+        CompletePoints = config.completePoints;
+        halfNotified = false;
         roomID = config.roomID;
     }
     public questType GetQuestType() => config.QuestType;
     public questEmotionType GetStateType() => config.State;
     public questEmotionType GetEmotionIDType_Add() => config.EmotionID;
     public questEmotionType GetEmotionIDType_Remove() => config.EmotionID_;
-
     public List<StructureQuest.QuestGeneric.itemsToPick> ItemsToPick() => config.itemsToPickData;
-
 }
 
 public class Quest : MonoBehaviour
@@ -73,6 +76,7 @@ public class Quest : MonoBehaviour
     private DialogueController dialogue;
     private QuestData activeQuest;
     private PlayerInteraction playerInteraction;
+    private InGameSequenceController flow;
 
 
     [Header("Runtime Data")]
@@ -102,12 +106,16 @@ public class Quest : MonoBehaviour
     public bool isActive;
 
     int ObjInventory;
+
+    // cuantas quests se completaron hasta ahora (para flags de progreso)
+    private int completedCount;
     private void Awake()
     {
         dialogue = FindAnyObjectByType<DialogueController>();
         playerInteraction = FindFirstObjectByType<PlayerInteraction>();
         bars = FindFirstObjectByType<Bars>();
         controller = FindFirstObjectByType<QuestController>();
+        flow = FindFirstObjectByType<InGameSequenceController>();
         rend = GetComponent<Renderer>();
 
         if (rend != null)
@@ -136,6 +144,8 @@ public class Quest : MonoBehaviour
     private void FixedUpdate()
     {
         if (activeQuest == null || !activeQuest.isActive) return;
+
+        activeQuest.timer += Time.fixedDeltaTime;
 
         switch (activeQuest.GetQuestType())
         {
@@ -175,9 +185,13 @@ public class Quest : MonoBehaviour
 
 
             activeQuest.isActive = true;
+            activeQuest.halfNotified = false;
             dialogue.PlayDialogue(activeQuest.SubtitlesForQuest);
             isActive = activeQuest.isActive;
             activeQuest.timer = 0f;
+
+            // flag para que los HintDialogue sepan que mision esta en curso
+            SetQuestFlag($"quest_{activeQuest.QuestID}_active", true);
 
             Debug.LogWarning($"Quest Activated: ID = {activeQuest.QuestID}, Name = {activeQuest.QuestName}");
 
@@ -204,7 +218,14 @@ public class Quest : MonoBehaviour
 
         dialogue.PlayDialogue(activeQuest.SubtitlesForQuestFail);
         activeQuest.isActive = false;
+        isActive = activeQuest.isActive;
         Debug.Log("Quest fallida:" + activeQuest.config.Name);
+
+        SetQuestFlag($"quest_{activeQuest.QuestID}_active", false);
+        SetQuestFlag($"quest_{activeQuest.QuestID}_active_half", false);
+        SetQuestFlag($"quest_{activeQuest.QuestID}_failed", true);
+
+        if (flow != null) flow.OnMissionFailed();
     }
     
     public void _FailQuest()
@@ -237,13 +258,13 @@ public class Quest : MonoBehaviour
         return getTimer();
     }
 
-    private bool checkTimer() => activeQuest != null && activeQuest.timer >= activeQuest.TimerDuration;
+    private bool checkTimer() => activeQuest != null && activeQuest.TimerDuration > 0f && activeQuest.timer >= activeQuest.TimerDuration;
     public bool _checkTimer()
     {
         return checkTimer();
     }
 
-    private float getTimerDuration() => activeQuest.timer;
+    private float getTimerDuration() => activeQuest != null ? activeQuest.TimerDuration : 0f;
     public float _getTimerDuration()
     {
         return getTimerDuration();
@@ -269,6 +290,8 @@ public class Quest : MonoBehaviour
         }
 
         Debug.Log($"Collected {collectedCount} / {totalRequired} for quest '{activeQuest.QuestName}'");
+
+        CheckHalfProgress(collectedCount, totalRequired);
 
         if (collectedCount >= totalRequired)
         {
@@ -297,6 +320,7 @@ public class Quest : MonoBehaviour
     {
         if (activeQuest == null) return;
         if (activeQuest.GetQuestType() != questType.ToDelivery) return;
+        Debug.Log(activeQuest.GetQuestType());
 
         distanceList = new List<float>(new float[Obj_.Count]); // Reiniciar la lista de distancias para cada objeto
         int ObjInRoom = 0;
@@ -315,11 +339,33 @@ public class Quest : MonoBehaviour
         }
 
 
+        CheckHalfProgress(ObjInRoom, activeQuest.ItemsToPick().Count);
+
         if (ObjInRoom >= activeQuest.ItemsToPick().Count)
         {
             CompleteActiveQuest();
             ObjInRoom = 0;
             return;
+        }
+    }
+
+    // Avisa una sola vez cuando la mision pasa la mitad. Solo tiene sentido si requiere
+    // 2 o mas objetos (ToCollect / ToDelivery); con 1 solo, la mitad seria completarla.
+    private void CheckHalfProgress(int current, int total)
+    {
+        if (activeQuest == null || activeQuest.halfNotified) return;
+        if (total < 2) return;
+
+        if (current >= Mathf.CeilToInt(total / 2f))
+        {
+            activeQuest.halfNotified = true;
+
+            if (!string.IsNullOrEmpty(activeQuest.SubtitlesForQuestHalf))
+            {
+                dialogue.PlayDialogue(activeQuest.SubtitlesForQuestHalf);
+            }
+
+            SetQuestFlag($"quest_{activeQuest.QuestID}_active_half", true);
         }
     }
 
@@ -338,6 +384,24 @@ public class Quest : MonoBehaviour
         bars.QuestFinished(activeQuest.GetEmotionIDType_Remove(), -(int)activeQuest.RemovePoints);
 
         Debug.LogWarning($"Se completo la quest se le sumo {activeQuest.AddPoints} a {activeQuest.GetEmotionIDType_Add()} y se le resto {activeQuest.RemovePoints} a {activeQuest.GetEmotionIDType_Remove()}");
+
+        // al completarse se sacan las flags de "activo" y queda solo la de "done"
+        SetQuestFlag($"quest_{activeQuest.QuestID}_active", false);
+        SetQuestFlag($"quest_{activeQuest.QuestID}_active_half", false);
+        SetQuestFlag($"quest_{activeQuest.QuestID}_done", true);
+        completedCount++;
+        SetQuestFlag($"missions_completed_{completedCount}", true);
+
+        if (flow != null) flow.OnMissionCompleted(activeQuest.CompletePoints);
+    }
+
+    // setea una flag en el estado global, si existe el controlador
+    private void SetQuestFlag(string flagName, bool value)
+    {
+        if (GameStateController.Instance != null)
+        {
+            GameStateController.Instance.SetFlag(flagName, value);
+        }
     }
 
     private void TpDoll()
@@ -354,7 +418,7 @@ public class Quest : MonoBehaviour
     {
         if (activeQuest == null)
         {
-            Debug.LogWarning("Rooms(): questData es null, no se puede asignar Room.");
+            //Debug.LogWarning("Rooms(): questData es null, no se puede asignar Room.");
             return;
         }
 
@@ -363,7 +427,7 @@ public class Quest : MonoBehaviour
 
         if (piece == null)
         {
-            Debug.LogWarning($"Rooms(): no encontré ninguna pieza con ID {activeQuest.roomID}");
+            //Debug.LogWarning($"Rooms(): no encontré ninguna pieza con ID {activeQuest.roomID}");
             return;
         }
 
@@ -373,11 +437,10 @@ public class Quest : MonoBehaviour
     {
         if (activeQuest == null)
         {
-            Debug.LogWarning("Obj(): questData es null, no se puede asignar Obj.");
+            //Debug.LogWarning("Obj(): questData es null, no se puede asignar Obj.");
             return;
         }
 
-        if (activeQuest.GetQuestType() == questType.ToDelivery) return;
 
         Obj_.Clear();
         ObjId.Clear();
@@ -406,21 +469,21 @@ public class Quest : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"metodo incorrecto, no se deberia llamar a este metodo en este tipo de Quest");
+                    //Debug.LogWarning($"metodo incorrecto, no se deberia llamar a este metodo en este tipo de Quest");
                     return;
                 }
 
             }
             else if (objScene != null)
             {
-                Debug.Log($"Objeto encontrado para el ID {itemID}: {objScene.name}");
+                //Debug.Log($"Objeto encontrado para el ID {itemID}: {objScene.name}");
                 Obj_.Add(objScene.transform);
                 ObjId.Add(itemID);
             }
             else
             {
                 // Si no lo encuentra, avisa en consola pero el juego Sigue corriendo bien
-                Debug.LogWarning($"No se encontró en la escena ni en el inventario el objeto con el ID: {itemID}");
+                //Debug.LogWarning($"No se encontró en la escena ni en el inventario el objeto con el ID: {itemID}");
             }
         }
 
@@ -428,12 +491,12 @@ public class Quest : MonoBehaviour
 
     private void ObjScena(int itemID, GrabbableObject objInventory)
     {
-        Debug.Log($"Objeto encontrado para el ID {itemID}: {objInventory.name}");
+        //Debug.Log($"Objeto encontrado para el ID {itemID}: {objInventory.name}");
         Obj_.Add(objInventory.transform);
     }
     private void ObjCollect(int itemID, GrabbableObject objInventory)
     {
-        Debug.Log($"Objeto encontrado para el ID {itemID}: {objInventory.name}");
+        //Debug.Log($"Objeto encontrado para el ID {itemID}: {objInventory.name}");
         Obj_.Add(objInventory.transform);
         ObjId.Add(itemID);
         ObjInventory++;
@@ -450,9 +513,9 @@ public class Quest : MonoBehaviour
 
         for (int j = 0; j < listItems.Count; j++)
         {
-            Debug.Log("Item actual [" + j + "]: " + listItems[j]);
+            //Debug.Log("Item actual [" + j + "]: " + listItems[j]);
             randomObjectPositioner._ObjAdd(listItems[j]);
-            Debug.Log($"Spawned {listItems[j].quantity} item ID {listItems[j].itemID}");
+            //Debug.Log($"Spawned {listItems[j].quantity} item ID {listItems[j].itemID}");
         }   
     }
 }

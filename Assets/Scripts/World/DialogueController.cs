@@ -9,6 +9,11 @@ public class DialogueLine
     public string text;
     public float delayBefore = 0f;
     public float duration = 2.5f;
+
+    // Audio opcional de la linea. El subtitulo manda: si el clip dura distinto a "duration",
+    // se ajusta el pitch para que el audio entre justo en ese tiempo (se acelera o frena).
+    // Si "duration" es 0 y hay clip, se usa el largo del clip tal cual.
+    public AudioClip audioClip;
 }
 
 [Serializable]
@@ -28,6 +33,13 @@ public class DialogueController : MonoBehaviour
 
     [Header("Referencias")]
     [SerializeField] private SubtitleUI subtitleUI;
+    // AudioSource para la voz de los dialogos. Si queda vacio se crea uno solo.
+    [SerializeField] private AudioSource voiceSource;
+
+    [Header("Audio")]
+    // limites de pitch para que al sincronizar no quede irreconocible (chipmunk o gravedad extrema)
+    [SerializeField] private float minVoicePitch = 0.5f;
+    [SerializeField] private float maxVoicePitch = 2.5f;
 
     [Header("Dialogos")]
     [SerializeField] private DialoguePool[] pools;
@@ -50,6 +62,20 @@ public class DialogueController : MonoBehaviour
         {
             subtitleUI = SubtitleUI.Instance;
         }
+
+        if (voiceSource == null)
+        {
+            voiceSource = GetComponent<AudioSource>();
+
+            if (voiceSource == null)
+            {
+                voiceSource = gameObject.AddComponent<AudioSource>();
+            }
+        }
+
+        voiceSource.playOnAwake = false;
+        voiceSource.loop = false;
+        voiceSource.spatialBlend = 0f;
     }
 
     public void PlayDialogue(string id)
@@ -93,6 +119,7 @@ public class DialogueController : MonoBehaviour
 
         StopCoroutine(currentRoutine);
         currentRoutine = null;
+        StopVoice();
     }
 
     private DialoguePool GetPool(string id)
@@ -133,25 +160,66 @@ public class DialogueController : MonoBehaviour
                 yield return new WaitForSeconds(line.delayBefore);
             }
 
+            // la duracion del subtitulo manda; el audio (si hay) se ajusta a ella
+            float lineDuration = GetLineDuration(line);
+            PlayLineAudio(line, lineDuration);
+
             SubtitleUI targetSubtitle = subtitleUI != null ? subtitleUI : SubtitleUI.Instance;
 
             if (targetSubtitle != null)
             {
                 // el fondo lo dejamos por defecto (transparente segun config del panel) y solo pasamos el color del texto
-                targetSubtitle.ShowSubtitle(line.text, line.duration, SubtitlePriority.Dialogue, null, textColor);
+                targetSubtitle.ShowSubtitle(line.text, lineDuration, SubtitlePriority.Dialogue, null, textColor);
             }
             else
             {
                 Debug.LogWarning("DialogueController: no hay SubtitleUI asignado o disponible.");
             }
 
-            if (line.duration > 0f)
+            if (lineDuration > 0f)
             {
-                yield return new WaitForSeconds(line.duration);
+                yield return new WaitForSeconds(lineDuration);
             }
         }
 
+        StopVoice();
         currentRoutine = null;
+    }
+
+    private void PlayLineAudio(DialogueLine line, float lineDuration)
+    {
+        if (voiceSource == null)
+        {
+            return;
+        }
+
+        // si la linea no trae audio, corto cualquier voz previa y no reproduzco nada
+        if (line.audioClip == null)
+        {
+            StopVoice();
+            return;
+        }
+
+        voiceSource.Stop();
+        voiceSource.clip = line.audioClip;
+
+        // pitch para que el clip entre justo en lineDuration (acelera si el clip es mas largo)
+        float pitch = 1f;
+        if (lineDuration > 0.01f)
+        {
+            pitch = Mathf.Clamp(line.audioClip.length / lineDuration, minVoicePitch, maxVoicePitch);
+        }
+
+        voiceSource.pitch = pitch;
+        voiceSource.Play();
+    }
+
+    private void StopVoice()
+    {
+        if (voiceSource != null && voiceSource.isPlaying)
+        {
+            voiceSource.Stop();
+        }
     }
 
     private float GetLinesDuration(DialogueLine[] lines)
@@ -171,9 +239,30 @@ public class DialogueController : MonoBehaviour
             }
 
             totalDuration += Mathf.Max(0f, line.delayBefore);
-            totalDuration += Mathf.Max(0f, line.duration);
+            totalDuration += GetLineDuration(line);
         }
 
         return totalDuration;
+    }
+
+    // Duracion real del subtitulo: la que se configura, o el largo del clip si no se puso duracion.
+    private float GetLineDuration(DialogueLine line)
+    {
+        if (line == null)
+        {
+            return 0f;
+        }
+
+        if (line.duration > 0f)
+        {
+            return line.duration;
+        }
+
+        if (line.audioClip != null)
+        {
+            return line.audioClip.length;
+        }
+
+        return 0f;
     }
 }
