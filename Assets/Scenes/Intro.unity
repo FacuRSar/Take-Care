@@ -5011,12 +5011,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 46521183}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.86587, y: -0.27969003, z: 1.6503696}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 915427358}
+  m_Father: {fileID: 1457992042}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &46521185
 MonoBehaviour:
@@ -5606,6 +5606,139 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265817065}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &291574684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 291574685}
+  - component: {fileID: 291574689}
+  - component: {fileID: 291574688}
+  - component: {fileID: 291574687}
+  - component: {fileID: 291574686}
+  m_Layer: 12
+  m_Name: Mueble3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &291574685
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291574684}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: -1.22, y: -0, z: 7.31}
+  m_LocalScale: {x: 127.60001, y: 127.60004, z: 127.60004}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1686503504}
+  m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
+--- !u!114 &291574686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291574684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
+--- !u!65 &291574687
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291574684}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.013739518, y: 0.0058130217, z: 0.020634426}
+  m_Center: {x: 0, y: 1.1641535e-10, z: 0.010317213}
+--- !u!23 &291574688
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291574684}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 4b5f0323bb66b104cb360d9daa4894e4, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &291574689
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291574684}
+  m_Mesh: {fileID: -5698299244268976121, guid: af7c4671a8eb24e4eaf61a5d77ca385b, type: 3}
 --- !u!1 &300691945
 GameObject:
   m_ObjectHideFlags: 0
@@ -6466,7 +6599,7 @@ GameObject:
   - component: {fileID: 559572105}
   - component: {fileID: 559572106}
   m_Layer: 0
-  m_Name: FixedCameraController
+  m_Name: FixedCameraManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6586,6 +6719,50 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &660528183
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 660528184}
+  - component: {fileID: 660528185}
+  m_Layer: 0
+  m_Name: AmbientEventManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &660528184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660528183}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 915427358}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &660528185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660528183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3a1d25e9e1a10a4a8d77316e3da22a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AmbientEventManager
 --- !u!1 &702398057 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3672970863713515574, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
@@ -7105,6 +7282,209 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6609194206883130466, guid: ee06047e48f151342a44ebb9f35c33e2, type: 3}
   m_PrefabInstance: {fileID: 1686503503}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &818264470
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 818264471}
+  - component: {fileID: 818264473}
+  - component: {fileID: 818264472}
+  m_Layer: 0
+  m_Name: DialogueManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &818264471
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818264470}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 915427358}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &818264472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818264470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fbe9721d4f5434d9abcd8bcf1126587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HintDialogueController
+  subtitleUI: {fileID: 2024097066}
+  gameStateController: {fileID: 1490577939}
+  voiceSource: {fileID: 0}
+  minVoicePitch: 0.5
+  maxVoicePitch: 2.5
+  firstHintDelay: 20
+  repeatInterval: 30
+  hintPool:
+  - text: Tendria que ver de donde viene esa canilla
+    duration: 2
+    requiredFlags:
+    - doll_triggered
+    blockedFlags:
+    - faucet_closed
+    audioClip: {fileID: 0}
+  - text: "Ese telefono... \xBFVa a durar por siempre?"
+    duration: 2
+    requiredFlags:
+    - power_on
+    blockedFlags:
+    - phone_answered
+    audioClip: {fileID: 0}
+  - text: Esto parece un juego que quiere que atienda el telefono
+    duration: 2
+    requiredFlags:
+    - power_on
+    blockedFlags:
+    - phone_answered
+    audioClip: {fileID: 0}
+  - text: Deberia ver como encender la luz
+    duration: 2
+    requiredFlags:
+    - 
+    blockedFlags:
+    - power_on
+    audioClip: {fileID: 0}
+  activeOnStart: 0
+--- !u!114 &818264473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818264470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3337458350a6416f961e9f12bccfdaaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueController
+  subtitleUI: {fileID: 2024097066}
+  voiceSource: {fileID: 0}
+  minVoicePitch: 0.5
+  maxVoicePitch: 2.5
+  pools:
+  - id: intro
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 1, g: 0, b: 0, a: 1}
+    lines:
+    - text: Dios! No esperaba esta tormenta tan fuerte!
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+    - text: Hola!?? Perdon por irrumpir!! La tormenta me sorprendio
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+    - text: Bueno, parece abandonado... No veo que las luces esten funcionando
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+  - id: energy_restored
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 0, g: 0, b: 0, a: 0}
+    lines:
+    - text: Y se hizo la luz!! Alelluya!
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+    - text: Este lugar es todavia mas feo con luz
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+    - text: "Eso es... \xBFEl telefono?"
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+  - id: phone_hello
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 0, g: 0, b: 0, a: 0}
+    lines:
+    - text: "\xBFHola?"
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+    - text: ...
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+  - id: phone_surprise
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 0, g: 0, b: 0, a: 0}
+    lines:
+    - text: QUE CARA..!!
+      delayBefore: 0
+      duration: 2
+      audioClip: {fileID: 0}
+    - text: "Dios... Que susto, solo es una mu\xF1eca rota"
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+  - id: doll_reaction
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 0, g: 0, b: 0, a: 0}
+    lines:
+    - text: Un segundo...
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+    - text: "Esta mu\xF1eca estaba aca antes?"
+      delayBefore: 0
+      duration: 2
+      audioClip: {fileID: 0}
+  - id: bathroom_reaction
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 0, g: 0, b: 0, a: 0}
+    lines:
+    - text: AHORA QUE!?
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+    - text: "\xBFUna canilla? \xBFDe donde viene?"
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+  - id: mirror_reaction
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 0, g: 0, b: 0, a: 0}
+    lines:
+    - text: '!!!!'
+      delayBefore: 2
+      duration: 2
+      audioClip: {fileID: 0}
+    - text: No no nono!!
+      delayBefore: 0
+      duration: 2
+      audioClip: {fileID: 0}
+    - text: Me voy de aca!!
+      delayBefore: 0
+      duration: 2
+      audioClip: {fileID: 0}
+  - id: captureMessege
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 0.6698113, g: 0.16113384, b: 0.16113384, a: 0}
+    lines:
+    - text: Aun no es hora de irse querido... Aun no
+      delayBefore: 2
+      duration: 3
+      audioClip: {fileID: 0}
 --- !u!1 &819476805
 GameObject:
   m_ObjectHideFlags: 0
@@ -7151,7 +7531,7 @@ GameObject:
   - component: {fileID: 827196677}
   - component: {fileID: 827196678}
   m_Layer: 0
-  m_Name: ScreenEffectController
+  m_Name: EffectsManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7200,6 +7580,10 @@ MonoBehaviour:
     playTrigger: 
     stopTrigger: 
     animatorRoot: {fileID: 0}
+    shakeTarget: {fileID: 0}
+    shakeDuration: 0.4
+    shakePositionMagnitude: 0.08
+    shakeRotationMagnitude: 1.5
   - id: hands
     type: 0
     startHidden: 1
@@ -7215,6 +7599,48 @@ MonoBehaviour:
     playTrigger: 
     stopTrigger: 
     animatorRoot: {fileID: 0}
+    shakeTarget: {fileID: 0}
+    shakeDuration: 0.4
+    shakePositionMagnitude: 0.08
+    shakeRotationMagnitude: 1.5
+  - id: shake_soft
+    type: 3
+    startHidden: 1
+    useUnscaledTime: 0
+    fadeInDuration: 0.5
+    fadeOutDuration: 1
+    image: {fileID: 529735485}
+    targetAlpha: 1
+    volume: {fileID: 0}
+    targetVignetteIntensity: 0.55
+    targetVignetteSmoothness: 0.5
+    animator: {fileID: 0}
+    playTrigger: 
+    stopTrigger: 
+    animatorRoot: {fileID: 0}
+    shakeTarget: {fileID: 2016877957}
+    shakeDuration: 0.3
+    shakePositionMagnitude: 0.04
+    shakeRotationMagnitude: 0.8
+  - id: shake_strong
+    type: 3
+    startHidden: 1
+    useUnscaledTime: 0
+    fadeInDuration: 0.5
+    fadeOutDuration: 1
+    image: {fileID: 529735485}
+    targetAlpha: 1
+    volume: {fileID: 0}
+    targetVignetteIntensity: 0.55
+    targetVignetteSmoothness: 0.5
+    animator: {fileID: 0}
+    playTrigger: 
+    stopTrigger: 
+    animatorRoot: {fileID: 0}
+    shakeTarget: {fileID: 2016877957}
+    shakeDuration: 0.6
+    shakePositionMagnitude: 0.1
+    shakeRotationMagnitude: 2
 --- !u!1 &828381459
 GameObject:
   m_ObjectHideFlags: 0
@@ -7586,15 +8012,15 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1490577940}
-  - {fileID: 1679627211}
+  - {fileID: 818264471}
   - {fileID: 559572105}
+  - {fileID: 1292634254}
+  - {fileID: 827196677}
+  - {fileID: 660528184}
   - {fileID: 331330057}
   - {fileID: 752710251}
   - {fileID: 450696700}
-  - {fileID: 46521184}
-  - {fileID: 1292634254}
   - {fileID: 1336405757}
-  - {fileID: 827196677}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &945586638
@@ -12838,7 +13264,7 @@ GameObject:
   - component: {fileID: 1292634254}
   - component: {fileID: 1292634255}
   m_Layer: 0
-  m_Name: SpawnController
+  m_Name: SpawnManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18111,6 +18537,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
+--- !u!1 &1457992041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1457992042}
+  m_Layer: 0
+  m_Name: SequenceControllers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1457992042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457992041}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.49373, y: 2.70106, z: 21.26575}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1679627211}
+  - {fileID: 46521184}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1472824900
 GameObject:
   m_ObjectHideFlags: 0
@@ -18753,8 +19212,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1679627211}
   - component: {fileID: 1679627214}
-  - component: {fileID: 1679627213}
-  - component: {fileID: 1679627212}
   m_Layer: 0
   m_Name: IntroSequenceController
   m_TagString: Untagged
@@ -18771,182 +19228,12 @@ Transform:
   m_GameObject: {fileID: 1679627210}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21.2981, y: -0.75683, z: -1.1970997}
+  m_LocalPosition: {x: 16.43223, y: -1.03652, z: 0.45326996}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 915427358}
+  m_Father: {fileID: 1457992042}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1679627212
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1679627210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fbe9721d4f5434d9abcd8bcf1126587, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HintDialogueController
-  subtitleUI: {fileID: 2024097066}
-  gameStateController: {fileID: 1490577939}
-  voiceSource: {fileID: 0}
-  minVoicePitch: 0.5
-  maxVoicePitch: 2.5
-  firstHintDelay: 20
-  repeatInterval: 30
-  hintPool:
-  - text: Tendria que ver de donde viene esa canilla
-    duration: 2
-    requiredFlags:
-    - doll_triggered
-    blockedFlags:
-    - faucet_closed
-    audioClip: {fileID: 0}
-  - text: "Ese telefono... \xBFVa a durar por siempre?"
-    duration: 2
-    requiredFlags:
-    - power_on
-    blockedFlags:
-    - phone_answered
-    audioClip: {fileID: 0}
-  - text: Esto parece un juego que quiere que atienda el telefono
-    duration: 2
-    requiredFlags:
-    - power_on
-    blockedFlags:
-    - phone_answered
-    audioClip: {fileID: 0}
-  - text: Deberia ver como encender la luz
-    duration: 2
-    requiredFlags:
-    - 
-    blockedFlags:
-    - power_on
-    audioClip: {fileID: 0}
-  activeOnStart: 0
---- !u!114 &1679627213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1679627210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3337458350a6416f961e9f12bccfdaaa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DialogueController
-  subtitleUI: {fileID: 2024097066}
-  voiceSource: {fileID: 0}
-  minVoicePitch: 0.5
-  maxVoicePitch: 2.5
-  pools:
-  - id: intro
-    useCustomTextColor: 0
-    subtitleTextColor: {r: 1, g: 0, b: 0, a: 1}
-    lines:
-    - text: Dios! No esperaba esta tormenta tan fuerte!
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-    - text: Hola!?? Perdon por irrumpir!! La tormenta me sorprendio
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-    - text: Bueno, parece abandonado... No veo que las luces esten funcionando
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-  - id: energy_restored
-    useCustomTextColor: 0
-    subtitleTextColor: {r: 0, g: 0, b: 0, a: 0}
-    lines:
-    - text: Y se hizo la luz!! Alelluya!
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-    - text: Este lugar es todavia mas feo con luz
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-    - text: "Eso es... \xBFEl telefono?"
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-  - id: phone_hello
-    useCustomTextColor: 0
-    subtitleTextColor: {r: 0, g: 0, b: 0, a: 0}
-    lines:
-    - text: "\xBFHola?"
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-    - text: ...
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-  - id: phone_surprise
-    useCustomTextColor: 0
-    subtitleTextColor: {r: 0, g: 0, b: 0, a: 0}
-    lines:
-    - text: QUE CARA..!!
-      delayBefore: 0
-      duration: 2
-      audioClip: {fileID: 0}
-    - text: "Dios... Que susto, solo es una mu\xF1eca rota"
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-  - id: doll_reaction
-    useCustomTextColor: 0
-    subtitleTextColor: {r: 0, g: 0, b: 0, a: 0}
-    lines:
-    - text: Un segundo...
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-    - text: "Esta mu\xF1eca estaba aca antes?"
-      delayBefore: 0
-      duration: 2
-      audioClip: {fileID: 0}
-  - id: bathroom_reaction
-    useCustomTextColor: 0
-    subtitleTextColor: {r: 0, g: 0, b: 0, a: 0}
-    lines:
-    - text: AHORA QUE!?
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-    - text: "\xBFUna canilla? \xBFDe donde viene?"
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-  - id: mirror_reaction
-    useCustomTextColor: 0
-    subtitleTextColor: {r: 0, g: 0, b: 0, a: 0}
-    lines:
-    - text: '!!!!'
-      delayBefore: 2
-      duration: 2
-      audioClip: {fileID: 0}
-    - text: No no nono!!
-      delayBefore: 0
-      duration: 2
-      audioClip: {fileID: 0}
-    - text: Me voy de aca!!
-      delayBefore: 0
-      duration: 2
-      audioClip: {fileID: 0}
-  - id: captureMessege
-    useCustomTextColor: 0
-    subtitleTextColor: {r: 0.6698113, g: 0.16113384, b: 0.16113384, a: 0}
-    lines:
-    - text: Aun no es hora de irse querido... Aun no
-      delayBefore: 2
-      duration: 3
-      audioClip: {fileID: 0}
 --- !u!114 &1679627214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19067,12 +19354,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5515348563795115628, guid: ee06047e48f151342a44ebb9f35c33e2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 291574685}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 586643705559524484, guid: ee06047e48f151342a44ebb9f35c33e2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: ee06047e48f151342a44ebb9f35c33e2, type: 3}
+--- !u!4 &1686503504 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5515348563795115628, guid: ee06047e48f151342a44ebb9f35c33e2, type: 3}
+  m_PrefabInstance: {fileID: 1686503503}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1754477424
 GameObject:
   m_ObjectHideFlags: 0
@@ -24868,6 +25163,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
+--- !u!4 &2016877957 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8269313867149107321, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
+  m_PrefabInstance: {fileID: 2016877956}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2017093736 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4546828001190790716, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
@@ -26865,9 +27165,10 @@ SceneRoots:
   - {fileID: 2016877956}
   - {fileID: 864031900}
   - {fileID: 7670006764278436313}
+  - {fileID: 1686503503}
   - {fileID: 365844216}
   - {fileID: 1754477425}
   - {fileID: 915427358}
   - {fileID: 2059859968}
   - {fileID: 2036229288}
-  - {fileID: 1686503503}
+  - {fileID: 1457992042}

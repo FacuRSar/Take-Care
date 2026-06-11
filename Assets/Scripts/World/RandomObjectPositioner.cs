@@ -40,7 +40,7 @@ public class RandomObjectPositioner : MonoBehaviour
 
         foreach (GameObject Object in Obj)
         {
-            Debug.Log("Validando el objeto: " + Object.name);
+            //Debug.Log("Validando el objeto: " + Object.name);
 
             if (Object.TryGetComponent(out GrabbableObject grabbable))
             {
@@ -149,7 +149,7 @@ public class RandomObjectPositioner : MonoBehaviour
                 }
             }
 
-            Debug.Log("Nota: Asegúrate de que las probabilidades en la lista Weights estén configuradas correctamente para evitar problemas en la selección de posiciones.");
+            //Debug.Log("Nota: Asegúrate de que las probabilidades en la lista Weights estén configuradas correctamente para evitar problemas en la selección de posiciones.");
             return 0; // Devuelve un índice predeterminado en caso de que no se seleccione ninguna posición (esto no debería ocurrir si las probabilidades son correctas)
 
         }
@@ -163,21 +163,21 @@ public class RandomObjectPositioner : MonoBehaviour
     {
         GrabbableObject[] grabbableObjects = Resources.LoadAll<GrabbableObject>("");
 
-        Debug.Log("Objetos cargados: " + grabbableObjects.Length);
+        //Debug.Log("Objetos cargados: " + grabbableObjects.Length);
 
         foreach (GrabbableObject grabbableObject in grabbableObjects)
         {
-            Debug.Log($"Prefab: {grabbableObject.objectName} ID: {grabbableObject.objectID}");
+            //Debug.Log($"Prefab: {grabbableObject.objectName} ID: {grabbableObject.objectID}");
 
             if (listItems.itemID == grabbableObject.objectID)
             {
                 for (int j = 0; j < listItems.quantity; j++)
                 {
                     Obj.Add(grabbableObject.gameObject);
-                    Debug.Log("Objeto " + grabbableObject.objectName + " agregado a la lista Obj.");
+                    //Debug.Log("Objeto " + grabbableObject.objectName + " agregado a la lista Obj.");
                 }
 
-                Debug.Log("Cantidad en Obj: " + Obj.Count);
+                //Debug.Log("Cantidad en Obj: " + Obj.Count);
                 break;
             }
         }

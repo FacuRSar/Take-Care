@@ -268,6 +268,20 @@ public class PlayerInteraction : MonoBehaviour
             if (grabbable != null)
             {
                 ClearCurrentInteractable();
+
+                // objeto marcado como no agarrable (ej: pesado): el prompt sigue normal
+                // y el mensaje de "pesa demasiado" solo sale como subtitulo al apretar E
+                if (!grabbable.CanBeGrabbed)
+                {
+                    ShowPrompt("E - Interactuar");
+
+                    if (interactPressed && SubtitleUI.Instance != null)
+                    {
+                        SubtitleUI.Instance.ShowSubtitle(grabbable.CannotGrabMessage, 2.5f);
+                    }
+                    return;
+                }
+
                 ShowPrompt("E - Agarrar");
 
                 if (interactPressed && pickedObject == null)

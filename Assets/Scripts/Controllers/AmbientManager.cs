@@ -38,6 +38,19 @@ public class AmbientManager : MonoBehaviour
     // Probabilidad de que suene un rayo cuando llega el chequeo
     // 1 = siempre, 0 = nunca
 
+    [Header("Sonidos de ambiente al azar")]
+    // ids de pools del SFXManager que suenan cada tanto (crujidos, golpes lejanos, susurros, etc.)
+    [SerializeField] private string[] randomAmbientSfxIds;
+    // tiempo min. y max. entre intentos de sonido. amplio para no agobiar en una partida corta
+    [SerializeField] private Vector2 randomAmbientDelayRange = new Vector2(20f, 45f);
+    // probabilidad de que suene cuando llega el chequeo (1 = siempre)
+    [SerializeField, Range(0f, 1f)] private float randomAmbientChance = 0.7f;
+    // si suena en 3D necesita puntos en el mundo; si no, suena 2D/global
+    [SerializeField] private bool randomAmbientAs3D = false;
+    // puntos opcionales desde donde puede salir el sonido 3D (elige uno al azar)
+    [SerializeField] private Transform[] randomAmbientPoints;
+    [SerializeField] private bool playRandomAmbientOnStart = false;
+
     [Header("Config. Luces de rayos")]
     [SerializeField] private Light[] lightningLights;
     // Luces que van a flashear cuando cae un rayo
@@ -56,6 +69,7 @@ public class AmbientManager : MonoBehaviour
     // Tiempo aleatorio entre flashes para que no sea tan mecanico.
 
     private Coroutine thunderRoutine;
+    private Coroutine randomAmbientRoutine;
     private float[] originalLightIntensities;
     // Guarda la intensidad original de cada luz para restaurarla despues.
 
@@ -78,6 +92,11 @@ public class AmbientManager : MonoBehaviour
         {
             StartAmbient();
             StartThunderLoop();
+        }
+
+        if (playRandomAmbientOnStart)
+        {
+            StartRandomAmbientLoop();
         }
     }
 
@@ -154,6 +173,65 @@ public class AmbientManager : MonoBehaviour
         // Permite disparar un rayo manualmente desde otro evento si hace falta.
         PlayRandomThunder();
         StartCoroutine(FlashLightning());
+    }
+
+    public void StartRandomAmbientLoop()
+    {
+        if (randomAmbientRoutine != null)
+        {
+            StopCoroutine(randomAmbientRoutine);
+        }
+
+        randomAmbientRoutine = StartCoroutine(RandomAmbientLoop());
+    }
+
+    public void StopRandomAmbientLoop()
+    {
+        if (randomAmbientRoutine != null)
+        {
+            StopCoroutine(randomAmbientRoutine);
+            randomAmbientRoutine = null;
+        }
+    }
+
+    private IEnumerator RandomAmbientLoop()
+    {
+        while (true)
+        {
+            float waitTime = Random.Range(randomAmbientDelayRange.x, randomAmbientDelayRange.y);
+            yield return new WaitForSeconds(waitTime);
+
+            if (Random.value <= randomAmbientChance)
+            {
+                PlayRandomAmbientSound();
+            }
+        }
+    }
+
+    private void PlayRandomAmbientSound()
+    {
+        if (randomAmbientSfxIds == null || randomAmbientSfxIds.Length == 0 || SFXManager.Instance == null)
+        {
+            return;
+        }
+
+        string id = randomAmbientSfxIds[Random.Range(0, randomAmbientSfxIds.Length)];
+
+        if (string.IsNullOrEmpty(id))
+        {
+            return;
+        }
+
+        if (randomAmbientAs3D && randomAmbientPoints != null && randomAmbientPoints.Length > 0)
+        {
+            Transform point = randomAmbientPoints[Random.Range(0, randomAmbientPoints.Length)];
+            Vector3 position = point != null ? point.position : transform.position;
+            SFXManager.Instance.Play3D(id, position);
+        }
+        else
+        {
+            SFXManager.Instance.Play2D(id);
+        }
     }
 
     private IEnumerator ThunderLoop()

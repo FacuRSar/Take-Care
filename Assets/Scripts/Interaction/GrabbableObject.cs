@@ -45,6 +45,13 @@ public class GrabbableObject : MonoBehaviour
     //limite de velocidad para que no salga disparado si se desacomoda
 
     [Header("Opciones de este objeto")]
+    [SerializeField] private bool canBeGrabbed = true;
+    //si esta destildado el objeto no se puede agarrar (ej: algo muy pesado) y muestra el mensaje de abajo
+
+    [TextArea]
+    [SerializeField] private string cannotGrabMessage = "Esto pesa demasiado.";
+    //mensaje que aparece al intentar agarrar algo que no es agarrable
+
     [SerializeField] private bool lockRotation = false;
     //si esta tildado, no se puede rotar con click derecho
 
@@ -56,6 +63,31 @@ public class GrabbableObject : MonoBehaviour
 
     [SerializeField] private float customHoldDistance = 1f;
     //distancia inicial propia de este objeto (solo se usa si useCustomDistance esta tildado)
+
+    [Header("Sonidos (opcionales)")]
+    [SerializeField] private string pickupSfxId;
+    //sonido al agarrar (id del SFXManager). vacio = sin sonido
+
+    [SerializeField] private string dropSfxId;
+    //sonido al soltar. vacio = sin sonido
+
+    [SerializeField] private string impactSfxId;
+    //sonido al chocar fuerte (golpe contra el piso, paredes, etc.). vacio = sin sonido
+
+    [SerializeField] private float minImpactVelocity = 1.5f;
+    //velocidad minima del choque para que suene el impacto
+
+    [SerializeField] private float impactCooldown = 0.15f;
+    //tiempo minimo entre golpes para que no spamee al rebotar
+
+    [SerializeField] private bool impactSoundOnce = true;
+    //si esta tildado, el golpe suena una sola vez (ideal para la caida). se resetea al volver a agarrarlo
+
+    private float lastImpactTime = -999f;
+    private bool impactConsumed;
+
+    public bool CanBeGrabbed => canBeGrabbed;
+    public string CannotGrabMessage => cannotGrabMessage;
 
     // config compartida que llega desde PlayerInteraction al agarrar
     private GrabSettings settings;
@@ -167,6 +199,11 @@ public class GrabbableObject : MonoBehaviour
         //reseteo velocidades por si venia cayendo o girando raro (porque me hizo concha todo algunas veces)
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+
+        // al agarrarlo de nuevo permitimos que la proxima caida vuelva a sonar una vez
+        impactConsumed = false;
+
+        PlaySfx(pickupSfxId);
     }
 
     public void Drop()
@@ -189,6 +226,99 @@ public class GrabbableObject : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         // para la linear revisar si queda bien, si se ve medio mal solo se comenta y listo, no rompe nada, solo esta para reiniciar por si se suelta con inercia rara
         rb.linearVelocity = Vector3.zero;
+
+        PlaySfx(dropSfxId);
+    }
+
+    public bool EnablePhysicsFromAmbient(Vector3 impulse)
+    {
+        // para eventos de ambiente: si no hay collider real, no lo suelto porque se va al vacio
+        if (!HasSolidCollider())
+        {
+            Debug.LogWarning("[GrabbableObject] " + name + " no tiene collider solido. No activo fisica.");
+            return false;
+        }
+
+        rb.isKinematic = false;
+        rb.useGravity = true;
+        rb.detectCollisions = true;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.WakeUp();
+
+        // la caida disparada por el evento puede sonar una vez
+        impactConsumed = false;
+
+        if (impulse != Vector3.zero)
+        {
+            rb.AddForce(impulse, ForceMode.Impulse);
+        }
+
+        return true;
+    }
+
+    private bool HasSolidCollider()
+    {
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+
+        foreach (Collider col in colliders)
+        {
+            if (col != null && col.enabled && !col.isTrigger)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // mientras el jugador lo sostiene no suena: el roce contra cosas no es un golpe real
+        if (isHeld)
+        {
+            return;
+        }
+
+        // si ya sono una vez y esta configurado para sonar solo una vez, no repite (evita el ruido al arrastrar)
+        if (impactSoundOnce && impactConsumed)
+        {
+            return;
+        }
+
+        // golpe del objeto contra algo: suena si pega lo bastante fuerte (el objeto es el que se mueve, asi que el sonido vive aca)
+        if (string.IsNullOrEmpty(impactSfxId) || SFXManager.Instance == null || collision.contactCount == 0)
+        {
+            return;
+        }
+
+        if (collision.relativeVelocity.magnitude < minImpactVelocity)
+        {
+            return;
+        }
+
+        if (Time.time - lastImpactTime < impactCooldown)
+        {
+            return;
+        }
+
+        lastImpactTime = Time.time;
+        impactConsumed = true;
+
+        ContactPoint contact = collision.GetContact(0);
+        SFXManager.Instance.Play3D(impactSfxId, contact.point);
+    }
+
+    private void PlaySfx(string id)
+    {
+        if (string.IsNullOrEmpty(id) || SFXManager.Instance == null)
+        {
+            return;
+        }
+
+        SFXManager.Instance.Play3D(id, transform.position);
     }
 
     private void IgnorePlayerCollisions(bool ignore)
