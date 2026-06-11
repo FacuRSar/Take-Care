@@ -11,7 +11,8 @@ public enum AmbientActionType
     PlayDialogue,
     ShakeCamera,
     SpawnPrefab,
-    SetFlag
+    SetFlag,
+    ScreenEffect
 }
 
 /* una accion suelta dentro de un AmbientEvent.
@@ -22,6 +23,10 @@ public enum AmbientActionType
 public class AmbientEventAction
 {
     public AmbientActionType type;
+
+    [Header("General")]
+    // espera estos segundos antes de ejecutar esta accion (0 = al instante). util para escalonar el shake, un sonido, etc.
+    public float delay = 0f;
 
     [Header("Objetivo (EnablePhysics / SetActive / MoveTo)")]
     public GameObject target;
@@ -51,6 +56,14 @@ public class AmbientEventAction
     [Header("ShakeCamera")]
     // id de un efecto tipo CameraShake configurado en el ScreenEffectController
     public string shakeEffectId;
+
+    [Header("ScreenEffect (cualquier efecto del ScreenEffectController)")]
+    // id de un efecto del ScreenEffectController (imagen, vignette, animator, shake, etc.)
+    public string screenEffectId;
+    // si esta activo, en vez de reproducir el efecto lo apaga
+    public bool stopScreenEffect = false;
+    // si es mayor a 0, el efecto se apaga solo despues de esos segundos (ej: flash de susto 0.01)
+    public float screenEffectAutoStop = 0f;
 
     [Header("SpawnPrefab")]
     public GameObject prefab;

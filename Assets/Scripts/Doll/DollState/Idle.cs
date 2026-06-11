@@ -31,14 +31,14 @@ public class Idle : DollEmotion
     private void OnEnable()
     {
 
-        Debug.Log("La muñeca respira y tiene un leve movimeinto en el pecho");
+        //Debug.Log("La muñeca respira y tiene un leve movimeinto en el pecho");
 
     }
 
     private void OnDisable()
     {
 
-        Debug.Log("La muñeca se agita");
+        //Debug.Log("La muñeca se agita");
 
     }
     /*void Update()

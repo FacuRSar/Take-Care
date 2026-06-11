@@ -16,7 +16,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float standingHeight = 2f;
     [SerializeField] private float crouchHeight = 1.2f;
     [SerializeField] private float standingCameraY = 1.6f;
-    [SerializeField] private float crouchCameraY = 1.0f;
     [SerializeField] private float crouchLerpSpeed = 10f;
     // Cuanto encoge el collider al agacharse (0.6 = queda al 60% de su altura parada).
     [SerializeField] private float crouchHeightFactor = 0.6f;

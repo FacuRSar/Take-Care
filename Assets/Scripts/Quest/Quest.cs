@@ -418,7 +418,7 @@ public class Quest : MonoBehaviour
     {
         if (activeQuest == null)
         {
-            Debug.LogWarning("Rooms(): questData es null, no se puede asignar Room.");
+            //Debug.LogWarning("Rooms(): questData es null, no se puede asignar Room.");
             return;
         }
 
@@ -427,7 +427,7 @@ public class Quest : MonoBehaviour
 
         if (piece == null)
         {
-            Debug.LogWarning($"Rooms(): no encontré ninguna pieza con ID {activeQuest.roomID}");
+            //Debug.LogWarning($"Rooms(): no encontré ninguna pieza con ID {activeQuest.roomID}");
             return;
         }
 
@@ -437,7 +437,7 @@ public class Quest : MonoBehaviour
     {
         if (activeQuest == null)
         {
-            Debug.LogWarning("Obj(): questData es null, no se puede asignar Obj.");
+            //Debug.LogWarning("Obj(): questData es null, no se puede asignar Obj.");
             return;
         }
 
@@ -469,21 +469,21 @@ public class Quest : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"metodo incorrecto, no se deberia llamar a este metodo en este tipo de Quest");
+                    //Debug.LogWarning($"metodo incorrecto, no se deberia llamar a este metodo en este tipo de Quest");
                     return;
                 }
 
             }
             else if (objScene != null)
             {
-                Debug.Log($"Objeto encontrado para el ID {itemID}: {objScene.name}");
+                //Debug.Log($"Objeto encontrado para el ID {itemID}: {objScene.name}");
                 Obj_.Add(objScene.transform);
                 ObjId.Add(itemID);
             }
             else
             {
                 // Si no lo encuentra, avisa en consola pero el juego Sigue corriendo bien
-                Debug.LogWarning($"No se encontró en la escena ni en el inventario el objeto con el ID: {itemID}");
+                //Debug.LogWarning($"No se encontró en la escena ni en el inventario el objeto con el ID: {itemID}");
             }
         }
 
@@ -491,12 +491,12 @@ public class Quest : MonoBehaviour
 
     private void ObjScena(int itemID, GrabbableObject objInventory)
     {
-        Debug.Log($"Objeto encontrado para el ID {itemID}: {objInventory.name}");
+        //Debug.Log($"Objeto encontrado para el ID {itemID}: {objInventory.name}");
         Obj_.Add(objInventory.transform);
     }
     private void ObjCollect(int itemID, GrabbableObject objInventory)
     {
-        Debug.Log($"Objeto encontrado para el ID {itemID}: {objInventory.name}");
+        //Debug.Log($"Objeto encontrado para el ID {itemID}: {objInventory.name}");
         Obj_.Add(objInventory.transform);
         ObjId.Add(itemID);
         ObjInventory++;
@@ -513,9 +513,9 @@ public class Quest : MonoBehaviour
 
         for (int j = 0; j < listItems.Count; j++)
         {
-            Debug.Log("Item actual [" + j + "]: " + listItems[j]);
+            //Debug.Log("Item actual [" + j + "]: " + listItems[j]);
             randomObjectPositioner._ObjAdd(listItems[j]);
-            Debug.Log($"Spawned {listItems[j].quantity} item ID {listItems[j].itemID}");
+            //Debug.Log($"Spawned {listItems[j].quantity} item ID {listItems[j].itemID}");
         }   
     }
 }

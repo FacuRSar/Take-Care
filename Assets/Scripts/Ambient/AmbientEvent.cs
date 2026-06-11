@@ -13,7 +13,8 @@ public class AmbientEvent : MonoBehaviour
         PlayerEnter,
         OnFlag,
         Timed,
-        Manual
+        Manual,
+        PlayerLook
     }
 
     [Header("Identificacion")]
@@ -32,13 +33,32 @@ public class AmbientEvent : MonoBehaviour
     // solo para PlayerEnter: filtra para que solo lo dispare el jugador
     [SerializeField] private bool onlyPlayer = true;
 
+    [Header("PlayerLook (mirar un objeto a cierta distancia)")]
+    // objeto que el jugador tiene que estar mirando. si lo dejas vacio usa este mismo transform
+    [SerializeField] private Transform lookTarget;
+    // distancia maxima para que cuente
+    [SerializeField] private float lookDistance = 3f;
+    // tolerancia de angulo entre la mirada y el objeto (mas chico = hay que apuntar mas justo)
+    [SerializeField] private float lookAngle = 15f;
+    // cuanto tiempo seguido tiene que mirarlo antes de disparar (0 = al instante)
+    [SerializeField] private float lookHoldTime = 0.3f;
+    // si esta activo, tira un raycast para confirmar que no haya una pared/objeto tapando
+    [SerializeField] private bool requireLineOfSight = true;
+    // capas que puede chocar el raycast de linea de vista
+    [SerializeField] private LayerMask lookMask = ~0;
+
     [Header("Configuracion")]
     [SerializeField] private bool triggerOnce = true;
+
+    // si esta activo, escribe en consola cuando dispara y que accion corre. para depurar
+    [SerializeField] private bool debugLog = false;
 
     [Header("Acciones")]
     [SerializeField] private AmbientEventAction[] actions;
 
     private bool fired;
+    private float lookTimer;
+    private Camera playerCam;
 
     public string EventId => eventId;
 
@@ -97,6 +117,78 @@ public class AmbientEvent : MonoBehaviour
         Fire();
     }
 
+    private void Update()
+    {
+        if (triggerMode != TriggerMode.PlayerLook || (triggerOnce && fired))
+        {
+            return;
+        }
+
+        if (IsPlayerLookingAtTarget())
+        {
+            lookTimer += Time.deltaTime;
+
+            if (lookTimer >= lookHoldTime)
+            {
+                Fire();
+            }
+        }
+        else
+        {
+            // si deja de mirar, el contador se reinicia
+            lookTimer = 0f;
+        }
+    }
+
+    private bool IsPlayerLookingAtTarget()
+    {
+        Transform target = lookTarget != null ? lookTarget : transform;
+
+        Camera cam = GetPlayerCamera();
+        if (cam == null)
+        {
+            return false;
+        }
+
+        Vector3 toTarget = target.position - cam.transform.position;
+        float distance = toTarget.magnitude;
+
+        if (distance > lookDistance)
+        {
+            return false;
+        }
+
+        // angulo entre hacia donde mira la camara y hacia donde esta el objeto
+        float angle = Vector3.Angle(cam.transform.forward, toTarget);
+        if (angle > lookAngle)
+        {
+            return false;
+        }
+
+        // confirmamos que no haya algo tapando al objeto
+        if (requireLineOfSight && Physics.Raycast(cam.transform.position, toTarget.normalized, out RaycastHit hit, lookDistance, lookMask, QueryTriggerInteraction.Ignore))
+        {
+            bool hitIsTarget = hit.transform == target || hit.transform.IsChildOf(target) || target.IsChildOf(hit.transform);
+
+            if (!hitIsTarget)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private Camera GetPlayerCamera()
+    {
+        if (playerCam == null)
+        {
+            playerCam = Camera.main;
+        }
+
+        return playerCam;
+    }
+
     private void HandleFlagChanged(string flagName, bool value)
     {
         if (!value || flagName != requiredFlag)
@@ -137,6 +229,12 @@ public class AmbientEvent : MonoBehaviour
 
         fired = true;
 
+        if (debugLog)
+        {
+            int count = actions != null ? actions.Length : 0;
+            Debug.Log("[AmbientEvent] '" + name + "' disparado. Acciones: " + count);
+        }
+
         if (actions == null)
         {
             return;
@@ -144,8 +242,21 @@ public class AmbientEvent : MonoBehaviour
 
         foreach (AmbientEventAction action in actions)
         {
-            RunAction(action);
+            if (action != null && action.delay > 0f)
+            {
+                StartCoroutine(RunActionDelayed(action));
+            }
+            else
+            {
+                RunAction(action);
+            }
         }
+    }
+
+    private IEnumerator RunActionDelayed(AmbientEventAction action)
+    {
+        yield return new WaitForSeconds(action.delay);
+        RunAction(action);
     }
 
     private void RunAction(AmbientEventAction action)
@@ -153,6 +264,11 @@ public class AmbientEvent : MonoBehaviour
         if (action == null)
         {
             return;
+        }
+
+        if (debugLog)
+        {
+            Debug.Log("[AmbientEvent] '" + name + "' ejecuta accion: " + action.type);
         }
 
         switch (action.type)
@@ -193,6 +309,10 @@ public class AmbientEvent : MonoBehaviour
                 }
                 break;
 
+            case AmbientActionType.ScreenEffect:
+                DoScreenEffect(action);
+                break;
+
             case AmbientActionType.SpawnPrefab:
                 if (action.prefab != null)
                 {
@@ -218,6 +338,14 @@ public class AmbientEvent : MonoBehaviour
             return;
         }
 
+        GrabbableObject grabbable = action.target.GetComponent<GrabbableObject>();
+
+        if (grabbable != null)
+        {
+            grabbable.EnablePhysicsFromAmbient(action.physicsImpulse);
+            return;
+        }
+
         Rigidbody rb = action.target.GetComponent<Rigidbody>();
 
         if (rb == null)
@@ -226,8 +354,20 @@ public class AmbientEvent : MonoBehaviour
             return;
         }
 
+        if (!HasSolidCollider(action.target))
+        {
+            Debug.LogWarning("[AmbientEvent] EnablePhysics: el target no tiene collider solido: " + action.target.name);
+            return;
+        }
+
         rb.isKinematic = false;
         rb.useGravity = true;
+        rb.detectCollisions = true;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.WakeUp();
 
         if (action.physicsImpulse != Vector3.zero)
         {
@@ -235,20 +375,81 @@ public class AmbientEvent : MonoBehaviour
         }
     }
 
-    private void DoPlaySfx(AmbientEventAction action)
+    private bool HasSolidCollider(GameObject target)
     {
-        if (SFXManager.Instance == null || string.IsNullOrEmpty(action.sfxId))
+        Collider[] colliders = target.GetComponentsInChildren<Collider>();
+
+        foreach (Collider col in colliders)
         {
+            if (col != null && col.enabled && !col.isTrigger)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void DoScreenEffect(AmbientEventAction action)
+    {
+        if (ScreenEffectController.Instance == null || string.IsNullOrEmpty(action.screenEffectId))
+        {
+            Debug.LogWarning("[AmbientEvent] ScreenEffect: falta ScreenEffectController o screenEffectId en " + name + ".");
             return;
         }
 
+        // si la accion es para apagar, lo apaga al instante y listo
+        if (action.stopScreenEffect)
+        {
+            ScreenEffectController.Instance.StopEffect(action.screenEffectId, 0f);
+            return;
+        }
+
+        ScreenEffectController.Instance.PlayEffect(action.screenEffectId);
+
+        // flash: lo prendemos y lo apagamos solo despues de un toque (ej: 0.01s para un susto)
+        if (action.screenEffectAutoStop > 0f)
+        {
+            StartCoroutine(AutoStopScreenEffect(action.screenEffectId, action.screenEffectAutoStop));
+        }
+    }
+
+    private IEnumerator AutoStopScreenEffect(string effectId, float time)
+    {
+        yield return new WaitForSeconds(time);
+        ScreenEffectController.Instance.StopEffect(effectId, 0f);
+    }
+
+    private void DoPlaySfx(AmbientEventAction action)
+    {
+        if (SFXManager.Instance == null)
+        {
+            Debug.LogWarning("[AmbientEvent] PlaySfx: no hay SFXManager en escena.");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(action.sfxId))
+        {
+            Debug.LogWarning("[AmbientEvent] PlaySfx: sfxId esta vacio en " + name + ".");
+            return;
+        }
+
+        AudioClip playedClip;
+
         if (action.sfx3D)
         {
-            SFXManager.Instance.Play3D(action.sfxId, transform.position);
+            Vector3 soundPosition = action.target != null ? action.target.transform.position : transform.position;
+            playedClip = SFXManager.Instance.Play3D(action.sfxId, soundPosition);
         }
         else
         {
-            SFXManager.Instance.Play2D(action.sfxId);
+            playedClip = SFXManager.Instance.Play2D(action.sfxId);
+        }
+
+        if (playedClip == null)
+        {
+            Debug.LogWarning("[AmbientEvent] PlaySfx: no se pudo reproducir '" + action.sfxId +
+                "'. Revisa que exista un pool con ese id en SFXManager y que tenga clips cargados.");
         }
     }
 
