@@ -21,7 +21,8 @@ public class ScreenEffectController : MonoBehaviour
     {
         ImageAlpha,
         Vignette,
-        Animator
+        Animator,
+        CameraShake
     }
 
     [System.Serializable]
@@ -50,11 +51,33 @@ public class ScreenEffectController : MonoBehaviour
         public string playTrigger = "Play";
         public string stopTrigger = "Stop";
         public GameObject animatorRoot;
+
+        [Header("Camera Shake")]
+        // transform de la camara que se va a sacudir (asignar la Main Camera del player)
+        public Transform shakeTarget;
+        public float shakeDuration = 0.4f;
+        // cuanto se mueve y rota la camara en el pico del shake
+        public float shakePositionMagnitude = 0.08f;
+        public float shakeRotationMagnitude = 1.5f;
     }
 
     [SerializeField] private ScreenEffect[] effects;
 
     private readonly Dictionary<string, Coroutine> activeRoutines = new Dictionary<string, Coroutine>();
+
+    // shakes que estan corriendo ahora. se aplican en LateUpdate para sumarse encima
+    // de lo que escriben PlayerHeadBob (posicion) y PlayerCamera (rotacion) en Update.
+    private readonly List<ActiveShake> activeShakes = new List<ActiveShake>();
+
+    private class ActiveShake
+    {
+        public string id;
+        public Transform target;
+        public float timeLeft;
+        public float duration;
+        public float positionMagnitude;
+        public float rotationMagnitude;
+    }
 
     private void Awake()
     {
@@ -219,6 +242,10 @@ public class ScreenEffectController : MonoBehaviour
             case ScreenEffectType.Animator:
                 PlayAnimator(effect);
                 break;
+
+            case ScreenEffectType.CameraShake:
+                StartShake(effect);
+                break;
         }
     }
 
@@ -245,6 +272,81 @@ public class ScreenEffectController : MonoBehaviour
             case ScreenEffectType.Animator:
                 StopAnimator(effect);
                 break;
+
+            case ScreenEffectType.CameraShake:
+                StopShake(effect.id);
+                break;
+        }
+    }
+
+    private void StartShake(ScreenEffect effect)
+    {
+        if (effect.shakeTarget == null)
+        {
+            Debug.LogWarning("[ScreenEffectController] El efecto '" + effect.id +
+                "' es CameraShake pero no tiene shakeTarget asignado.");
+            return;
+        }
+
+        // si ya habia un shake con este id lo reiniciamos en vez de apilar dos
+        StopShake(effect.id);
+
+        activeShakes.Add(new ActiveShake
+        {
+            id = effect.id,
+            target = effect.shakeTarget,
+            timeLeft = effect.shakeDuration,
+            duration = effect.shakeDuration,
+            positionMagnitude = effect.shakePositionMagnitude,
+            rotationMagnitude = effect.shakeRotationMagnitude
+        });
+    }
+
+    private void StopShake(string id)
+    {
+        for (int i = activeShakes.Count - 1; i >= 0; i--)
+        {
+            if (activeShakes[i].id == id)
+            {
+                activeShakes.RemoveAt(i);
+            }
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (activeShakes.Count == 0)
+        {
+            return;
+        }
+
+        for (int i = activeShakes.Count - 1; i >= 0; i--)
+        {
+            ActiveShake shake = activeShakes[i];
+
+            if (shake.target == null || shake.duration <= 0f)
+            {
+                activeShakes.RemoveAt(i);
+                continue;
+            }
+
+            shake.timeLeft -= Time.deltaTime;
+
+            if (shake.timeLeft <= 0f)
+            {
+                activeShakes.RemoveAt(i);
+                continue;
+            }
+
+            // el shake arranca fuerte y se va apagando solo
+            float strength = shake.timeLeft / shake.duration;
+
+            Vector3 posOffset = Random.insideUnitSphere * shake.positionMagnitude * strength;
+            Vector3 rotOffset = Random.insideUnitSphere * shake.rotationMagnitude * strength;
+
+            // aditivo: sumamos arriba de lo que ya escribieron headbob y la camara este frame
+            shake.target.localPosition += posOffset;
+            shake.target.localRotation *= Quaternion.Euler(rotOffset);
         }
     }
 
