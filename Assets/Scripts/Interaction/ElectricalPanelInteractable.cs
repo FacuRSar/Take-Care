@@ -13,6 +13,7 @@ public class ElectricalPanelInteractable : Interactable
     [SerializeField] private string powerFlagName = "power_on";
     [SerializeField] private string restoredFlagName = "energy_restored";
     [SerializeField] private bool notifyIntroSequence = true;
+    [SerializeField] private bool startPoweredOn = false;
 
     private string pendingEndSound;
     private float offSpeed;
@@ -23,19 +24,32 @@ public class ElectricalPanelInteractable : Interactable
 
     private void Start()
     {
-        movingToOn = false;
+        movingToOn = startPoweredOn;
         isMoving = false;
 
         if (triggerPivot != null)
         {
-            triggerPivot.localRotation = Quaternion.Euler(offRotation, 0f, 0f);
+            float startAngle = startPoweredOn ? onRotation : offRotation;
+            triggerPivot.localRotation = Quaternion.Euler(startAngle, 0f, 0f);
             targetRotation = triggerPivot.localRotation;
+        }
+
+        // Arranca con la energia ya puesta, dejamos las flags listas sin sonido ni aviso a la intro
+        if (startPoweredOn)
+        {
+            GameStateController targetState = GameStateController.Instance;
+
+            if (targetState != null)
+            {
+                targetState.SetFlag(powerFlagName, true);
+                targetState.SetFlag(restoredFlagName, true);
+            }
         }
     }
 
     private void Update()
     {
-        // si la palanca est· moviendose le tiramos pa que siga hasta si objetivo
+        // si la palanca estù moviendose le tiramos pa que siga hasta si objetivo
         if (isMoving && triggerPivot != null)
         {
             if (movingToOn)
