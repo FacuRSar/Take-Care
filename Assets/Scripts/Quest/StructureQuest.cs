@@ -14,6 +14,8 @@ public class StructureQuest : ScriptableObject
         public string SubtitlesForQuest;
         public string SubtitlesForQuestComplete;
         public string SubtitlesForQuestFail;
+        // Dialogo que se dispara al llegar a la mitad de la mision (solo ToCollect / ToDelivery).
+        public string SubtitlesForQuestHalf;
 
         public int timer;
 
@@ -45,6 +47,11 @@ public class StructureQuest : ScriptableObject
         [Header("Points (Penalties)")]
         public questEmotionType EmotionID_;
         public int removePoints;
+
+        [Header("Progreso de escape")]
+        // Cuanto suma esta mision al parametro "complete" al terminarla (segun su dificultad).
+        // Al llegar a 100 se abre la puerta. Fallar no suma nada.
+        public int completePoints;
 
     }
 

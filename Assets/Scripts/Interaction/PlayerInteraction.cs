@@ -31,6 +31,9 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private Transform handPoint;
     // punto donde se posicionan los objetos agarrados
 
+    [SerializeField] private GrabSettings grabSettings = new GrabSettings();
+    // config compartida (distancia min/max, paso de rueda, sensibilidad de giro) para todos los objetos
+
     private Interactable currentInteractable;
     private GrabbableObject currentGrabbable;
     // guarda referencia al objeto interactuable que el jugador esta mirando actualmente y el agarrado
@@ -272,7 +275,7 @@ public class PlayerInteraction : MonoBehaviour
                     pickedObject = grabbable;
                     int heldLayer = LayerMask.NameToLayer(heldObjectLayerName);
                     if (heldLayer == -1) heldLayer = grabbable.gameObject.layer;
-                    pickedObject.PickUp(handPoint, heldLayer);
+                    pickedObject.PickUp(handPoint, heldLayer, grabSettings);
                 }
                 return;
             }
