@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 0.2
+  m_AmbientIntensity: 2.17
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
@@ -19527,6 +19527,68 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1001 &1680288651
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7516133193843171839}
+    m_Modifications:
+    - target: {fileID: 152848643120424863, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.96488
+      objectReference: {fileID: 0}
+    - target: {fileID: 152848643120424863, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0060600042
+      objectReference: {fileID: 0}
+    - target: {fileID: 152848643120424863, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.65555954
+      objectReference: {fileID: 0}
+    - target: {fileID: 152848643120424863, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.05469286
+      objectReference: {fileID: 0}
+    - target: {fileID: 152848643120424863, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.054693054
+      objectReference: {fileID: 0}
+    - target: {fileID: 152848643120424863, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.70498854
+      objectReference: {fileID: 0}
+    - target: {fileID: 152848643120424863, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7049883
+      objectReference: {fileID: 0}
+    - target: {fileID: 152848643120424863, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 152848643120424863, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 152848643120424863, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1192734957547006573, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+      propertyPath: m_Name
+      value: Habitacion 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+--- !u!4 &1680288652 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 152848643120424863, guid: 82450c323b0818342ba4f148c92d8424, type: 3}
+  m_PrefabInstance: {fileID: 1680288651}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1704397914
 GameObject:
   m_ObjectHideFlags: 0
@@ -27433,8 +27495,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2585077241478089382, guid: ee06047e48f151342a44ebb9f35c33e2, type: 3}
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2525535581442391929, guid: ee06047e48f151342a44ebb9f35c33e2, type: 3}
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8103356367896902877, guid: ee06047e48f151342a44ebb9f35c33e2, type: 3}
+      insertIndex: 6
+      addedObject: {fileID: 1680288652}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 586643705559524484, guid: ee06047e48f151342a44ebb9f35c33e2, type: 3}
       insertIndex: -1
@@ -27484,6 +27550,11 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!4 &7516133193843171839 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8103356367896902877, guid: ee06047e48f151342a44ebb9f35c33e2, type: 3}
+  m_PrefabInstance: {fileID: 7516133193843171836}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7516133193843171840
 MonoBehaviour:
   m_ObjectHideFlags: 0
