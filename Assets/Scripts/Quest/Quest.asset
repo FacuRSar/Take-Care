@@ -18,8 +18,7 @@ MonoBehaviour:
     SubtitlesForQuest: "T\xE9_In"
     SubtitlesForQuestComplete: "T\xE9_Complete"
     SubtitlesForQuestFail: "T\xE9_Fail"
-    SubtitlesForQuestHalf: 
-    timer: 60
+    timer: 180
     Name: "La Hora del T\xE9 de las Astillas"
     description: "La mu\xF1eca quiere organizar una fiesta de t\xE9 en el comedor.
       El jugador debe recolectar los fragmentos de porcelana rota esparcidos por
@@ -40,7 +39,6 @@ MonoBehaviour:
     SubtitlesForQuest: "\xBF?_In"
     SubtitlesForQuestComplete: "\xBF?_Complete"
     SubtitlesForQuestFail: "\xBF?_Fail"
-    SubtitlesForQuestHalf: 
     timer: 120
     Name: "\xBFD\xF3nde Estoy?"
     description: "La mu\xF1eca desaparece de su lugar con una risa ecoica e inicia
@@ -61,7 +59,6 @@ MonoBehaviour:
     SubtitlesForQuest: Mentiroso_In
     SubtitlesForQuestComplete: Mentiroso_Complete
     SubtitlesForQuestFail: Mentiroso_Fail
-    SubtitlesForQuestHalf: 
     timer: 120
     Name: El Reflejo Mentiroso
     description: "La mu\xF1eca entra en un estado de furia ciega porque afirma que
@@ -84,7 +81,6 @@ MonoBehaviour:
     SubtitlesForQuest: Sonriente_In
     SubtitlesForQuestComplete: Sonriente_Complete
     SubtitlesForQuestFail: Sonriente_Fail
-    SubtitlesForQuestHalf: 
     timer: 120
     Name: "El \xC1lbum de la Familia Sonriente"
     description: "La mu\xF1eca quiere mostrarle al jugador las fotos de sus \"antiguos
@@ -109,7 +105,6 @@ MonoBehaviour:
     SubtitlesForQuest: Palta_In
     SubtitlesForQuestComplete: Palta_Complete
     SubtitlesForQuestFail: Palta_Fail
-    SubtitlesForQuestHalf: 
     timer: 90
     Name: La Palta del Lamento
     description: "La mu\xF1eca entra en p\xE1nico porque dice que perdi\xF3 su vieja
@@ -133,7 +128,6 @@ MonoBehaviour:
     SubtitlesForQuest: Acorde_In
     SubtitlesForQuestComplete: Acorde_Complete
     SubtitlesForQuestFail: Acorde_Fail
-    SubtitlesForQuestHalf: 
     timer: 60
     Name: El Acorde del Silencio
     description: "La mu\xF1eca llora en silencio mirando fijamente hacia la ventana.
