@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8742882558722889820
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5766345423559024567}
+  - component: {fileID: 2436362850872127303}
+  m_Layer: 0
+  m_Name: startTimer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5766345423559024567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8742882558722889820}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2436362850872127303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8742882558722889820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f225a42ee9418c4f8fb181b922e9763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AmbientEvent
+  eventId: 
+  triggerMode: 2
+  requiredFlag: 
+  startDelay: 10
+  onlyPlayer: 1
+  lookTarget: {fileID: 0}
+  lookDistance: 3
+  lookAngle: 15
+  lookHoldTime: 0.3
+  requireLineOfSight: 1
+  lookMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  triggerOnce: 1
+  debugLog: 0
+  actions:
+  - type: 7
+    delay: 0
+    target: {fileID: 0}
+    setActiveValue: 0
+    moveTarget: {x: 0, y: 0, z: 0}
+    moveLocal: 0
+    alsoRotate: 0
+    rotateTarget: {x: 0, y: 0, z: 0}
+    moveDuration: 0
+    physicsImpulse: {x: 0, y: 0, z: 0}
+    sfxId: 
+    sfx3D: 0
+    dialogueId: 
+    shakeEffectId: 
+    screenEffectId: 
+    stopScreenEffect: 0
+    screenEffectAutoStop: 0
+    prefab: {fileID: 0}
+    spawnPoint: {fileID: 0}
+    flagName: game_timer_start
+    flagValue: 1
+    textTarget: {fileID: 0}
+    textValue: 

@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6876405806120076141
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4526762317883659557}
+  - component: {fileID: 1096941435984970417}
+  m_Layer: 0
+  m_Name: ScreenEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4526762317883659557
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6876405806120076141}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.038159847, y: 0.087549925, z: 0.2006092}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1096941435984970417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6876405806120076141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d891d903972fd419d5f8ef38ed08cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenEffectController
+  effects:
+  - id: fatigue
+    type: 1
+    startHidden: 1
+    useUnscaledTime: 0
+    fadeInDuration: 5
+    fadeOutDuration: 1
+    image: {fileID: 0}
+    targetAlpha: 0
+    volume: {fileID: 0}
+    targetVignetteIntensity: 0.65
+    targetVignetteSmoothness: 0.5
+    animator: {fileID: 0}
+    playTrigger: 
+    stopTrigger: 
+    animatorRoot: {fileID: 0}
+    shakeTarget: {fileID: 0}
+    shakeDuration: 0.4
+    shakePositionMagnitude: 0.08
+    shakeRotationMagnitude: 1.5
+  - id: hands
+    type: 0
+    startHidden: 1
+    useUnscaledTime: 0
+    fadeInDuration: 0.5
+    fadeOutDuration: 1
+    image: {fileID: 0}
+    targetAlpha: 1
+    volume: {fileID: 0}
+    targetVignetteIntensity: 0.55
+    targetVignetteSmoothness: 0.5
+    animator: {fileID: 0}
+    playTrigger: 
+    stopTrigger: 
+    animatorRoot: {fileID: 0}
+    shakeTarget: {fileID: 0}
+    shakeDuration: 0.4
+    shakePositionMagnitude: 0.08
+    shakeRotationMagnitude: 1.5
+  - id: shake_soft
+    type: 3
+    startHidden: 1
+    useUnscaledTime: 0
+    fadeInDuration: 0.5
+    fadeOutDuration: 1
+    image: {fileID: 0}
+    targetAlpha: 1
+    volume: {fileID: 0}
+    targetVignetteIntensity: 0.55
+    targetVignetteSmoothness: 0.5
+    animator: {fileID: 0}
+    playTrigger: 
+    stopTrigger: 
+    animatorRoot: {fileID: 0}
+    shakeTarget: {fileID: 0}
+    shakeDuration: 0.3
+    shakePositionMagnitude: 0.04
+    shakeRotationMagnitude: 0.8
+  - id: shake_strong
+    type: 3
+    startHidden: 1
+    useUnscaledTime: 0
+    fadeInDuration: 0.5
+    fadeOutDuration: 1
+    image: {fileID: 0}
+    targetAlpha: 1
+    volume: {fileID: 0}
+    targetVignetteIntensity: 0.55
+    targetVignetteSmoothness: 0.5
+    animator: {fileID: 0}
+    playTrigger: 
+    stopTrigger: 
+    animatorRoot: {fileID: 0}
+    shakeTarget: {fileID: 0}
+    shakeDuration: 0.6
+    shakePositionMagnitude: 0.1
+    shakeRotationMagnitude: 2

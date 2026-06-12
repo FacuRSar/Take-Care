@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 // tipos de cosas que puede hacer un evento de ambiente
@@ -12,7 +13,8 @@ public enum AmbientActionType
     ShakeCamera,
     SpawnPrefab,
     SetFlag,
-    ScreenEffect
+    ScreenEffect,
+    SetText
 }
 
 /* una accion suelta dentro de un AmbientEvent.
@@ -72,4 +74,11 @@ public class AmbientEventAction
     [Header("SetFlag")]
     public string flagName;
     public bool flagValue = true;
+
+    [Header("SetText")]
+    // texto objetivo al que le seteamos el contenido
+    public TMP_Text textTarget;
+    // texto a poner. si lo dejas vacio, borra el texto
+    [TextArea]
+    public string textValue;
 }

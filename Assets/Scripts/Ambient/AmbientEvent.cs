@@ -328,6 +328,14 @@ public class AmbientEvent : MonoBehaviour
                     GameStateController.Instance.SetFlag(action.flagName, action.flagValue);
                 }
                 break;
+
+            case AmbientActionType.SetText:
+                if (action.textTarget != null)
+                {
+                    // pone el texto, o lo borra si textValue quedo vacio
+                    action.textTarget.text = action.textValue;
+                }
+                break;
         }
     }
 

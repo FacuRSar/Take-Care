@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &5080156913237747499
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4546828001190790716, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+      propertyPath: m_Name
+      value: GameSystems Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467555593094026672, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 23.93377
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467555593094026672, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.32695
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467555593094026672, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.522499
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467555593094026672, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467555593094026672, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467555593094026672, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467555593094026672, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467555593094026672, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467555593094026672, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467555593094026672, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4546828001190790716, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7918733258295822732}
+  m_SourcePrefab: {fileID: 100100000, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+--- !u!1 &8762250268533399831 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4546828001190790716, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
+  m_PrefabInstance: {fileID: 5080156913237747499}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7918733258295822732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8762250268533399831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef40d8e63e9370e479dd763de23d5c75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseMenuController
+  pauseRoot: {fileID: 0}
+  pausePanel: {fileID: 0}
+  optionsPanel: {fileID: 0}
+  sensitivitySlider: {fileID: 0}
+  brightnessSlider: {fileID: 0}
+  masterVolumeSlider: {fileID: 0}
+  musicVolumeSlider: {fileID: 0}
+  sfxVolumeSlider: {fileID: 0}
+  ambientVolumeSlider: {fileID: 0}
+  uiAudioManager: {fileID: 0}
+  sensitivityValueLabel: {fileID: 0}
+  brightnessValueLabel: {fileID: 0}
+  masterVolumeValueLabel: {fileID: 0}
+  musicVolumeValueLabel: {fileID: 0}
+  sfxVolumeValueLabel: {fileID: 0}
+  ambientVolumeValueLabel: {fileID: 0}
+  sensitivityMin: 0.1
+  sensitivityMax: 2
+  brightnessMinExposure: -1.5
+  brightnessMaxExposure: 1.5
+  menuMode: 0
+  playerCamera: {fileID: 0}
+  playerMovement: {fileID: 0}
+  audioMixer: {fileID: 24100000, guid: 4d0b0d8e2520dd74c9e91046863fc510, type: 2}
+  pauseLowPassParam: PauseLowPass
+  normalLowpass: 22000
+  pausedLowpass: 500
+  masterVolumeParam: MasterVolume
+  musicVolumeParam: MusicVolume
+  sfxVolumeParam: SFXVolume
+  ambientVolumeParam: AmbientVolume
+  globalVolume: {fileID: 0}
+  runtimeBrightnessVolumePriority: 100
+  menuSceneName: Menu2
+  pauseAudioOnPause: 1
+  pauseAllowed: 1
+  verboseBrightnessLog: 1

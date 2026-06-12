@@ -36,6 +36,11 @@ public class DoorInteractable : Interactable
     [SerializeField] private bool startsOpened = false;
     // te tira si una puerta empieza abierta por si hace falta
 
+    [SerializeField] private bool excludeFromAIPatrol = false;
+    // si esta activo, el Pursuer en patrulla NUNCA la elige ni la abre al cruzarla
+    // (ej: la puerta principal de salida).
+    public bool ExcludeFromAIPatrol => excludeFromAIPatrol;
+
     [SerializeField] private string lockedMessage = "Parece que alguien la cerr� desde el otro lado.";
     // mensaje cuando la puerta no puede abrirse full generico
 
