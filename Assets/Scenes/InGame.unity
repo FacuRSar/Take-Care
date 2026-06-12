@@ -30628,7 +30628,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   eyeHeight: 1.5
-  noiseDetectRadius: 4
+  noiseDetectRadius: 6
   loudMoveSpeed: 3
   giveUpTime: 4
   doorDetectionDistance: 1.2
@@ -43320,6 +43320,10 @@ PrefabInstance:
       propertyPath: playerMovement
       value: 
       objectReference: {fileID: 375775388}
+    - target: {fileID: 1821732406129459260, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: noiseDetectRadius
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2123912251124420600, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: m_Acceleration
       value: 12
