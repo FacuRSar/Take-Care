@@ -33,11 +33,15 @@ public class PursuerPatrolController : MonoBehaviour
     [SerializeField] private float chaseSpeed = 5.5f;
 
     [Header("Vagar")]
-    // cada cuanto elige un nuevo punto al azar para pasear
-    [SerializeField] private float wanderPointInterval = 2.5f;
+    // cuanto se queda quieto en cada punto antes de elegir el proximo (pausa, da sensacion de buscar)
+    [SerializeField] private float wanderPointInterval = 1.5f;
     // que tan lejos busca el proximo punto, medido desde donde esta parado (no desde el spawn).
     // asi recorre el lugar en vez de orbitar el punto de aparicion.
     [SerializeField] private float roamRadius = 10f;
+    // distancia minima del proximo punto: evita que elija puntos pegados y de vueltas en el lugar
+    [SerializeField] private float minWanderDistance = 4f;
+    // a que distancia considera que llego al punto de paseo
+    [SerializeField] private float wanderArrivalDistance = 0.8f;
 
     [Header("Vision")]
     // distancia maxima a la que puede ver al jugador
@@ -68,6 +72,8 @@ public class PursuerPatrolController : MonoBehaviour
     [SerializeField] private float doorReachDistance = 1.8f;
     // si no llega a una puerta planificada en este tiempo, la abandona
     [SerializeField] private float doorTravelMaxTime = 8f;
+    // mientras persigue, abre (sin frenarse a espiar) las puertas cerradas que tiene a esta distancia
+    [SerializeField] private float chaseDoorOpenDistance = 1.6f;
 
     [Header("Puertas planificadas (solo espacio grande)")]
     // cuantas puertas va a abrir a proposito en un espacio grande
@@ -99,6 +105,7 @@ public class PursuerPatrolController : MonoBehaviour
     private NavMeshAgent agent;
     private State state;
     private float nextWanderTime;
+    private bool waitingAtPoint;
     private float lostTimer;
     private Vector3 lastSeenPosition;
     private bool hasGrabbedPlayer;
@@ -317,6 +324,12 @@ public class PursuerPatrolController : MonoBehaviour
                 break;
         }
 
+        // mientras persigue, abre las puertas que cruza en vez de atravesarlas
+        if (state == State.Chase || state == State.GoToLastSeen)
+        {
+            OpenDoorAheadWhileChasing();
+        }
+
         UpdateAnimatorSpeed(GetCurrentMoveSpeed());
         HandleFootstepLoop();
         CheckGrabPlayer();
@@ -369,12 +382,31 @@ public class PursuerPatrolController : MonoBehaviour
             return;
         }
 
-        if (Time.time < nextWanderTime && agent.remainingDistance > 0.6f)
+        // todavia esta calculando o yendo hacia el punto elegido: lo dejamos llegar (no cambia de rumbo)
+        if (agent.pathPending)
         {
             return;
         }
 
-        PickNewWanderPoint();
+        if (agent.remainingDistance > wanderArrivalDistance)
+        {
+            waitingAtPoint = false;
+            return;
+        }
+
+        // llego al punto: hace una pausa corta y recien despues elige otro punto concreto
+        if (!waitingAtPoint)
+        {
+            waitingAtPoint = true;
+            nextWanderTime = Time.time + wanderPointInterval;
+            return;
+        }
+
+        if (Time.time >= nextWanderTime)
+        {
+            waitingAtPoint = false;
+            PickNewWanderPoint();
+        }
     }
 
     private bool TryStartNextPlannedDoor()
@@ -426,15 +458,21 @@ public class PursuerPatrolController : MonoBehaviour
 
     private void PickNewWanderPoint()
     {
-        nextWanderTime = Time.time + wanderPointInterval;
+        waitingAtPoint = false;
 
-        // roam desde la posicion actual, no desde el spawn: asi recorre todo el lugar
-        Vector3 random = transform.position + Random.insideUnitSphere * roamRadius;
-        random.y = transform.position.y;
-
-        if (NavMesh.SamplePosition(random, out NavMeshHit hit, roamRadius, NavMesh.AllAreas))
+        // busca un punto concreto a una distancia minima, en una direccion al azar, sobre el navmesh.
+        // varios intentos por si la primera direccion da contra una pared.
+        for (int attempt = 0; attempt < 6; attempt++)
         {
-            agent.SetDestination(hit.position);
+            Vector2 dir = Random.insideUnitCircle.normalized;
+            float dist = Random.Range(minWanderDistance, Mathf.Max(minWanderDistance, roamRadius));
+            Vector3 candidate = transform.position + new Vector3(dir.x, 0f, dir.y) * dist;
+
+            if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, 2.5f, NavMesh.AllAreas))
+            {
+                agent.SetDestination(hit.position);
+                return;
+            }
         }
     }
 
@@ -509,6 +547,22 @@ public class PursuerPatrolController : MonoBehaviour
             if (door != null && !door.ExcludeFromAIPatrol && !door.IsOpen() && !door.IsMoving())
             {
                 StartPeek(door);
+            }
+        }
+    }
+
+    // Durante la persecucion: si tiene una puerta cerrada justo delante, la abre y sigue (no se frena).
+    private void OpenDoorAheadWhileChasing()
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.8f;
+
+        if (Physics.Raycast(origin, transform.forward, out RaycastHit hit, chaseDoorOpenDistance, doorMask))
+        {
+            DoorInteractable door = hit.collider.GetComponentInParent<DoorInteractable>();
+
+            if (door != null && !door.ExcludeFromAIPatrol && !door.IsOpen() && !door.IsMoving())
+            {
+                door.OpenFromAI();
             }
         }
     }

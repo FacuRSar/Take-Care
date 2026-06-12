@@ -49,6 +49,10 @@ public class DoorInteractable : Interactable
     // sirve para enganchar un AmbientEvent (ej: que se caiga algo cuando abris la puerta).
     // queda en true y no se apaga al cerrar.
 
+    [SerializeField] private bool aiCanRaiseOpenedFlag = false;
+    // por defecto SOLO el jugador prende openedFlagName. Si lo activas, la IA tambien lo prende
+    // cuando abre esta puerta (ej: el Pursuer al espiar). Normalmente dejar en false.
+
     [Header("Requerimientos de puerta")]
     [SerializeField] private DoorRequirementType requirementType = DoorRequirementType.None;
     //tipo de requisito que necesita esta puerta para poder abrirse, asi lo podemos escalar
@@ -259,7 +263,11 @@ public class DoorInteractable : Interactable
         targetRotation = Quaternion.Euler(0f, 0f, openedZRotation);
         isMoving = true;
 
-        RaiseOpenedFlag();
+        // por defecto la IA no dispara el flag: solo el jugador. Se habilita con aiCanRaiseOpenedFlag.
+        if (aiCanRaiseOpenedFlag)
+        {
+            RaiseOpenedFlag();
+        }
     }
 
     private void RaiseOpenedFlag()

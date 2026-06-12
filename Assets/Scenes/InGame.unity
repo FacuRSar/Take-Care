@@ -6373,7 +6373,7 @@ RectTransform:
   m_GameObject: {fileID: 113881436}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8810573, y: 0.8810573, z: 0.8810573}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1887532307}
@@ -6381,10 +6381,10 @@ RectTransform:
   - {fileID: 1164697852}
   m_Father: {fileID: 776989883}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -275.84363, y: 179.6611}
-  m_SizeDelta: {x: -518.1741, y: -347.05087}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 105.85, y: -37.535}
+  m_SizeDelta: {x: 211.7, y: 75.07}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &113881438
 MonoBehaviour:
@@ -11483,7 +11483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PursuerPatrolPoint
   spaciousArea: 0
   spaciousDuration: 12
-  smallDuration: 4
+  smallDuration: 8
   wanderRadius: 6
 --- !u!1 &518139990
 GameObject:
@@ -12662,7 +12662,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PursuerPatrolPoint
   spaciousArea: 0
   spaciousDuration: 12
-  smallDuration: 4
+  smallDuration: 8
   wanderRadius: 8
 --- !u!82 &606559561
 AudioSource:
@@ -14079,7 +14079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PursuerPatrolPoint
   spaciousArea: 0
   spaciousDuration: 12
-  smallDuration: 6
+  smallDuration: 8
   wanderRadius: 10
 --- !u!114 &717309417
 MonoBehaviour:
@@ -16273,13 +16273,14 @@ MonoBehaviour:
   startDelay: 0
   onlyPlayer: 1
   lookTarget: {fileID: 1031367622}
-  lookDistance: 3
+  lookDistance: 6
   lookAngle: 18
   lookHoldTime: 0.4
   requireLineOfSight: 1
   lookMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  interactPrompt: E - Interactuar
   triggerOnce: 1
   debugLog: 0
   actions:
@@ -16661,7 +16662,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PursuerPatrolPoint
   spaciousArea: 0
   spaciousDuration: 12
-  smallDuration: 4
+  smallDuration: 8
   wanderRadius: 5
 --- !u!4 &1043135615
 Transform:
@@ -23634,12 +23635,12 @@ MonoBehaviour:
   - {fileID: 1696436490}
   - {fileID: 947324359}
   - {fileID: 78673932}
-  minRoomAppearances: 2
-  maxRoomAppearances: 3
+  minRoomAppearances: 5
+  maxRoomAppearances: 5
   roomScheduleWindow: 8
-  timeBetweenAppearances: {x: 45, y: 75}
-  firstAppearanceDelay: 30
-  minDistanceToPlayer: 12
+  timeBetweenAppearances: {x: 30, y: 60}
+  firstAppearanceDelay: 45
+  minDistanceToPlayer: 8
   spawnSfxId: StalkerSpawn
   spawnSoundAs3D: 0
   spawnMusicId: 
@@ -29118,7 +29119,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -30622,13 +30623,15 @@ MonoBehaviour:
   chaseSpeed: 4
   wanderPointInterval: 2.5
   roamRadius: 10
-  viewDistance: 7
+  minWanderDistance: 12
+  wanderArrivalDistance: 0.8
+  viewDistance: 8
   viewAngle: 60
   sightBlockMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  eyeHeight: 1.5
-  noiseDetectRadius: 6
+  eyeHeight: 1
+  noiseDetectRadius: 8
   loudMoveSpeed: 3
   giveUpTime: 4
   doorDetectionDistance: 1.2
@@ -30638,6 +30641,7 @@ MonoBehaviour:
   doorPeekTime: 1
   doorReachDistance: 1.8
   doorTravelMaxTime: 8
+  chaseDoorOpenDistance: 1.6
   minPlannedDoors: 1
   maxPlannedDoors: 3
   chanceTargetPlayerRoom: 0.3
@@ -38462,7 +38466,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PursuerPatrolPoint
   spaciousArea: 0
   spaciousDuration: 12
-  smallDuration: 4
+  smallDuration: 8
   wanderRadius: 10
 --- !u!4 &1978916352
 Transform:
@@ -38861,6 +38865,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1809688957}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1 &2014215570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2014215572}
+  - component: {fileID: 2014215571}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2014215571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014215570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86cef8a4577738a428d8f334450d7663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProximityFeedback
+  activation: 0
+  activeFlagName: 
+  source: {fileID: 0}
+  target: {fileID: 0}
+  targetTag: Player
+  startDistance: 12
+  fullDistance: 1.5
+  useVignette: 0
+  vignetteEffectId: pursuerVignette
+  minIntensity: 0.08
+  maxIntensity: 0.55
+  changeSpeed: 1.5
+  useDistanceHints: 0
+  hintInterval: 3
+  hintDuration: 2
+  hintPriority: 0
+  hintMaxDistance: 0
+  hints: []
+--- !u!4 &2014215572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014215570}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.87892, y: 2.76341, z: 24.2086}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2015112596
 GameObject:
   m_ObjectHideFlags: 0
@@ -39188,7 +39254,7 @@ MonoBehaviour:
   ambientVolumeParam: AmbientVolume
   globalVolume: {fileID: 0}
   runtimeBrightnessVolumePriority: 100
-  menuSceneName: Menu2
+  menuSceneName: Menu
   pauseAudioOnPause: 1
   pauseAllowed: 1
   verboseBrightnessLog: 1
@@ -42356,6 +42422,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9181710315673095650, guid: c53dab1805197f544a21db6c06f1c7cf, type: 3}
+      propertyPath: triggerMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9181710315673095650, guid: c53dab1805197f544a21db6c06f1c7cf, type: 3}
+      propertyPath: actions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9181710315673095650, guid: c53dab1805197f544a21db6c06f1c7cf, type: 3}
+      propertyPath: actions.Array.data[1].type
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 9181710315673095650, guid: c53dab1805197f544a21db6c06f1c7cf, type: 3}
+      propertyPath: actions.Array.data[1].flagName
+      value: doll_quests_start
+      objectReference: {fileID: 0}
+    - target: {fileID: 9181710315673095650, guid: c53dab1805197f544a21db6c06f1c7cf, type: 3}
+      propertyPath: actions.Array.data[1].flagValue
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -42773,6 +42859,7 @@ MonoBehaviour:
   lookMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  interactPrompt: E - Interactuar
   triggerOnce: 1
   debugLog: 1
   actions:
@@ -43308,10 +43395,22 @@ PrefabInstance:
       propertyPath: spaciousDuration
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 1142565293936806652, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1821732406129459260, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 375775402}
+    - target: {fileID: 1821732406129459260, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: eyeHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1821732406129459260, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: viewDistance
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 1821732406129459260, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: debugDetection
       value: 1
@@ -43321,8 +43420,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 375775388}
     - target: {fileID: 1821732406129459260, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: minWanderDistance
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1821732406129459260, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: noiseDetectRadius
-      value: 6
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904449371326165237, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: smallDuration
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2123912251124420600, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: m_Acceleration
@@ -43360,6 +43467,10 @@ PrefabInstance:
       propertyPath: spaciousDuration
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 2740294823928882615, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: smallDuration
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2920671602704149862, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: 'lightningLights.Array.data[0]'
       value: 
@@ -43376,6 +43487,10 @@ PrefabInstance:
       propertyPath: 'lightningLights.Array.data[3]'
       value: 
       objectReference: {fileID: 1178411495}
+    - target: {fileID: 3127285277348705848, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: smallDuration
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4406404346326265744, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pauseRoot
       value: 
@@ -43388,6 +43503,10 @@ PrefabInstance:
       propertyPath: optionsPanel
       value: 
       objectReference: {fileID: 306108669}
+    - target: {fileID: 4406404346326265744, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: menuSceneName
+      value: Menu
+      objectReference: {fileID: 0}
     - target: {fileID: 4406404346326265744, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: playerMovement
       value: 
@@ -43447,6 +43566,14 @@ PrefabInstance:
     - target: {fileID: 4595615916823332002, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: spaciousDuration
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4706439532450917886, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: smallDuration
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4804270076481011778, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5116749596285471275, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: player
@@ -43644,6 +43771,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Managers
       objectReference: {fileID: 0}
+    - target: {fileID: 6914782099545322996, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7017924481852731121, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: subtitleUI
       value: 
@@ -43712,6 +43843,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 25.79
       objectReference: {fileID: 0}
+    - target: {fileID: 9110316428939679271, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: smallDuration
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -43738,3 +43873,4 @@ SceneRoots:
   - {fileID: 2036229288}
   - {fileID: 924973570602836442}
   - {fileID: 2036918171}
+  - {fileID: 2014215572}
