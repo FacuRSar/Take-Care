@@ -1,0 +1,473 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3888643896946243588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7948226334686567976}
+  - component: {fileID: 962993488994445949}
+  - component: {fileID: 598028291631194652}
+  m_Layer: 0
+  m_Name: DialogueManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7948226334686567976
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3888643896946243588}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 10.83609, y: -0.90093005, z: 0.6687298}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &962993488994445949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3888643896946243588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3337458350a6416f961e9f12bccfdaaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueController
+  subtitleUI: {fileID: 0}
+  voiceSource: {fileID: 0}
+  minVoicePitch: 0.5
+  maxVoicePitch: 2.5
+  pools:
+  - id: "T\xE9_In"
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "\xA1Es una tarde hermosa para una fiesta! Pero mis invitadas fueron
+        malas y rompieron las tazas... \xBFMe ayud\xE1s a encontrar tazas nuevas?
+        No dejes que se enfr\xEDe el t\xE9"
+      delayBefore: 0
+      duration: 7.5
+      audioClip: {fileID: 0}
+    - text: "\xA1Eso es! Uno por ac\xE1... Ten\xE9 cuidado, la porcelana muerde si
+        la apret\xE1s mucho, jeje"
+      delayBefore: 45
+      duration: 4.5
+      audioClip: {fileID: 0}
+    - text: "Faltan pocos. Mis amigas ya se est\xE1n sentando a la mesa. No las hagas
+        esperar, no les gusta la mala educaci\xF3n"
+      delayBefore: 90
+      duration: 5.5
+      audioClip: {fileID: 0}
+    - text: "\xA1Ya casi! Casi puedo oler el t\xE9... aunque hoy tiene un olor un
+        poco met\xE1lico, \xBFverdad?"
+      delayBefore: 135
+      duration: 5
+      audioClip: {fileID: 0}
+    - text: "\xA1El \xFAltimo fragmento! Ponelo en la mesa r\xE1pido, \xA1r\xE1pido!,
+        \xA1que ya van a tomar el primer sorbo!"
+      delayBefore: 162
+      duration: 4.5
+      audioClip: {fileID: 0}
+  - id: "T\xE9_Complete"
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "\xA1Perfecto! Mir\xE1 qu\xE9 lindos quedaron pegados. Ahora sentate
+        con nosotras... prometemos no morder"
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+  - id: "T\xE9_Fail"
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Se enfri\xF3... Se enfri\xF3 por tu culpa. Sos un p\xE9simo anfitri\xF3n.
+        Ahora mis amigas se van a tener que divertir... con vos"
+      delayBefore: 0
+      duration: 6.5
+      audioClip: {fileID: 0}
+  - id: "\xBF?_In"
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "\xA1Me aburro! Vamos a jugar a las escondidas. Conta hasta tres"
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "ya me escond\xED... Si no me encontr\xE1s r\xE1pido, me voy a enojar.
+        \xA1A buscarme!"
+      delayBefore: 4
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "Fr\xEDo, fr\xEDo... Est\xE1s lej\xEDsimos. Mir\xE1s en los lugares equivocados.
+        \xBFAcaso no quer\xE9s jugar conmigo?"
+      delayBefore: 30
+      duration: 5
+      audioClip: {fileID: 0}
+    - text: "Te est\xE1s templando... puedo escuchar tus pasos torpes por la madera.
+        Apurate que me da calor ac\xE1 adentro"
+      delayBefore: 60
+      duration: 5
+      audioClip: {fileID: 0}
+    - text: "\xA1Te quem\xE1s! \xA1Estoy ac\xE1! Estir\xE1 la mano... \xA1recogeme!"
+      delayBefore: 60
+      duration: 4
+      audioClip: {fileID: 0}
+  - id: "\xBF?_Complete"
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Me encontraste! Qu\xE9 divertido. Sos muy bueno en esto. Ahora no me
+        sueltes m\xE1s, \xBFdale?"
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+  - id: "\xBF?_Fail"
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Se termin\xF3 el tiempo... Perdiste. Qu\xE9 tramposo, no buscaste bien.\n"
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+  - id: Mentiroso_In
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Esa maldita camara me est\xE1 mirando mal! \xA1Dice que soy fea! \xA1Agarralo
+        y llevalo a la chimenea ya mismo!"
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+    - text: "\xA1No lo mires! \xA1Te va a mentir a vos tambi\xE9n! \xA1Camin\xE1
+        m\xE1s r\xE1pido, carajo!"
+      delayBefore: 30
+      duration: 4
+      audioClip: {fileID: 0}
+    - text: "\xA1No lo mires! \xA1Te va a mentir a vos tambi\xE9n! \xA1Camin\xE1
+        m\xE1s r\xE1pido, carajo! \xA1Apurate antes de que le rompa la cara yo misma!"
+      delayBefore: 60
+      duration: 4
+      audioClip: {fileID: 0}
+  - id: Mentiroso_Fail
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "\xA1Te tardaste! Se rompi\xF3... y sus pedazos me est\xE1n cortando
+        por dentro... \xA1Es toda tu culpa!"
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+  - id: Mentiroso_Complete
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "\xA1Eso! Mir\xE1 c\xF3mo se derrite... \xBFQui\xE9n se r\xEDe ahora,
+        eh? Nadie se burla de m\xED en mi casa\n"
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+  - id: Sonriente_In
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "\xA1Ten\xE9s que ver a mi hermosa familia! Eran tan buenos... pero se
+        les cayeron las caritas del \xE1lbum. Busc\xE1 las dos fotos en el suelo,
+        \xA1dale!"
+      delayBefore: 0
+      duration: 7
+      audioClip: {fileID: 0}
+    - text: "\xA1Ya casi los tenemos a todos juntos otra vez! Me pregunto si se van
+        a alegrar de verte..."
+      delayBefore: 30
+      duration: 7
+      audioClip: {fileID: 0}
+    - text: "\xA1La \xFAltima! Agarrala r\xE1pido antes de que se borren sus sonrisas...
+        \xA1R\xE1pido!"
+      delayBefore: 50
+      duration: 7
+      audioClip: {fileID: 0}
+  - id: Sonriente_Complete
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "\xA1Qu\xE9 lindos salimos todos! Ahora vos tambi\xE9n sos parte de la
+        familia. Nos vamos a quedar ac\xE1 adentro para siempre!"
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+  - id: Sonriente_Fail
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: 'Se rompieron... Ya no tienen cara. Sos muy torpe... ahora voy a tener
+        que buscarme una familia nueva
+
+'
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+  - id: ingame_intro
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 0, g: 0, b: 0, a: 1}
+    lines:
+    - text: 'Que... Que paso? Donde estoy?
+
+'
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+    - text: Un segundo! Ese fantasma me...
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+    - text: Oh no, tengo que salir de aca!
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+  - id: captureMessege
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 1, g: 0, b: 0, a: 1}
+    lines:
+    - text: 'Debiste quedarse ahi abajo junto con el resto
+
+'
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+  - id: Palta_In
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Est\xE1 en alguna parte... snif... una fruta verde y pesada, escondida
+        en lo oscuro."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "Su piel se siente como carne vieja y me est\xE1 mirando... Su carozo
+        es un ojo ciego que no para de llorar aceite..."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: Buscala y llevala a la cuna para taparla... por favor...
+      delayBefore: 20
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: Las cosas que se pudren cambian de color...
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "primero verdes, despu\xE9s negras, como los moretones en los brazos."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "A m\xED tambi\xE9n se me est\xE1 poniendo la piel negra de tanto llorar
+        en este pasillo..."
+      delayBefore: 20
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: 'Me acuerdo cuando la cortaron con el cuchillo de la cocina... '
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "un tajo largo, de punta a punta, para arrancarle el coraz\xF3n."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "El carozo estaba tan pegado a la pulpa... igual que mis recuerdos a
+        esta caba\xF1a... hip... doli\xF3 tanto..."
+      delayBefore: 20
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: El aceite que suelta es tan resbaladizo... me llena las manos, me llena
+        la cara.
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "Todo se vuelve h\xFAmedo y rancio ac\xE1 adentro. No dejes que me toque..."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "no dejes que me ensucie m\xE1s..."
+      delayBefore: 20
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: ya me vio... ya sabe que estoy llorando...
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "no dejes que me ensucie m\xE1s..."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+  - id: Palta_Complete
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Ah... suspiro... ya est\xE1 en la cuna, abajo de las mantas viejas."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "Ah\xED est\xE1 oscuro y el ojo ya no puede parpadear. Quedate ac\xE1
+        conmigo, tapame a m\xED tambi\xE9n... hace fr\xEDo"
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+  - id: Palta_Fail
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Se aplast\xF3... se deshizo en el suelo y el aceite negro me entr\xF3
+        en los ojos. Ahora ya no puedo ver nada... solo puedo llorar..."
+      delayBefore: 0
+      duration: 5
+      audioClip: {fileID: 0}
+  - id: Acorde_In
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "La guitarra est\xE1 llorando... tiene las cuerdas rotas y desafinadas
+        por el desuso."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "Buscala en alg\xFAn rinc\xF3n de la caba\xF1a y llevala a la vieja mecedora
+        del sal\xF3n..."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: por favor, hacelo antes de que su madera se termine de partir de la tristeza...
+      delayBefore: 20
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "Pap\xE1 sol\xEDa tocar una canci\xF3n muy triste cuando la tormenta
+        golpeaba las ventanas del techo."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "Una melod\xEDa sin letra, pesada como el plomo."
+      delayBefore: 0
+      duration: 2
+      audioClip: {fileID: 0}
+    - text: "Ahora la guitarra est\xE1 sola en la oscuridad, intentando imitar mis
+        sollozos... snif..."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "Me acuerdo perfectamente del d\xEDa en que se cort\xF3 la primera cuerda..."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "son\xF3 como un latigazo seco en el pasillo. Nadie volvi\xF3 a tocarla
+        desde esa noche."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "Se qued\xF3 ah\xED tirada, llen\xE1ndose de moho, de polvo... y de recuerdos
+        rotos... hip..."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "El sonido del viento pasando a trav\xE9s de su caja de resonancia vac\xEDa
+        es horrible..."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: 'se siente como si me estuvieran apretando el cuello con manos heladas. '
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "\xBFPor qu\xE9 tard\xE1s tanto? No dejes que se caiga al suelo..."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "Ya casi no queda tiempo para la \xFAltima nota... se est\xE1 apagando
+        el eco adentro de las maderas de la casa..."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: ya no escucho nada...
+      delayBefore: 0
+      duration: 2
+      audioClip: {fileID: 0}
+  - id: Acorde_Complete
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Ah... suspiro. Ya est\xE1 en la mecedora. Dejala ah\xED tranquila, que
+        el aire fr\xEDo mueva las cuerdas flojas."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "Sentate en el piso ac\xE1 al lado m\xEDo... vamos a quedarnos quietos
+        escuchando el silencio"
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+  - id: Acorde_Fail
+    useCustomTextColor: 1
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "Se parti\xF3 el m\xE1stil... se rompi\xF3 del todo por tu culpa. Ya
+        nunca m\xE1s vamos a tener m\xFAsica en esta caba\xF1a."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+    - text: "Ahora solo nos queda el ruido de las sombras devor\xE1ndonos..."
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+  - id: reaccion_muerto
+    useCustomTextColor: 0
+    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
+    lines:
+    - text: "U... un... \xBFUN CADAVER?"
+      delayBefore: 0
+      duration: 3
+      audioClip: {fileID: 0}
+--- !u!114 &598028291631194652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3888643896946243588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fbe9721d4f5434d9abcd8bcf1126587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HintDialogueController
+  subtitleUI: {fileID: 0}
+  gameStateController: {fileID: 0}
+  voiceSource: {fileID: 0}
+  minVoicePitch: 0.5
+  maxVoicePitch: 2.5
+  firstHintDelay: 15
+  repeatInterval: 18
+  hintPool:
+  - text: Deberia de intentar encender la luz primero
+    duration: 0
+    requiredFlags: []
+    blockedFlags:
+    - power_on
+    audioClip: {fileID: 0}
+  - text: "Todo empezo con esa mu\xF1eca! Quizas..."
+    duration: 0
+    requiredFlags:
+    - intro_finished
+    blockedFlags:
+    - DollIdle
+    audioClip: {fileID: 0}
+  activeOnStart: 0

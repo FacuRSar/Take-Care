@@ -147,7 +147,11 @@ public class PauseMenuController : MonoBehaviour
             return;
         }
 
-        if (!Keyboard.current.tabKey.wasPressedThisFrame)
+        // Tab o Escape hacen lo mismo: poner/sacar la pausa.
+        bool pausePressed = Keyboard.current.tabKey.wasPressedThisFrame ||
+                            Keyboard.current.escapeKey.wasPressedThisFrame;
+
+        if (!pausePressed)
         {
             return;
         }

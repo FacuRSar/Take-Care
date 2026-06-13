@@ -76,7 +76,6 @@ public class InGameSequenceController : MonoBehaviour
     [SerializeField] private Key debugPursuerKey = Key.F2;
 
     private int completeProgress;
-    private bool introFinished;
     private bool questsStarted;
     private bool timerRunning;
     private bool hasEscaped;
@@ -196,7 +195,6 @@ public class InGameSequenceController : MonoBehaviour
         yield return new WaitForSeconds(delayBeforeQuests);
 
         // la intro termino. El timer y las quests ahora los disparan flags (las prenden eventos).
-        introFinished = true;
         SetFlag(introFinishedFlag, true);
         SetIntroUiVisible(true);
     }

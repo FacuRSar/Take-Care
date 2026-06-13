@@ -121,6 +121,9 @@ public class AmbientEventActionDrawer : PropertyDrawer
             case AmbientActionType.SetFlag:
                 return new[] { "flagName", "flagValue" };
 
+            case AmbientActionType.SetText:
+                return new[] { "textTarget", "textValue" };
+
             default:
                 return new string[0];
         }

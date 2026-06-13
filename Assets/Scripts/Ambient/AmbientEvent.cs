@@ -14,7 +14,8 @@ public class AmbientEvent : MonoBehaviour
         OnFlag,
         Timed,
         Manual,
-        PlayerLook
+        PlayerLook,
+        OnInteract
     }
 
     [Header("Identificacion")]
@@ -47,6 +48,10 @@ public class AmbientEvent : MonoBehaviour
     // capas que puede chocar el raycast de linea de vista
     [SerializeField] private LayerMask lookMask = ~0;
 
+    [Header("OnInteract (el jugador interactua con el objeto)")]
+    // prompt que se muestra al mirar el objeto. Necesita un Collider en la layer de interaccion.
+    [SerializeField] private string interactPrompt = "E - Interactuar";
+
     [Header("Configuracion")]
     [SerializeField] private bool triggerOnce = true;
 
@@ -67,6 +72,12 @@ public class AmbientEvent : MonoBehaviour
         if (triggerMode == TriggerMode.OnFlag)
         {
             GameStateController.OnFlagChanged += HandleFlagChanged;
+        }
+
+        // en modo interaccion, se asegura de tener el puente Interactable que recibe el "E"
+        if (triggerMode == TriggerMode.OnInteract)
+        {
+            EnsureInteractableBridge();
         }
 
         // si tiene id queda disponible para dispararlo a mano desde el manager
@@ -220,6 +231,25 @@ public class AmbientEvent : MonoBehaviour
         Fire();
     }
 
+    // lo llama el puente AmbientEventInteractable cuando el jugador interactua con el objeto
+    public void FireFromInteraction()
+    {
+        Fire();
+    }
+
+    // se asegura de tener (o crea) el componente Interactable que recibe la interaccion del jugador
+    private void EnsureInteractableBridge()
+    {
+        AmbientEventInteractable bridge = GetComponent<AmbientEventInteractable>();
+
+        if (bridge == null)
+        {
+            bridge = gameObject.AddComponent<AmbientEventInteractable>();
+        }
+
+        bridge.Bind(this, interactPrompt);
+    }
+
     private void Fire()
     {
         if (triggerOnce && fired)
@@ -326,6 +356,14 @@ public class AmbientEvent : MonoBehaviour
                 if (GameStateController.Instance != null && !string.IsNullOrEmpty(action.flagName))
                 {
                     GameStateController.Instance.SetFlag(action.flagName, action.flagValue);
+                }
+                break;
+
+            case AmbientActionType.SetText:
+                if (action.textTarget != null)
+                {
+                    // pone el texto, o lo borra si textValue quedo vacio
+                    action.textTarget.text = action.textValue;
                 }
                 break;
         }

@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7164673512336431098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1913373728534130903}
+  - component: {fileID: 5795713757478979140}
+  m_Layer: 0
+  m_Name: GameFlow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1913373728534130903
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7164673512336431098}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -10.64855, y: 2.11743, z: 4.854141}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5795713757478979140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7164673512336431098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 866ef6e858ce5b147b710023a5eff893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InGameSequenceController
+  playerMovement: {fileID: 0}
+  dollEmotionSystem: {fileID: 0}
+  pursuerSpawn: {fileID: 0}
+  escapeDoor: {fileID: 0}
+  escapeDoorFlagName: escape_door_unlocked
+  fadeImage: {fileID: 0}
+  fadeInDuration: 3
+  uiObjectsHiddenDuringIntro: []
+  introDialogueId: ingame_intro
+  lockPlayerDuringIntro: 0
+  delayBeforeQuests: 0
+  introFinishedFlag: intro_finished
+  startQuestsFlag: doll_quests_start
+  startTimerFlag: game_timer_start
+  questsStartedFlag: quests_started
+  completeToWin: 100
+  escapeMessage: "La mu\xF1eca esta feliz y te abrio la puerta. RAPIDO! ESCAPA!"
+  escapeMessageDuration: 6
+  winSceneName: Win
+  questPhaseDuration: 600
+  timerLabel: {fileID: 0}
+  debugKeys: 1
+  debugWinKey: 88
+  debugPursuerKey: 89
