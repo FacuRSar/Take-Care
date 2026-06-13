@@ -46,7 +46,7 @@ public class DemoEndController : MonoBehaviour
         }
     }
 
-    // Cierre cuando el perseguidor atrapa al jugador (igual de frente o de espalda).
+    // Cierre cuando el perseguidor atrapa al jugador.
     public void StartCaptureEnd()
     {
         if (endingStarted)

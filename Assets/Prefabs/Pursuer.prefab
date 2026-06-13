@@ -8623,6 +8623,7 @@ GameObject:
   - component: {fileID: 6301149177306308615}
   - component: {fileID: 2475784846558394118}
   - component: {fileID: 1815545881229873189}
+  - component: {fileID: 3405878004117905328}
   m_Layer: 0
   m_Name: Pursuer
   m_TagString: Untagged
@@ -8730,7 +8731,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5587976650372233510}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe2138de8e342614cbdb7946ddd4d543, type: 3}
   m_Name: 
@@ -8738,6 +8739,7 @@ MonoBehaviour:
   player: {fileID: 0}
   playerTag: Player
   animator: {fileID: 1815545881229873189}
+  playerMovement: {fileID: 0}
   destinationUpdateRate: 0.25
   grabDistance: 1.3
   speedMultiplierPerSecond: 1.1
@@ -8801,6 +8803,41 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3405878004117905328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5587976650372233510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0086d06fc9d306f4f8f41b14b0bf05b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PursuerPatrolSpawner
+  pursuerObject: {fileID: 5587976650372233510}
+  patrolController: {fileID: 0}
+  player: {fileID: 0}
+  playerTag: Player
+  roomSpawnPoints: []
+  hallwaySpawnPoints: []
+  minRoomAppearances: 2
+  maxRoomAppearances: 3
+  roomScheduleWindow: 8
+  timeBetweenAppearances: {x: 45, y: 75}
+  firstAppearanceDelay: 30
+  minDistanceToPlayer: 12
+  spawnSfxId: DollLaugh
+  spawnSoundAs3D: 0
+  spawnMusicId: 
+  musicFadeIn: 1.5
+  musicFadeOut: 2
+  flickerOnVanish: 1
+  flickerDuration: 0.6
+  flickerInterval: 0.08
+  autoStart: 0
+  startFlagName: doll_quests_start
+  enableDebugKey: 1
 --- !u!1 &5724163870517339717
 GameObject:
   m_ObjectHideFlags: 0

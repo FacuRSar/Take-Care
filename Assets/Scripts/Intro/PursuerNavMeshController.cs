@@ -13,6 +13,8 @@ public class PursuerNavMeshController : MonoBehaviour
     // si player queda sin asignar, lo busca por tag al activarse
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private Animator animator;
+    // para congelar al jugador al atraparlo. Si queda vacio se busca en el player.
+    [SerializeField] private PlayerMovement playerMovement;
 
     [Header("Movimiento")]
     [SerializeField] private float destinationUpdateRate = 0.25f;
@@ -50,7 +52,7 @@ public class PursuerNavMeshController : MonoBehaviour
     [SerializeField] private bool logGrabDistance = false;
 
     [Header("Cierre al capturar")]
-    // controlador del cierre (mismo final sin importar si agarra de frente o de espalda)
+    // controlador del cierre por captura
     [SerializeField] private DemoEndController captureEndController;
     // pequeña espera para que arranque la animacion de agarre antes del fade
     [SerializeField] private float captureEndDelay = 0.4f;
@@ -79,6 +81,15 @@ public class PursuerNavMeshController : MonoBehaviour
 
     private void OnEnable()
     {
+        // seguridad: si por error comparte objeto con la IA de patrulla, apago esa para que no peleen por el agente
+        PursuerPatrolController patrol = GetComponent<PursuerPatrolController>();
+
+        if (patrol != null && patrol.enabled)
+        {
+            patrol.enabled = false;
+            Debug.LogWarning("PursuerNavMeshController: habia un PursuerPatrolController activo en el mismo objeto. Lo desactive para que no se superpongan.");
+        }
+
         hasGrabbedPlayer = false;
         rampStartTime = Time.time;
 
@@ -95,6 +106,11 @@ public class PursuerNavMeshController : MonoBehaviour
             {
                 Debug.LogWarning("PursuerNavMeshController: no hay player asignado ni se encontro por tag '" + playerTag + "'.");
             }
+        }
+
+        if (playerMovement == null && player != null)
+        {
+            playerMovement = player.GetComponent<PlayerMovement>();
         }
 
         if (agent != null)
@@ -303,6 +319,7 @@ public class PursuerNavMeshController : MonoBehaviour
 
         hasGrabbedPlayer = true;
 
+        // se frena en seco
         if (agent.isOnNavMesh)
         {
             agent.ResetPath();
@@ -311,11 +328,40 @@ public class PursuerNavMeshController : MonoBehaviour
 
         StopFootstepLoop();
 
+        // queda mirando al jugador de frente
+        FacePlayer();
+
+        // y lo deja sin poder moverse
+        FreezePlayer();
+
         // La vieja solo camina o ataca: al atrapar, dispara el Attack.
         TriggerAttackAnimation();
 
-        // El cierre es el mismo sin importar desde donde agarre.
         TriggerCaptureEnding();
+    }
+
+    private void FacePlayer()
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        Vector3 toPlayer = player.position - transform.position;
+        toPlayer.y = 0f;
+
+        if (toPlayer.sqrMagnitude > 0.0001f)
+        {
+            transform.rotation = Quaternion.LookRotation(toPlayer);
+        }
+    }
+
+    private void FreezePlayer()
+    {
+        if (playerMovement != null)
+        {
+            playerMovement.CantMove(true);
+        }
     }
 
     private void TriggerCaptureEnding()

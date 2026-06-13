@@ -36,6 +36,11 @@ public class DoorInteractable : Interactable
     [SerializeField] private bool startsOpened = false;
     // te tira si una puerta empieza abierta por si hace falta
 
+    [SerializeField] private bool excludeFromAIPatrol = false;
+    // si esta activo, el Pursuer en patrulla NUNCA la elige ni la abre al cruzarla
+    // (ej: la puerta principal de salida).
+    public bool ExcludeFromAIPatrol => excludeFromAIPatrol;
+
     [SerializeField] private string lockedMessage = "Parece que alguien la cerr� desde el otro lado.";
     // mensaje cuando la puerta no puede abrirse full generico
 
@@ -43,6 +48,10 @@ public class DoorInteractable : Interactable
     // si lo completas, al abrir esta puerta se prende esa flag.
     // sirve para enganchar un AmbientEvent (ej: que se caiga algo cuando abris la puerta).
     // queda en true y no se apaga al cerrar.
+
+    [SerializeField] private bool aiCanRaiseOpenedFlag = false;
+    // por defecto SOLO el jugador prende openedFlagName. Si lo activas, la IA tambien lo prende
+    // cuando abre esta puerta (ej: el Pursuer al espiar). Normalmente dejar en false.
 
     [Header("Requerimientos de puerta")]
     [SerializeField] private DoorRequirementType requirementType = DoorRequirementType.None;
@@ -254,7 +263,11 @@ public class DoorInteractable : Interactable
         targetRotation = Quaternion.Euler(0f, 0f, openedZRotation);
         isMoving = true;
 
-        RaiseOpenedFlag();
+        // por defecto la IA no dispara el flag: solo el jugador. Se habilita con aiCanRaiseOpenedFlag.
+        if (aiCanRaiseOpenedFlag)
+        {
+            RaiseOpenedFlag();
+        }
     }
 
     private void RaiseOpenedFlag()
