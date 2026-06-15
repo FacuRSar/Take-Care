@@ -200,7 +200,7 @@ public class PursuerPatrolController : MonoBehaviour
             return;
         }
 
-        DoorInteractable[] all = FindObjectsOfType<DoorInteractable>();
+        DoorInteractable[] all = FindObjectsByType<DoorInteractable>(FindObjectsSortMode.None);
         List<DoorInteractable> candidates = new List<DoorInteractable>();
 
         foreach (DoorInteractable door in all)

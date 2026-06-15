@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float cameraCrouchDrop = 0.45f;
 
     private Rigidbody rb;
+    private PlayerCamera cameraController;
     private Vector2 moveInput;
     // private PlayerInput playerInput; // Saco esto porque no es necesario, unity ya hace eso automatico. pa emprolijar nomas
     private bool isCrouching;
@@ -52,6 +53,10 @@ public class PlayerMovement : MonoBehaviour
     {
         //asignar el rigibody y player input al iniciar el juego
         rb = GetComponent<Rigidbody>();
+        cameraController = GetComponent<PlayerCamera>();
+
+        if (cameraController == null)
+            cameraController = GetComponentInParent<PlayerCamera>();
 
         if (capsule == null) // Me fijo que el componente no este asignado antes para asignarlo en el start
             capsule = GetComponent<CapsuleCollider>();
@@ -100,7 +105,16 @@ public class PlayerMovement : MonoBehaviour
     //funcion que se encarga de mover al jugador con los valores que pasa OnMovement, se llama en fixed update
     private void MovePlayer()
     {
-        Vector3 direction = transform.forward * moveInput.y + transform.right * moveInput.x;
+        // uso el yaw real de la camara en vez de transform.forward: el Rigidbody interpolado
+        // desfasa la rotacion del transform al leerla en FixedUpdate y el jugador seguia
+        // caminando hacia donde miraba antes de girar la camara.
+        float yaw = cameraController != null ? cameraController.Yaw : transform.eulerAngles.y;
+        Quaternion yawRotation = Quaternion.Euler(0f, yaw, 0f);
+
+        Vector3 forward = yawRotation * Vector3.forward;
+        Vector3 right = yawRotation * Vector3.right;
+
+        Vector3 direction = forward * moveInput.y + right * moveInput.x;
         direction.Normalize();
 
         float currentSpeed = walkSpeed;

@@ -18,7 +18,6 @@ public class AmbientEvent : MonoBehaviour
         OnInteract
     }
 
-    [Header("Identificacion")]
     // id opcional para dispararlo a mano desde el AmbientEventManager
     [SerializeField] private string eventId;
 

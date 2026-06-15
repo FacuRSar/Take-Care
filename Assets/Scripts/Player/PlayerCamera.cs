@@ -15,6 +15,10 @@ public class PlayerCamera : MonoBehaviour
     private float xRotation = 0f;//rotacion en el eje x para limitar la rotacion de la camara
     private float yRotation = 0f;//rotacion acumulada del jugador en eje Y
 
+    // yaw real acumulado. El movimiento lo usa para no depender de transform.forward,
+    // que con el Rigidbody interpolado queda desfasado al leerse en FixedUpdate.
+    public float Yaw => yRotation;
+
     [SerializeField] private bool _CantMoveCamera;
 
     void Start()

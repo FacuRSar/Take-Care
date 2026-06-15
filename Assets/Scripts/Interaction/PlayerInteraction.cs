@@ -334,6 +334,16 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    public void NotifyObjectDropped(GrabbableObject obj)
+    {
+        // lo llama el objeto cuando se suelta solo (ej: quedo trabado y se alejo demasiado),
+        // asi el jugador deja de considerarlo "en mano"
+        if (pickedObject == obj)
+        {
+            pickedObject = null;
+        }
+    }
+
     public bool HasObjectInHand()
     {
         // dejo esto por si en el futuro un interactuable necesita saber si el jugador ya tiene un objeto agarrado

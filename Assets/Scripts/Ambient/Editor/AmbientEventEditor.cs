@@ -55,7 +55,6 @@ public class AmbientEventEditor : Editor
         serializedObject.Update();
 
         // Identificacion
-        EditorGUILayout.LabelField("Identificacion", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(eventId);
 
         EditorGUILayout.Space();

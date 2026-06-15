@@ -44,6 +44,13 @@ public class GrabbableObject : MonoBehaviour
     [SerializeField] private float maxFollowVelocity = 15f;
     //limite de velocidad para que no salga disparado si se desacomoda
 
+    [SerializeField] private bool autoDrop = true;
+    //si esta tildado, suelta el objeto solo cuando queda trabado y se aleja mas que la distancia de agarre
+
+    // tiempo que tiene que estar lejos para soltarse, asi no se suelta por un lag normal del seguimiento
+    private float stuckGraceTime = 0.35f;
+    private float stuckTimer;
+
     [Header("Opciones de este objeto")]
     [SerializeField] private bool canBeGrabbed = true;
     //si esta destildado el objeto no se puede agarrar (ej: algo muy pesado) y muestra el mensaje de abajo
@@ -151,6 +158,7 @@ public class GrabbableObject : MonoBehaviour
         }
 
         FollowHandPoint();
+        CheckStuckRelease();
     }
 
 
@@ -170,6 +178,7 @@ public class GrabbableObject : MonoBehaviour
         currentHandPoint = handPoint;
         isHeld = true;
         settings = grabSettings;
+        stuckTimer = 0f;
         IgnorePlayerCollisions(true);
 
         // referencia a la camara del jugador para poder frenarla mientras roto el objeto
@@ -226,8 +235,44 @@ public class GrabbableObject : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         // para la linear revisar si queda bien, si se ve medio mal solo se comenta y listo, no rompe nada, solo esta para reiniciar por si se suelta con inercia rara
         rb.linearVelocity = Vector3.zero;
+        stuckTimer = 0f;
+
+        // aviso al jugador para que limpie la referencia al objeto en mano (importante cuando el soltado es automatico)
+        if (playerInteraction != null)
+        {
+            playerInteraction.NotifyObjectDropped(this);
+        }
 
         PlaySfx(dropSfxId);
+    }
+
+    // si el objeto queda trabado y su posicion real se aleja de la posicion objetivo, lo suelta solo
+    private void CheckStuckRelease()
+    {
+        if (!autoDrop || settings == null)
+        {
+            return;
+        }
+
+        // limite = la distancia custom del objeto si la usa, si no la maxima de los grab settings
+        float maxStuckDistance = useCustomDistance ? customHoldDistance : settings.maxDistance;
+
+        Vector3 targetWorldPosition = currentHandPoint.TransformPoint(targetLocalPosition);
+        float distance = Vector3.Distance(rb.position, targetWorldPosition);
+
+        if (distance > maxStuckDistance)
+        {
+            stuckTimer += Time.fixedDeltaTime;
+
+            if (stuckTimer >= stuckGraceTime)
+            {
+                Drop();
+            }
+        }
+        else
+        {
+            stuckTimer = 0f;
+        }
     }
 
     public bool EnablePhysicsFromAmbient(Vector3 impulse)
