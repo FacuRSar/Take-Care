@@ -113,8 +113,16 @@ public class SFXManager : MonoBehaviour
         return clip;
     }
 
-    public AudioSource PlayLoop2D(string id)
+    public void ResetVolume2D(string id  ,float NewVolume)
     {
+        if (!activeLoops.ContainsKey(id) || activeLoops[id] == null) return;
+
+        activeLoops[id].volume = NewVolume;
+
+    }
+    public AudioSource PlayLoop2D(string id, float volume = -1)
+    {
+        
         if (activeLoops.ContainsKey(id) && activeLoops[id] != null)
         {
             return activeLoops[id];
@@ -132,6 +140,7 @@ public class SFXManager : MonoBehaviour
         AudioSource loopSource = gameObject.AddComponent<AudioSource>();
         loopSource.clip = clip;
         loopSource.loop = true;
+        if(volume != -1) loopSource.volume = volume;
         loopSource.spatialBlend = 0f;
         loopSource.Play();
         activeLoops[id] = loopSource;
