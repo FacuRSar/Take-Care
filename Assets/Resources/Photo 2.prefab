@@ -31,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 20.026, y: 1.35, z: 25.334}
-  m_LocalScale: {x: 0.76, y: 0.01, z: 0.76}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.23, y: 0.0030263157, z: 0.23}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -161,4 +161,16 @@ MonoBehaviour:
   followPositionSpeed: 20
   followRotationSpeed: 20
   maxFollowVelocity: 15
+  canBeGrabbed: 1
+  cannotGrabMessage: Esto pesa demasiado.
+  lockRotation: 0
+  useFixedGrabRotation: 0
+  useCustomDistance: 0
+  customHoldDistance: 1
+  pickupSfxId: 
+  dropSfxId: 
+  impactSfxId: 
+  minImpactVelocity: 1.5
+  impactCooldown: 0.15
+  impactSoundOnce: 1
   playerInteraction: {fileID: 0}
