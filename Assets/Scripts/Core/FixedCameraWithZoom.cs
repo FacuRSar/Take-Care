@@ -74,11 +74,7 @@ public class FixedCameraWithZoom : MonoBehaviour
 
     private void Start()
     {
-//<<<<<<< HEAD
         currentZoomFov = zoomFov;
-        /*Angel: Lo inicializo igual al fov del inspector.
-=======
->>>>>>> DollEmotionSystem*/
         DurationTotalScene();
     }
     private void Update()
@@ -291,12 +287,8 @@ public class FixedCameraWithZoom : MonoBehaviour
 
     private void _PlaySequence(int sequenceIndex)
     {
-//<<<<<<< HEAD
         currentZoomFov = zoomFov;
-        //Angel: Reseteo el zoom normal
 
-//=======
-//>>>>>>> DollEmotionSystem
         currentSequenceIndex = sequenceIndex;
 
         currentTargetIndex = 0;
@@ -312,8 +304,6 @@ public class FixedCameraWithZoom : MonoBehaviour
         _PlaySequence(sequenceIndex);
     }
 
-//<<<<<<< HEAD
-    //Aguego el nuevo PlaySequence pero con un zoom personalizado
     private void _PlaySequence(int sequenceIndex, float customZoomFov)
     {
         currentZoomFov = customZoomFov > 0f ? customZoomFov : nomalFov;
@@ -336,5 +326,3 @@ public class FixedCameraWithZoom : MonoBehaviour
 
 
 }
-//=======
-//>>>>>>> DollEmotionSystem
