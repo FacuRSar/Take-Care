@@ -1,7 +1,10 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
 [System.Serializable]
@@ -76,6 +79,7 @@ public class Quest : MonoBehaviour
     private DialogueController dialogue;
     private QuestData activeQuest;
     private PlayerInteraction playerInteraction;
+    private PlayerMovement playerMovement;
     private InGameSequenceController flow;
 
 
@@ -109,8 +113,19 @@ public class Quest : MonoBehaviour
 
     // cuantas quests se completaron hasta ahora (para flags de progreso)
     private int completedCount;
+
+    [SerializeField] private GameObject Humo;
+    private bool Quest_0;
+    private bool Quest_1;
+    private bool Quest_2;
+    private bool Quest_3;
+    private bool Quest_4;
+    private bool Quest_5;
+
+    float Timer;
     private void Awake()
     {
+        playerMovement = FindAnyObjectByType<PlayerMovement>();
         dialogue = FindAnyObjectByType<DialogueController>();
         playerInteraction = FindFirstObjectByType<PlayerInteraction>();
         bars = FindFirstObjectByType<Bars>();
@@ -139,6 +154,8 @@ public class Quest : MonoBehaviour
             }
             AddQuest();
         }
+
+        Timer = 0;
     }
 
     private void FixedUpdate()
@@ -150,7 +167,7 @@ public class Quest : MonoBehaviour
         switch (activeQuest.GetQuestType())
         {
             case questType.ToCollect:
-                LogicToCollect(); // Si llegamos la agragamos
+                LogicToCollect();
                 break;
             case questType.ToGo:
                 LogicToGo();
@@ -158,6 +175,113 @@ public class Quest : MonoBehaviour
             case questType.ToDelivery:
                 LogicToDelivery();
                 break;
+        }
+
+        if (Quest_0)
+        {
+            Humo.SetActive(true);
+            
+
+            if (activeQuest.timer >= activeQuest.timer * 85 / 100)
+            {
+                SFXManager.Instance.ResetVolume2D("kettle", 1f);
+
+
+            }
+            else if (activeQuest.timer >= activeQuest.timer * 75 / 100)
+            {
+                SFXManager.Instance.ResetVolume2D("kettle", 0.75f);
+            }
+            else if (activeQuest.timer >= activeQuest.timer * 50 / 100)
+            {
+                SFXManager.Instance.ResetVolume2D("kettle", 0.5f);
+                // flag para mover cosas o bajar luces, bloquear puertas
+            }
+            else if (activeQuest.timer >= activeQuest.timer * 25 / 100)
+            {
+                SFXManager.Instance.ResetVolume2D("kettle", 0.25f);
+            }
+            else
+            {
+                SFXManager.Instance.ResetVolume2D("kettle", 0f);
+            }
+
+
+        }
+        else if (Quest_1)
+        {
+            float Distnace = Vector3.Distance(player.transform.position, Doll.transform.position);
+            GameStateController.Instance.SetFlag("energy_restored", false);
+            GameStateController.Instance.SetFlag("power_on", false);
+
+            Timer += Time.fixedDeltaTime;
+
+            if (Timer > 10)
+            {
+                GameStateController.Instance.SetFlag("quest_1_Dialogue_Hot", false);
+                GameStateController.Instance.SetFlag("quest_1_Dialogue_Warm", false);
+                GameStateController.Instance.SetFlag("quest_1_Dialogue_Cold", false);
+
+                if (Distnace > 30)
+                {
+                    GameStateController.Instance.SetFlag("quest_1_Dialogue_Cold", true);
+                    Timer = 0;
+                }
+                else if (Distnace > 20)
+                {
+                    GameStateController.Instance.SetFlag("quest_1_Dialogue_Warm", true);
+                    Timer = 0;
+                }
+                else
+                {
+                    GameStateController.Instance.SetFlag("quest_1_Dialogue_Hot", true);
+                    Timer = 0;
+                }
+
+                
+            }
+        }
+        else if (Quest_2)
+        {
+            Timer += Time.fixedDeltaTime;
+
+            if (Timer > 10)
+            {
+                playerMovement.InvertedControls = !playerMovement.InvertedControls;
+
+                Timer = 0;
+
+                return;
+            }
+        }
+        else if (Quest_3)
+        {
+            GameStateController.Instance.SetFlag("laughter", false);
+
+            Timer += Time.fixedDeltaTime;
+
+            if (Timer > 5)
+            {
+                GameStateController.Instance.SetFlag("laughter", true);
+                Timer = 0;
+            }
+        }
+        else if (Quest_4)
+        {
+
+            Timer += Time.fixedDeltaTime;
+
+            if (Timer > 10)
+            {
+                GameStateController.Instance.SetFlag("energy_restored", false);
+                GameStateController.Instance.SetFlag("power_on", false);
+                
+                Timer = 0;
+            }
+        }
+        else if (Quest_5)
+        {
+            
         }
     }
     private void _AddQuest()
@@ -176,13 +300,7 @@ public class Quest : MonoBehaviour
         if (index >= 0 && index < allQuests.Count)
         {
             activeQuest = allQuests[index];
-
-            if (index == 1)
-            {
-                randomObjectPositioner.ObjRandomAdd(Doll_);
-            }
-
-
+            IDQuest(index);
 
             activeQuest.isActive = true;
             activeQuest.halfNotified = false;
@@ -200,6 +318,47 @@ public class Quest : MonoBehaviour
 
             if (index != 1)
                 TpDoll();
+        }
+    }
+
+    private void IDQuest(int i)
+    {
+        float Timer = activeQuest.timer;
+        switch (i)
+        {
+            case 0:
+                {
+                    SFXManager.Instance.PlayLoop2D("kettle");
+                    SetQuestFlag($"quest_{activeQuest.QuestID}_Door", true);
+                    Quest_0 = true;
+                }
+                break;
+            case 1:
+                {
+                    randomObjectPositioner.ObjRandomAdd(Doll_);
+                    Quest_1 = true;
+                }
+                break;
+            case 2:
+                {
+                    Quest_2 = true;
+                }
+                break;
+            case 3:
+                {
+                    Quest_3 = true;
+                }
+                break;
+            case 4:
+                {
+                    Quest_4 = true;
+                }
+                break;
+            case 5:
+                {
+                    Quest_5 = true;
+                }
+                break;
         }
     }
     public void ActivateQuest(int index)
@@ -226,6 +385,28 @@ public class Quest : MonoBehaviour
         SetQuestFlag($"quest_{activeQuest.QuestID}_failed", true);
 
         if (flow != null) flow.OnMissionFailed();
+
+
+        if (Quest_2)
+        {
+            playerMovement.InvertedControls = true;
+        }
+        else if (Quest_5)
+        {
+            playerMovement.SpeedPlayer(0.75f);
+        }
+
+        DisableQuestBool();
+    }
+
+    private void DisableQuestBool()
+    {
+        Quest_0 = false;
+        Quest_1 = false;
+        Quest_2 = false;
+        Quest_3 = false;
+        Quest_4 = false;
+        Quest_5 = false;
     }
     
     public void _FailQuest()
@@ -393,6 +574,13 @@ public class Quest : MonoBehaviour
         SetQuestFlag($"missions_completed_{completedCount}", true);
 
         if (flow != null) flow.OnMissionCompleted(activeQuest.CompletePoints);
+
+        if (Quest_2)
+        {
+            playerMovement.InvertedControls = false;
+        }
+
+        DisableQuestBool();
     }
 
     // setea una flag en el estado global, si existe el controlador
