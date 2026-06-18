@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float standingHeight = 2f;
     [SerializeField] private float crouchHeight = 1.2f;
     [SerializeField] private float standingCameraY = 1.6f;
+    [SerializeField] private float crouchCameraY = 1.0f;
     [SerializeField] private float crouchLerpSpeed = 10f;
     // Cuanto encoge el collider al agacharse (0.6 = queda al 60% de su altura parada).
     [SerializeField] private float crouchHeightFactor = 0.6f;
@@ -23,8 +24,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float cameraCrouchDrop = 0.45f;
 
     private Rigidbody rb;
-    private PlayerCamera cameraController;
+
     private Vector2 moveInput;
+    public Vector2 MoveInput => moveInput;
     // private PlayerInput playerInput; // Saco esto porque no es necesario, unity ya hace eso automatico. pa emprolijar nomas
     private bool isCrouching;
     private bool isSprinting;
@@ -41,6 +43,11 @@ public class PlayerMovement : MonoBehaviour
     private float cameraTargetY;
     private float cameraBaseLocalY;
 
+    private bool MovingX;
+    public bool movingX => MovingX;
+    private bool MovingY;
+    public bool movingY => MovingY;
+
     // Altura local de la camara que maneja el agacharse. El HeadBob la usa como base
     // para sumarle el balanceo, asi un solo script escribe la posicion de la camara.
     public float CameraBaseLocalY => cameraBaseLocalY;
@@ -53,10 +60,6 @@ public class PlayerMovement : MonoBehaviour
     {
         //asignar el rigibody y player input al iniciar el juego
         rb = GetComponent<Rigidbody>();
-        cameraController = GetComponent<PlayerCamera>();
-
-        if (cameraController == null)
-            cameraController = GetComponentInParent<PlayerCamera>();
 
         if (capsule == null) // Me fijo que el componente no este asignado antes para asignarlo en el start
             capsule = GetComponent<CapsuleCollider>();
@@ -79,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+
         if (!_CantMove)
         {
             HandleSprintInput(); // mira si Shift esta apretado
@@ -89,6 +93,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+
         if (!_CantMove) MovePlayer(); //llamada a funcion movimiento en fixed update asi no choca con la fisica del juego
     }
 
@@ -105,16 +111,7 @@ public class PlayerMovement : MonoBehaviour
     //funcion que se encarga de mover al jugador con los valores que pasa OnMovement, se llama en fixed update
     private void MovePlayer()
     {
-        // uso el yaw real de la camara en vez de transform.forward: el Rigidbody interpolado
-        // desfasa la rotacion del transform al leerla en FixedUpdate y el jugador seguia
-        // caminando hacia donde miraba antes de girar la camara.
-        float yaw = cameraController != null ? cameraController.Yaw : transform.eulerAngles.y;
-        Quaternion yawRotation = Quaternion.Euler(0f, yaw, 0f);
-
-        Vector3 forward = yawRotation * Vector3.forward;
-        Vector3 right = yawRotation * Vector3.right;
-
-        Vector3 direction = forward * moveInput.y + right * moveInput.x;
+        Vector3 direction = transform.forward * moveInput.y + transform.right * moveInput.x;
         direction.Normalize();
 
         float currentSpeed = walkSpeed;
@@ -123,11 +120,11 @@ public class PlayerMovement : MonoBehaviour
         {
             currentSpeed = crouchSpeed;
         }
-
         else if (isSprinting)
         {
             currentSpeed = sprintSpeed;
         }
+
 
         float feel = Mathf.Clamp(movementFeelMultiplier, 0.25f, 3f);
         CurrentSpeed = currentSpeed * feel;
@@ -138,6 +135,22 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity.y,
             direction.z * currentSpeed * feel
         );
+
+        if (rb.linearVelocity.x < -0.01 || rb.linearVelocity.x > 0.01)
+        {
+            MovingX = true;
+            Debug.Log($"Moving: {MovingX}");
+        }
+        else MovingX = false;
+        Debug.Log($"Moving: {MovingX}");
+
+        if (rb.linearVelocity.x < -0.01 || rb.linearVelocity.x > 0.01)
+        {
+            MovingY = true;
+            Debug.Log($"Moving: {MovingY}");
+        }
+        else MovingY = false;
+        Debug.Log($"Moving: {MovingY}");
     }
 
     public void SetMovementFeelMultiplier(float multiplier)
