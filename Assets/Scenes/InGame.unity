@@ -11394,12 +11394,12 @@ MonoBehaviour:
     - text: "Esa maldita camara me est\xE1 mirando mal! \xA1Dice que soy fea! \xA1Agarralo
         y llevalo a la chimenea ya mismo!"
       delayBefore: 0
-      duration: 5
-      audioClip: {fileID: 0}
+      duration: 10
+      audioClip: {fileID: 8300000, guid: fb780946b222ee340b2f44bfe3c75d5a, type: 3}
     - text: No la toques por mucho tiempo, te hace mover raro
-      delayBefore: 10
+      delayBefore: 3
       duration: 5
-      audioClip: {fileID: 0}
+      audioClip: {fileID: 8300000, guid: f22998860c04759459ccec00449494d6, type: 3}
   - id: Mentiroso_Fail
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -11408,8 +11408,8 @@ MonoBehaviour:
         Ahora tus manos ya no te obedecen, tus piernas tampoco... Ahora le pertenec\xE9s
         a ella"
       delayBefore: 0
-      duration: 8
-      audioClip: {fileID: 0}
+      duration: 13
+      audioClip: {fileID: 8300000, guid: 23ac0c0f5f9271d4d85a62327d823728, type: 3}
   - id: Mentiroso_Complete
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -11417,24 +11417,24 @@ MonoBehaviour:
     - text: "\xA1Eso! Mir\xE1 c\xF3mo se derrite... \xBFQui\xE9n se r\xEDe ahora,
         eh? Nadie se burla de m\xED en mi casa\n"
       delayBefore: 0
-      duration: 5
-      audioClip: {fileID: 0}
+      duration: 7
+      audioClip: {fileID: 8300000, guid: 8522e34132e9b1c488a1b82be4411790, type: 3}
   - id: Sonriente_In
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
     lines:
     - text: "\xA1Miralos! \xA1Est\xE1n todos tirados en el suelo y entre los muebles!"
       delayBefore: 0
-      duration: 3
-      audioClip: {fileID: 0}
+      duration: 5
+      audioClip: {fileID: 8300000, guid: 60a39832b873c3b46a4968f1fbb51c13, type: 3}
     - text: ' Mi hermosa familia... '
       delayBefore: 1
       duration: 3
-      audioClip: {fileID: 0}
+      audioClip: {fileID: 8300000, guid: ac1b5f39199f2354db92462cb3daa5b9, type: 3}
     - text: "Quiero que me traigas las fotos. !!!YAAA\xA1\xA1\xA1 "
       delayBefore: 1
-      duration: 3
-      audioClip: {fileID: 0}
+      duration: 4
+      audioClip: {fileID: 8300000, guid: ea3fc1446927e194fbea84b02ef47ca0, type: 3}
   - id: Sonriente_Half
     useCustomTextColor: 0
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -11442,8 +11442,8 @@ MonoBehaviour:
     - text: "\xBFAcaso te da miedo c\xF3mo te miran desde el papel? No les des la
         espalda... sus sonrisas se vuelven m\xE1s grandes cuando no los mir\xE1s"
       delayBefore: 0
-      duration: 5
-      audioClip: {fileID: 0}
+      duration: 10
+      audioClip: {fileID: 8300000, guid: cc1a6e0aefd764b4b88b2ff7c8a425f7, type: 3}
   - id: Sonriente_Complete
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -11453,29 +11453,29 @@ MonoBehaviour:
         \xBFViste qu\xE9 lindo me miran? Se nota que me extra\xF1aban... y ahora
         vos tambi\xE9n form\xE1s parte de nuestros recuerdos.\""
       delayBefore: 0
-      duration: 8
-      audioClip: {fileID: 0}
+      duration: 20
+      audioClip: {fileID: 8300000, guid: 3e7f5fdb75e208342903d356be52e205, type: 3}
   - id: Sonriente_Fail
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
     lines:
     - text: "Se termin\xF3 el tiempo..."
       delayBefore: 0
-      duration: 3
-      audioClip: {fileID: 0}
+      duration: 2
+      audioClip: {fileID: 8300000, guid: a7b21e7d2a3e8164591835b4d8faff26, type: 3}
     - text: " Las sonrisas de las fotos se borraron, ahora sus caras est\xE1n completamente
         vac\xEDas. Se enojaron con vos por dejarlos tirados en los rincones..."
       delayBefore: 3
-      duration: 5
-      audioClip: {fileID: 0}
+      duration: 12
+      audioClip: {fileID: 8300000, guid: fe5ba135fc0fd4043b5906f504663418, type: 3}
     - text: " cuando ellos se enojan, a m\xED me gusta arrancar sonrisas nuevas."
-      delayBefore: 5
-      duration: 5
-      audioClip: {fileID: 0}
+      delayBefore: 4
+      duration: 6
+      audioClip: {fileID: 8300000, guid: 457ad41df2b9f714080a674cc8803073, type: 3}
     - text: Quedate quieto...
       delayBefore: 5
       duration: 2
-      audioClip: {fileID: 0}
+      audioClip: {fileID: 8300000, guid: f7c289bd1bb5829409f82c7c9b761ba0, type: 3}
   - id: ingame_intro
     useCustomTextColor: 0
     subtitleTextColor: {r: 0, g: 0, b: 0, a: 1}
@@ -11512,8 +11512,8 @@ MonoBehaviour:
         voy a poner tan f\xE1cil... Cuando la tengas, vas a tener que correr y llevarla
         directo al s\xF3tano antes de que se enfr\xEDe y deje de sentir"
       delayBefore: 0
-      duration: 8
-      audioClip: {fileID: 0}
+      duration: 15
+      audioClip: {fileID: 8300000, guid: 27074d334f1f84f4189afda6de8908c8, type: 3}
   - id: Palta_Complete
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -11522,8 +11522,8 @@ MonoBehaviour:
         su felpa otra vez, ya volvi\xF3 a sentir. Gracias por traerla hasta ac\xE1
         abajo."
       delayBefore: 0
-      duration: 6
-      audioClip: {fileID: 0}
+      duration: 11
+      audioClip: {fileID: 8300000, guid: c1be80964642e6447aa58d6d3ddcf2f6, type: 3}
   - id: Palta_Fail
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -11532,8 +11532,8 @@ MonoBehaviour:
         puerta del s\xF3tano. Se qued\xF3 sin sentir... y ahora el fr\xEDo de su
         cuerpo de trapo se est\xE1 pegando"
       delayBefore: 0
-      duration: 5
-      audioClip: {fileID: 0}
+      duration: 12
+      audioClip: {fileID: 8300000, guid: c726b5789ddf093499a9e4280678ed26, type: 3}
   - id: Acorde_In
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -11542,8 +11542,8 @@ MonoBehaviour:
         por la caba\xF1a y llevala all\xE1 antes de que cambie de opini\xF3n. \xA1Mete
         pata!"
       delayBefore: 0
-      duration: 5
-      audioClip: {fileID: 0}
+      duration: 9
+      audioClip: {fileID: 8300000, guid: 18b6415e35903d248a093836f3785844, type: 3}
   - id: Acorde_Complete
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -11551,50 +11551,26 @@ MonoBehaviour:
     - text: "Perfecto, ya est\xE1 en el workbench. Ahora voy a poder usar estas cuerdas
         para otra cosa... Gracias por el favor\n"
       delayBefore: 0
-      duration: 3
-      audioClip: {fileID: 0}
+      duration: 10
+      audioClip: {fileID: 8300000, guid: dcade9a2c34f2104e9a8933ae0d15c41, type: 3}
   - id: Acorde_Fail
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
     lines:
     - text: "\xA1Se termin\xF3 el tiempo, tarado! Sos demasiado lento para los mandados..."
       delayBefore: 0
-      duration: 3
-      audioClip: {fileID: 0}
+      duration: 5
+      audioClip: {fileID: 8300000, guid: c8cf01a48c9c13643b470850fb3aff6f, type: 3}
     - text: "Dej\xE1 la guitarra donde est\xE9, ya se me pasaron las ganas y ahora
         tengo ganas de otra cosa. \xA1Corr\xE9!"
       delayBefore: 1
-      duration: 5
-      audioClip: {fileID: 0}
+      duration: 7
+      audioClip: {fileID: 8300000, guid: d12f834f3c06aa443951102ecfb0fab9, type: 3}
   - id: reaccion_muerto
     useCustomTextColor: 0
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
     lines:
     - text: "U... un... \xBFUN CADAVER?"
-      delayBefore: 0
-      duration: 3
-      audioClip: {fileID: 0}
-  - id: Dialogue_Cold
-    useCustomTextColor: 1
-    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
-    lines:
-    - text: Friooo friooo jijiiji...
-      delayBefore: 0
-      duration: 3
-      audioClip: {fileID: 0}
-  - id: Dialogue_Warm
-    useCustomTextColor: 1
-    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
-    lines:
-    - text: Tibio tibio,  cerca pero no tanto...
-      delayBefore: 0
-      duration: 3
-      audioClip: {fileID: 0}
-  - id: Dialogue_Hot
-    useCustomTextColor: 1
-    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
-    lines:
-    - text: Calienteeeee...
       delayBefore: 0
       duration: 3
       audioClip: {fileID: 0}
@@ -11606,7 +11582,7 @@ MonoBehaviour:
       delayBefore: 16
       duration: 3
       audioClip: {fileID: 0}
-    - text: "!Mi BOCA\xA1 AAAAH mmmm... mmm... "
+    - text: "!Mi DIENTES\xA1 AAAAH mmmm... mmm... "
       delayBefore: 3
       duration: 3
       audioClip: {fileID: 0}
@@ -11617,20 +11593,6 @@ MonoBehaviour:
     - text: AAAAAAAH MI PIERNAAAAAAAAAAAAA
       delayBefore: 5
       duration: 5
-      audioClip: {fileID: 0}
-  - id: quest_2_failed_dialogue
-    useCustomTextColor: 0
-    subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
-    lines:
-    - text: "\xA1\xA1\xA1\xA1\xA1MI CUERPO NO ANDA COMO QUIERO!!!!!..."
-      delayBefore: 5
-      duration: 3
-      audioClip: {fileID: 0}
-    - text: 'MIS MOVIMIENTOS SON INVERSOS?!!
-
-'
-      delayBefore: 1
-      duration: 3
       audioClip: {fileID: 0}
   - id: quest_2_failed_dialogue
     useCustomTextColor: 0
@@ -43712,6 +43674,27 @@ MonoBehaviour:
     clips:
     - {fileID: 8300000, guid: 21a8f317bb75af74f88d7633ea459e19, type: 3}
     volume: 1
+  - id: Dialogue_Cold
+    clips:
+    - {fileID: 8300000, guid: f04472ab133e23f40bef6ccf4d1cc76e, type: 3}
+    - {fileID: 8300000, guid: f9316ac3d4ffe7d459dbd2c737d37dc4, type: 3}
+    - {fileID: 8300000, guid: 53f77f48b59a1fd4abc07c3df083210f, type: 3}
+    - {fileID: 8300000, guid: 185211e29b3f14f41bfcf0c7f34dec10, type: 3}
+    volume: 1
+  - id: Dialogue_Hot
+    clips:
+    - {fileID: 8300000, guid: 68eb8432a6b6a774aacd8c768424b3b9, type: 3}
+    - {fileID: 8300000, guid: 3f09ba1384355614aa68ff8fdd04e900, type: 3}
+    - {fileID: 8300000, guid: 9cd241f271b945c47b19de882d6cf66f, type: 3}
+    - {fileID: 8300000, guid: c5fc3ccab8c3bf54684a41d2b8d1cd40, type: 3}
+    volume: 1
+  - id: Dialogue_Warm
+    clips:
+    - {fileID: 8300000, guid: fb60661e5fb13c54ab50ec7cf4606c0a, type: 3}
+    - {fileID: 8300000, guid: c9e32c7902630bf469c0f53d9c36bd01, type: 3}
+    - {fileID: 8300000, guid: 78712156775cb4249a37b620e58fab52, type: 3}
+    - {fileID: 8300000, guid: 7357f2f86477f244da28fc3fa4752c37, type: 3}
+    volume: 1
   default3DVolume: 1
   min3DDistance: 3
   max3DDistance: 25
@@ -49383,7 +49366,7 @@ MonoBehaviour:
   triggerOnce: 1
   debugLog: 0
   actions:
-  - type: 4
+  - type: 3
     delay: 0
     target: {fileID: 0}
     setActiveValue: 0
@@ -49393,7 +49376,7 @@ MonoBehaviour:
     rotateTarget: {x: 0, y: 0, z: 0}
     moveDuration: 0
     physicsImpulse: {x: 0, y: 0, z: 0}
-    sfxId: 
+    sfxId: Dialogue_Warm
     sfx3D: 0
     dialogueId: Dialogue_Warm
     shakeEffectId: 
@@ -49435,7 +49418,7 @@ MonoBehaviour:
   triggerOnce: 1
   debugLog: 0
   actions:
-  - type: 4
+  - type: 3
     delay: 0
     target: {fileID: 0}
     setActiveValue: 0
@@ -49445,7 +49428,7 @@ MonoBehaviour:
     rotateTarget: {x: 0, y: 0, z: 0}
     moveDuration: 0
     physicsImpulse: {x: 0, y: 0, z: 0}
-    sfxId: 
+    sfxId: Dialogue_Hot
     sfx3D: 0
     dialogueId: Dialogue_Hot
     shakeEffectId: 
@@ -49487,7 +49470,7 @@ MonoBehaviour:
   triggerOnce: 1
   debugLog: 0
   actions:
-  - type: 4
+  - type: 3
     delay: 0
     target: {fileID: 0}
     setActiveValue: 0
@@ -49497,7 +49480,7 @@ MonoBehaviour:
     rotateTarget: {x: 0, y: 0, z: 0}
     moveDuration: 0
     physicsImpulse: {x: 0, y: 0, z: 0}
-    sfxId: 
+    sfxId: Dialogue_Cold
     sfx3D: 0
     dialogueId: Dialogue_Cold
     shakeEffectId: 
@@ -49578,7 +49561,7 @@ MonoBehaviour:
     shakeEffectId: 
     screenEffectId: ScaryMaze_0
     stopScreenEffect: 0
-    screenEffectAutoStop: 0
+    screenEffectAutoStop: 0.3
     prefab: {fileID: 0}
     spawnPoint: {fileID: 0}
     flagName: 
@@ -50095,7 +50078,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.size
-      value: 21
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[15].id
@@ -50120,6 +50103,18 @@ PrefabInstance:
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[20].id
       value: laughter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[21].id
+      value: Dialogue_Cold
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[22].id
+      value: Dialogue_Hot
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[23].id
+      value: Dialogue_Warm
       objectReference: {fileID: 0}
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[18].volume
@@ -50156,6 +50151,10 @@ PrefabInstance:
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[19].clips.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[21].clips.Array.size
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: 'pools.Array.data[15].clips.Array.data[0]'
@@ -50287,7 +50286,7 @@ PrefabInstance:
       objectReference: {fileID: 2024097066}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.size
-      value: 30
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[1].id
@@ -50379,23 +50378,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[23].id
-      value: Dialogue_Cold
-      objectReference: {fileID: 0}
-    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
-      propertyPath: pools.Array.data[24].id
-      value: Dialogue_Warm
-      objectReference: {fileID: 0}
-    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
-      propertyPath: pools.Array.data[25].id
-      value: Dialogue_Hot
-      objectReference: {fileID: 0}
-    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
-      propertyPath: pools.Array.data[26].id
       value: quest_3_failed_dialogue
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
-      propertyPath: pools.Array.data[27].id
+      propertyPath: pools.Array.data[24].id
       value: quest_5_failed_dialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[25].id
+      value: quest_2_failed_dialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[26].id
+      value: quest_2_failed_dialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[27].id
+      value: quest_2_failed_dialogue
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[28].id
@@ -50486,12 +50485,24 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[23].lines.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[24].lines.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[25].lines.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[26].lines.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[27].lines.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[28].lines.Array.size
@@ -50551,7 +50562,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[23].useCustomTextColor
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[24].useCustomTextColor
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[25].useCustomTextColor
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[26].useCustomTextColor
@@ -50812,27 +50831,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[23].lines.Array.data[0].text
-      value: Friooo friooo jijiiji...
-      objectReference: {fileID: 0}
-    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
-      propertyPath: pools.Array.data[24].lines.Array.data[0].text
-      value: Tibio tibio,  cerca pero no tanto...
-      objectReference: {fileID: 0}
-    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
-      propertyPath: pools.Array.data[25].lines.Array.data[0].text
-      value: Calienteeeee...
-      objectReference: {fileID: 0}
-    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
-      propertyPath: pools.Array.data[26].lines.Array.data[0].text
       value: "!!!\xBFQUE?\xA1\xA1\xA1 "
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[24].lines.Array.data[0].text
+      value: AAAAAAAH MI PIERNAAAAAAAAAAAAA
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[25].lines.Array.data[0].text
+      value: "\xA1\xA1\xA1\xA1\xA1MI CUERPO NO ANDA COMO QUIERO!!!!!..."
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[26].lines.Array.data[0].text
+      value: "\xA1\xA1\xA1\xA1\xA1MI CUERPO NO ANDA COMO QUIERO!!!!!..."
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[26].lines.Array.data[1].text
-      value: "!Mi BOCA\xA1 AAAAH mmmm... mmm... "
+      value: "!Mi DIENTES\xA1 AAAAH mmmm... mmm... "
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[27].lines.Array.data[0].text
-      value: AAAAAAAH MI PIERNAAAAAAAAAAAAA
+      value: "\xA1\xA1\xA1\xA1\xA1MI CUERPO NO ANDA COMO QUIERO!!!!!..."
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[28].lines.Array.data[0].text
@@ -50885,8 +50904,12 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[7].lines.Array.data[0].duration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[8].lines.Array.data[0].duration
-      value: 8
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[8].lines.Array.data[1].duration
@@ -50894,11 +50917,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[9].lines.Array.data[0].duration
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[10].lines.Array.data[0].duration
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[10].lines.Array.data[1].duration
@@ -50906,27 +50929,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[10].lines.Array.data[2].duration
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[11].lines.Array.data[0].duration
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[12].lines.Array.data[0].duration
-      value: 8
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[13].lines.Array.data[0].duration
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[13].lines.Array.data[1].duration
-      value: 5
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[13].lines.Array.data[2].duration
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[13].lines.Array.data[3].duration
@@ -50942,23 +50965,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[16].lines.Array.data[0].duration
-      value: 8
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[17].lines.Array.data[0].duration
-      value: 6
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[18].lines.Array.data[0].duration
-      value: 5
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[19].lines.Array.data[0].duration
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[20].lines.Array.data[0].duration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[21].lines.Array.data[0].duration
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[21].lines.Array.data[1].duration
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[24].lines.Array.data[0].duration
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[25].lines.Array.data[0].duration
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[26].lines.Array.data[0].duration
@@ -50966,7 +51005,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[27].lines.Array.data[0].duration
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[28].lines.Array.data[0].duration
@@ -50993,6 +51032,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[7].lines.Array.data[1].delayBefore
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[8].lines.Array.data[1].delayBefore
       value: 10
       objectReference: {fileID: 0}
@@ -51006,7 +51049,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[13].lines.Array.data[2].delayBefore
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[13].lines.Array.data[3].delayBefore
@@ -51017,8 +51060,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
-      propertyPath: pools.Array.data[26].lines.Array.data[0].delayBefore
+      propertyPath: pools.Array.data[23].lines.Array.data[0].delayBefore
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[24].lines.Array.data[0].delayBefore
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[25].lines.Array.data[0].delayBefore
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[26].lines.Array.data[0].delayBefore
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7238709344002500240, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[26].lines.Array.data[1].delayBefore

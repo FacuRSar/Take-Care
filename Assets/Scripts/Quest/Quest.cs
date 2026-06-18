@@ -386,8 +386,11 @@ public class Quest : MonoBehaviour
 
         if (flow != null) flow.OnMissionFailed();
 
-
-        if (Quest_2)
+        if (Quest_0)
+        {
+            SFXManager.Instance.StopLoop("kettle");
+        }
+        else if (Quest_2)
         {
             playerMovement.InvertedControls = true;
         }
@@ -575,7 +578,11 @@ public class Quest : MonoBehaviour
 
         if (flow != null) flow.OnMissionCompleted(activeQuest.CompletePoints);
 
-        if (Quest_2)
+        if (Quest_0)
+        {
+            SFXManager.Instance.StopLoop("kettle");
+        }
+        else if (Quest_2)
         {
             playerMovement.InvertedControls = false;
         }
