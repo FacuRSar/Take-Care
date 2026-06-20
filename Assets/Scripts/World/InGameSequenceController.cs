@@ -62,11 +62,18 @@ public class InGameSequenceController : MonoBehaviour
     // Escena que se carga cuando el jugador cruza la puerta ya abierta (victoria).
     [SerializeField] private string winSceneName = "Win";
 
-    [Header("Derrota (timer)")]
-    // 10 minutos por defecto.
-    [SerializeField] private float questPhaseDuration = 600f;
-    // Opcional: texto para mostrar el tiempo restante. Si queda vacio no se usa.
+    [Header("Timer global")]
+    [Tooltip("Duracion total del timer en segundos. 600 = 10 minutos.")]
+    [SerializeField, Min(1f)] private float questPhaseDuration = 600f;
+    [SerializeField] private ClockRadialUI clockUI;
+    // Opcional: texto MM:SS. Si queda vacio no se usa (podes usar solo el reloj).
     [SerializeField] private TMP_Text timerLabel;
+
+    [Header("Flags del timer (25% / 50% / 75% / fin)")]
+    [SerializeField] private string timer25Flag = "game_timer_25";
+    [SerializeField] private string timer50Flag = "game_timer_50";
+    [SerializeField] private string timer75Flag = "game_timer_75";
+    [SerializeField] private string timerCompleteFlag = "game_timer_complete";
 
     [Header("Debug (solo para testear, apagar en la entrega)")]
     [SerializeField] private bool debugKeys = false;
@@ -82,6 +89,10 @@ public class InGameSequenceController : MonoBehaviour
     private bool pursuerSpawned;
     private bool winLoading;
     private float timeLeft;
+    private bool milestone25Fired;
+    private bool milestone50Fired;
+    private bool milestone75Fired;
+    private bool milestone100Fired;
 
     // true cuando el jugador ya llego a la felicidad de victoria y la puerta se abrio.
     public bool HasEscaped => hasEscaped;
@@ -96,6 +107,11 @@ public class InGameSequenceController : MonoBehaviour
         if (dollEmotionSystem != null)
         {
             dollEmotionSystem.enabled = false;
+        }
+
+        if (clockUI != null)
+        {
+            clockUI.SetFull();
         }
     }
 
@@ -169,12 +185,15 @@ public class InGameSequenceController : MonoBehaviour
         }
 
         timeLeft -= Time.deltaTime;
-        UpdateTimerLabel();
+        UpdateTimerDisplay();
+        CheckTimerMilestones();
 
         if (timeLeft <= 0f)
         {
             timeLeft = 0f;
             timerRunning = false;
+            UpdateTimerDisplay();
+            FireTimerCompleteFlag();
             SpawnPursuer();
         }
     }
@@ -208,7 +227,8 @@ public class InGameSequenceController : MonoBehaviour
 
         timeLeft = questPhaseDuration;
         timerRunning = true;
-        UpdateTimerLabel();
+        ResetTimerMilestones();
+        UpdateTimerDisplay();
     }
 
     private IEnumerator FadeIn()
@@ -378,8 +398,15 @@ public class InGameSequenceController : MonoBehaviour
         }
     }
 
-    private void UpdateTimerLabel()
+    private void UpdateTimerDisplay()
     {
+        float elapsed = questPhaseDuration - timeLeft;
+
+        if (clockUI != null)
+        {
+            clockUI.UpdateClock(elapsed, questPhaseDuration);
+        }
+
         if (timerLabel == null)
         {
             return;
@@ -387,6 +414,54 @@ public class InGameSequenceController : MonoBehaviour
 
         int total = Mathf.CeilToInt(Mathf.Max(0f, timeLeft));
         timerLabel.text = (total / 60).ToString("00") + ":" + (total % 60).ToString("00");
+    }
+
+    private void ResetTimerMilestones()
+    {
+        milestone25Fired = false;
+        milestone50Fired = false;
+        milestone75Fired = false;
+        milestone100Fired = false;
+    }
+
+    private void CheckTimerMilestones()
+    {
+        if (questPhaseDuration <= 0f)
+        {
+            return;
+        }
+
+        float elapsed = questPhaseDuration - timeLeft;
+        float percent = elapsed / questPhaseDuration;
+
+        if (!milestone25Fired && percent >= 0.25f)
+        {
+            milestone25Fired = true;
+            SetFlag(timer25Flag, true);
+        }
+
+        if (!milestone50Fired && percent >= 0.50f)
+        {
+            milestone50Fired = true;
+            SetFlag(timer50Flag, true);
+        }
+
+        if (!milestone75Fired && percent >= 0.75f)
+        {
+            milestone75Fired = true;
+            SetFlag(timer75Flag, true);
+        }
+    }
+
+    private void FireTimerCompleteFlag()
+    {
+        if (milestone100Fired)
+        {
+            return;
+        }
+
+        milestone100Fired = true;
+        SetFlag(timerCompleteFlag, true);
     }
 
     private void PrepareFadeImage()
@@ -446,6 +521,8 @@ public class InGameSequenceController : MonoBehaviour
             Debug.Log("[DEBUG] Forzando timer en 0 y spawn de la Pursuer.");
             timeLeft = 0f;
             timerRunning = false;
+            UpdateTimerDisplay();
+            FireTimerCompleteFlag();
             SpawnPursuer();
         }
     }

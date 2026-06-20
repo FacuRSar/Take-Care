@@ -5321,6 +5321,158 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3771045492383984751, guid: 2815d54546e5ca84fb76ce7ad6f5f883, type: 3}
   m_PrefabInstance: {fileID: 705036597}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &198728905
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 198728908}
+  - component: {fileID: 198728907}
+  - component: {fileID: 198728906}
+  m_Layer: 0
+  m_Name: even
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &198728906
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198728905}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &198728907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198728905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f225a42ee9418c4f8fb181b922e9763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AmbientEvent
+  eventId: 
+  triggerMode: 2
+  requiredFlag: 
+  startDelay: 10
+  onlyPlayer: 1
+  lookTarget: {fileID: 0}
+  lookDistance: 3
+  lookAngle: 15
+  lookHoldTime: 0.3
+  requireLineOfSight: 1
+  lookMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  interactPrompt: E - Interactuar
+  triggerOnce: 1
+  debugLog: 0
+  actions:
+  - type: 7
+    delay: 0
+    target: {fileID: 0}
+    setActiveValue: 0
+    moveTarget: {x: 0, y: 0, z: 0}
+    moveLocal: 0
+    alsoRotate: 0
+    rotateTarget: {x: 0, y: 0, z: 0}
+    moveDuration: 0
+    physicsImpulse: {x: 0, y: 0, z: 0}
+    sfxId: 
+    sfx3D: 0
+    dialogueId: 
+    shakeEffectId: 
+    screenEffectId: 
+    stopScreenEffect: 0
+    screenEffectAutoStop: 0
+    prefab: {fileID: 0}
+    spawnPoint: {fileID: 0}
+    flagName: doll_quests_start
+    flagValue: 1
+    textTarget: {fileID: 0}
+    textValue: 
+  - type: 7
+    delay: 0
+    target: {fileID: 0}
+    setActiveValue: 0
+    moveTarget: {x: 0, y: 0, z: 0}
+    moveLocal: 0
+    alsoRotate: 0
+    rotateTarget: {x: 0, y: 0, z: 0}
+    moveDuration: 0
+    physicsImpulse: {x: 0, y: 0, z: 0}
+    sfxId: 
+    sfx3D: 0
+    dialogueId: 
+    shakeEffectId: 
+    screenEffectId: 
+    stopScreenEffect: 0
+    screenEffectAutoStop: 0
+    prefab: {fileID: 0}
+    spawnPoint: {fileID: 0}
+    flagName: game_timer_start
+    flagValue: 1
+    textTarget: {fileID: 0}
+    textValue: 
+  - type: 7
+    delay: 2
+    target: {fileID: 0}
+    setActiveValue: 0
+    moveTarget: {x: 0, y: 0, z: 0}
+    moveLocal: 0
+    alsoRotate: 0
+    rotateTarget: {x: 0, y: 0, z: 0}
+    moveDuration: 0
+    physicsImpulse: {x: 0, y: 0, z: 0}
+    sfxId: 
+    sfx3D: 0
+    dialogueId: 
+    shakeEffectId: 
+    screenEffectId: 
+    stopScreenEffect: 0
+    screenEffectAutoStop: 0
+    prefab: {fileID: 0}
+    spawnPoint: {fileID: 0}
+    flagName: quests_started
+    flagValue: 1
+    textTarget: {fileID: 0}
+    textValue: 
+--- !u!4 &198728908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198728905}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15.04444, y: 1.22785, z: 33.33}
+  m_LocalScale: {x: 6, y: 6, z: 6}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &220756824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6095,6 +6247,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0da9f0998130860459883b3e660e311f, type: 3}
   thunderDelayRange: {x: 2, y: 15}
   thunderChance: 0.5
+  randomAmbientSfxIds: []
+  randomAmbientDelayRange: {x: 20, y: 45}
+  randomAmbientChance: 0.7
+  randomAmbientAs3D: 0
+  randomAmbientPoints: []
+  playRandomAmbientOnStart: 0
   lightningLights:
   - {fileID: 319300006}
   - {fileID: 1755562775}
@@ -6274,32 +6432,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2815d54546e5ca84fb76ce7ad6f5f883, type: 3}
---- !u!1 &372369865 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 685313172168078315, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-  m_PrefabInstance: {fileID: 7670006764278436313}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &372369869
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 372369865}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.020000553, y: 0.021307023, z: 0.02021321}
-  m_Center: {x: -0.0000000037252903, y: 0.00059145724, z: 0.00009895116}
 --- !u!1 &375775384 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5069415332984948963, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
@@ -6646,6 +6778,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!224 &456033540 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+  m_PrefabInstance: {fileID: 4221047434624874079}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &456033541 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8744510779241232847, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+  m_PrefabInstance: {fileID: 4221047434624874079}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecabc71dcf9d024478f1a8903b4f6b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClockRadialUI
 --- !u!4 &482398258 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3771045492383984751, guid: 2815d54546e5ca84fb76ce7ad6f5f883, type: 3}
@@ -6761,6 +6909,7 @@ MonoBehaviour:
   Doll: {fileID: 2081839076}
   Doll_: {fileID: 2081839075}
   isActive: 0
+  Humo: {fileID: 0}
 --- !u!114 &521035014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7435,6 +7584,8 @@ MonoBehaviour:
     - {fileID: 8300000, guid: fe9518d31b84f7b41a076163373fbfe2, type: 3}
     volume: 1
   default3DVolume: 1
+  min3DDistance: 3
+  max3DDistance: 25
 --- !u!114 &757323618 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8100863100070870216, guid: af103be088adec84a9a5aea2e36663d4, type: 3}
@@ -7724,6 +7875,10 @@ MonoBehaviour:
     playTrigger: 
     stopTrigger: 
     animatorRoot: {fileID: 0}
+    shakeTarget: {fileID: 0}
+    shakeDuration: 0.4
+    shakePositionMagnitude: 0.08
+    shakeRotationMagnitude: 1.5
   - id: hands
     type: 0
     startHidden: 1
@@ -7739,6 +7894,10 @@ MonoBehaviour:
     playTrigger: 
     stopTrigger: 
     animatorRoot: {fileID: 0}
+    shakeTarget: {fileID: 0}
+    shakeDuration: 0.4
+    shakePositionMagnitude: 0.08
+    shakeRotationMagnitude: 1.5
 --- !u!65 &838022143
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13318,31 +13477,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6764992203020696132, guid: e46db517bc6843e4391ca03926bd9559, type: 3}
   m_PrefabInstance: {fileID: 2065075109}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1176589362 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4758492813308174572, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-  m_PrefabInstance: {fileID: 7670006764278436313}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1176589365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1176589362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
-  m_SerializedVersion: 0
-  m_OverrideArea: 1
-  m_Area: 1
-  m_OverrideGenerateLinks: 0
-  m_GenerateLinks: 0
-  m_IgnoreFromBuild: 0
-  m_ApplyToChildren: 1
-  m_AffectedAgents: ffffffff
 --- !u!1 &1178411492
 GameObject:
   m_ObjectHideFlags: 0
@@ -13640,7 +13774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 866ef6e858ce5b147b710023a5eff893, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InGameSequenceController
-  playerMovement: {fileID: 0}
+  playerMovement: {fileID: 2016877959}
   dollEmotionSystem: {fileID: 4178600622079990443}
   pursuerSpawn: {fileID: 1292634255}
   escapeDoor: {fileID: 1423082388}
@@ -13652,16 +13786,23 @@ MonoBehaviour:
   lockPlayerDuringIntro: 0
   delayBeforeQuests: 0
   introFinishedFlag: intro_finished
-  dollApproachDistance: 3
+  startQuestsFlag: doll_quests_start
+  startTimerFlag: game_timer_start
   questsStartedFlag: quests_started
-  happinessPerMission: 30
-  happinessLostOnFail: 30
-  happinessToWin: 100
+  completeToWin: 100
   escapeMessage: "La mu\xF1eca esta feliz y te abrio la puerta. RAPIDO! ESCAPA!"
   escapeMessageDuration: 6
   winSceneName: Win
-  questPhaseDuration: 600
-  timerLabel: {fileID: 1814187738}
+  questPhaseDuration: 100
+  clockUI: {fileID: 456033541}
+  timerLabel: {fileID: 0}
+  timer25Flag: game_timer_25
+  timer50Flag: game_timer_50
+  timer75Flag: game_timer_75
+  timerCompleteFlag: game_timer_complete
+  debugKeys: 0
+  debugWinKey: 94
+  debugPursuerKey: 95
 --- !u!1 &1292634253
 GameObject:
   m_ObjectHideFlags: 0
@@ -13708,10 +13849,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PursuerSpawnController
   pursuerObject: {fileID: 1409919660}
   spawnPoint: {fileID: 1102391946}
+  chaseController: {fileID: 0}
+  patrolController: {fileID: 0}
+  player: {fileID: 0}
+  playerTag: Player
+  hallwaySpawnPoints: []
+  minDistanceToPlayer: 12
   spawnDelay: 1
   spawnOnlyOnce: 1
   spawnSfxId: StalkerSpawn
   playSpawnSoundAs3D: 0
+  spawnMusicId: 
+  musicFadeIn: 1.5
+  musicFadeOut: 1.5
   showDebugLogs: 0
 --- !u!1 &1318149810
 GameObject:
@@ -19120,6 +19270,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueController
   subtitleUI: {fileID: 2024097066}
+  voiceSource: {fileID: 0}
+  minVoicePitch: 0.5
+  maxVoicePitch: 2.5
   pools:
   - id: "T\xE9_In"
     useCustomTextColor: 1
@@ -19130,22 +19283,27 @@ MonoBehaviour:
         No dejes que se enfr\xEDe el t\xE9"
       delayBefore: 0
       duration: 7.5
+      audioClip: {fileID: 0}
     - text: "\xA1Eso es! Uno por ac\xE1... Ten\xE9 cuidado, la porcelana muerde si
         la apret\xE1s mucho, jeje"
       delayBefore: 45
       duration: 4.5
+      audioClip: {fileID: 0}
     - text: "Faltan pocos. Mis amigas ya se est\xE1n sentando a la mesa. No las hagas
         esperar, no les gusta la mala educaci\xF3n"
       delayBefore: 90
       duration: 5.5
+      audioClip: {fileID: 0}
     - text: "\xA1Ya casi! Casi puedo oler el t\xE9... aunque hoy tiene un olor un
         poco met\xE1lico, \xBFverdad?"
       delayBefore: 135
       duration: 5
+      audioClip: {fileID: 0}
     - text: "\xA1El \xFAltimo fragmento! Ponelo en la mesa r\xE1pido, \xA1r\xE1pido!,
         \xA1que ya van a tomar el primer sorbo!"
       delayBefore: 162
       duration: 4.5
+      audioClip: {fileID: 0}
   - id: "T\xE9_Complete"
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19154,6 +19312,7 @@ MonoBehaviour:
         con nosotras... prometemos no morder"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: "T\xE9_Fail"
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19162,6 +19321,7 @@ MonoBehaviour:
         Ahora mis amigas se van a tener que divertir... con vos"
       delayBefore: 0
       duration: 6.5
+      audioClip: {fileID: 0}
   - id: "\xBF?_In"
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19169,21 +19329,26 @@ MonoBehaviour:
     - text: "\xA1Me aburro! Vamos a jugar a las escondidas. Conta hasta tres"
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "ya me escond\xED... Si no me encontr\xE1s r\xE1pido, me voy a enojar.
         \xA1A buscarme!"
       delayBefore: 4
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Fr\xEDo, fr\xEDo... Est\xE1s lej\xEDsimos. Mir\xE1s en los lugares equivocados.
         \xBFAcaso no quer\xE9s jugar conmigo?"
       delayBefore: 30
       duration: 5
+      audioClip: {fileID: 0}
     - text: "Te est\xE1s templando... puedo escuchar tus pasos torpes por la madera.
         Apurate que me da calor ac\xE1 adentro"
       delayBefore: 60
       duration: 5
+      audioClip: {fileID: 0}
     - text: "\xA1Te quem\xE1s! \xA1Estoy ac\xE1! Estir\xE1 la mano... \xA1recogeme!"
       delayBefore: 60
       duration: 4
+      audioClip: {fileID: 0}
   - id: "\xBF?_Complete"
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19192,6 +19357,7 @@ MonoBehaviour:
         sueltes m\xE1s, \xBFdale?"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: "\xBF?_Fail"
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19199,6 +19365,7 @@ MonoBehaviour:
     - text: "Se termin\xF3 el tiempo... Perdiste. Qu\xE9 tramposo, no buscaste bien.\n"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: Mentiroso_In
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19207,14 +19374,17 @@ MonoBehaviour:
         y llevalo a la chimenea ya mismo!"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
     - text: "\xA1No lo mires! \xA1Te va a mentir a vos tambi\xE9n! \xA1Camin\xE1
         m\xE1s r\xE1pido, carajo!"
       delayBefore: 30
       duration: 4
+      audioClip: {fileID: 0}
     - text: "\xA1No lo mires! \xA1Te va a mentir a vos tambi\xE9n! \xA1Camin\xE1
         m\xE1s r\xE1pido, carajo! \xA1Apurate antes de que le rompa la cara yo misma!"
       delayBefore: 60
       duration: 4
+      audioClip: {fileID: 0}
   - id: Mentiroso_Fail
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19223,6 +19393,7 @@ MonoBehaviour:
         por dentro... \xA1Es toda tu culpa!"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: Mentiroso_Complete
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19231,6 +19402,7 @@ MonoBehaviour:
         eh? Nadie se burla de m\xED en mi casa\n"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: Sonriente_In
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19240,14 +19412,17 @@ MonoBehaviour:
         \xA1dale!"
       delayBefore: 0
       duration: 7
+      audioClip: {fileID: 0}
     - text: "\xA1Ya casi los tenemos a todos juntos otra vez! Me pregunto si se van
         a alegrar de verte..."
       delayBefore: 30
       duration: 7
+      audioClip: {fileID: 0}
     - text: "\xA1La \xFAltima! Agarrala r\xE1pido antes de que se borren sus sonrisas...
         \xA1R\xE1pido!"
       delayBefore: 50
       duration: 7
+      audioClip: {fileID: 0}
   - id: Sonriente_Complete
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19256,6 +19431,7 @@ MonoBehaviour:
         familia. Nos vamos a quedar ac\xE1 adentro para siempre!"
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: Sonriente_Fail
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19266,6 +19442,7 @@ MonoBehaviour:
 '
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: ingame_intro
     useCustomTextColor: 0
     subtitleTextColor: {r: 0, g: 0, b: 0, a: 1}
@@ -19275,12 +19452,15 @@ MonoBehaviour:
 '
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
     - text: Un segundo! Ese fantasma me...
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
     - text: Oh no, tengo que salir de aca!
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: captureMessege
     useCustomTextColor: 1
     subtitleTextColor: {r: 1, g: 0, b: 0, a: 1}
@@ -19290,6 +19470,7 @@ MonoBehaviour:
 '
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: Palta_In
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19298,49 +19479,63 @@ MonoBehaviour:
         en lo oscuro."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Su piel se siente como carne vieja y me est\xE1 mirando... Su carozo
         es un ojo ciego que no para de llorar aceite..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: Buscala y llevala a la cuna para taparla... por favor...
       delayBefore: 20
       duration: 3
+      audioClip: {fileID: 0}
     - text: Las cosas que se pudren cambian de color...
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "primero verdes, despu\xE9s negras, como los moretones en los brazos."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "A m\xED tambi\xE9n se me est\xE1 poniendo la piel negra de tanto llorar
         en este pasillo..."
       delayBefore: 20
       duration: 3
+      audioClip: {fileID: 0}
     - text: 'Me acuerdo cuando la cortaron con el cuchillo de la cocina... '
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "un tajo largo, de punta a punta, para arrancarle el coraz\xF3n."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "El carozo estaba tan pegado a la pulpa... igual que mis recuerdos a
         esta caba\xF1a... hip... doli\xF3 tanto..."
       delayBefore: 20
       duration: 3
+      audioClip: {fileID: 0}
     - text: El aceite que suelta es tan resbaladizo... me llena las manos, me llena
         la cara.
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Todo se vuelve h\xFAmedo y rancio ac\xE1 adentro. No dejes que me toque..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "no dejes que me ensucie m\xE1s..."
       delayBefore: 20
       duration: 3
+      audioClip: {fileID: 0}
     - text: ya me vio... ya sabe que estoy llorando...
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "no dejes que me ensucie m\xE1s..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
   - id: Palta_Complete
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19348,10 +19543,12 @@ MonoBehaviour:
     - text: "Ah... suspiro... ya est\xE1 en la cuna, abajo de las mantas viejas."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Ah\xED est\xE1 oscuro y el ojo ya no puede parpadear. Quedate ac\xE1
         conmigo, tapame a m\xED tambi\xE9n... hace fr\xEDo"
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
   - id: Palta_Fail
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19360,6 +19557,7 @@ MonoBehaviour:
         en los ojos. Ahora ya no puedo ver nada... solo puedo llorar..."
       delayBefore: 0
       duration: 5
+      audioClip: {fileID: 0}
   - id: Acorde_In
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19368,52 +19566,66 @@ MonoBehaviour:
         por el desuso."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Buscala en alg\xFAn rinc\xF3n de la caba\xF1a y llevala a la vieja mecedora
         del sal\xF3n..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: por favor, hacelo antes de que su madera se termine de partir de la tristeza...
       delayBefore: 20
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Pap\xE1 sol\xEDa tocar una canci\xF3n muy triste cuando la tormenta
         golpeaba las ventanas del techo."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Una melod\xEDa sin letra, pesada como el plomo."
       delayBefore: 0
       duration: 2
+      audioClip: {fileID: 0}
     - text: "Ahora la guitarra est\xE1 sola en la oscuridad, intentando imitar mis
         sollozos... snif..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Me acuerdo perfectamente del d\xEDa en que se cort\xF3 la primera cuerda..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "son\xF3 como un latigazo seco en el pasillo. Nadie volvi\xF3 a tocarla
         desde esa noche."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Se qued\xF3 ah\xED tirada, llen\xE1ndose de moho, de polvo... y de recuerdos
         rotos... hip..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "El sonido del viento pasando a trav\xE9s de su caja de resonancia vac\xEDa
         es horrible..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: 'se siente como si me estuvieran apretando el cuello con manos heladas. '
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "\xBFPor qu\xE9 tard\xE1s tanto? No dejes que se caiga al suelo..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Ya casi no queda tiempo para la \xFAltima nota... se est\xE1 apagando
         el eco adentro de las maderas de la casa..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: ya no escucho nada...
       delayBefore: 0
       duration: 2
+      audioClip: {fileID: 0}
   - id: Acorde_Complete
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19422,10 +19634,12 @@ MonoBehaviour:
         el aire fr\xEDo mueva las cuerdas flojas."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Sentate en el piso ac\xE1 al lado m\xEDo... vamos a quedarnos quietos
         escuchando el silencio"
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
   - id: Acorde_Fail
     useCustomTextColor: 1
     subtitleTextColor: {r: 0.6784314, g: 0.5411765, b: 0.6627451, a: 1}
@@ -19434,9 +19648,11 @@ MonoBehaviour:
         nunca m\xE1s vamos a tener m\xFAsica en esta caba\xF1a."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
     - text: "Ahora solo nos queda el ruido de las sombras devor\xE1ndonos..."
       delayBefore: 0
       duration: 3
+      audioClip: {fileID: 0}
 --- !u!4 &1497450607
 Transform:
   m_ObjectHideFlags: 0
@@ -19466,6 +19682,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HintDialogueController
   subtitleUI: {fileID: 2024097066}
   gameStateController: {fileID: 1490577939}
+  voiceSource: {fileID: 0}
+  minVoicePitch: 0.5
+  maxVoicePitch: 2.5
   firstHintDelay: 15
   repeatInterval: 18
   hintPool:
@@ -19474,12 +19693,14 @@ MonoBehaviour:
     requiredFlags: []
     blockedFlags:
     - power_on
+    audioClip: {fileID: 0}
   - text: "Todo empezo con esa mu\xF1eca! Quizas..."
     duration: 0
     requiredFlags:
     - intro_finished
     blockedFlags:
     - DollIdle
+    audioClip: {fileID: 0}
   activeOnStart: 0
 --- !u!114 &1500531872 stripped
 MonoBehaviour:
@@ -19492,32 +19713,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
---- !u!1 &1530408301 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7036794439862737216, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-  m_PrefabInstance: {fileID: 7670006764278436313}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1530408305
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1530408301}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.4128861, y: 0.35026723, z: 1.1255351}
-  m_Center: {x: 0.00038206574, y: 0.6749343, z: 0.0012697281}
 --- !u!1001 &1543712287
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19893,24 +20088,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!1 &1569702524 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3224941106996528260, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-  m_PrefabInstance: {fileID: 7670006764278436313}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1569702526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1569702524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f70f5ad0aa09b04e9f794dcc203f303, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Piece
-  id: Chimenea
 --- !u!114 &1573798238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20225,32 +20402,6 @@ MonoBehaviour:
   m_IgnoreFromBuild: 0
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
---- !u!1 &1688456175 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7601913007972840946, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-  m_PrefabInstance: {fileID: 7670006764278436313}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1688456177
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1688456175}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1755562772
 GameObject:
   m_ObjectHideFlags: 0
@@ -20610,143 +20761,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1779413596}
   m_Mesh: {fileID: -5184093807663944, guid: 179c0443189827747ac399fbaef11867, type: 3}
---- !u!1 &1814187737
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1814187740}
-  - component: {fileID: 1814187739}
-  - component: {fileID: 1814187738}
-  m_Layer: 5
-  m_Name: Timer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1814187738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1814187737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: 
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_characterHorizontalScale: 1
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &1814187739
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1814187737}
-  m_CullTransparentMesh: 1
---- !u!224 &1814187740
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1814187737}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 776989883}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 291, y: 138}
-  m_SizeDelta: {x: 200, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1818334878
 GameObject:
   m_ObjectHideFlags: 0
@@ -20872,32 +20886,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6764992203020696132, guid: e46db517bc6843e4391ca03926bd9559, type: 3}
   m_PrefabInstance: {fileID: 287621265}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1925791795 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 657409086196749406, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-  m_PrefabInstance: {fileID: 7670006764278436313}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1925791799
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1925791795}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.0279033, y: 0.07884998, z: 0.020116555}
-  m_Center: {x: -0.005956914, y: -0.018548382, z: -0.0114284055}
 --- !u!1 &1927154533
 GameObject:
   m_ObjectHideFlags: 0
@@ -26379,6 +26367,17 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &2016877959 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
+  m_PrefabInstance: {fileID: 2016877956}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375775384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646675e99462c324cb2dd12ac6e49e19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
 --- !u!1 &2017093736 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4546828001190790716, guid: 6c2b8a02bd9bc7440bb5bba52ee98e6e, type: 3}
@@ -26560,7 +26559,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5868516122576071634, guid: af103be088adec84a9a5aea2e36663d4, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6083806307513661965, guid: af103be088adec84a9a5aea2e36663d4, type: 3}
       propertyPath: m_fontAsset
@@ -26731,7 +26730,7 @@ PrefabInstance:
       addedObject: {fileID: 113881437}
     - targetCorrespondingSourceObject: {fileID: 6796581089024324334, guid: af103be088adec84a9a5aea2e36663d4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1814187740}
+      addedObject: {fileID: 456033540}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af103be088adec84a9a5aea2e36663d4, type: 3}
 --- !u!114 &2024097065 stripped
@@ -29726,6 +29725,7 @@ MonoBehaviour:
       SubtitlesForQuest: 
       SubtitlesForQuestComplete: 
       SubtitlesForQuestFail: 
+      SubtitlesForQuestHalf: 
       timer: 0
       Name: 
       description: 
@@ -29737,6 +29737,7 @@ MonoBehaviour:
       addPoints: 0
       EmotionID_: 0
       removePoints: 0
+      completePoints: 0
     QuestID: 0
     QuestName: 
     isActive: 0
@@ -29746,9 +29747,12 @@ MonoBehaviour:
     SubtitlesForQuest: 
     SubtitlesForQuestComplete: 
     SubtitlesForQuestFail: 
+    SubtitlesForQuestHalf: 
     failPenaltyPoints: 0
     AddPoints: 0
     RemovePoints: 0
+    CompletePoints: 0
+    halfNotified: 0
     TpDollID: 
     roomID: 
   questController: {fileID: 521035014}
@@ -29996,6 +30000,128 @@ Transform:
   - {fileID: 5632488781548960791}
   m_Father: {fileID: 5812000307079419622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &4221047434624874079
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 776989883}
+    m_Modifications:
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172719948578886045, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4428564243820737198, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 4428564243820737198, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563014309788957696, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563014309788957696, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563014309788957696, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_Color.r
+      value: 0.9622642
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563014309788957696, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5959968394811473842, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+      propertyPath: m_Name
+      value: ClockRoot
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects:
+    - {fileID: 4377375787240701514, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e7d7ed5f793c3da4ba2dc44a2dd849dc, type: 3}
 --- !u!4 &4306540782852257187
 Transform:
   m_ObjectHideFlags: 0
@@ -31719,30 +31845,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5105969563727917988, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7670006764278436316}
-    - targetCorrespondingSourceObject: {fileID: 4758492813308174572, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1176589365}
-    - targetCorrespondingSourceObject: {fileID: 4810895902518242081, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 7036794439862737216, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1530408305}
     - targetCorrespondingSourceObject: {fileID: 1583252280771064067, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 233186666}
-    - targetCorrespondingSourceObject: {fileID: 7601913007972840946, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1688456177}
-    - targetCorrespondingSourceObject: {fileID: 685313172168078315, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 372369869}
-    - targetCorrespondingSourceObject: {fileID: 3224941106996528260, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1569702526}
-    - targetCorrespondingSourceObject: {fileID: 657409086196749406, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1925791799}
   m_SourcePrefab: {fileID: 100100000, guid: 6b95e6332b5d64f4c8132d10a615fdee, type: 3}
 --- !u!4 &7670006764278436314 stripped
 Transform:
@@ -32822,3 +32927,4 @@ SceneRoots:
   - {fileID: 2043035006}
   - {fileID: 378451134}
   - {fileID: 913116194}
+  - {fileID: 198728908}

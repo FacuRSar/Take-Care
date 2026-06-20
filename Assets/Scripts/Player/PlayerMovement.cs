@@ -55,6 +55,8 @@ public class PlayerMovement : MonoBehaviour
 
     private float movementFeelMultiplier = 1f;
 
+    private float multi = 1;
+
     void Start()
     {
         //asignar el rigibody y player input al iniciar el juego
@@ -109,6 +111,14 @@ public class PlayerMovement : MonoBehaviour
         moveInput = value.Get<Vector2>();
     }
     //funcion que se encarga de mover al jugador con los valores que pasa OnMovement, se llama en fixed update
+
+    public bool InvertedControls = false;
+
+    public void SpeedPlayer(float i)
+    {
+        multi = i;
+    }
+
     private void MovePlayer()
     {
         // uso el yaw real de la camara en vez de transform.forward: el Rigidbody interpolado
@@ -120,18 +130,19 @@ public class PlayerMovement : MonoBehaviour
         Vector3 forward = yawRotation * Vector3.forward;
         Vector3 right = yawRotation * Vector3.right;
 
-        Vector3 direction = forward * moveInput.y + right * moveInput.x;
+        float modifier = InvertedControls ? -1f : 1f;
+        Vector3 direction = (forward * moveInput.y + right * moveInput.x) * modifier;
         direction.Normalize();
 
-        float currentSpeed = walkSpeed;
+        float currentSpeed = walkSpeed * multi;
 
         if (isCrouching)
         {
-            currentSpeed = crouchSpeed;
+            currentSpeed = crouchSpeed * multi;
         }
         else if (isSprinting)
         {
-            currentSpeed = sprintSpeed;
+            currentSpeed = sprintSpeed * multi;
         }
 
         float feel = Mathf.Clamp(movementFeelMultiplier, 0.25f, 3f);
