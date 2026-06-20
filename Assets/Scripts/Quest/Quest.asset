@@ -19,7 +19,7 @@ MonoBehaviour:
     SubtitlesForQuestComplete: "T\xE9_Complete"
     SubtitlesForQuestFail: "T\xE9_Fail"
     SubtitlesForQuestHalf: "T\xE9_Half"
-    timer: 60
+    timer: 90
     Name: "La Hora del T\xE9 de las Astillas"
     description: "La mu\xF1eca quiere organizar una fiesta de t\xE9 en el comedor.
       El jugador debe recolectar los fragmentos de porcelana rota esparcidos por
@@ -62,7 +62,7 @@ MonoBehaviour:
     SubtitlesForQuestComplete: Mentiroso_Complete
     SubtitlesForQuestFail: Mentiroso_Fail
     SubtitlesForQuestHalf: 
-    timer: 60
+    timer: 90
     Name: El Reflejo Mentiroso
     description: "La mu\xF1eca entra en un estado de furia ciega porque afirma que
       la camara vieja  se est\xE1 burlando de ella y mostr\xE1ndole \"otra cara\".
@@ -110,7 +110,7 @@ MonoBehaviour:
     SubtitlesForQuestComplete: Palta_Complete
     SubtitlesForQuestFail: Palta_Fail
     SubtitlesForQuestHalf: 
-    timer: 60
+    timer: 90
     Name: La Palta del Lamento
     description: "La mu\xF1eca entra en p\xE1nico porque dice que perdi\xF3 su vieja
       palta de trapo y felpa en alg\xFAn lugar de la caba\xF1a y que \"est\xE1 empezando
@@ -134,7 +134,7 @@ MonoBehaviour:
     SubtitlesForQuestComplete: Acorde_Complete
     SubtitlesForQuestFail: Acorde_Fail
     SubtitlesForQuestHalf: 
-    timer: 60
+    timer: 90
     Name: El Acorde del Silencio
     description: "La mu\xF1eca llora en silencio mirando fijamente hacia la ventana.
       Afirma que la vieja guitarra ac\xFAstica de la caba\xF1a est\xE1 \"sufriendo\"

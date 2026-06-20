@@ -12,7 +12,6 @@ public class WallTextReveal : MonoBehaviour
     [SerializeField] private TMP_Text text;
     [SerializeField] private float defaultDuration = 4f;
     [SerializeField] private string defaultScratchSfxId = "WallScratch";
-    [SerializeField] private bool defaultScratch3D = true;
     [SerializeField] private float edgeNoise = 0.04f;
     [SerializeField] private float edgeFeather = 0.08f;
 
