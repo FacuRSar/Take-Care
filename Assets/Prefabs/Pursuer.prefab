@@ -8829,7 +8829,7 @@ MonoBehaviour:
   minDistanceToPlayer: 12
   spawnSfxId: DollLaugh
   spawnSoundAs3D: 0
-  spawnMusicId: 
+  spawnMusicId: PersecucionBase
   musicFadeIn: 1.5
   musicFadeOut: 2
   flickerOnVanish: 1

@@ -243,4 +243,18 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 1c4504bf41c0682408a040b84afbb8dc, type: 3}
     - {fileID: 8300000, guid: fe9518d31b84f7b41a076163373fbfe2, type: 3}
     volume: 1
+  - id: DollCry
+    clips:
+    - {fileID: 8300000, guid: e4de40b4f9b2d2048bc0c5f2303c5b69, type: 3}
+    - {fileID: 8300000, guid: 18ce889ad28d4a644a90dfaa4b4c14f9, type: 3}
+    - {fileID: 8300000, guid: 093ef70269daf2a4c9d376e877c2ff82, type: 3}
+    volume: 1
+  - id: DollAngry
+    clips:
+    - {fileID: 8300000, guid: bcf0fb9f5c9873349a3ddc193f153dcc, type: 3}
+    - {fileID: 8300000, guid: e4e8bb2264908064f94186c4df4d78cb, type: 3}
+    - {fileID: 8300000, guid: 4f8608080b8603a4aa59e9275b0707b4, type: 3}
+    volume: 1
   default3DVolume: 1
+  min3DDistance: 3
+  max3DDistance: 25

@@ -10,66 +10,62 @@ public class DollEmotion : MonoBehaviour
     protected float currentBar;
     protected Bars bars;
     [Header("Interaction Resources")]
-    [SerializeField] AudioClip lowInteraction;
-    [SerializeField] AudioClip mediumInteraction;
-    [SerializeField] AudioClip highInteraction;
+    protected String lowInteraction;
+    protected String mediumInteraction;
+    protected String highInteraction;
     protected ScreenEffectController screenController;
     protected int timerRestar;
     [SerializeField] protected AudioSource dollVoice;
+    protected float lastInteraction;
+
     void Start()
     {
         screenController = FindAnyObjectByType<ScreenEffectController>();
         screenController.PlayEffect("fatigue");
+        setCurrentBar();
     }
 
 
-    public void LowInteraction(AudioSource dollVoice)
+    public void LowInteraction()
     {
         if(lowInteraction != null)
-            dollVoice.PlayOneShot(lowInteraction);
+            SFXManager.Instance.Play2D(lowInteraction);
         //funcion de angel para generar un circulo que tapa parte de la camara en base a la barra de emocion
     }
-    public void MediumInteraction(AudioSource dollVoice)
+    public void MediumInteraction()
     {
         if(mediumInteraction != null)
-           dollVoice.PlayOneShot(mediumInteraction);
+           SFXManager.Instance.Play2D(mediumInteraction);
         //funcion de angel para generar un circulo que tapa parte de la camara en base a la barra de emocion
     }
-    public void HighInteraction(AudioSource dollVoice)
+    public void HighInteraction()
     {
         if(highInteraction != null)
-            dollVoice.PlayOneShot(highInteraction);
+            SFXManager.Instance.Play2D(highInteraction);
         //funcion de angel para generar un circulo que tapa parte de la camara en base a la barra de emocion
     }
-    public void CheckInteraction()
+    public virtual void CheckInteraction()
     {
+        Debug.Log(currentBar);
 
-        if (currentBar >= bars._MaxBar)
+        if (currentBar - lastInteraction > 10)
         {
-            if (dollVoice == null)
-                return;
-            // Llanto extremo o distorsionado
-            // Sonido de llanto fuerte, Lágrimas visibles, Agitación intensa
-            //Posible trigger de ataque si no se calma
-            // Si el jugador no hace nada, la muñeca podría entrar en un estado de Angry o agresión después de cierto tiempo en este estado
-            HighInteraction(dollVoice);
-            return;
-        }
-        else if (currentBar >= bars._MaxBar)
-        {
-            if (dollVoice == null)
-                return;
-            //Lágrimas ocasionales, Sonido de llanto suave,Cabeza baja a ratos
-            MediumInteraction(dollVoice);
-            return;
-        }
-        else if (currentBar >= bars._MaxBar)
-        {
-            if (dollVoice == null)
-                return;
-            //Micro sonidos (sniffling leve)
-            LowInteraction(dollVoice);
-            return;
+            if (currentBar >= 75)
+            {
+                screenController.SetVignetteIntensity("fatigue", 0.75f);
+                HighInteraction();
+            }
+            else if (currentBar >= 50)
+            {
+                screenController.SetVignetteIntensity("fatigue", 0.5f);
+                MediumInteraction();
+            }
+            else if (currentBar >= 25)
+            {
+                screenController.SetVignetteIntensity("fatigue", 0.25f);
+                LowInteraction();
+            }
+            lastInteraction = currentBar;
         }
     }
     public float getCurrentBar()

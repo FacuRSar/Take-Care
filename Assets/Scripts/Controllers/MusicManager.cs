@@ -679,4 +679,17 @@ public class MusicManager : MonoBehaviour
             source.volume = value;
         }
     }
+    public void targetChangeVolume(string id, float newVolume, float fade)
+    {
+        if (id == currentTrackId)
+        {
+            MusicTrack track = GetTrack(currentTrackId);
+            float target = track != null ? TargetVolume(track) : globalVolume * currentDuckMultiplier;
+            StartFade(mainSource, mainSource.volume, target * newVolume, fade);
+        }
+        else if (layeredSources.TryGetValue(id, out AudioSource src) && src != null)
+        {
+            StartFade(src, src.volume, LayerTargetVolume(id) * newVolume, fade);
+        }
+    }
 }
