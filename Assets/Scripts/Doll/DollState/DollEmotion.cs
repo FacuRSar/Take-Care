@@ -15,9 +15,8 @@ public class DollEmotion : MonoBehaviour
     protected String highInteraction;
     protected ScreenEffectController screenController;
     protected int timerRestar;
-    [SerializeField] protected AudioSource dollVoice;
+    [SerializeField] protected SFXManager sfxManager;
     protected float lastInteraction;
-
     void Start()
     {
         screenController = FindAnyObjectByType<ScreenEffectController>();
@@ -29,19 +28,19 @@ public class DollEmotion : MonoBehaviour
     public void LowInteraction()
     {
         if(lowInteraction != null)
-            SFXManager.Instance.Play2D(lowInteraction);
+            sfxManager.Play2D(lowInteraction);
         //funcion de angel para generar un circulo que tapa parte de la camara en base a la barra de emocion
     }
     public void MediumInteraction()
     {
         if(mediumInteraction != null)
-           SFXManager.Instance.Play2D(mediumInteraction);
+           sfxManager.Play2D(mediumInteraction);
         //funcion de angel para generar un circulo que tapa parte de la camara en base a la barra de emocion
     }
     public void HighInteraction()
     {
         if(highInteraction != null)
-            SFXManager.Instance.Play2D(highInteraction);
+            sfxManager.Play2D(highInteraction);
         //funcion de angel para generar un circulo que tapa parte de la camara en base a la barra de emocion
     }
     public virtual void CheckInteraction()
