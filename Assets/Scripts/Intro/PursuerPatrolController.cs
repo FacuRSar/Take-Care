@@ -25,7 +25,6 @@ public class PursuerPatrolController : MonoBehaviour
     [Header("Referencias")]
     [SerializeField] private Transform player;
     [SerializeField] private string playerTag = "Player";
-    [SerializeField] private Animator animator;
     [SerializeField] private PlayerMovement playerMovement;
 
     [Header("Velocidades")]
@@ -89,11 +88,6 @@ public class PursuerPatrolController : MonoBehaviour
     [SerializeField] private DemoEndController captureEndController;
     [SerializeField] private float captureEndDelay = 0.4f;
 
-    [Header("Animator")]
-    [SerializeField] private string speedParameterName = "Speed";
-    [SerializeField] private float speedDampTime = 0.1f;
-    [SerializeField] private string attackTriggerName = "Attack";
-
     [Header("Pasos")]
     [SerializeField] private AudioSource footstepLoopSource;
     [SerializeField] private float minSpeedForFootsteps = 0.15f;
@@ -109,6 +103,8 @@ public class PursuerPatrolController : MonoBehaviour
     private float lostTimer;
     private Vector3 lastSeenPosition;
     private bool hasGrabbedPlayer;
+    private bool canCapturePlayer = true;
+    private bool isVanishPhase;
 
     // puertas que va a visitar a proposito (espacio grande)
     private readonly Queue<DoorInteractable> plannedDoors = new Queue<DoorInteractable>();
@@ -118,15 +114,28 @@ public class PursuerPatrolController : MonoBehaviour
     // manejo del momento en que mira por una puerta abierta y la cierra
     private DoorInteractable peekingDoor;
     private float doorPeekEndTime;
+    private bool attackRequested;
+
+    // Lo consume Animations (AnimationController.cs) para disparar el trigger Attack.
+    public bool ConsumeAttackRequest()
+    {
+        if (!attackRequested)
+        {
+            return false;
+        }
+
+        attackRequested = false;
+        return true;
+    }
+
+    private void RequestAttackAnimation()
+    {
+        attackRequested = true;
+    }
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-
-        if (animator == null)
-        {
-            animator = GetComponentInChildren<Animator>();
-        }
     }
 
     private void OnEnable()
@@ -141,6 +150,8 @@ public class PursuerPatrolController : MonoBehaviour
         }
 
         hasGrabbedPlayer = false;
+        canCapturePlayer = true;
+        isVanishPhase = false;
         ResolvePlayer();
         StopFootstepLoop();
     }
@@ -174,6 +185,10 @@ public class PursuerPatrolController : MonoBehaviour
     // El spawner llama esto al aparecer. En espacio grande, planifica las puertas a abrir.
     public void BeginPatrol(PursuerPatrolPoint point)
     {
+        canCapturePlayer = true;
+        isVanishPhase = false;
+        hasGrabbedPlayer = false;
+
         plannedDoors.Clear();
         currentDoorTarget = null;
         peekingDoor = null;
@@ -188,6 +203,25 @@ public class PursuerPatrolController : MonoBehaviour
         SetState(State.Wander);
         PickNewWanderPoint();
     }
+
+    // Fase final de la aparicion: titila para asustar, ya no puede capturar ni disparar el cierre.
+    public void BeginVanishPhase()
+    {
+        isVanishPhase = true;
+        canCapturePlayer = false;
+        peekingDoor = null;
+        currentDoorTarget = null;
+
+        if (agent != null && agent.isOnNavMesh)
+        {
+            agent.ResetPath();
+            agent.isStopped = true;
+        }
+
+        StopFootstepLoop();
+    }
+
+    public bool IsVanishPhase => isVanishPhase;
 
     // Junta puertas candidatas cerca del punto, elige entre min y max, y con cierta
     // probabilidad mete adelante la puerta del cuarto donde esta el jugador.
@@ -267,8 +301,12 @@ public class PursuerPatrolController : MonoBehaviour
     {
         if (player == null || hasGrabbedPlayer || agent == null || !agent.isOnNavMesh)
         {
-            UpdateAnimatorSpeed(0f);
             StopFootstepLoop();
+            return;
+        }
+
+        if (isVanishPhase)
+        {
             return;
         }
 
@@ -276,7 +314,6 @@ public class PursuerPatrolController : MonoBehaviour
         if (peekingDoor != null)
         {
             HandleDoorPeek();
-            UpdateAnimatorSpeed(GetCurrentMoveSpeed());
             HandleFootstepLoop();
             return;
         }
@@ -330,7 +367,6 @@ public class PursuerPatrolController : MonoBehaviour
             OpenDoorAheadWhileChasing();
         }
 
-        UpdateAnimatorSpeed(GetCurrentMoveSpeed());
         HandleFootstepLoop();
         CheckGrabPlayer();
     }
@@ -571,7 +607,7 @@ public class PursuerPatrolController : MonoBehaviour
     private void StartPeek(DoorInteractable door)
     {
         door.OpenFromAI();
-        TriggerAttackAnimation();
+        RequestAttackAnimation();
 
         peekingDoor = door;
         doorPeekEndTime = Time.time + doorPeekTime;
@@ -613,31 +649,6 @@ public class PursuerPatrolController : MonoBehaviour
         return agent.velocity.magnitude;
     }
 
-    private void UpdateAnimatorSpeed(float speed)
-    {
-        if (animator == null || string.IsNullOrEmpty(speedParameterName))
-        {
-            return;
-        }
-
-        if (speedDampTime > 0f)
-        {
-            animator.SetFloat(speedParameterName, speed, speedDampTime, Time.deltaTime);
-        }
-        else
-        {
-            animator.SetFloat(speedParameterName, speed);
-        }
-    }
-
-    private void TriggerAttackAnimation()
-    {
-        if (animator != null && !string.IsNullOrEmpty(attackTriggerName))
-        {
-            animator.SetTrigger(attackTriggerName);
-        }
-    }
-
     private void HandleFootstepLoop()
     {
         if (footstepLoopSource == null)
@@ -671,6 +682,11 @@ public class PursuerPatrolController : MonoBehaviour
 
     private void CheckGrabPlayer()
     {
+        if (!canCapturePlayer || isVanishPhase)
+        {
+            return;
+        }
+
         if (Vector3.Distance(transform.position, player.position) > grabDistance)
         {
             return;
@@ -693,7 +709,7 @@ public class PursuerPatrolController : MonoBehaviour
         // y lo deja sin poder moverse
         FreezePlayer();
 
-        TriggerAttackAnimation();
+        RequestAttackAnimation();
         TriggerCaptureEnding();
     }
 

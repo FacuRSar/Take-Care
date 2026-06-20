@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 /* evento de ambiente generico.
@@ -24,8 +25,10 @@ public class AmbientEvent : MonoBehaviour
     [Header("Disparo")]
     [SerializeField] private TriggerMode triggerMode = TriggerMode.PlayerEnter;
 
-    // solo para OnFlag: cuando esta flag pasa a true, dispara
+    // solo para OnFlag: cuando esta flag pasa a true, dispara (compatibilidad con eventos viejos)
     [SerializeField] private string requiredFlag;
+    // opcional: flags extra que tambien tienen que estar en true. Si esta vacio, solo cuenta requiredFlag.
+    [SerializeField] private string[] additionalRequiredFlags;
 
     // solo para Timed: espera esto al iniciar la escena antes de disparar
     [SerializeField] private float startDelay = 0f;
@@ -101,11 +104,8 @@ public class AmbientEvent : MonoBehaviour
 
     private void Start()
     {
-        // si la flag ya estaba puesta antes de que este evento existiera, lo disparamos igual
-        if (triggerMode == TriggerMode.OnFlag &&
-            GameStateController.Instance != null &&
-            !string.IsNullOrEmpty(requiredFlag) &&
-            GameStateController.Instance.GetFlag(requiredFlag))
+        // si todas las flags requeridas ya estaban activas al iniciar, disparamos igual
+        if (triggerMode == TriggerMode.OnFlag && AreAllRequiredFlagsActive())
         {
             Fire();
             return;
@@ -201,12 +201,82 @@ public class AmbientEvent : MonoBehaviour
 
     private void HandleFlagChanged(string flagName, bool value)
     {
-        if (!value || flagName != requiredFlag)
+        if (!value || !IsRelevantFlag(flagName))
         {
             return;
         }
 
-        Fire();
+        if (AreAllRequiredFlagsActive())
+        {
+            Fire();
+        }
+    }
+
+    private bool IsRelevantFlag(string flagName)
+    {
+        if (string.IsNullOrEmpty(flagName))
+        {
+            return false;
+        }
+
+        if (flagName == requiredFlag)
+        {
+            return true;
+        }
+
+        if (additionalRequiredFlags == null)
+        {
+            return false;
+        }
+
+        foreach (string flag in additionalRequiredFlags)
+        {
+            if (flagName == flag)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool AreAllRequiredFlagsActive()
+    {
+        if (GameStateController.Instance == null)
+        {
+            return false;
+        }
+
+        bool hasAnyRequirement = !string.IsNullOrEmpty(requiredFlag) ||
+            (additionalRequiredFlags != null && additionalRequiredFlags.Length > 0);
+
+        if (!hasAnyRequirement)
+        {
+            return false;
+        }
+
+        if (!string.IsNullOrEmpty(requiredFlag) && !GameStateController.Instance.GetFlag(requiredFlag))
+        {
+            return false;
+        }
+
+        if (additionalRequiredFlags != null)
+        {
+            foreach (string flag in additionalRequiredFlags)
+            {
+                if (string.IsNullOrEmpty(flag))
+                {
+                    continue;
+                }
+
+                if (!GameStateController.Instance.GetFlag(flag))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -359,13 +429,52 @@ public class AmbientEvent : MonoBehaviour
                 break;
 
             case AmbientActionType.SetText:
-                if (action.textTarget != null)
-                {
-                    // pone el texto, o lo borra si textValue quedo vacio
-                    action.textTarget.text = action.textValue;
-                }
+                DoSetText(action);
+                break;
+
+            case AmbientActionType.SetTextMass:
+                DoSetTextMass(action);
                 break;
         }
+    }
+
+    private void DoSetText(AmbientEventAction action)
+    {
+        ApplyTextToTarget(action.textTarget, action.textValue, action.textWriteDuration, action.textScratchSfxId, action.textScratchSfx3D);
+    }
+
+    private void DoSetTextMass(AmbientEventAction action)
+    {
+        if (action.textTargets == null || action.textTargets.Length == 0)
+        {
+            return;
+        }
+
+        foreach (TMP_Text target in action.textTargets)
+        {
+            ApplyTextToTarget(target, action.textValue, action.textWriteDuration, string.Empty, false);
+        }
+
+        if (!string.IsNullOrEmpty(action.massTextSfxId) && SFXManager.Instance != null)
+        {
+            SFXManager.Instance.Play2D(action.massTextSfxId);
+        }
+    }
+
+    private void ApplyTextToTarget(TMP_Text target, string content, float writeDuration, string scratchSfxId, bool scratch3D)
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        WallTextReveal writer = target.GetComponent<WallTextReveal>();
+        if (writer == null)
+        {
+            writer = target.gameObject.AddComponent<WallTextReveal>();
+        }
+
+        writer.Write(content, writeDuration, scratchSfxId, scratch3D);
     }
 
     private void DoEnablePhysics(AmbientEventAction action)

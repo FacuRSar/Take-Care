@@ -395,6 +395,64 @@ public class MusicManager : MonoBehaviour
     public bool IsPlaying => mainSource != null && mainSource.isPlaying;
     public string CurrentTrackId => currentTrackId;
 
+    // Reproduce una pista una sola vez (sin loop) y avisa cuando termina.
+    public void PlayOnce(string id, float fadeIn = 0f, System.Action onComplete = null)
+    {
+        MusicTrack track = GetTrack(id);
+        if (track == null || track.clip == null)
+        {
+            Debug.LogWarning("[MusicManager] No se encontro la pista para PlayOnce: " + id);
+            onComplete?.Invoke();
+            return;
+        }
+
+        StopAllLayers(0f, destroy: true);
+
+        if (mainSource.isPlaying && fadeIn > 0f)
+        {
+            StartFade(mainSource, mainSource.volume, 0f, fadeIn, () =>
+            {
+                StartOneShotTrack(track, fadeIn, onComplete);
+            });
+            return;
+        }
+
+        StartOneShotTrack(track, fadeIn, onComplete);
+    }
+
+    private void StartOneShotTrack(MusicTrack track, float fadeIn, System.Action onComplete)
+    {
+        mainSource.loop = false;
+        mainSource.clip = track.clip;
+        mainSource.volume = fadeIn > 0f ? 0f : TargetVolume(track);
+        mainSource.Play();
+        currentTrackId = track.id;
+
+        if (fadeIn > 0f)
+        {
+            StartFade(mainSource, 0f, TargetVolume(track), fadeIn);
+        }
+
+        StartCoroutine(WaitForOneShotEnd(mainSource, onComplete));
+    }
+
+    private IEnumerator WaitForOneShotEnd(AudioSource source, System.Action onComplete)
+    {
+        if (source == null || source.clip == null)
+        {
+            onComplete?.Invoke();
+            yield break;
+        }
+
+        while (source.isPlaying)
+        {
+            yield return null;
+        }
+
+        currentTrackId = null;
+        onComplete?.Invoke();
+    }
+
     // Lo llama el PauseMenuController cuando entra a pausa.
     public void OnGamePauseStart()
     {

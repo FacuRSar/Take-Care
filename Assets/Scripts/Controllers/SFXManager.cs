@@ -60,6 +60,37 @@ public class SFXManager : MonoBehaviour
         }
     }
 
+    // Configura y reproduce un AudioSource local (loop). Lo usa WallTextReveal para el rayado en pared.
+    public bool ConfigureLoopingSource(AudioSource source, string id, bool spatial3D)
+    {
+        if (source == null)
+        {
+            return false;
+        }
+
+        AudioClip clip = GetRandomClip(id);
+        SFXPool pool = GetPool(id);
+
+        if (clip == null)
+        {
+            return false;
+        }
+
+        float minDist = min3DDistance > 0f ? min3DDistance : 3f;
+        float maxDist = max3DDistance > minDist ? max3DDistance : minDist + 22f;
+        float volume = pool != null ? pool.volume : 1f;
+
+        source.clip = clip;
+        source.loop = true;
+        source.volume = spatial3D ? default3DVolume * volume : volume;
+        source.spatialBlend = spatial3D ? 1f : 0f;
+        source.rolloffMode = AudioRolloffMode.Linear;
+        source.minDistance = minDist;
+        source.maxDistance = maxDist;
+        source.Play();
+        return true;
+    }
+
     public AudioClip Play2D(string id)
     {
         AudioClip clip = GetRandomClip(id);

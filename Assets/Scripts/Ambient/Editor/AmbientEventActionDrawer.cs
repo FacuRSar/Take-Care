@@ -122,7 +122,10 @@ public class AmbientEventActionDrawer : PropertyDrawer
                 return new[] { "flagName", "flagValue" };
 
             case AmbientActionType.SetText:
-                return new[] { "textTarget", "textValue" };
+                return new[] { "textTarget", "textValue", "textWriteDuration", "textScratchSfxId", "textScratchSfx3D" };
+
+            case AmbientActionType.SetTextMass:
+                return new[] { "textTargets", "textValue", "textWriteDuration", "massTextSfxId" };
 
             default:
                 return new string[0];

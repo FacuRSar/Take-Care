@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &795517582753758537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2329880595788242297}
+  - component: {fileID: 1954694528177289545}
+  - component: {fileID: 3424511274180996352}
+  m_Layer: 0
+  m_Name: SpawnController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2329880595788242297
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795517582753758537}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1954694528177289545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795517582753758537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cd3b18ea14589c47a9663c39c5468fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PursuerSpawnController
+  pursuerObject: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  chaseController: {fileID: 0}
+  patrolController: {fileID: 0}
+  player: {fileID: 0}
+  playerTag: Player
+  hallwaySpawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  minDistanceToPlayer: 10
+  spawnDelay: 1
+  spawnOnlyOnce: 1
+  spawnSfxId: StalkerSpawn
+  playSpawnSoundAs3D: 0
+  spawnMusicId: 
+  musicFadeIn: 1.5
+  musicFadeOut: 1.5
+  showDebugLogs: 0
+--- !u!114 &3424511274180996352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795517582753758537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0086d06fc9d306f4f8f41b14b0bf05b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PursuerPatrolSpawner
+  pursuerObject: {fileID: 0}
+  patrolController: {fileID: 0}
+  player: {fileID: 0}
+  playerTag: Player
+  roomSpawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hallwaySpawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  minRoomAppearances: 5
+  maxRoomAppearances: 5
+  roomScheduleWindow: 8
+  timeBetweenAppearances: {x: 30, y: 60}
+  firstAppearanceDelay: 45
+  minDistanceToPlayer: 8
+  spawnSfxId: StalkerSpawn
+  spawnSoundAs3D: 0
+  spawnMusicId: 
+  musicFadeIn: 1.5
+  musicFadeOut: 2
+  flickerOnVanish: 1
+  flickerDuration: 0.6
+  flickerInterval: 0.08
+  autoStart: 0
+  startFlagName: doll_quests_start
+  enableDebugKey: 1

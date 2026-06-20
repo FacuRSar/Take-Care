@@ -11,6 +11,7 @@ public class AmbientEventEditor : Editor
     private SerializedProperty triggerMode;
 
     private SerializedProperty requiredFlag;
+    private SerializedProperty additionalRequiredFlags;
     private SerializedProperty startDelay;
     private SerializedProperty onlyPlayer;
 
@@ -33,6 +34,7 @@ public class AmbientEventEditor : Editor
         triggerMode = serializedObject.FindProperty("triggerMode");
 
         requiredFlag = serializedObject.FindProperty("requiredFlag");
+        additionalRequiredFlags = serializedObject.FindProperty("additionalRequiredFlags");
         startDelay = serializedObject.FindProperty("startDelay");
         onlyPlayer = serializedObject.FindProperty("onlyPlayer");
 
@@ -75,7 +77,11 @@ public class AmbientEventEditor : Editor
 
             case AmbientEvent.TriggerMode.OnFlag:
                 EditorGUILayout.PropertyField(requiredFlag);
-                EditorGUILayout.HelpBox("Dispara cuando esta flag pasa a true (o ya estaba true al iniciar).", MessageType.None);
+                EditorGUILayout.PropertyField(additionalRequiredFlags, true);
+                EditorGUILayout.HelpBox(
+                    "Dispara cuando todas las flags listadas estan en true. " +
+                    "Required Flag sigue funcionando sola como antes; Additional Required Flags es opcional.",
+                    MessageType.None);
                 break;
 
             case AmbientEvent.TriggerMode.Timed:

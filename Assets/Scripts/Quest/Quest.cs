@@ -180,33 +180,34 @@ public class Quest : MonoBehaviour
         if (Quest_0)
         {
             Humo.SetActive(true);
-            
 
-            if (activeQuest.timer >= activeQuest.timer * 85 / 100)
+            float elapsed = activeQuest.timer;
+            float duration = activeQuest.TimerDuration;
+
+            if (duration <= 0f)
             {
                 SFXManager.Instance.ResetVolume2D("kettle", 1f);
-
-
             }
-            else if (activeQuest.timer >= activeQuest.timer * 75 / 100)
-            {
-                SFXManager.Instance.ResetVolume2D("kettle", 0.75f);
-            }
-            else if (activeQuest.timer >= activeQuest.timer * 50 / 100)
-            {
-                SFXManager.Instance.ResetVolume2D("kettle", 0.5f);
-                // flag para mover cosas o bajar luces, bloquear puertas
-            }
-            else if (activeQuest.timer >= activeQuest.timer * 25 / 100)
-            {
-                SFXManager.Instance.ResetVolume2D("kettle", 0.25f);
-            }
-            else
+            else if (elapsed >= duration * 0.85f)
             {
                 SFXManager.Instance.ResetVolume2D("kettle", 0f);
             }
-
-
+            else if (elapsed >= duration * 0.75f)
+            {
+                SFXManager.Instance.ResetVolume2D("kettle", 0.25f);
+            }
+            else if (elapsed >= duration * 0.50f)
+            {
+                SFXManager.Instance.ResetVolume2D("kettle", 0.5f);
+            }
+            else if (elapsed >= duration * 0.25f)
+            {
+                SFXManager.Instance.ResetVolume2D("kettle", 0.75f);
+            }
+            else
+            {
+                SFXManager.Instance.ResetVolume2D("kettle", 1f);
+            }
         }
         else if (Quest_1)
         {
@@ -328,7 +329,7 @@ public class Quest : MonoBehaviour
         {
             case 0:
                 {
-                    SFXManager.Instance.PlayLoop2D("kettle");
+                    SFXManager.Instance.PlayLoop2D("kettle", 1f);
                     SetQuestFlag($"quest_{activeQuest.QuestID}_Door", true);
                     Quest_0 = true;
                 }

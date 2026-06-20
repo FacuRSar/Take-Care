@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 /* hace aparecer al Pursuer en modo patrulla cada cierto tiempo.
 *  elige un punto lejano al jugador, lo teletransporta ahi con la risa, lo deja patrullar
-*  el tiempo que diga ese punto y despues lo guarda hasta la proxima aparicion.
+*  el tiempo que diga ese punto y despues titila (sin captura) hasta la proxima aparicion.
 *
 *  Pensado para una partida de 10 minutos: apariciones espaciadas y cortas, para meter
 *  presion sin frenar las misiones.
@@ -52,7 +52,7 @@ public class PursuerPatrolSpawner : MonoBehaviour
     [SerializeField] private float musicFadeOut = 2f;
 
     [Header("Desaparicion (efecto fantasma)")]
-    // al guardarse, parpadea el visual antes de apagarse para que parezca un fantasma.
+    // al terminar la aparicion, titila el visual para asustar (ya no puede capturar).
     [SerializeField] private bool flickerOnVanish = true;
     // cuanto dura el titileo en total
     [SerializeField] private float flickerDuration = 0.6f;
@@ -303,22 +303,25 @@ public class PursuerPatrolSpawner : MonoBehaviour
         // capa de musica de tension que entra con la aparicion
         PursuerSpawnUtils.PlaySpawnMusic(spawnMusicId, musicFadeIn);
 
-        // se queda el tiempo que diga el punto y despues se guarda
+        // se queda el tiempo que diga el punto y despues entra la fase fantasma (titileo, sin captura)
         yield return new WaitForSeconds(point.StayDuration);
 
-        // sale la capa de musica con fade out al guardarse
+        // sale la capa de musica con fade out al terminar la aparicion activa
         PursuerSpawnUtils.StopSpawnMusic(spawnMusicId, musicFadeOut);
 
-        // titileo "fantasma" antes de apagarse del todo
         yield return StartCoroutine(VanishRoutine());
 
         appearing = false;
     }
 
-    // Parpadea el visual del Pursuer y despues lo desactiva. Si el efecto esta apagado,
-    // simplemente lo desactiva al toque.
+    // Titila el visual para asustar. Desde que empieza no puede capturar; al terminar sigue visible.
     private IEnumerator VanishRoutine()
     {
+        if (patrolController != null)
+        {
+            patrolController.BeginVanishPhase();
+        }
+
         Renderer[] renderers = pursuerObject.GetComponentsInChildren<Renderer>(true);
 
         if (flickerOnVanish && renderers.Length > 0 && flickerInterval > 0f)
@@ -334,12 +337,12 @@ public class PursuerPatrolSpawner : MonoBehaviour
                 yield return new WaitForSeconds(flickerInterval);
                 elapsed += flickerInterval;
             }
-
-            // deja los renderers prendidos para que la proxima aparicion se vea bien
-            SetRenderersEnabled(renderers, true);
         }
 
-        pursuerObject.SetActive(false);
+        if (renderers.Length > 0)
+        {
+            SetRenderersEnabled(renderers, true);
+        }
     }
 
     private static void SetRenderersEnabled(Renderer[] renderers, bool value)

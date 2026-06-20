@@ -70,7 +70,12 @@ public class AmbientManager : MonoBehaviour
 
     private Coroutine thunderRoutine;
     private Coroutine randomAmbientRoutine;
+    private Coroutine volumeFadeRoutine;
     private float[] originalLightIntensities;
+    private float[] cachedAmbientVolumes;
+    private float[] cachedThunderVolumes;
+    private float ambientVolumeScale = 1f;
+    private float thunderVolumeScale = 1f;
     // Guarda la intensidad original de cada luz para restaurarla despues.
 
     private void Awake()
@@ -84,6 +89,7 @@ public class AmbientManager : MonoBehaviour
         Instance = this;
 
         CacheOriginalLightIntensities();
+        CacheAudioVolumes();
     }
 
     private void Start()
@@ -100,6 +106,19 @@ public class AmbientManager : MonoBehaviour
         }
     }
 
+    public void SetVolumeScales(float ambientScale, float thunderScale, float fadeDuration = 0f)
+    {
+        ambientVolumeScale = Mathf.Clamp01(ambientScale);
+        thunderVolumeScale = Mathf.Clamp01(thunderScale);
+        ApplyVolumeScales(fadeDuration);
+    }
+
+    public void SetThunderActivity(Vector2 delayRange, float chance)
+    {
+        thunderDelayRange = delayRange;
+        thunderChance = Mathf.Clamp01(chance);
+    }
+
     public void StartAmbient()
     {
         // Arranca todos los AudioSources de ambiente configurados.
@@ -111,13 +130,14 @@ public class AmbientManager : MonoBehaviour
             }
 
             source.loop = true;
-           // source.volume = ambientVolume;
 
             if (!source.isPlaying)
             {
                 source.Play();
             }
         }
+
+        ApplyVolumeScales(0f);
     }
 
     public void StopAmbient()
@@ -340,6 +360,187 @@ public class AmbientManager : MonoBehaviour
             }
 
             originalLightIntensities[i] = lightningLights[i].intensity;
+        }
+    }
+
+    private void CacheAudioVolumes()
+    {
+        if (ambientSources != null)
+        {
+            cachedAmbientVolumes = new float[ambientSources.Length];
+
+            for (int i = 0; i < ambientSources.Length; i++)
+            {
+                cachedAmbientVolumes[i] = ambientSources[i] != null ? ambientSources[i].volume : 1f;
+            }
+        }
+
+        if (thunderSources != null)
+        {
+            cachedThunderVolumes = new float[thunderSources.Length];
+
+            for (int i = 0; i < thunderSources.Length; i++)
+            {
+                cachedThunderVolumes[i] = thunderSources[i] != null ? thunderSources[i].volume : 1f;
+            }
+        }
+    }
+
+    private void ApplyVolumeScales(float fadeDuration)
+    {
+        if (volumeFadeRoutine != null)
+        {
+            StopCoroutine(volumeFadeRoutine);
+            volumeFadeRoutine = null;
+        }
+
+        if (fadeDuration <= 0f)
+        {
+            ApplyVolumeScalesImmediate();
+            return;
+        }
+
+        volumeFadeRoutine = StartCoroutine(FadeVolumeScales(fadeDuration));
+    }
+
+    private void ApplyVolumeScalesImmediate()
+    {
+        if (ambientSources != null && cachedAmbientVolumes != null)
+        {
+            for (int i = 0; i < ambientSources.Length; i++)
+            {
+                AudioSource source = ambientSources[i];
+                if (source == null || i >= cachedAmbientVolumes.Length)
+                {
+                    continue;
+                }
+
+                source.volume = cachedAmbientVolumes[i] * ambientVolumeScale;
+            }
+        }
+
+        if (thunderSources != null && cachedThunderVolumes != null)
+        {
+            for (int i = 0; i < thunderSources.Length; i++)
+            {
+                AudioSource source = thunderSources[i];
+                if (source == null || i >= cachedThunderVolumes.Length)
+                {
+                    continue;
+                }
+
+                source.volume = cachedThunderVolumes[i] * thunderVolumeScale;
+            }
+        }
+    }
+
+    private IEnumerator FadeVolumeScales(float duration)
+    {
+        float[] ambientFrom = CaptureCurrentAmbientVolumes();
+        float[] thunderFrom = CaptureCurrentThunderVolumes();
+        float[] ambientTo = BuildTargetAmbientVolumes();
+        float[] thunderTo = BuildTargetThunderVolumes();
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = duration <= 0f ? 1f : Mathf.Clamp01(elapsed / duration);
+
+            LerpSourceVolumes(ambientSources, ambientFrom, ambientTo, t);
+            LerpSourceVolumes(thunderSources, thunderFrom, thunderTo, t);
+
+            yield return null;
+        }
+
+        ApplyVolumeScalesImmediate();
+        volumeFadeRoutine = null;
+    }
+
+    private float[] CaptureCurrentAmbientVolumes()
+    {
+        if (ambientSources == null)
+        {
+            return null;
+        }
+
+        float[] values = new float[ambientSources.Length];
+
+        for (int i = 0; i < ambientSources.Length; i++)
+        {
+            values[i] = ambientSources[i] != null ? ambientSources[i].volume : 0f;
+        }
+
+        return values;
+    }
+
+    private float[] CaptureCurrentThunderVolumes()
+    {
+        if (thunderSources == null)
+        {
+            return null;
+        }
+
+        float[] values = new float[thunderSources.Length];
+
+        for (int i = 0; i < thunderSources.Length; i++)
+        {
+            values[i] = thunderSources[i] != null ? thunderSources[i].volume : 0f;
+        }
+
+        return values;
+    }
+
+    private float[] BuildTargetAmbientVolumes()
+    {
+        if (cachedAmbientVolumes == null)
+        {
+            return null;
+        }
+
+        float[] values = new float[cachedAmbientVolumes.Length];
+
+        for (int i = 0; i < cachedAmbientVolumes.Length; i++)
+        {
+            values[i] = cachedAmbientVolumes[i] * ambientVolumeScale;
+        }
+
+        return values;
+    }
+
+    private float[] BuildTargetThunderVolumes()
+    {
+        if (cachedThunderVolumes == null)
+        {
+            return null;
+        }
+
+        float[] values = new float[cachedThunderVolumes.Length];
+
+        for (int i = 0; i < cachedThunderVolumes.Length; i++)
+        {
+            values[i] = cachedThunderVolumes[i] * thunderVolumeScale;
+        }
+
+        return values;
+    }
+
+    private static void LerpSourceVolumes(AudioSource[] sources, float[] from, float[] to, float t)
+    {
+        if (sources == null || from == null || to == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < sources.Length; i++)
+        {
+            AudioSource source = sources[i];
+            if (source == null || i >= from.Length || i >= to.Length)
+            {
+                continue;
+            }
+
+            source.volume = Mathf.Lerp(from[i], to[i], t);
         }
     }
 }

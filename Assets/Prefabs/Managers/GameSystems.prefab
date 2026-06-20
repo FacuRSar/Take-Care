@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6980263597860148344
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2215974787122542872}
+  - component: {fileID: 1613996341598957375}
+  - component: {fileID: 781443028315383793}
+  m_Layer: 0
+  m_Name: GameSystems
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2215974787122542872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6980263597860148344}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 23.93377, y: -2.32695, z: 5.522499}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1613996341598957375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6980263597860148344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 068a091465d7d0845805db22160e1f1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameStateController
+  activeFlagsView: []
+--- !u!114 &781443028315383793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6980263597860148344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef40d8e63e9370e479dd763de23d5c75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseMenuController
+  pauseRoot: {fileID: 0}
+  pausePanel: {fileID: 0}
+  optionsPanel: {fileID: 0}
+  sensitivitySlider: {fileID: 0}
+  brightnessSlider: {fileID: 0}
+  masterVolumeSlider: {fileID: 0}
+  musicVolumeSlider: {fileID: 0}
+  sfxVolumeSlider: {fileID: 0}
+  ambientVolumeSlider: {fileID: 0}
+  uiAudioManager: {fileID: 0}
+  sensitivityValueLabel: {fileID: 0}
+  brightnessValueLabel: {fileID: 0}
+  masterVolumeValueLabel: {fileID: 0}
+  musicVolumeValueLabel: {fileID: 0}
+  sfxVolumeValueLabel: {fileID: 0}
+  ambientVolumeValueLabel: {fileID: 0}
+  sensitivityMin: 0.1
+  sensitivityMax: 2
+  brightnessMinExposure: -1.5
+  brightnessMaxExposure: 1.5
+  menuMode: 0
+  playerCamera: {fileID: 0}
+  playerMovement: {fileID: 0}
+  audioMixer: {fileID: 24100000, guid: 4d0b0d8e2520dd74c9e91046863fc510, type: 2}
+  pauseLowPassParam: PauseLowPass
+  normalLowpass: 22000
+  pausedLowpass: 500
+  masterVolumeParam: MasterVolume
+  musicVolumeParam: MusicVolume
+  sfxVolumeParam: SFXVolume
+  ambientVolumeParam: AmbientVolume
+  globalVolume: {fileID: 0}
+  runtimeBrightnessVolumePriority: 100
+  menuSceneName: Menu
+  pauseAudioOnPause: 1
+  pauseAllowed: 1
+  verboseBrightnessLog: 1

@@ -14,7 +14,8 @@ public enum AmbientActionType
     SpawnPrefab,
     SetFlag,
     ScreenEffect,
-    SetText
+    SetText,
+    SetTextMass
 }
 
 /* una accion suelta dentro de un AmbientEvent.
@@ -81,4 +82,16 @@ public class AmbientEventAction
     // texto a poner. si lo dejas vacio, borra el texto
     [TextArea]
     public string textValue;
+    // segundos del barrido tipo tiza. 0 = usa el default del WallTextReveal (4s). Borrar texto = instantaneo.
+    public float textWriteDuration = 4f;
+    // id del pool en SFXManager. vacio = usa el default del WallTextReveal (WallScratch).
+    public string textScratchSfxId = "WallScratch";
+    // si esta activo, el rayado suena en 3D desde la posicion del texto
+    public bool textScratchSfx3D = true;
+
+    [Header("SetTextMass")]
+    // lista de TMP a los que se les pone el mismo texto de una
+    public TMP_Text[] textTargets;
+    // sonido 2D que suena una vez al aplicar el texto masivo (pool de SFXManager)
+    public string massTextSfxId;
 }

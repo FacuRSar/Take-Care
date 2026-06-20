@@ -12,7 +12,6 @@ public class PursuerNavMeshController : MonoBehaviour
     [SerializeField] private Transform player;
     // si player queda sin asignar, lo busca por tag al activarse
     [SerializeField] private string playerTag = "Player";
-    [SerializeField] private Animator animator;
     // para congelar al jugador al atraparlo. Si queda vacio se busca en el player.
     [SerializeField] private PlayerMovement playerMovement;
 
@@ -39,15 +38,6 @@ public class PursuerNavMeshController : MonoBehaviour
     [SerializeField] private AudioSource footstepLoopSource;
     [SerializeField] private float minSpeedForFootsteps = 0.15f;
 
-    [Header("Animator")]
-    // Float que maneja la transicion Idle <-> Walk en el Animator.
-    // Le pasamos la velocidad real del agente; en el Animator: Walk si Speed > 0.1, Idle si Speed < 0.1.
-    [SerializeField] private string speedParameterName = "Speed";
-    // Suavizado del valor que mandamos al Animator (segundos). 0 = sin suavizado.
-    [SerializeField] private float speedDampTime = 0.1f;
-    // Trigger de ataque: se usa al abrir una puerta y tambien al capturar al jugador. Vacio = no dispara.
-    [SerializeField] private string attackTriggerName = "Attack";
-
     [Header("Captura")]
     [SerializeField] private bool logGrabDistance = false;
 
@@ -63,15 +53,28 @@ public class PursuerNavMeshController : MonoBehaviour
     private bool hasGrabbedPlayer;
     private float baseSpeed;
     private float rampStartTime;
+    private bool attackRequested;
+
+    // Lo consume Animations (AnimationController.cs) para disparar el trigger Attack.
+    public bool ConsumeAttackRequest()
+    {
+        if (!attackRequested)
+        {
+            return false;
+        }
+
+        attackRequested = false;
+        return true;
+    }
+
+    private void RequestAttackAnimation()
+    {
+        attackRequested = true;
+    }
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-
-        if (animator == null)
-        {
-            animator = GetComponentInChildren<Animator>();
-        }
 
         if (agent != null)
         {
@@ -136,7 +139,6 @@ public class PursuerNavMeshController : MonoBehaviour
         if (player == null || hasGrabbedPlayer)
         {
             StopFootstepLoop();
-            UpdateAnimatorSpeed(0f);
             return;
         }
 
@@ -144,46 +146,7 @@ public class PursuerNavMeshController : MonoBehaviour
         UpdateDestination();
         TryOpenDoorAhead();
         HandleFootstepLoop();
-        UpdateAnimatorSpeed(GetCurrentMoveSpeed());
         CheckGrabPlayer();
-    }
-
-    // Velocidad real de desplazamiento del agente (0 si esta detenido o fuera del NavMesh).
-    private float GetCurrentMoveSpeed()
-    {
-        if (agent == null || !agent.isOnNavMesh || agent.isStopped)
-        {
-            return 0f;
-        }
-
-        return agent.velocity.magnitude;
-    }
-
-    // Manda la velocidad al Animator para la transicion Idle <-> Walk.
-    private void UpdateAnimatorSpeed(float speed)
-    {
-        if (animator == null || string.IsNullOrEmpty(speedParameterName))
-        {
-            return;
-        }
-
-        if (speedDampTime > 0f)
-        {
-            animator.SetFloat(speedParameterName, speed, speedDampTime, Time.deltaTime);
-        }
-        else
-        {
-            animator.SetFloat(speedParameterName, speed);
-        }
-    }
-
-    // Dispara la animacion de ataque (compartida por abrir puerta y capturar).
-    private void TriggerAttackAnimation()
-    {
-        if (animator != null && !string.IsNullOrEmpty(attackTriggerName))
-        {
-            animator.SetTrigger(attackTriggerName);
-        }
     }
 
     private void UpdateSpeedRamp()
@@ -257,8 +220,8 @@ public class PursuerNavMeshController : MonoBehaviour
                 {
                     door.OpenFromAI();
 
-                    // dispara la animacion de ataque/golpe al abrir la puerta
-                    TriggerAttackAnimation();
+                    // pide animacion de ataque/golpe al abrir la puerta (la ejecuta AnimationController)
+                    RequestAttackAnimation();
                 }
 
                 Debug.Log("PursuerNavMeshController: stalker intento abrir puerta: " + door.gameObject.name);
@@ -334,8 +297,8 @@ public class PursuerNavMeshController : MonoBehaviour
         // y lo deja sin poder moverse
         FreezePlayer();
 
-        // La vieja solo camina o ataca: al atrapar, dispara el Attack.
-        TriggerAttackAnimation();
+        // La vieja solo camina o ataca: al atrapar, pide el Attack (lo ejecuta AnimationController).
+        RequestAttackAnimation();
 
         TriggerCaptureEnding();
     }
