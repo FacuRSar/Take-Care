@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: b081d5195f5445a48a876486ba75df2c
+guid: 12f78534506b6dc4c875937db97f9a5d
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: texturaJugadorbase
-    second: {fileID: 2800000, guid: e9fa41f8a94a3d14f9fa94b2a5417e88, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
