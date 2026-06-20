@@ -6279,7 +6279,7 @@ MonoBehaviour:
     image: {fileID: 0}
     targetAlpha: 0
     volume: {fileID: 1818334880}
-    targetVignetteIntensity: 0.65
+    targetVignetteIntensity: 0
     targetVignetteSmoothness: 0.5
     animator: {fileID: 0}
     playTrigger: 
@@ -43962,6 +43962,10 @@ PrefabInstance:
       propertyPath: effects.Array.data[3].shakeTarget
       value: 
       objectReference: {fileID: 2016877961}
+    - target: {fileID: 8342165083814962322, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: effects.Array.data[0].targetVignetteIntensity
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8352211667383406180, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: wanderRadius
       value: 10

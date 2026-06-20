@@ -9,6 +9,7 @@ public class Happy : DollEmotion
     public event Action AddHappyBar;
 
     bool IsQuestHappyCompleted;
+    private InGameSequenceController flow;
 
     void Awake()
     {
@@ -17,6 +18,7 @@ public class Happy : DollEmotion
         lowInteraction = "DollHappyLow";
         highInteraction = "DollHappyHigh";
         mediumInteraction = "DollHappyMid";
+        flow = FindFirstObjectByType<InGameSequenceController>();
     }
     public void FixedUpdate()
     {
@@ -24,14 +26,13 @@ public class Happy : DollEmotion
         timerRestar++;
         if (timerRestar >= 120)
         {
-            //sumar punto victoria
+            flow.OnMissionCompleted(1);
             timerRestar = 0;
             CheckInteraction();
         }
     }
     public override void CheckInteraction()
     {
-        Debug.Log(currentBar);
 
         if (currentBar - lastInteraction > 10)
         {

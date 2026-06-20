@@ -52,17 +52,17 @@ public class DollEmotion : MonoBehaviour
         {
             if (currentBar >= 75)
             {
-                screenController.SetVignetteIntensity("fatigue", 3);
+                screenController.SetVignetteIntensity("fatigue", 0.75f);
                 HighInteraction();
             }
             else if (currentBar >= 50)
             {
-                screenController.SetVignetteIntensity("fatigue", 2);
+                screenController.SetVignetteIntensity("fatigue", 0.5f);
                 MediumInteraction();
             }
             else if (currentBar >= 25)
             {
-                screenController.SetVignetteIntensity("fatigue", 1);
+                screenController.SetVignetteIntensity("fatigue", 0.25f);
                 LowInteraction();
             }
             lastInteraction = currentBar;
