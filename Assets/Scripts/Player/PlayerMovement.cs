@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float sprintSpeed = 6.5f;
     [SerializeField] private float crouchSpeed = 2f;
 
+    [Header("Animacion")]
+    [SerializeField] private Animator bodyAnimator;
+
     [Header("Agacharse")]
     [SerializeField] private CapsuleCollider capsule;
     [SerializeField] private Transform playerCamera;
@@ -82,7 +85,17 @@ public class PlayerMovement : MonoBehaviour
         cameraTargetY = cameraStandY;
 
         targetHeight = standingHeight;
-        // playerInput = new PlayerInput(); // Lo mismo, no se necesita, por eso lo saco. Si queremos agregar algun boton por codigo tambien se puede, pero no necesita playerInput
+
+        if (bodyAnimator == null)
+        {
+            bodyAnimator = GetComponentInChildren<Animator>();
+        }
+
+        Animations animationController = FindAnyObjectByType<Animations>();
+        if (bodyAnimator != null && animationController != null)
+        {
+            animationController.RegisterAnimator(bodyAnimator);
+        }
     }
 
     private void Update()
@@ -91,7 +104,12 @@ public class PlayerMovement : MonoBehaviour
         {
             HandleSprintInput(); // mira si Shift esta apretado
             HandleCrouchInput(); // mira si Ctrl esta apretado
-            HandleCrouchVisuals(); // llamo a la funcion para ver si se esta agachado (para actualizar la vista y todo)      
+            HandleCrouchVisuals(); // llamo a la funcion para ver si se esta agachado (para actualizar la vista y todo)
+            IsMoving = moveInput.sqrMagnitude > 0.01f;
+        }
+        else
+        {
+            IsMoving = false;
         }
     }
 
@@ -147,7 +165,6 @@ public class PlayerMovement : MonoBehaviour
 
         float feel = Mathf.Clamp(movementFeelMultiplier, 0.25f, 3f);
         CurrentSpeed = currentSpeed * feel;
-        IsMoving = direction.magnitude > 0.1f;
 
         rb.linearVelocity = new Vector3(
             direction.x * currentSpeed * feel,
