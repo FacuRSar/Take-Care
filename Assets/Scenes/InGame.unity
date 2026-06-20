@@ -7367,13 +7367,19 @@ MonoBehaviour:
   - id: tension
     clip: {fileID: 8300000, guid: a5558ec6f79da9746a763a54f4e81021, type: 3}
     defaultVolume: 1
+  - id: PersecucionBase
+    clip: {fileID: 8300000, guid: d345e7b230d314d4886daa0406e4c88b, type: 3}
+    defaultVolume: 1
+  - id: PersecucionLayer
+    clip: {fileID: 8300000, guid: 1547b92c46d59684482d0c0ec272105b, type: 3}
+    defaultVolume: 1
   mainSource: {fileID: 239176074}
   mixerGroup: {fileID: -3274087309592685413, guid: 4d0b0d8e2520dd74c9e91046863fc510, type: 2}
   globalVolume: 1
   pauseBehavior: 1
   pauseVolumeMultiplier: 0.5
   pauseFade: 0.3
-  enableDebugKeys: 1
+  enableDebugKeys: 0
   debugTrackId7: tension
   debugTrackId8: 
   debugTrackId9: 
@@ -23643,7 +23649,7 @@ MonoBehaviour:
   minDistanceToPlayer: 8
   spawnSfxId: StalkerSpawn
   spawnSoundAs3D: 0
-  spawnMusicId: 
+  spawnMusicId: PersecucionBase
   musicFadeIn: 1.5
   musicFadeOut: 2
   flickerOnVanish: 1
@@ -30033,12 +30039,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0da9f0998130860459883b3e660e311f, type: 3}
   thunderDelayRange: {x: 2, y: 15}
   thunderChance: 0.5
-  randomAmbientSfxIds: []
+  randomAmbientSfxIds:
+  - BathroomBreak
+  - LockedDoor
+  - WoodCreak
   randomAmbientDelayRange: {x: 20, y: 45}
   randomAmbientChance: 0.7
   randomAmbientAs3D: 0
-  randomAmbientPoints: []
-  playRandomAmbientOnStart: 0
+  randomAmbientPoints:
+  - {fileID: 375775402}
+  playRandomAmbientOnStart: 1
   lightningLights:
   - {fileID: 319300006}
   - {fileID: 1755562775}
@@ -30525,6 +30535,8 @@ GameObject:
   - component: {fileID: 1575701859}
   - component: {fileID: 1575701858}
   - component: {fileID: 1575701857}
+  - component: {fileID: 1575701862}
+  - component: {fileID: 1575701863}
   m_Layer: 0
   m_Name: Pursuer
   m_TagString: Untagged
@@ -30756,6 +30768,48 @@ NavMeshAgent:
   m_BaseOffset: 0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1575701862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575701855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86cef8a4577738a428d8f334450d7663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProximityFeedback
+  activation: 1
+  activeFlagName: 
+  source: {fileID: 1575701856}
+  target: {fileID: 375775402}
+  targetTag: Player
+  startDistance: 12
+  fullDistance: 1.5
+  useVignette: 0
+  vignetteEffectId: pursuerVignette
+  minIntensity: 0.08
+  maxIntensity: 0.55
+  changeSpeed: 1.5
+  useDistanceHints: 0
+  hintInterval: 3
+  hintDuration: 2
+  hintPriority: 0
+  hintMaxDistance: 0
+  hints: []
+--- !u!114 &1575701863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575701855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f9b4fd6b50caef42b46eb6e4c6588d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &1597069895
 GameObject:
   m_ObjectHideFlags: 0
@@ -38156,6 +38210,42 @@ MonoBehaviour:
     clips:
     - {fileID: 8300000, guid: 413d7fb0b02d90d4cb95dab9fbef743d, type: 3}
     volume: 1
+  - id: DollCryLow
+    clips:
+    - {fileID: 8300000, guid: e4de40b4f9b2d2048bc0c5f2303c5b69, type: 3}
+    volume: 1
+  - id: DollCryMid
+    clips:
+    - {fileID: 8300000, guid: 18ce889ad28d4a644a90dfaa4b4c14f9, type: 3}
+    volume: 1
+  - id: DollCryHigh
+    clips:
+    - {fileID: 8300000, guid: 093ef70269daf2a4c9d376e877c2ff82, type: 3}
+    volume: 1
+  - id: DollAngryLow
+    clips:
+    - {fileID: 8300000, guid: bcf0fb9f5c9873349a3ddc193f153dcc, type: 3}
+    volume: 1
+  - id: DollAngryMid
+    clips:
+    - {fileID: 8300000, guid: e4e8bb2264908064f94186c4df4d78cb, type: 3}
+    volume: 1
+  - id: DollAngryHigh
+    clips:
+    - {fileID: 8300000, guid: 4f8608080b8603a4aa59e9275b0707b4, type: 3}
+    volume: 1
+  - id: DollHappyLow
+    clips:
+    - {fileID: 8300000, guid: b938863e15db02f49ba5328740a715bb, type: 3}
+    volume: 1
+  - id: DollHappyMid
+    clips:
+    - {fileID: 8300000, guid: dae200c836068aa4fa1a66fd925c4ae7, type: 3}
+    volume: 1
+  - id: DollHappyHigh
+    clips:
+    - {fileID: 8300000, guid: 690dfe38e76d62647b70a38f062f0552, type: 3}
+    volume: 1
   default3DVolume: 1
   min3DDistance: 3
   max3DDistance: 25
@@ -41888,9 +41978,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Cry
   DistanceToDollMin: 10
   timer: 10
-  lowInteraction: {fileID: 0}
-  mediumInteraction: {fileID: 0}
-  highInteraction: {fileID: 0}
   dollVoice: {fileID: 0}
 --- !u!33 &2394080835510705333
 MeshFilter:
@@ -42061,9 +42148,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Watching
   DistanceToDollMin: 10
   timer: 10
-  lowInteraction: {fileID: 0}
-  mediumInteraction: {fileID: 0}
-  highInteraction: {fileID: 0}
   dollVoice: {fileID: 0}
 --- !u!23 &3688108969004323742
 MeshRenderer:
@@ -42255,9 +42339,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Happy
   DistanceToDollMin: 10
   timer: 10
-  lowInteraction: {fileID: 0}
-  mediumInteraction: {fileID: 0}
-  highInteraction: {fileID: 0}
   dollVoice: {fileID: 0}
 --- !u!4 &5806949823766663968
 Transform:
@@ -42293,9 +42374,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Idle
   DistanceToDollMin: 10
   timer: 10
-  lowInteraction: {fileID: 0}
-  mediumInteraction: {fileID: 0}
-  highInteraction: {fileID: 0}
   dollVoice: {fileID: 0}
   distanceToPlayerMin: 5
 --- !u!114 &6038138012744532222 stripped
@@ -42565,9 +42643,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Angry
   DistanceToDollMin: 10
   timer: 10
-  lowInteraction: {fileID: 0}
-  mediumInteraction: {fileID: 0}
-  highInteraction: {fileID: 0}
   dollVoice: {fileID: 0}
 --- !u!1001 &7516133193843171836
 PrefabInstance:
@@ -43472,6 +43547,14 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2920671602704149862, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: randomAmbientAs3D
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2920671602704149862, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: playRandomAmbientOnStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2920671602704149862, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: 'lightningLights.Array.data[0]'
       value: 
       objectReference: {fileID: 319300006}
@@ -43487,6 +43570,26 @@ PrefabInstance:
       propertyPath: 'lightningLights.Array.data[3]'
       value: 
       objectReference: {fileID: 1178411495}
+    - target: {fileID: 2920671602704149862, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: randomAmbientPoints.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2920671602704149862, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: randomAmbientSfxIds.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2920671602704149862, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'randomAmbientSfxIds.Array.data[0]'
+      value: BathroomBreak
+      objectReference: {fileID: 0}
+    - target: {fileID: 2920671602704149862, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'randomAmbientSfxIds.Array.data[1]'
+      value: LockedDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 2920671602704149862, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'randomAmbientSfxIds.Array.data[2]'
+      value: WoodCreak
+      objectReference: {fileID: 0}
     - target: {fileID: 3127285277348705848, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: smallDuration
       value: 8
@@ -43605,7 +43708,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.size
-      value: 18
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[15].id
@@ -43621,11 +43724,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[18].id
-      value: Barrel_Fall
+      value: DollCryLow
       objectReference: {fileID: 0}
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[19].id
-      value: Barrel_Fall
+      value: DollCryMid
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[20].id
+      value: DollCryHigh
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[21].id
+      value: DollAngryLow
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[22].id
+      value: DollAngryMid
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[23].id
+      value: DollAngryHigh
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[24].id
+      value: DollHappyLow
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[25].id
+      value: DollHappyMid
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[26].id
+      value: DollHappyHigh
       objectReference: {fileID: 0}
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[18].volume
@@ -43838,6 +43969,22 @@ PrefabInstance:
     - target: {fileID: 8352211667383406180, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: spaciousDuration
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8471491146419166891, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: enableDebugKeys
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8471491146419166891, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: tracks.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8471491146419166891, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: tracks.Array.data[1].id
+      value: PersecucionBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 8471491146419166891, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: tracks.Array.data[2].id
+      value: PersecucionLayer
       objectReference: {fileID: 0}
     - target: {fileID: 8598580952026876593, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: m_LocalPosition.x

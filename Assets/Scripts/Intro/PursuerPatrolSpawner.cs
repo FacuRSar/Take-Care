@@ -124,7 +124,7 @@ public class PursuerPatrolSpawner : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current.numpad6Key.wasPressedThisFrame)
+        if (Keyboard.current.gKey.wasPressedThisFrame)
         {
             Debug.Log("PursuerPatrolSpawner: debug numpad6 -> aparicion forzada en patrulla.");
             ForceAppearOnce();

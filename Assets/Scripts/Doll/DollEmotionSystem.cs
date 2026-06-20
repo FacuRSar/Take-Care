@@ -95,22 +95,8 @@ public class DollEmotionSystem : MonoBehaviour
     private void FixedUpdate()
     {
         currentMaxBar = GetStateByName(bars.getTopBar());
-        /* if (currentEmotion == idleState)
-         {
-             idleState.checkWatching(player.transform.position, doll.transform.position);
-             if(currentMaxBar != Currentstate && !isQuestActive)
-                 ChangeState(currentMaxBar);
-
-         }
-         else if (currentEmotion != watchingState)
-         {
-             currentEmotion.CheckInteraction(audioSource);
-             if (currentMaxBar != Currentstate && !isQuestActive)
-                 ChangeState(currentMaxBar);
-         }*/
         if (quest.isActive)
         {
-            currentEmotion.setCurrentBar();
             if(currentMaxBar != Currentstate)
                 ChangeState(currentMaxBar);
         }
@@ -126,7 +112,6 @@ public class DollEmotionSystem : MonoBehaviour
                 if (idleStateCounter < 900)
                 {
                     idleStateCounter++;
-                    idleState.checkWatching(player.transform.position, doll.transform.position);
                 }
                 else if(idleStateCounter >= 900 && !isQuestActive)
                 {

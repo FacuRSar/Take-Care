@@ -14,11 +14,12 @@ public class Angry : DollEmotion
     {
         dollEmotionSystem = GetComponent<DollEmotionSystem>();
         bars = GetComponent<Bars>();
-        currentBar = bars._CurrentAngryBar;
+        lowInteraction = "DollAngryLow";
+        mediumInteraction = "DollAngryMid";
+        highInteraction = "DollAngryHigh";
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
 
     // Update is called once per frame
 
@@ -37,15 +38,13 @@ public class Angry : DollEmotion
     }
     public void FixedUpdate()
     {
+        setCurrentBar();
         timerRestar++;
-        screenController.SetVignetteIntensity("fatigue", currentBar / 100);
-
-        CheckInteraction();
-
         if (timerRestar >= 120)
         {
             bars.sumAngryBar(1);
             timerRestar = 0;
+            CheckInteraction();
         }
     }
 }
