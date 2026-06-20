@@ -41,6 +41,8 @@ public class Menu3DButtonsController : MonoBehaviour
     // directo se dispara la secuencia (titileo + swap de texturas + risa + portazo) y al
     // terminar ella misma carga la escena.
     [SerializeField] private MenuPlaySequence playSequence;
+    // Panel "Como se juega" (accion Credits / Controles). Arrancar inactivo; el contenido del modal se arma aparte.
+    [SerializeField] private GameObject howToPlayPanel;
 
     [Header("Raycast")]
     [SerializeField] private LayerMask buttonMask;
@@ -51,6 +53,7 @@ public class Menu3DButtonsController : MonoBehaviour
     private Menu3DButtonVisual currentVisual;
     private MenuButtonData currentButton;
     private bool subscribedToSettings;
+    private bool isHowToPlayOpen;
 
     private void Awake()
     {
@@ -72,6 +75,11 @@ public class Menu3DButtonsController : MonoBehaviour
 
     private void Update()
     {
+        if (isHowToPlayOpen)
+        {
+            return;
+        }
+
         CheckButtons();
     }
 
@@ -227,7 +235,8 @@ public class Menu3DButtonsController : MonoBehaviour
                 break;
 
             case MenuButtonAction.Credits:
-                Debug.Log("Creditos todavia no implementado.");
+                uiAudioManager?.PlaySelect();
+                OpenHowToPlay();
                 break;
 
             case MenuButtonAction.Exit:
@@ -257,6 +266,52 @@ public class Menu3DButtonsController : MonoBehaviour
             currentVisual.SetHover(false);
             currentVisual = null;
             currentButton = null;
+        }
+    }
+
+    public void OpenHowToPlay()
+    {
+        if (howToPlayPanel == null)
+        {
+            Debug.LogWarning("Menu3DButtonsController: el boton Controles no tiene asignado el panel HowToPlay.");
+            return;
+        }
+
+        if (isHowToPlayOpen)
+        {
+            return;
+        }
+
+        isHowToPlayOpen = true;
+        howToPlayPanel.SetActive(true);
+        SetButtonsActive(false);
+
+        if (menuVisualPanel != null)
+        {
+            menuVisualPanel.SetActive(false);
+        }
+    }
+
+    // Llamar desde el boton cerrar del modal cuando lo armes.
+    public void CloseHowToPlay()
+    {
+        if (!isHowToPlayOpen)
+        {
+            return;
+        }
+
+        isHowToPlayOpen = false;
+
+        if (howToPlayPanel != null)
+        {
+            howToPlayPanel.SetActive(false);
+        }
+
+        SetButtonsActive(true);
+
+        if (menuVisualPanel != null)
+        {
+            menuVisualPanel.SetActive(true);
         }
     }
 }
