@@ -1357,15 +1357,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.03529412, g: 0.043137256, b: 0.08627451, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 20574464, guid: 3a789f7bb907f8a4c8d5ed1242738048, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2434,18 +2434,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 113881437}
     m_Modifications:
-    - target: {fileID: 462173847298287097, guid: e46db517bc6843e4391ca03926bd9559, type: 3}
-      propertyPath: m_Color.b
-      value: 0.4716981
-      objectReference: {fileID: 0}
-    - target: {fileID: 462173847298287097, guid: e46db517bc6843e4391ca03926bd9559, type: 3}
-      propertyPath: m_Color.g
-      value: 0.4716981
-      objectReference: {fileID: 0}
-    - target: {fileID: 462173847298287097, guid: e46db517bc6843e4391ca03926bd9559, type: 3}
-      propertyPath: m_Color.r
-      value: 0.4716981
-      objectReference: {fileID: 0}
     - target: {fileID: 6764992203020696132, guid: e46db517bc6843e4391ca03926bd9559, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -19114,6 +19102,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 113881437}
     m_Modifications:
     - target: {fileID: 462173847298287097, guid: e46db517bc6843e4391ca03926bd9559, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1697624051, guid: 0331dde2055c10a4496335c10aa8abdc, type: 3}
+    - target: {fileID: 462173847298287097, guid: e46db517bc6843e4391ca03926bd9559, type: 3}
       propertyPath: m_Color.b
       value: 0.4745098
       objectReference: {fileID: 0}
@@ -23451,6 +23443,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 113881437}
     m_Modifications:
     - target: {fileID: 462173847298287097, guid: e46db517bc6843e4391ca03926bd9559, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1697624051, guid: 0331dde2055c10a4496335c10aa8abdc, type: 3}
+    - target: {fileID: 462173847298287097, guid: e46db517bc6843e4391ca03926bd9559, type: 3}
       propertyPath: m_Color.b
       value: 0.4745098
       objectReference: {fileID: 0}
@@ -25166,6 +25162,11 @@ PrefabInstance:
       propertyPath: subtitleUI
       value: 
       objectReference: {fileID: 2024097066}
+    - target: {fileID: 3195907821736246216, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
+      propertyPath: pools.Array.data[22].lines.Array.data[0].text
+      value: " \xBFE-eso es... un cuerpo? Tengo que irme...Esta gente no est\xE1
+        bien... "
+      objectReference: {fileID: 0}
     - target: {fileID: 3208698658462230145, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.83609
