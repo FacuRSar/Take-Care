@@ -43672,7 +43672,9 @@ MonoBehaviour:
     volume: 0
   - id: laughter
     clips:
-    - {fileID: 8300000, guid: 21a8f317bb75af74f88d7633ea459e19, type: 3}
+    - {fileID: 8300000, guid: 2e0c60b181b8d4849badefc55ae0d0bb, type: 3}
+    - {fileID: 8300000, guid: 0a95498f90da1e84abf68fc02ff371ed, type: 3}
+    - {fileID: 8300000, guid: 4595ec6a6c063534a996cde931691d6b, type: 3}
     volume: 1
   - id: Dialogue_Cold
     clips:
@@ -50151,6 +50153,10 @@ PrefabInstance:
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[19].clips.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[20].clips.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
       propertyPath: pools.Array.data[21].clips.Array.size
