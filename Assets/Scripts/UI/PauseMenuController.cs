@@ -525,7 +525,7 @@ public class PauseMenuController : MonoBehaviour
     {
         if (verboseBrightnessLog)
         {
-            Debug.Log("[PauseMenu] OnBrightnessChanged disparado: slider=" + normalized.ToString("0.00"));
+            //Debug.Log("[PauseMenu] OnBrightnessChanged disparado: slider=" + normalized.ToString("0.00"));
         }
         if (GameController.Instance != null || menuMode) GameController.SetSavedBrightness(normalized);
         ApplyBrightness(normalized);

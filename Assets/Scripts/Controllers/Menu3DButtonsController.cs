@@ -61,6 +61,11 @@ public class Menu3DButtonsController : MonoBehaviour
         {
             menuCamera = Camera.main;
         }
+
+        if (howToPlayPanel != null)
+        {
+            howToPlayPanel.SetActive(false);
+        }
     }
 
     private void OnEnable()

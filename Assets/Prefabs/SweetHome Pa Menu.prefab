@@ -1056,7 +1056,7 @@ GameObject:
   - component: {fileID: 375226994035620612}
   - component: {fileID: 6821129873530042237}
   - component: {fileID: 2488477821551848108}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HowPlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1168,8 +1168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca2cece8c0cb69b44ba1bfd9172f7691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Menu3DButtonVisual
-  targetRenderer: {fileID: 0}
-  targetText: {fileID: 1634119905921040206}
+  targetRenderer: {fileID: 375226994035620612}
+  targetText: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   hoverColor: {r: 0.30980393, g: 0.30980393, b: 0.30980393, a: 1}
   moveOnHover: 1
