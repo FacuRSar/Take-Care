@@ -140,12 +140,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GrabbableObject
   _objectName: Palta
   _objectID: 4
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 1174101530, guid: 64ddd3d6543b26a419fd458497f806c4, type: 3}
   heldLocalPosition: {x: 0, y: 0, z: 0}
   heldLocalRotation: {x: 0, y: 0, z: 0}
   followPositionSpeed: 20
   followRotationSpeed: 20
   maxFollowVelocity: 15
+  autoDrop: 1
+  canBeGrabbed: 1
+  cannotGrabMessage: Esto pesa demasiado.
+  lockRotation: 0
+  useFixedGrabRotation: 0
+  useCustomDistance: 0
+  customHoldDistance: 1
+  pickupSfxId: 
+  dropSfxId: 
+  impactSfxId: 
+  minImpactVelocity: 1.5
+  impactCooldown: 0.15
+  impactSoundOnce: 1
   playerInteraction: {fileID: 0}
 --- !u!135 &1418450101291706585
 SphereCollider:
