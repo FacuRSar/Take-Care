@@ -96,6 +96,10 @@ public class PursuerPatrolController : MonoBehaviour
     // dibuja los radios de vision/oido/captura al seleccionar el objeto
     [SerializeField] private bool debugDetection = false;
 
+    [Header("Fase fantasma")]
+    // durante el titileo sigue corriendo hacia el jugador y pasa de largo sin frenar ni capturar
+    [SerializeField] private float vanishRunPastDistance = 4f;
+
     private NavMeshAgent agent;
     private State state;
     private float nextWanderTime;
@@ -115,6 +119,7 @@ public class PursuerPatrolController : MonoBehaviour
     private DoorInteractable peekingDoor;
     private float doorPeekEndTime;
     private bool attackRequested;
+    private float defaultStoppingDistance;
 
     // Lo consume Animations (AnimationController.cs) para disparar el trigger Attack.
     public bool ConsumeAttackRequest()
@@ -136,6 +141,7 @@ public class PursuerPatrolController : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        defaultStoppingDistance = agent.stoppingDistance;
     }
 
     private void OnEnable()
@@ -162,6 +168,11 @@ public class PursuerPatrolController : MonoBehaviour
         peekingDoor = null;
         currentDoorTarget = null;
         plannedDoors.Clear();
+
+        if (agent != null)
+        {
+            agent.stoppingDistance = defaultStoppingDistance;
+        }
     }
 
     private void ResolvePlayer()
@@ -195,6 +206,11 @@ public class PursuerPatrolController : MonoBehaviour
 
         roamRadius = point.WanderRadius;
 
+        if (agent != null)
+        {
+            agent.stoppingDistance = defaultStoppingDistance;
+        }
+
         if (point.SpaciousArea)
         {
             PlanDoors(point.transform.position);
@@ -204,21 +220,37 @@ public class PursuerPatrolController : MonoBehaviour
         PickNewWanderPoint();
     }
 
-    // Fase final de la aparicion: titila para asustar, ya no puede capturar ni disparar el cierre.
+    // Fase final de la aparicion: titila para asustar. Si ya perseguia, sigue de largo sin capturar.
     public void BeginVanishPhase()
     {
         isVanishPhase = true;
         canCapturePlayer = false;
         peekingDoor = null;
         currentDoorTarget = null;
+        plannedDoors.Clear();
 
-        if (agent != null && agent.isOnNavMesh)
+        if (agent == null)
         {
-            agent.ResetPath();
-            agent.isStopped = true;
+            return;
         }
 
-        StopFootstepLoop();
+        agent.isStopped = false;
+
+        if (IsPursuingPlayer())
+        {
+            ResolvePlayer();
+            agent.stoppingDistance = 0f;
+
+            if (player != null)
+            {
+                UpdateVanishDestination();
+            }
+        }
+    }
+
+    private bool IsPursuingPlayer()
+    {
+        return state == State.Chase || state == State.GoToLastSeen;
     }
 
     public bool IsVanishPhase => isVanishPhase;
@@ -307,6 +339,25 @@ public class PursuerPatrolController : MonoBehaviour
 
         if (isVanishPhase)
         {
+            if (IsPursuingPlayer())
+            {
+                TickVanishChase();
+            }
+            else
+            {
+                switch (state)
+                {
+                    case State.Wander:
+                        TickWander();
+                        break;
+
+                    case State.GoToDoor:
+                        TickGoToDoor();
+                        break;
+                }
+            }
+
+            HandleFootstepLoop();
             return;
         }
 
@@ -369,6 +420,41 @@ public class PursuerPatrolController : MonoBehaviour
 
         HandleFootstepLoop();
         CheckGrabPlayer();
+    }
+
+    // Durante el titileo, solo si ya perseguia: corre de largo sin frenar ni capturar.
+    private void TickVanishChase()
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        agent.isStopped = false;
+        agent.speed = chaseSpeed;
+        UpdateVanishDestination();
+        OpenDoorAheadWhileChasing();
+    }
+
+    private void UpdateVanishDestination()
+    {
+        Vector3 toPlayer = player.position - transform.position;
+        toPlayer.y = 0f;
+
+        Vector3 target = player.position;
+        if (toPlayer.sqrMagnitude > 0.01f)
+        {
+            target = player.position + toPlayer.normalized * vanishRunPastDistance;
+        }
+
+        if (NavMesh.SamplePosition(target, out NavMeshHit hit, 3f, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+        }
+        else
+        {
+            agent.SetDestination(player.position);
+        }
     }
 
     private void SetState(State next)

@@ -314,7 +314,7 @@ public class PursuerPatrolSpawner : MonoBehaviour
         appearing = false;
     }
 
-    // Titila el visual para asustar. Desde que empieza no puede capturar; al terminar sigue visible.
+    // Titila el visual para asustar y despues desactiva al Pursuer hasta la proxima aparicion.
     private IEnumerator VanishRoutine()
     {
         if (patrolController != null)
@@ -342,6 +342,11 @@ public class PursuerPatrolSpawner : MonoBehaviour
         if (renderers.Length > 0)
         {
             SetRenderersEnabled(renderers, true);
+        }
+
+        if (pursuerObject != null)
+        {
+            pursuerObject.SetActive(false);
         }
     }
 
