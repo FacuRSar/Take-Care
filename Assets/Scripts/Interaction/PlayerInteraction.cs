@@ -39,6 +39,7 @@ public class PlayerInteraction : MonoBehaviour
     // guarda referencia al objeto interactuable que el jugador esta mirando actualmente y el agarrado
 
     private bool interactPressed;
+    private bool interactAnimationRequested;
     [SerializeField] private GrabbableObject pickedObject;
 
     public GrabbableObject PickedObject => pickedObject;
@@ -259,6 +260,7 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (interactPressed)
                 {
+                    RequestInteractAnimation();
                     currentInteractable.Interact(this);
                 }
                 return;
@@ -286,6 +288,7 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (interactPressed && pickedObject == null)
                 {
+                    RequestInteractAnimation();
                     pickedObject = grabbable;
                     int heldLayer = LayerMask.NameToLayer(heldObjectLayerName);
                     if (heldLayer == -1) heldLayer = grabbable.gameObject.layer;
@@ -348,6 +351,23 @@ public class PlayerInteraction : MonoBehaviour
     {
         // dejo esto por si en el futuro un interactuable necesita saber si el jugador ya tiene un objeto agarrado
         return pickedObject != null;
+    }
+
+    public void RequestInteractAnimation()
+    {
+        interactAnimationRequested = true;
+    }
+
+    // Lo consume Animations (AnimationController.cs) para disparar el trigger Interact.
+    public bool ConsumeInteractAnimationRequest()
+    {
+        if (!interactAnimationRequested)
+        {
+            return false;
+        }
+
+        interactAnimationRequested = false;
+        return true;
     }
 
     public GameObject GetPickedObject()

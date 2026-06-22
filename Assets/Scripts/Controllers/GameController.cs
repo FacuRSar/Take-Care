@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,6 +26,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private string playSceneName = "InGame";
     [SerializeField] private string gameOverSceneName = "GameOver";
 
+    [Header("Transicion de escena")]
+    [SerializeField] private float sceneMusicFadeOut = 1f;
+
     [Header("Flags persistentes entre escenas")]
     // Ids de flags del GameStateController que NO se borran al cambiar de escena.
     // El resto se limpia automaticamente en cada transicion.
@@ -44,6 +48,8 @@ public class GameController : MonoBehaviour
     private const string PrefMusic = "settings_music_volume";
     private const string PrefSfx = "settings_sfx_volume";
     private const string PrefAmbient = "settings_ambient_volume";
+
+    private bool isTransitioning;
 
     private void Awake()
     {
@@ -102,23 +108,47 @@ public class GameController : MonoBehaviour
 
     private void TransitionToScene(string sceneName)
     {
+        if (isTransitioning)
+        {
+            return;
+        }
+
         if (string.IsNullOrEmpty(sceneName))
         {
             Debug.LogWarning("[GameController] TransitionToScene llamado con nombre vacio.");
             return;
         }
 
-        // Limpiamos los flags que NO esten en la lista de persistentes.
-        // Los persistentes solo se borran con metodos explicitos del GameStateController.
+        StartCoroutine(TransitionToSceneRoutine(sceneName));
+    }
+
+    private IEnumerator TransitionToSceneRoutine(string sceneName)
+    {
+        isTransitioning = true;
+
+        yield return FadeOutSceneMusic();
+
         if (gameStateController != null)
         {
             gameStateController.ClearFlagsExcept(persistentFlagIds);
         }
 
-        // Por si veniamos en pausa, restauramos el timeScale.
         Time.timeScale = 1f;
 
         SceneManager.LoadScene(sceneName);
+
+        isTransitioning = false;
+    }
+
+    private IEnumerator FadeOutSceneMusic()
+    {
+        if (sceneMusicFadeOut <= 0f || MusicManager.Instance == null)
+        {
+            yield break;
+        }
+
+        MusicManager.Instance.Stop(sceneMusicFadeOut);
+        yield return new WaitForSecondsRealtime(sceneMusicFadeOut);
     }
 
     // -------------- Configuraciones persistentes (PlayerPrefs) --------------

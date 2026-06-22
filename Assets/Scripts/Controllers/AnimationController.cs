@@ -74,10 +74,12 @@ public class Animations : MonoBehaviour
 
             if (target.Player != null)
             {
-                anim.SetBool("WalkX", target.Player.movingX);
-                anim.SetBool("WalkY", target.Player.movingY);
-                anim.SetBool("Sprint", target.Player.IsSprinting);
-                anim.SetBool("Crouch", target.Player.IsCrouching);
+                anim.SetBool("isMoving", target.Player.IsMoving);
+
+                if (target.PlayerInteraction != null && target.PlayerInteraction.ConsumeInteractAnimationRequest())
+                {
+                    anim.SetTrigger("Interact");
+                }
             }
 
             if (target.IsPursuerActive())
@@ -100,6 +102,7 @@ public class Animations : MonoBehaviour
     {
         public Animator Animator { get; }
         public PlayerMovement Player { get; }
+        public PlayerInteraction PlayerInteraction { get; }
         public NavMeshAgent Agent { get; }
         public PursuerNavMeshController Chase { get; }
         public PursuerPatrolController Patrol { get; }
@@ -107,7 +110,8 @@ public class Animations : MonoBehaviour
         public AnimationTarget(Animator animator)
         {
             Animator = animator;
-            Player = animator.GetComponent<PlayerMovement>();
+            Player = animator.GetComponentInParent<PlayerMovement>();
+            PlayerInteraction = animator.GetComponentInParent<PlayerInteraction>();
             Agent = animator.GetComponent<NavMeshAgent>();
             Chase = animator.GetComponent<PursuerNavMeshController>();
             Patrol = animator.GetComponent<PursuerPatrolController>();
