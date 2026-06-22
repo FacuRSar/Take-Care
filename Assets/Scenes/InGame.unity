@@ -26329,6 +26329,10 @@ PrefabInstance:
       value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 3197682719954657854, guid: c34dbc484cf013b42bcceca83d38a2b2, type: 3}
+      propertyPath: pools.Array.data[20].clips.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3197682719954657854, guid: c34dbc484cf013b42bcceca83d38a2b2, type: 3}
       propertyPath: pools.Array.data[25].clips.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -26336,6 +26340,18 @@ PrefabInstance:
       propertyPath: pools.Array.data[26].clips.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3197682719954657854, guid: c34dbc484cf013b42bcceca83d38a2b2, type: 3}
+      propertyPath: 'pools.Array.data[20].clips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: d2c15b6521c8a9041a7f4a3c83a92385, type: 3}
+    - target: {fileID: 3197682719954657854, guid: c34dbc484cf013b42bcceca83d38a2b2, type: 3}
+      propertyPath: 'pools.Array.data[20].clips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 8174a786d2585764a94656efe0b1d702, type: 3}
+    - target: {fileID: 3197682719954657854, guid: c34dbc484cf013b42bcceca83d38a2b2, type: 3}
+      propertyPath: 'pools.Array.data[20].clips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 92ecccf1745dd2e46aa07650b626cc3c, type: 3}
     - target: {fileID: 3197682719954657854, guid: c34dbc484cf013b42bcceca83d38a2b2, type: 3}
       propertyPath: 'pools.Array.data[25].clips.Array.data[0]'
       value: 
@@ -26996,6 +27012,46 @@ PrefabInstance:
       propertyPath: subtitleUI
       value: 
       objectReference: {fileID: 2024097066}
+    - target: {fileID: 3195907821736246216, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
+      propertyPath: pools.Array.data[0].lines.Array.data[0].duration
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3195907821736246216, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
+      propertyPath: pools.Array.data[0].lines.Array.data[1].duration
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3195907821736246216, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
+      propertyPath: pools.Array.data[1].lines.Array.data[0].duration
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3195907821736246216, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
+      propertyPath: pools.Array.data[2].lines.Array.data[0].duration
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3195907821736246216, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
+      propertyPath: pools.Array.data[3].lines.Array.data[0].duration
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3195907821736246216, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
+      propertyPath: pools.Array.data[0].lines.Array.data[0].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 865e847c65104d24fbc4972b3ad494a9, type: 3}
+    - target: {fileID: 3195907821736246216, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
+      propertyPath: pools.Array.data[0].lines.Array.data[1].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 95c4d0e0cba0a3e499316c4d16c91aed, type: 3}
+    - target: {fileID: 3195907821736246216, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
+      propertyPath: pools.Array.data[1].lines.Array.data[0].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7bc44eb1858f59946ad90612fb82b73a, type: 3}
+    - target: {fileID: 3195907821736246216, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
+      propertyPath: pools.Array.data[2].lines.Array.data[0].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e8cd489da1b70e94f8001616aec33b7c, type: 3}
+    - target: {fileID: 3195907821736246216, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
+      propertyPath: pools.Array.data[3].lines.Array.data[0].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: c178e53f2a49aec4c90d6a57ccdc76a2, type: 3}
     - target: {fileID: 3208698658462230145, guid: 6489d99609aeebe43ac50ae5e25f1188, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.83609
@@ -28985,6 +29041,18 @@ PrefabInstance:
       value: ScreenEffectManager
       objectReference: {fileID: 0}
     - target: {fileID: 8924992508644943850, guid: bcc3656da15842942ab934c6aac0a430, type: 3}
+      propertyPath: effects.Array.data[4].id
+      value: ScaryMaze_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8924992508644943850, guid: bcc3656da15842942ab934c6aac0a430, type: 3}
+      propertyPath: effects.Array.data[5].id
+      value: ScaryMaze_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8924992508644943850, guid: bcc3656da15842942ab934c6aac0a430, type: 3}
+      propertyPath: effects.Array.data[6].id
+      value: ScaryMaze_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8924992508644943850, guid: bcc3656da15842942ab934c6aac0a430, type: 3}
       propertyPath: effects.Array.data[1].image
       value: 
       objectReference: {fileID: 529735485}
@@ -28999,7 +29067,7 @@ PrefabInstance:
     - target: {fileID: 8924992508644943850, guid: bcc3656da15842942ab934c6aac0a430, type: 3}
       propertyPath: effects.Array.data[4].image
       value: 
-      objectReference: {fileID: 1908845586}
+      objectReference: {fileID: 138770294}
     - target: {fileID: 8924992508644943850, guid: bcc3656da15842942ab934c6aac0a430, type: 3}
       propertyPath: effects.Array.data[5].image
       value: 
@@ -29007,7 +29075,7 @@ PrefabInstance:
     - target: {fileID: 8924992508644943850, guid: bcc3656da15842942ab934c6aac0a430, type: 3}
       propertyPath: effects.Array.data[6].image
       value: 
-      objectReference: {fileID: 138770294}
+      objectReference: {fileID: 1908845586}
     - target: {fileID: 8924992508644943850, guid: bcc3656da15842942ab934c6aac0a430, type: 3}
       propertyPath: effects.Array.data[0].volume
       value: 

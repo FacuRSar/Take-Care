@@ -62,7 +62,7 @@ MonoBehaviour:
     SubtitlesForQuestComplete: Mentiroso_Complete
     SubtitlesForQuestFail: Mentiroso_Fail
     SubtitlesForQuestHalf: 
-    timer: 90
+    timer: 120
     Name: El Reflejo Mentiroso
     description: "La mu\xF1eca entra en un estado de furia ciega porque afirma que
       la camara vieja  se est\xE1 burlando de ella y mostr\xE1ndole \"otra cara\".
@@ -98,6 +98,8 @@ MonoBehaviour:
       itemID: 3
     - quantity: 1
       itemID: 2
+    - quantity: 1
+      itemID: 6
     roomID: 
     EmotionID: 2
     addPoints: 25
