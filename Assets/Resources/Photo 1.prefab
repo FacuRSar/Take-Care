@@ -155,12 +155,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GrabbableObject
   _objectName: 
   _objectID: 2
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: -1884606277, guid: 1e78491f5553d5c48910b5e1ab124be8, type: 3}
   heldLocalPosition: {x: 0, y: 0, z: 0}
   heldLocalRotation: {x: 0, y: 0, z: 0}
   followPositionSpeed: 20
   followRotationSpeed: 20
   maxFollowVelocity: 15
+  autoDrop: 1
   canBeGrabbed: 1
   cannotGrabMessage: Esto pesa demasiado.
   lockRotation: 0

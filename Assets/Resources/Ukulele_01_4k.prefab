@@ -161,10 +161,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GrabbableObject
   _objectName: Ukelele
   _objectID: 5
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 423951621, guid: d8d8fb0f2c853014ab02b671e3fd6159, type: 3}
   heldLocalPosition: {x: 0, y: 0, z: 0}
   heldLocalRotation: {x: 0, y: 0, z: 0}
   followPositionSpeed: 20
   followRotationSpeed: 20
   maxFollowVelocity: 15
+  autoDrop: 1
+  canBeGrabbed: 1
+  cannotGrabMessage: Esto pesa demasiado.
+  lockRotation: 0
+  useFixedGrabRotation: 0
+  useCustomDistance: 0
+  customHoldDistance: 1
+  pickupSfxId: 
+  dropSfxId: 
+  impactSfxId: 
+  minImpactVelocity: 1.5
+  impactCooldown: 0.15
+  impactSoundOnce: 1
   playerInteraction: {fileID: 0}
