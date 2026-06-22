@@ -11,7 +11,10 @@ GameObject:
   - component: {fileID: 5644191744918134740}
   - component: {fileID: 4862894044439153284}
   - component: {fileID: 900881895684528692}
-  m_Layer: 0
+  - component: {fileID: 5729697522396656007}
+  - component: {fileID: 8926283025035812228}
+  - component: {fileID: -3078224576664420618}
+  m_Layer: 6
   m_Name: NotaQuest_Ordenando
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 16.268, y: -63.2049, z: 70.10664}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -90,3 +93,85 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5729697522396656007
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6899405943554000555}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.5698271, y: 0.061014585, z: 2.1067293}
+  m_Center: {x: 0.01089716, y: 0.0116470875, z: 0.013587356}
+--- !u!54 &8926283025035812228
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6899405943554000555}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &-3078224576664420618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6899405943554000555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff42adca207178f40893837a76ce0d5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabbableObject
+  _objectName: 
+  _objectID: 0
+  itemIcon: {fileID: 0}
+  heldLocalPosition: {x: 0, y: 0.5, z: 0.6}
+  heldLocalRotation: {x: 75, y: 0, z: 180}
+  followPositionSpeed: 20
+  followRotationSpeed: 20
+  maxFollowVelocity: 15
+  autoDrop: 1
+  canBeGrabbed: 1
+  cannotGrabMessage: Esto pesa demasiado.
+  lockRotation: 1
+  useFixedGrabRotation: 1
+  useCustomDistance: 0
+  customHoldDistance: 1
+  pickupSfxId: 
+  dropSfxId: 
+  impactSfxId: 
+  minImpactVelocity: 1.5
+  impactCooldown: 0.15
+  impactSoundOnce: 1
+  playerInteraction: {fileID: 0}
