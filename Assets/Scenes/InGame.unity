@@ -21624,6 +21624,253 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6891893454311730857, guid: c34dbc484cf013b42bcceca83d38a2b2, type: 3}
   m_PrefabInstance: {fileID: 1279558193231561498}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
+=======
+  m_GameObject: {fileID: 1957344381}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1635351213}
+  - {fileID: 418715324}
+  m_Father: {fileID: 280993117}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1957344383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+  m_PrefabInstance: {fileID: 8221735782243556756}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957344381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da1796db8a6afc2479c3ef48355c0c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SFXManager
+  oneShotSource: {fileID: 0}
+  pools:
+  - id: WoodCreak
+    clips:
+    - {fileID: 8300000, guid: 83bf3a182ba79e840933a0f8aee7a767, type: 3}
+    - {fileID: 8300000, guid: f96d5b6c6f63a1848bb1fc11c2bb8634, type: 3}
+    - {fileID: 8300000, guid: 48a8dd9804f385a47a690e52fd27a67f, type: 3}
+    - {fileID: 8300000, guid: 1e87c7f45462f904db5812260be9d074, type: 3}
+    - {fileID: 8300000, guid: 44ea6ef30677b4b4cb17f74e3740a5ad, type: 3}
+    - {fileID: 8300000, guid: d0ff8e7b515a5a244be84a618777c231, type: 3}
+    volume: 1
+  - id: PhoneRing
+    clips:
+    - {fileID: 8300000, guid: ad38064bd8268fe43bc4c42a2caeb63e, type: 3}
+    volume: 1
+  - id: OpenDoor
+    clips:
+    - {fileID: 8300000, guid: 2555a05e29a7d5a41b72071aec265e3a, type: 3}
+    volume: 1
+  - id: CloseDoor
+    clips:
+    - {fileID: 8300000, guid: 88814db6b9d96e6438abbb558be5c594, type: 3}
+    volume: 1
+  - id: LockedDoor
+    clips:
+    - {fileID: 8300000, guid: 3c5201153d9b3994a89ddcf292adf999, type: 3}
+    volume: 1
+  - id: OpenFaucet
+    clips:
+    - {fileID: 8300000, guid: 54e63097dbde56e4db001b35051d6985, type: 3}
+    volume: 1
+  - id: CloseFaucet
+    clips:
+    - {fileID: 8300000, guid: 5d0f9f269383f3e4da07ac8bce5e9b9b, type: 3}
+    volume: 1
+  - id: FaucetLoop
+    clips:
+    - {fileID: 8300000, guid: aa809b246103cb2448b684e74eb3eb04, type: 3}
+    volume: 1
+  - id: EnergyRestored
+    clips:
+    - {fileID: 8300000, guid: b97661f23e4c293489262eed7e4de8db, type: 3}
+    volume: 1
+  - id: DollLaugh
+    clips:
+    - {fileID: 8300000, guid: 27f8d6e7145021249b3ea76ff07c63ae, type: 3}
+    volume: 1
+  - id: JumpScare
+    clips: []
+    volume: 1
+  - id: PhoneStatic
+    clips:
+    - {fileID: 8300000, guid: 5bcbebf6072a49845b70541c38f4c0cb, type: 3}
+    volume: 1
+  - id: MirrorReveal
+    clips:
+    - {fileID: 8300000, guid: dd3340a04caed894bb33cbaeb7975b99, type: 3}
+    volume: 1
+  - id: BathroomBreak
+    clips:
+    - {fileID: 8300000, guid: 95b2867fe86c1dc44b2c7fe1ee3df950, type: 3}
+    volume: 1
+  - id: LightSwitch
+    clips:
+    - {fileID: 8300000, guid: 1120954fa8aa8164f91cb925a96b75e3, type: 3}
+    - {fileID: 8300000, guid: 6a93ba30b7efeff4bb183066d15ef632, type: 3}
+    - {fileID: 8300000, guid: 1c4504bf41c0682408a040b84afbb8dc, type: 3}
+    - {fileID: 8300000, guid: fe9518d31b84f7b41a076163373fbfe2, type: 3}
+    volume: 1
+  - id: StalkerSpawn
+    clips:
+    - {fileID: 8300000, guid: e493d5371e81c4946a35170bac3399f9, type: 3}
+    - {fileID: 8300000, guid: 1c565599e7b3afe43b380b9445f9b95b, type: 3}
+    - {fileID: 8300000, guid: 8d706c67c8f5c7a44be5148aa21657db, type: 3}
+    volume: 1
+  - id: PursuerLaugh
+    clips:
+    - {fileID: 8300000, guid: edb02ec3aea9e004ebed567be962589c, type: 3}
+    - {fileID: 8300000, guid: 244281af7c9c07949b34645047b325d6, type: 3}
+    - {fileID: 8300000, guid: d234bcedd8b22ff49920d21648c03cab, type: 3}
+    - {fileID: 8300000, guid: 76d5a1575030fda4bb6fc591d62a1327, type: 3}
+    volume: 1
+  - id: Barrel_Fall
+    clips:
+    - {fileID: 8300000, guid: 413d7fb0b02d90d4cb95dab9fbef743d, type: 3}
+    volume: 1
+  - id: Voice_Screemers
+    clips:
+    - {fileID: 8300000, guid: 06dbd22150e49764e93fa26d175f2ab2, type: 3}
+    - {fileID: 8300000, guid: eba9aa3476626094f859d15c941a1e71, type: 3}
+    - {fileID: 8300000, guid: fe25577463efbb447b659266add0eb5d, type: 3}
+    volume: 1
+  - id: kettle
+    clips:
+    - {fileID: 8300000, guid: 26f583c87d233aa41b3fe2525a51d244, type: 3}
+    volume: 0
+  - id: laughter
+    clips:
+    - {fileID: 8300000, guid: 21a8f317bb75af74f88d7633ea459e19, type: 3}
+    volume: 1
+  - id: Dialogue_Cold
+    clips:
+    - {fileID: 8300000, guid: f04472ab133e23f40bef6ccf4d1cc76e, type: 3}
+    - {fileID: 8300000, guid: f9316ac3d4ffe7d459dbd2c737d37dc4, type: 3}
+    - {fileID: 8300000, guid: 53f77f48b59a1fd4abc07c3df083210f, type: 3}
+    - {fileID: 8300000, guid: 185211e29b3f14f41bfcf0c7f34dec10, type: 3}
+    volume: 1
+  - id: Dialogue_Hot
+    clips:
+    - {fileID: 8300000, guid: 68eb8432a6b6a774aacd8c768424b3b9, type: 3}
+    - {fileID: 8300000, guid: 3f09ba1384355614aa68ff8fdd04e900, type: 3}
+    - {fileID: 8300000, guid: 9cd241f271b945c47b19de882d6cf66f, type: 3}
+    - {fileID: 8300000, guid: c5fc3ccab8c3bf54684a41d2b8d1cd40, type: 3}
+    volume: 1
+  - id: Dialogue_Warm
+    clips:
+    - {fileID: 8300000, guid: fb60661e5fb13c54ab50ec7cf4606c0a, type: 3}
+    - {fileID: 8300000, guid: c9e32c7902630bf469c0f53d9c36bd01, type: 3}
+    - {fileID: 8300000, guid: 78712156775cb4249a37b620e58fab52, type: 3}
+    - {fileID: 8300000, guid: 7357f2f86477f244da28fc3fa4752c37, type: 3}
+    volume: 1
+  default3DVolume: 1
+  min3DDistance: 3
+  max3DDistance: 25
+--- !u!82 &1957344384
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 3005835556141823968, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+  m_PrefabInstance: {fileID: 8221735782243556756}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957344381}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6170308234408914342, guid: 4d0b0d8e2520dd74c9e91046863fc510, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+>>>>>>> parent of 0ba37ed (add pool sfx manager)
 --- !u!1 &1961024630
 GameObject:
   m_ObjectHideFlags: 0
@@ -28807,7 +29054,115 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
+<<<<<<< HEAD
     - target: {fileID: 1421315953473365519, guid: c98640c34f1be9d448872ac53d375558, type: 3}
+=======
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[20].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[10].clips.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[15].clips.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[16].clips.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[17].clips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[18].clips.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[19].clips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: pools.Array.data[21].clips.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[15].clips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: e493d5371e81c4946a35170bac3399f9, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[15].clips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 1c565599e7b3afe43b380b9445f9b95b, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[15].clips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 8d706c67c8f5c7a44be5148aa21657db, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[15].clips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: fe9518d31b84f7b41a076163373fbfe2, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[16].clips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: edb02ec3aea9e004ebed567be962589c, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[16].clips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 244281af7c9c07949b34645047b325d6, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[16].clips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: d234bcedd8b22ff49920d21648c03cab, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[16].clips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 76d5a1575030fda4bb6fc591d62a1327, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[17].clips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 413d7fb0b02d90d4cb95dab9fbef743d, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[17].clips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 244281af7c9c07949b34645047b325d6, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[17].clips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: d234bcedd8b22ff49920d21648c03cab, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[17].clips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 76d5a1575030fda4bb6fc591d62a1327, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[18].clips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 413d7fb0b02d90d4cb95dab9fbef743d, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[18].clips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 244281af7c9c07949b34645047b325d6, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[18].clips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: d234bcedd8b22ff49920d21648c03cab, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[18].clips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 76d5a1575030fda4bb6fc591d62a1327, type: 3}
+    - target: {fileID: 5655122124389186119, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: 'pools.Array.data[19].clips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 413d7fb0b02d90d4cb95dab9fbef743d, type: 3}
+    - target: {fileID: 5713188222227211371, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.3596
+      objectReference: {fileID: 0}
+    - target: {fileID: 5713188222227211371, guid: c0f3cf4e8e003874881ae651e8489479, type: 3}
+>>>>>>> parent of 0ba37ed (add pool sfx manager)
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
