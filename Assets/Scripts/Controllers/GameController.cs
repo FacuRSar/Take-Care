@@ -115,7 +115,7 @@ public class GameController : MonoBehaviour
 
         if (string.IsNullOrEmpty(sceneName))
         {
-            Debug.LogWarning("[GameController] TransitionToScene llamado con nombre vacio.");
+            //Debug.LogWarning("[GameController] TransitionToScene llamado con nombre vacio.");
             return;
         }
 

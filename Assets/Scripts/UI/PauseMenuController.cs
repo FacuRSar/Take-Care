@@ -477,7 +477,7 @@ public class PauseMenuController : MonoBehaviour
 
         if (audioMixer == null)
         {
-            Debug.LogWarning("[PauseMenu] AudioMixer no asignado. Los sliders de volumen no van a afectar nada hasta que lo asignes y rutes los AudioSources al mixer.");
+            //Debug.LogWarning("[PauseMenu] AudioMixer no asignado. Los sliders de volumen no van a afectar nada hasta que lo asignes y rutes los AudioSources al mixer.");
         }
 
         RefreshOptionsUI();
@@ -602,7 +602,7 @@ public class PauseMenuController : MonoBehaviour
             {
                 if (verboseBrightnessLog)
                 {
-                    Debug.LogWarning("[PauseMenu] ApplyBrightness sin colorAdjustments (no encontrado).");
+                    //Debug.LogWarning("[PauseMenu] ApplyBrightness sin colorAdjustments (no encontrado).");
                 }
                 return;
             }
@@ -702,7 +702,7 @@ public class PauseMenuController : MonoBehaviour
         }
 
         brightnessWarningLogged = true;
-        Debug.LogWarning("[PauseMenu] Brillo no aplica: " + detail);
+        //Debug.LogWarning("[PauseMenu] Brillo no aplica: " + detail);
     }
 
     private static void SetSliderValueWithoutNotify(Slider slider, float value)

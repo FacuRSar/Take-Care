@@ -312,7 +312,7 @@ public class Quest : MonoBehaviour
             // flag para que los HintDialogue sepan que mision esta en curso
             SetQuestFlag($"quest_{activeQuest.QuestID}_active", true);
 
-            Debug.LogWarning($"Quest Activated: ID = {activeQuest.QuestID}, Name = {activeQuest.QuestName}");
+            //Debug.LogWarning($"Quest Activated: ID = {activeQuest.QuestID}, Name = {activeQuest.QuestName}");
 
             Rooms();
             Obj();
@@ -379,7 +379,7 @@ public class Quest : MonoBehaviour
         dialogue.PlayDialogue(activeQuest.SubtitlesForQuestFail);
         activeQuest.isActive = false;
         isActive = activeQuest.isActive;
-        Debug.Log("Quest fallida:" + activeQuest.config.Name);
+        //Debug.Log("Quest fallida:" + activeQuest.config.Name);
 
         SetQuestFlag($"quest_{activeQuest.QuestID}_active", false);
         SetQuestFlag($"quest_{activeQuest.QuestID}_active_half", false);
@@ -474,7 +474,7 @@ public class Quest : MonoBehaviour
             collectedCount += Math.Min(inInventory, requiredQty);
         }
 
-        Debug.Log($"Collected {collectedCount} / {totalRequired} for quest '{activeQuest.QuestName}'");
+        //Debug.Log($"Collected {collectedCount} / {totalRequired} for quest '{activeQuest.QuestName}'");
 
         CheckHalfProgress(collectedCount, totalRequired);
 
@@ -489,13 +489,13 @@ public class Quest : MonoBehaviour
         if (activeQuest.GetQuestType() != questType.ToGo) return;
         if (Room == null)
         {
-            Debug.LogWarning("No hay un desino asignado");
+            //Debug.LogWarning("No hay un desino asignado");
             return;
         }
 
         float distance = Vector3.Distance(player.transform.position, Room.transform.position);
 
-        Debug.Log(distance);
+        //Debug.Log(distance);
         if (distance < distanceMin)
         {
             CompleteActiveQuest();
@@ -505,7 +505,7 @@ public class Quest : MonoBehaviour
     {
         if (activeQuest == null) return;
         if (activeQuest.GetQuestType() != questType.ToDelivery) return;
-        Debug.Log(activeQuest.GetQuestType());
+        //Debug.Log(activeQuest.GetQuestType());
 
         distanceList = new List<float>(new float[Obj_.Count]); // Reiniciar la lista de distancias para cada objeto
         int ObjInRoom = 0;
@@ -513,7 +513,7 @@ public class Quest : MonoBehaviour
         for (int i = 0; i < Obj_.Count; i++)
         {
             float distance = Vector3.Distance(Obj_[i].gameObject.transform.position, Room.position);
-            Debug.Log($"Distancia entre {Obj_[i].gameObject.name} y destino: {distance}");
+            //Debug.Log($"Distancia entre {Obj_[i].gameObject.name} y destino: {distance}");
 
             distanceList[i] = distance;
 
@@ -563,12 +563,12 @@ public class Quest : MonoBehaviour
         isActive = activeQuest.isActive;
         activeQuest.isComplete = true;
         dialogue.PlayDialogue(activeQuest.SubtitlesForQuestComplete);
-        Debug.LogWarning("Quest completada: " + activeQuest.config.Name);
+        //Debug.LogWarning("Quest completada: " + activeQuest.config.Name);
 
         bars.QuestFinished(activeQuest.GetEmotionIDType_Add(), (int)activeQuest.AddPoints);
         bars.QuestFinished(activeQuest.GetEmotionIDType_Remove(), -(int)activeQuest.RemovePoints);
 
-        Debug.LogWarning($"Se completo la quest se le sumo {activeQuest.AddPoints} a {activeQuest.GetEmotionIDType_Add()} y se le resto {activeQuest.RemovePoints} a {activeQuest.GetEmotionIDType_Remove()}");
+        //Debug.LogWarning($"Se completo la quest se le sumo {activeQuest.AddPoints} a {activeQuest.GetEmotionIDType_Add()} y se le resto {activeQuest.RemovePoints} a {activeQuest.GetEmotionIDType_Remove()}");
 
         // al completarse se sacan las flags de "activo" y queda solo la de "done"
         SetQuestFlag($"quest_{activeQuest.QuestID}_active", false);

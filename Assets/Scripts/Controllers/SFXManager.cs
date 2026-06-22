@@ -242,7 +242,7 @@ public class SFXManager : MonoBehaviour
 
         if (pool == null || pool.clips == null || pool.clips.Length == 0)
         {
-            Debug.LogWarning("No se encontro pool de SFX o esta vacia: " + id);
+            //Debug.LogWarning("No se encontro pool de SFX o esta vacia: " + id);
             return null;
         }
 

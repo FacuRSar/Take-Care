@@ -43,7 +43,7 @@ public class Watching : DollEmotion
 
         if (PlayerIsFacingAway)
         {
-            Debug.Log("Sentis que la muñeca te sigue mirando aunque no puedas verla");
+            //Debug.Log("Sentis que la muñeca te sigue mirando aunque no puedas verla");
 
             Vector3 DirectionToPlayer = (dollEmotionSystem.Player.transform.position - dollEmotionSystem.Doll.transform.position);
             dollEmotionSystem.transform.rotation = Quaternion.LookRotation(DirectionToPlayer.normalized);
@@ -52,7 +52,7 @@ public class Watching : DollEmotion
 
             if (timerCurrent < 0 && DirectionToPlayer.magnitude > DistanceToDollMin)
             {
-                Debug.Log("La muñeca se esta poniendo enojada porque no le prestas atención");
+                //Debug.Log("La muñeca se esta poniendo enojada porque no le prestas atención");
                 
                 dollEmotionSystem.ChangeState(DollState.Angry);
             }
@@ -60,21 +60,21 @@ public class Watching : DollEmotion
             {
                // bool IsQuestCazadoraCompleted = QuestCazdora();  aca deberías implementar la lógica para verificar si la quest de la cazadora está completada
 
-                Debug.Log("Dialogos");
-                Debug.Log("Dialogos papa no me quiere");
+                //Debug.Log("Dialogos");
+                //Debug.Log("Dialogos papa no me quiere");
 
                 
                 dollEmotionSystem.ChangeState(DollState.Cry);
             }
             else if(DirectionToPlayer.magnitude < DistanceToDollMin)
             {
-                Debug.Log("No estas mirando a la muñeca y se esta poniendo triste");
+                //Debug.Log("No estas mirando a la muñeca y se esta poniendo triste");
                 AddCryBar?.Invoke();
                 
             }
             else
             {
-                Debug.Log("La muñeca se esta enojando porque no le prestas atención");
+                //Debug.Log("La muñeca se esta enojando porque no le prestas atención");
                 AddAngryBar?.Invoke();
             }
 
@@ -85,13 +85,13 @@ public class Watching : DollEmotion
             if (timerCurrent < 0)
             {
                 // Si el jugador no está de espaldas, puedes implementar la lógica para que la muñeca lo siga mirando
-                Debug.Log("La muñeca esta feliz porque la estas mirando");
+                //Debug.Log("La muñeca esta feliz porque la estas mirando");
                 
                 dollEmotionSystem.ChangeState(DollState.Happy);
             }
             else
             {      
-                Debug.Log("La muñeca siente que le das atencion, le gusta");
+                //Debug.Log("La muñeca siente que le das atencion, le gusta");
                 AddHappyBar?.Invoke();
             }
           
@@ -117,14 +117,12 @@ public class Watching : DollEmotion
 
     private void OnDrawGizmos()
     {
-        if (dollEmotionSystem == null)
+        if (dollEmotionSystem == null || dollEmotionSystem.Doll == null)
         {
             return;
         }
-        else
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(dollEmotionSystem.Doll.transform.position, DistanceToDollMin);
-        }
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(dollEmotionSystem.Doll.position, DistanceToDollMin);
     }
 }

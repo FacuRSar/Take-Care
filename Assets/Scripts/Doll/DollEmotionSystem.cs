@@ -70,7 +70,7 @@ public class DollEmotionSystem : MonoBehaviour
         currentStateName = "Doll" + Currentstate.ToString();
         gameStateController.SetFlag(currentStateName, true);
 
-        Debug.Log("Cambiaste al estado: " + Currentstate);
+        //Debug.Log("Cambiaste al estado: " + Currentstate);
 
         switch (Currentstate)
         {
@@ -155,8 +155,13 @@ public class DollEmotionSystem : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (doll == null)
+        {
+            return;
+        }
+
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(Doll.transform.position, Doll.transform.position + Doll.transform.forward * 2f);
+        Gizmos.DrawLine(doll.position, doll.position + doll.forward * 2f);
     }
     public void InitiallizeFlags()
     {

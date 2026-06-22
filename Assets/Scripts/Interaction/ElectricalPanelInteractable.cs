@@ -91,7 +91,7 @@ public class ElectricalPanelInteractable : Interactable
 
         if (targetState == null)
         {
-            Debug.LogWarning("No hay GameStateController en escena");
+            //Debug.LogWarning("No hay GameStateController en escena");
             return;
         }
 
@@ -114,7 +114,7 @@ public class ElectricalPanelInteractable : Interactable
             introSequenceController.OnEnergyRestored();
         }
 
-        Debug.Log("panel electrico activado");
+        //Debug.Log("panel electrico activado");
     }
 
     private void EnergyOn()
@@ -140,6 +140,6 @@ public class ElectricalPanelInteractable : Interactable
         pendingEndSound = "EnergyOff";
         targetRotation = Quaternion.Euler(offRotation, 0f, 0f);
 
-        Debug.Log("electricidad apagada");
+        //Debug.Log("electricidad apagada");
     }
 }

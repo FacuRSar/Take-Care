@@ -92,17 +92,17 @@ public class Idle : DollEmotion
         bool isFar = Vector3.Distance(playerPosition, dollPosition) > distanceToPlayerMin;
         if(isFar || PlayerIsFacingAway) // Si el jugador está lejos O dado vuelta
         {
-            Debug.Log("Sentis respiraciones en la nuca");
+            //Debug.Log("Sentis respiraciones en la nuca");
             Timer -= Time.deltaTime;
-            Debug.Log("Timer: " + Timer);
+            //Debug.Log("Timer: " + Timer);
             if (Timer <= 0)
             {   
-                Debug.Log("Cambiaste al estado: Watching");
+                //Debug.Log("Cambiaste al estado: Watching");
                 dollEmotionSystem.ChangeState(DollState.Watching);
             }
             else
             {
-                Debug.Log("El jugador se siente observado");
+                //Debug.Log("El jugador se siente observado");
             }
         }
         else

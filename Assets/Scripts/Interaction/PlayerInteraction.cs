@@ -87,7 +87,7 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                Debug.Log($"No Tenes ningun obj en la mano ni en el {Slot}");
+                //Debug.Log($"No Tenes ningun obj en la mano ni en el {Slot}");
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -103,7 +103,7 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                Debug.Log($"No Tenes ningun obj en la mano ni en el {Slot}");
+                //Debug.Log($"No Tenes ningun obj en la mano ni en el {Slot}");
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -119,7 +119,7 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                Debug.Log($"No Tenes ningun obj en la mano ni en el {Slot}");
+                //Debug.Log($"No Tenes ningun obj en la mano ni en el {Slot}");
             }
         }
         else return;
@@ -130,7 +130,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (slots[index] != null)
         {
-            Debug.Log($"El slot {slot} ya está ocupado");
+            //Debug.Log($"El slot {slot} ya está ocupado");
             return;
         }
 
@@ -167,7 +167,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (slots[index] == null)
         {
-            Debug.Log($"El slot {slot} está vacío");
+            //Debug.Log($"El slot {slot} está vacío");
             return;
         }
 
@@ -200,7 +200,7 @@ public class PlayerInteraction : MonoBehaviour
         }
         else
         {
-            Debug.Log("No hay objeto en mano para forzar su soltado.");
+            //Debug.Log("No hay objeto en mano para forzar su soltado.");
         }
     }
 

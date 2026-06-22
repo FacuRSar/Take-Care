@@ -68,7 +68,7 @@ public class SubtitleUI : MonoBehaviour
 
         if (!isActiveAndEnabled)
         {
-            Debug.LogWarning("SubtitleUI: no puede mostrar subtitulo porque el componente esta deshabilitado.");
+            //Debug.LogWarning("SubtitleUI: no puede mostrar subtitulo porque el componente esta deshabilitado.");
             return false;
         }
 

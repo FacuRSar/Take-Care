@@ -291,7 +291,7 @@ public class InGameSequenceController : MonoBehaviour
         }
 
         completeProgress += Mathf.Max(0, completePoints);
-        Debug.Log($"InGameSequenceController: complete = {completeProgress}/{completeToWin}");
+        //Debug.Log($"InGameSequenceController: complete = {completeProgress}/{completeToWin}");
 
         if (completeProgress >= completeToWin)
         {
@@ -394,7 +394,7 @@ public class InGameSequenceController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("InGameSequenceController: no hay PursuerSpawnController asignado, no aparece la Pursuer.");
+            //Debug.LogWarning("InGameSequenceController: no hay PursuerSpawnController asignado, no aparece la Pursuer.");
         }
     }
 
@@ -511,14 +511,14 @@ public class InGameSequenceController : MonoBehaviour
 
         if (Keyboard.current[debugWinKey].wasPressedThisFrame)
         {
-            Debug.Log("[DEBUG] Forzando victoria: progreso de escape al maximo.");
+            //Debug.Log("[DEBUG] Forzando victoria: progreso de escape al maximo.");
             completeProgress = completeToWin;
             TriggerEscape();
         }
 
         if (Keyboard.current[debugPursuerKey].wasPressedThisFrame)
         {
-            Debug.Log("[DEBUG] Forzando timer en 0 y spawn de la Pursuer.");
+            //Debug.Log("[DEBUG] Forzando timer en 0 y spawn de la Pursuer.");
             timeLeft = 0f;
             timerRunning = false;
             UpdateTimerDisplay();

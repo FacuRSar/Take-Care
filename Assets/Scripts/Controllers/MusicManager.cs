@@ -125,11 +125,11 @@ public class MusicManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(id))
         {
-            Debug.LogWarning("[MusicManager] Debug: no hay id configurado para esa tecla.");
+            //Debug.LogWarning("[MusicManager] Debug: no hay id configurado para esa tecla.");
             return;
         }
 
-        Debug.Log("[MusicManager] Debug Play: " + id);
+        //Debug.Log("[MusicManager] Debug Play: " + id);
         Play(id, debugFade);
     }
 
@@ -141,7 +141,7 @@ public class MusicManager : MonoBehaviour
         MusicTrack track = GetTrack(id);
         if (track == null || track.clip == null)
         {
-            Debug.LogWarning("[MusicManager] No se encontro la pista de musica: " + id);
+            //Debug.LogWarning("[MusicManager] No se encontro la pista de musica: " + id);
             return;
         }
 
@@ -291,7 +291,7 @@ public class MusicManager : MonoBehaviour
         MusicTrack track = GetTrack(id);
         if (track == null || track.clip == null)
         {
-            Debug.LogWarning("[MusicManager] No se encontro la pista para AddMusic: " + id);
+            //Debug.LogWarning("[MusicManager] No se encontro la pista para AddMusic: " + id);
             return;
         }
 
@@ -401,7 +401,7 @@ public class MusicManager : MonoBehaviour
         MusicTrack track = GetTrack(id);
         if (track == null || track.clip == null)
         {
-            Debug.LogWarning("[MusicManager] No se encontro la pista para PlayOnce: " + id);
+            //Debug.LogWarning("[MusicManager] No se encontro la pista para PlayOnce: " + id);
             onComplete?.Invoke();
             return;
         }

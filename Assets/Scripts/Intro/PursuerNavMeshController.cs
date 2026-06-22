@@ -90,7 +90,7 @@ public class PursuerNavMeshController : MonoBehaviour
         if (patrol != null && patrol.enabled)
         {
             patrol.enabled = false;
-            Debug.LogWarning("PursuerNavMeshController: habia un PursuerPatrolController activo en el mismo objeto. Lo desactive para que no se superpongan.");
+            //Debug.LogWarning("PursuerNavMeshController: habia un PursuerPatrolController activo en el mismo objeto. Lo desactive para que no se superpongan.");
         }
 
         hasGrabbedPlayer = false;
@@ -107,7 +107,7 @@ public class PursuerNavMeshController : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("PursuerNavMeshController: no hay player asignado ni se encontro por tag '" + playerTag + "'.");
+                //Debug.LogWarning("PursuerNavMeshController: no hay player asignado ni se encontro por tag '" + playerTag + "'.");
             }
         }
 
@@ -224,7 +224,7 @@ public class PursuerNavMeshController : MonoBehaviour
                     RequestAttackAnimation();
                 }
 
-                Debug.Log("PursuerNavMeshController: stalker intento abrir puerta: " + door.gameObject.name);
+                //Debug.Log("PursuerNavMeshController: stalker intento abrir puerta: " + door.gameObject.name);
             }
         }
     }
@@ -272,7 +272,7 @@ public class PursuerNavMeshController : MonoBehaviour
 
         if (logGrabDistance)
         {
-            Debug.Log("PursuerNavMeshController: distancia al player = " + distance.ToString("0.00") + " | grabDistance = " + grabDistance);
+            //Debug.Log("PursuerNavMeshController: distancia al player = " + distance.ToString("0.00") + " | grabDistance = " + grabDistance);
         }
 
         if (distance > grabDistance)
@@ -329,11 +329,11 @@ public class PursuerNavMeshController : MonoBehaviour
 
     private void TriggerCaptureEnding()
     {
-        Debug.Log("PursuerNavMeshController: captura detectada, disparando cierre.");
+        //Debug.Log("PursuerNavMeshController: captura detectada, disparando cierre.");
 
         if (captureEndController == null)
         {
-            Debug.LogWarning("PursuerNavMeshController: no hay captureEndController asignado para el cierre.");
+            //Debug.LogWarning("PursuerNavMeshController: no hay captureEndController asignado para el cierre.");
             return;
         }
 

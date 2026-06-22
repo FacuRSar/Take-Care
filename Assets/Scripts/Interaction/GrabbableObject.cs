@@ -280,7 +280,7 @@ public class GrabbableObject : MonoBehaviour
         // para eventos de ambiente: si no hay collider real, no lo suelto porque se va al vacio
         if (!HasSolidCollider())
         {
-            Debug.LogWarning("[GrabbableObject] " + name + " no tiene collider solido. No activo fisica.");
+            //Debug.LogWarning("[GrabbableObject] " + name + " no tiene collider solido. No activo fisica.");
             return false;
         }
 

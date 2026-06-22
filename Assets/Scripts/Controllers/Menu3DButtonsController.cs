@@ -246,7 +246,7 @@ public class Menu3DButtonsController : MonoBehaviour
 
             case MenuButtonAction.Exit:
                 Application.Quit();
-                Debug.Log("Salir del juego.");
+                //Debug.Log("Salir del juego.");
                 break;
 
             case MenuButtonAction.Settings:
@@ -258,7 +258,7 @@ public class Menu3DButtonsController : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("Menu3DButtonsController: el boton Settings no tiene asignado el SettingsMenuController.");
+                    //Debug.LogWarning("Menu3DButtonsController: el boton Settings no tiene asignado el SettingsMenuController.");
                 }
                 break;
         }
@@ -278,7 +278,7 @@ public class Menu3DButtonsController : MonoBehaviour
     {
         if (howToPlayPanel == null)
         {
-            Debug.LogWarning("Menu3DButtonsController: el boton Controles no tiene asignado el panel HowToPlay.");
+            //Debug.LogWarning("Menu3DButtonsController: el boton Controles no tiene asignado el panel HowToPlay.");
             return;
         }
 

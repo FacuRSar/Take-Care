@@ -126,7 +126,7 @@ public class PursuerPatrolSpawner : MonoBehaviour
 
         if (Keyboard.current.gKey.wasPressedThisFrame)
         {
-            Debug.Log("PursuerPatrolSpawner: debug numpad6 -> aparicion forzada en patrulla.");
+            //Debug.Log("PursuerPatrolSpawner: debug numpad6 -> aparicion forzada en patrulla.");
             ForceAppearOnce();
         }
     }
@@ -255,7 +255,7 @@ public class PursuerPatrolSpawner : MonoBehaviour
     {
         if (pursuerObject == null || patrolController == null)
         {
-            Debug.LogWarning("PursuerPatrolSpawner: falta pursuerObject o patrolController.");
+            //Debug.LogWarning("PursuerPatrolSpawner: falta pursuerObject o patrolController.");
             yield break;
         }
 
@@ -276,7 +276,7 @@ public class PursuerPatrolSpawner : MonoBehaviour
 
         if (point == null)
         {
-            Debug.LogWarning("PursuerPatrolSpawner: no hay punto de spawn valido (ni habitaciones ni pasillos).");
+            //Debug.LogWarning("PursuerPatrolSpawner: no hay punto de spawn valido (ni habitaciones ni pasillos).");
             yield break;
         }
 

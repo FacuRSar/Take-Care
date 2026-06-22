@@ -357,7 +357,7 @@ public class HintDialogueController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("hintdialoguecontroller: no hay subtitleui disponible");
+            //Debug.LogWarning("hintdialoguecontroller: no hay subtitleui disponible");
         }
     }
 }

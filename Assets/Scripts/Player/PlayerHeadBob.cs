@@ -41,16 +41,6 @@ public class PlayerHeadBob : MonoBehaviour
             originalLocalPosition = playerCamera.localPosition;
         }
 
-        if (debugHeadBob)
-        {
-            // Debug.Log("[HeadBob] Start. PlayerMovement: " + playerMovement + " | Camera: " + playerCamera);
-
-            if (playerMovement == null)
-                Debug.LogWarning("[HeadBob] No tiene PlayerMovement asignado/encontrado.");
-
-            if (playerCamera == null)
-                Debug.LogWarning("[HeadBob] No tiene PlayerCamera Transform asignado.");
-        }
     }
 
     private void Update()

@@ -8,6 +8,10 @@ public class PhoneInteractable : Interactable
     [Header("Estado")]
     [SerializeField] private bool canAnswer;
 
+    [Header("Antes de que suene")]
+    [SerializeField] private string notWorkingMessage = "No parece funcionar.";
+    [SerializeField] private float notWorkingMessageDuration = 2.5f;
+
     private bool answered;
 
     public void SetCanAnswer(bool value)
@@ -28,7 +32,11 @@ public class PhoneInteractable : Interactable
 
         if (!canAnswer)
         {
-            // Debug.Log("Telefono: todavia no se puede atender.");
+            if (SubtitleUI.Instance != null)
+            {
+                SubtitleUI.Instance.ShowSubtitle(notWorkingMessage, notWorkingMessageDuration);
+            }
+
             return;
         }
 
@@ -48,7 +56,7 @@ public class PhoneInteractable : Interactable
         }
         else
         {
-            Debug.LogWarning("Telefono: no tiene IntroSequenceController asignado.");
+            //Debug.LogWarning("Telefono: no tiene IntroSequenceController asignado.");
         }
     }
 }

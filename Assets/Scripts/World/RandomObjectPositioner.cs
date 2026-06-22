@@ -74,15 +74,15 @@ public class RandomObjectPositioner : MonoBehaviour
                         {
                             cumulativeWeight += Weights[i]; // Acumula la probabilidad actual
 
-                            if (cumulativeWeight >  randomValue) // Verifica si el número aleatorio es menor que la probabilidad acumulada
+                            if (cumulativeWeight > randomValue) // Verifica si el número aleatorio es menor que la probabilidad acumulada
                             {
                                 return i; // Asigna el índice de la posición seleccionada
                             }
                         }
 
-                        Debug.Log("Nota: Asegúrate de que las probabilidades en la lista Weights estén configuradas correctamente para evitar problemas en la selección de posiciones.");
+                        //Debug.Log("Nota: Asegúrate de que las probabilidades en la lista Weights estén configuradas correctamente para evitar problemas en la selección de posiciones.");
                         return 0; // Devuelve un índice predeterminado en caso de que no se seleccione ninguna posición (esto no debería ocurrir si las probabilidades son correctas)
-                        
+
                     }
 
                     Index = GetRandomIndex(); // Obtiene un nuevo índice de posición para el siguiente objeto
@@ -93,7 +93,7 @@ public class RandomObjectPositioner : MonoBehaviour
                 }
             }
             else
-                Debug.LogWarning("El objeto " + Object.name + " no tiene el componente GrabbableObject y no se asignará a ninguna posición.");
+                return;//Debug.LogWarning("El objeto " + Object.name + " no tiene el componente GrabbableObject y no se asignará a ninguna posición.");
         }
     }
 
@@ -111,7 +111,7 @@ public class RandomObjectPositioner : MonoBehaviour
         {
             if (Obj[i].TryGetComponent(out GrabbableObject grabbable) && CantRepeatPositions)
             {
-                Debug.Log("Object " + Obj[i].name + " Fue asignado a una posicion y eliminado de la lista.");
+                //Debug.Log("Object " + Obj[i].name + " Fue asignado a una posicion y eliminado de la lista.");
                 Obj.RemoveAt(i); // Elimina el objeto de la lista Obj en base a su índice
 
             }

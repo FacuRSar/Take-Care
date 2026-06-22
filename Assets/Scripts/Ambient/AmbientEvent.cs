@@ -331,7 +331,7 @@ public class AmbientEvent : MonoBehaviour
         if (debugLog)
         {
             int count = actions != null ? actions.Length : 0;
-            Debug.Log("[AmbientEvent] '" + name + "' disparado. Acciones: " + count);
+            //Debug.Log("[AmbientEvent] '" + name + "' disparado. Acciones: " + count);
         }
 
         if (actions == null)
@@ -367,7 +367,7 @@ public class AmbientEvent : MonoBehaviour
 
         if (debugLog)
         {
-            Debug.Log("[AmbientEvent] '" + name + "' ejecuta accion: " + action.type);
+            //Debug.Log("[AmbientEvent] '" + name + "' ejecuta accion: " + action.type);
         }
 
         switch (action.type)
@@ -496,13 +496,13 @@ public class AmbientEvent : MonoBehaviour
 
         if (rb == null)
         {
-            Debug.LogWarning("[AmbientEvent] EnablePhysics: el target no tiene Rigidbody: " + action.target.name);
+            //Debug.LogWarning("[AmbientEvent] EnablePhysics: el target no tiene Rigidbody: " + action.target.name);
             return;
         }
 
         if (!HasSolidCollider(action.target))
         {
-            Debug.LogWarning("[AmbientEvent] EnablePhysics: el target no tiene collider solido: " + action.target.name);
+            //Debug.LogWarning("[AmbientEvent] EnablePhysics: el target no tiene collider solido: " + action.target.name);
             return;
         }
 
@@ -540,7 +540,7 @@ public class AmbientEvent : MonoBehaviour
     {
         if (ScreenEffectController.Instance == null || string.IsNullOrEmpty(action.screenEffectId))
         {
-            Debug.LogWarning("[AmbientEvent] ScreenEffect: falta ScreenEffectController o screenEffectId en " + name + ".");
+            //Debug.LogWarning("[AmbientEvent] ScreenEffect: falta ScreenEffectController o screenEffectId en " + name + ".");
             return;
         }
 
@@ -570,13 +570,13 @@ public class AmbientEvent : MonoBehaviour
     {
         if (SFXManager.Instance == null)
         {
-            Debug.LogWarning("[AmbientEvent] PlaySfx: no hay SFXManager en escena.");
+            //Debug.LogWarning("[AmbientEvent] PlaySfx: no hay SFXManager en escena.");
             return;
         }
 
         if (string.IsNullOrEmpty(action.sfxId))
         {
-            Debug.LogWarning("[AmbientEvent] PlaySfx: sfxId esta vacio en " + name + ".");
+            //Debug.LogWarning("[AmbientEvent] PlaySfx: sfxId esta vacio en " + name + ".");
             return;
         }
 
@@ -594,8 +594,9 @@ public class AmbientEvent : MonoBehaviour
 
         if (playedClip == null)
         {
-            Debug.LogWarning("[AmbientEvent] PlaySfx: no se pudo reproducir '" + action.sfxId +
-                "'. Revisa que exista un pool con ese id en SFXManager y que tenga clips cargados.");
+            //Debug.LogWarning("[AmbientEvent] PlaySfx: no se pudo reproducir '" + action.sfxId +
+            //    "'. Revisa que exista un pool con ese id en SFXManager y que tenga clips cargados.");
+            return ;
         }
     }
 

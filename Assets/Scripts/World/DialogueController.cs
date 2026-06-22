@@ -84,7 +84,7 @@ public class DialogueController : MonoBehaviour
 
         if (pool == null || pool.lines == null || pool.lines.Length == 0)
         {
-            Debug.LogWarning("DialogueController: no se encontro dialogo o esta vacio: " + id);
+            //Debug.LogWarning("DialogueController: no se encontro dialogo o esta vacio: " + id);
             return;
         }
 
@@ -173,7 +173,7 @@ public class DialogueController : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("DialogueController: no hay SubtitleUI asignado o disponible.");
+                //Debug.LogWarning("DialogueController: no hay SubtitleUI asignado o disponible.");
             }
 
             if (lineDuration > 0f)

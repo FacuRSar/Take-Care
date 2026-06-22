@@ -102,7 +102,7 @@ public class FixedCameraWithZoom : MonoBehaviour
             {
                 isPlayingSequence = false;
             }
-            else Debug.LogWarning("Error en el Timer");
+            else return;//Debug.LogWarning("Error en el Timer");
 
         }
         else
@@ -217,7 +217,7 @@ public class FixedCameraWithZoom : MonoBehaviour
             if (currentTargetIndex < currentSequence.objectives.Count - 1)
             {
                 currentTargetIndex++;
-                Debug.Log("Cambiando al Target: " + currentTargetIndex);
+                //Debug.Log("Cambiando al Target: " + currentTargetIndex);
             }
         }
     }

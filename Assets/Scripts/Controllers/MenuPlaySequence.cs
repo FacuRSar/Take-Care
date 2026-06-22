@@ -301,7 +301,7 @@ public class MenuPlaySequence : MonoBehaviour
 
         if (string.IsNullOrEmpty(introSceneName))
         {
-            Debug.LogWarning("[MenuPlaySequence] introSceneName vacio.");
+            //Debug.LogWarning("[MenuPlaySequence] introSceneName vacio.");
             return;
         }
 

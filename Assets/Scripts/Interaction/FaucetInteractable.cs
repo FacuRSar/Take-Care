@@ -29,7 +29,7 @@ public class FaucetInteractable : Interactable
         }
         else
         {
-            Debug.LogWarning("Canilla: no tiene IntroSequenceController asignado.");
+            //Debug.LogWarning("Canilla: no tiene IntroSequenceController asignado.");
         }
     }
 }

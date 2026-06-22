@@ -227,7 +227,7 @@ public class IntroSequenceController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("IntroSequenceController: la muneca no esta asignada, no aparece pero no rompe.");
+            //Debug.LogWarning("IntroSequenceController: la muneca no esta asignada, no aparece pero no rompe.");
         }
 
         // La risa suena un segundo antes del zoom de la muneca.
@@ -362,7 +362,7 @@ public class IntroSequenceController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("IntroSequenceController: pursuerSpawnController no esta asignado.");
+            //Debug.LogWarning("IntroSequenceController: pursuerSpawnController no esta asignado.");
         }
     }
 
@@ -413,7 +413,7 @@ public class IntroSequenceController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("IntroSequenceController: no hay DialogueController para reproducir el dialogo: " + dialogueId);
+            //Debug.LogWarning("IntroSequenceController: no hay DialogueController para reproducir el dialogo: " + dialogueId);
         }
     }
 
@@ -434,7 +434,7 @@ public class IntroSequenceController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("IntroSequenceController: no hay DialogueController para reproducir el dialogo: " + dialogueId);
+            //Debug.LogWarning("IntroSequenceController: no hay DialogueController para reproducir el dialogo: " + dialogueId);
         }
 
         float waitTime = Mathf.Max(0f, dialogueDuration + afterDialogueDelay);
@@ -465,7 +465,7 @@ public class IntroSequenceController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("IntroSequenceController: el telefono no esta asignado.");
+            //Debug.LogWarning("IntroSequenceController: el telefono no esta asignado.");
         }
     }
 
@@ -525,7 +525,7 @@ public class IntroSequenceController : MonoBehaviour
     {
         if (pursuerSpawnController == null)
         {
-            Debug.LogWarning("IntroSequenceController: no hay pursuerSpawnController asignado para el spawn de debug.");
+            //Debug.LogWarning("IntroSequenceController: no hay pursuerSpawnController asignado para el spawn de debug.");
             return;
         }
 
@@ -536,14 +536,14 @@ public class IntroSequenceController : MonoBehaviour
     {
         if (string.IsNullOrEmpty(agitatedBreathingLoopId))
         {
-            Debug.LogWarning("IntroSequenceController: no hay agitatedBreathingLoopId configurado para la respiracion.");
+            //Debug.LogWarning("IntroSequenceController: no hay agitatedBreathingLoopId configurado para la respiracion.");
             return;
         }
 
         SFXManager targetSfx = sfxManager != null ? sfxManager : SFXManager.Instance;
         if (targetSfx == null)
         {
-            Debug.LogWarning("IntroSequenceController: no hay SFXManager para reproducir la respiracion.");
+            //Debug.LogWarning("IntroSequenceController: no hay SFXManager para reproducir la respiracion.");
             return;
         }
 
