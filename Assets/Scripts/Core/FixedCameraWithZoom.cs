@@ -36,6 +36,7 @@ public class FixedCameraWithZoom : MonoBehaviour
     [SerializeField] private CinemachineCamera focusVirtualCamera;
     // Opcional: se congela durante el foco para que no pelee con la posicion de la camara.
     [SerializeField] private PlayerHeadBob headBob;
+    private CinemachineBrain cinemachineBrain;
     // Posicion world capturada al iniciar el foco: la camara virtual queda clavada aca.
     private Vector3 focusAnchorPosition;
 
@@ -76,6 +77,11 @@ public class FixedCameraWithZoom : MonoBehaviour
     {
         currentZoomFov = zoomFov;
         DurationTotalScene();
+
+        if (cam != null)
+        {
+            cinemachineBrain = cam.GetComponent<CinemachineBrain>();
+        }
     }
     private void Update()
     {
@@ -87,6 +93,7 @@ public class FixedCameraWithZoom : MonoBehaviour
                 focusAnchorPosition = cam.transform.position;
                 focusVirtualCamera.transform.SetPositionAndRotation(cam.transform.position, cam.transform.rotation);
                 focusVirtualCamera.enabled = true;
+                SetCinemachineBrainEnabled(true);
 
                 if (headBob != null)
                     headBob.SetFocusFreeze(true);
@@ -105,23 +112,20 @@ public class FixedCameraWithZoom : MonoBehaviour
             else return;//Debug.LogWarning("Error en el Timer");
 
         }
-        else
+        else if (focusVirtualCamera != null && focusVirtualCamera.enabled)
         {
-            if (focusVirtualCamera != null && focusVirtualCamera.enabled)
-            {
-                focusVirtualCamera.enabled = false;
+            focusVirtualCamera.enabled = false;
+            SetCinemachineBrainEnabled(false);
 
-                if (headBob != null)
-                    headBob.SetFocusFreeze(false);
+            if (headBob != null)
+            {
+                headBob.SetFocusFreeze(false);
             }
 
             canzoomed = false;
-
             playerMovement.CantMove(false);
             playerCamera._MoveCamera(false);
-
             playerCamera.SyncRotation();
-
             ResetCameraSequence();
         }
 
@@ -322,6 +326,17 @@ public class FixedCameraWithZoom : MonoBehaviour
     public void PlaySequence(int sequenceIndex, float customZoomFov)
     {
         _PlaySequence(sequenceIndex, customZoomFov);
+    }
+
+    private void SetCinemachineBrainEnabled(bool enabled)
+    {
+        if (cinemachineBrain != null)
+        {
+            cinemachineBrain.enabled = enabled;
+            return;
+        }
+
+        playerCamera?.SetCinemachineBrainEnabled(enabled);
     }
 
 

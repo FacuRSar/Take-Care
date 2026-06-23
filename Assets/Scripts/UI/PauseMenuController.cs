@@ -131,7 +131,7 @@ public class PauseMenuController : MonoBehaviour
     private void Update()
     {
         // Click derecho = volver atras en la UI (ajustes / menu de pausa).
-        if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame)
+        if (WasRightClickPressedThisFrame())
         {
             HandleBackNavigation();
         }
@@ -142,14 +142,8 @@ public class PauseMenuController : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current == null)
-        {
-            return;
-        }
-
         // Tab o Escape hacen lo mismo: poner/sacar la pausa.
-        bool pausePressed = Keyboard.current.tabKey.wasPressedThisFrame ||
-                            Keyboard.current.escapeKey.wasPressedThisFrame;
+        bool pausePressed = WasPauseKeyPressedThisFrame();
 
         if (!pausePressed)
         {
@@ -721,5 +715,29 @@ public class PauseMenuController : MonoBehaviour
         }
 
         return Mathf.InverseLerp(min, max, value);
+    }
+
+    private static bool WasPauseKeyPressedThisFrame()
+    {
+        if (Keyboard.current != null)
+        {
+            if (Keyboard.current.tabKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                return true;
+            }
+        }
+
+        // Fallback para builds donde el teclado del Input System no esta listo al primer frame.
+        return Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape);
+    }
+
+    private static bool WasRightClickPressedThisFrame()
+    {
+        if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            return true;
+        }
+
+        return Input.GetMouseButtonDown(1);
     }
 }

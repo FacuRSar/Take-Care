@@ -1829,7 +1829,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCamera
   mouseSensitivity: 0.4
   cam: {fileID: 8269313867149107321}
-  maxLookDelta: 30
+  maxLookDelta: 120
+  spikeLookDelta: 400
   _CantMoveCamera: 0
 --- !u!1 &5086529664292357804
 GameObject:

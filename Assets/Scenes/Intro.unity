@@ -8733,7 +8733,7 @@ PrefabInstance:
     - target: {fileID: 354697400532391196, guid: eb5ab53d12f559249b3b029cedcde3cb, type: 3}
       propertyPath: 'animators.Array.data[0]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8010608042249991188}
     - target: {fileID: 1787307752710583050, guid: eb5ab53d12f559249b3b029cedcde3cb, type: 3}
       propertyPath: m_Name
       value: AnimationController
@@ -12290,11 +12290,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
       propertyPath: walkSpeed
-      value: 3
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
+      propertyPath: crouchSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
       propertyPath: sprintSpeed
-      value: 4.5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8174115033227467844, guid: 11f65aea8cfc97d41b78359c66518d65, type: 3}
       propertyPath: bodyAnimator
@@ -12405,7 +12409,7 @@ MonoBehaviour:
   ambientVolumeParam: AmbientVolume
   globalVolume: {fileID: 1107352370}
   runtimeBrightnessVolumePriority: 100
-  menuSceneName: Menu2
+  menuSceneName: Menu
   pauseAudioOnPause: 1
   pauseAllowed: 1
   verboseBrightnessLog: 1
