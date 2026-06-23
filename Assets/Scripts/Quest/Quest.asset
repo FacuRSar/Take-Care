@@ -19,7 +19,7 @@ MonoBehaviour:
     SubtitlesForQuestComplete: "T\xE9_Complete"
     SubtitlesForQuestFail: "T\xE9_Fail"
     SubtitlesForQuestHalf: "T\xE9_Half"
-    timer: 90
+    timer: 120
     Name: "La Hora del T\xE9 de las Astillas"
     description: "La mu\xF1eca quiere organizar una fiesta de t\xE9 en el comedor.
       El jugador debe recolectar los fragmentos de porcelana rota esparcidos por
@@ -41,7 +41,7 @@ MonoBehaviour:
     SubtitlesForQuestComplete: "\xBF?_Complete"
     SubtitlesForQuestFail: "\xBF?_Fail"
     SubtitlesForQuestHalf: 
-    timer: 60
+    timer: 80
     Name: "\xBFD\xF3nde Estoy?"
     description: "La mu\xF1eca desaparece de su lugar con una risa ecoica e inicia
       un juego forzado de escondidas dentro de la caba\xF1a. Se posiciona f\xEDsicamente
@@ -85,7 +85,7 @@ MonoBehaviour:
     SubtitlesForQuestComplete: Sonriente_Complete
     SubtitlesForQuestFail: Sonriente_Fail
     SubtitlesForQuestHalf: Sonriente_Half
-    timer: 60
+    timer: 90
     Name: "El \xC1lbum de la Familia Sonriente"
     description: "La mu\xF1eca quiere mostrarle al jugador las fotos de sus \"antiguos
       due\xF1os\" en el estudio de la caba\xF1a, pero las p\xE1ginas se cayeron.
