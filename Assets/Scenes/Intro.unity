@@ -8733,7 +8733,7 @@ PrefabInstance:
     - target: {fileID: 354697400532391196, guid: eb5ab53d12f559249b3b029cedcde3cb, type: 3}
       propertyPath: 'animators.Array.data[0]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8010608042249991188}
     - target: {fileID: 1787307752710583050, guid: eb5ab53d12f559249b3b029cedcde3cb, type: 3}
       propertyPath: m_Name
       value: AnimationController
